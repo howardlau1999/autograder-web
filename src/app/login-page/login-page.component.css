@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+.login-button-spacer {
+    flex: 1 1 auto;
+}
+
 .login-button-container {
-    text-align: right;
+    display: flex;
 }
