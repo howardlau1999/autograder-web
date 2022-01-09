@@ -1,0 +1,16 @@
+.login-card-container {
+    width: 320px;
+    position: absolute;
+    margin-top: -20px;
+    top: 45%;
+    left: 75%;
+    transform: translate(-50%,-50%);
+}
+
+.login-form-control {
+    width: 100%;
+}
+
+.login-button-container {
+    text-align: right;
+}

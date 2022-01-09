@@ -4,6 +4,9 @@
   "newProjectRoot": "projects",
   "projects": {
     "autograder-fe": {
+      "i18n": {
+        "sourceLocale": "zh-Hans"
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
