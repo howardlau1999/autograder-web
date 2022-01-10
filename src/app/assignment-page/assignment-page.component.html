@@ -1,42 +1,68 @@
-<mat-card>
-    <mat-card-title i18n="submission-history">提交记录</mat-card-title>
+<div class="assignment-page-container">
+  <mat-card class="assignment-info-card">
+    <mat-card-title>
+      作业标题
+    </mat-card-title>
+    <mat-card-subtitle>
+      #作业 ID
+    </mat-card-subtitle>
     <mat-card-content>
-        <table mat-table [dataSource]="dummyArray" class="submission-history-table">
-            <ng-container matColumnDef="submissionId">
-                <th mat-header-cell *matHeaderCellDef i18n="submission-id">提交 ID</th>
-                <td mat-cell *matCellDef="let submission">{{submission.submissionId}}</td>
-            </ng-container>
-            <ng-container matColumnDef="submittedAt">
-                <th mat-header-cell *matHeaderCellDef i18n="submitted-at">提交时间</th>
-                <td mat-cell *matCellDef="let submission">{{submission.submittedAt | date:"medium" }}</td>
-            </ng-container>
-            <ng-container matColumnDef="score">
-                <th mat-header-cell *matHeaderCellDef i18n="score">得分</th>
-                <td mat-cell *matCellDef="let submission">
-                    {{submission.score}}/{{submission.fullScore}}
-                    <mat-progress-bar ngClass="score-bar" mode="buffer"
-                        [value]="submission.score/submission.fullScore*100"
-                        [bufferValue]="submission.testedScore/submission.fullScore*100">
-                    </mat-progress-bar>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef i18n="status">状态</th>
-                <td mat-cell *matCellDef="let submission">{{submission.status}}</td>
-            </ng-container>
-            <ng-container matColumnDef="operations">
-                <th mat-header-cell *matHeaderCellDef i18n="operations">操作</th>
-                <td mat-cell *matCellDef="let submission">
-                    <button mat-button i18n="view">
-                        <mat-icon>description</mat-icon>
-                    </button>
-                    <button mat-button i18n="download">
-                        <mat-icon>download</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let submission; columns: columnsToDisplay"></tr>
-        </table>
+      作业的详情
     </mat-card-content>
-</mat-card>
+  </mat-card>
+  <mat-card class="submission-history-table">
+    <mat-card-content>
+      <table mat-table multiTemplateDataRows [dataSource]="dummyArray" class="submission-history-table">
+        <ng-container matColumnDef="submissionId">
+          <th mat-header-cell *matHeaderCellDef i18n="submission-id">提交 ID</th>
+          <td mat-cell *matCellDef="let submission">{{submission.submissionId}}</td>
+        </ng-container>
+        <ng-container matColumnDef="submittedAt">
+          <th mat-header-cell *matHeaderCellDef i18n="submitted-at">提交时间</th>
+          <td mat-cell *matCellDef="let submission">{{submission.submittedAt | date:"medium" }}</td>
+        </ng-container>
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef i18n="score">得分</th>
+          <td mat-cell *matCellDef="let submission">
+            {{submission.score}}/{{submission.fullScore}}
+            <mat-progress-bar class="score-bar" mode="buffer"
+                              [value]="submission.score/submission.fullScore*100"
+                              [bufferValue]="submission.testedScore/submission.fullScore*100">
+            </mat-progress-bar>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef i18n="status">状态</th>
+          <td mat-cell *matCellDef="let submission">{{submission.status}}</td>
+        </ng-container>
+        <ng-container matColumnDef="operations">
+          <th mat-header-cell *matHeaderCellDef i18n="operations">操作</th>
+          <td mat-cell *matCellDef="let submission">
+            <button mat-button i18n="view">
+              <mat-icon>description</mat-icon>
+            </button>
+            <button mat-button i18n="download">
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let submission" [attr.colspan]="columnsToDisplay.length">
+            <div class="submission-element-detail"
+                 [@detailExpand]="submission === expandedSubmission ? 'expanded' : 'collapsed'">
+              提交记录详情
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let submission; columns: columnsToDisplay"
+            class="submission-element-row"
+            [class.submission-expanded-row]="expandedSubmission === submission"
+            (click)="expandedSubmission = expandedSubmission === submission ? null : submission"></tr>
+        <tr mat-row *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row"></tr>
+      </table>
+    </mat-card-content>
+    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10]"
+                   showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>

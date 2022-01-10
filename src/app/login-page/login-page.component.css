@@ -1,23 +1,31 @@
 .login-card-container {
-    width: 320px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  margin-left: 30%;
+  margin-right: 30%;
+  flex-wrap: wrap;
+}
+
+.login-card {
+  flex: 1 1 100%;
+  max-width: 350px;
+  margin-bottom: 20px;
 }
 
 .login-form-control {
-    width: 100%;
+  width: 100%;
 }
 
 .login-button-spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .login-button-container {
-    display: flex;
+  display: flex;
 }
 
 .one-line-button {
-    width: 100%;
+  width: 100%;
 }

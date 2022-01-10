@@ -15,6 +15,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatProgressBarModule,
     MatToolbarModule,
     MatBadgeModule,
+    MatSidenavModule,
+    MatPaginatorModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } }
