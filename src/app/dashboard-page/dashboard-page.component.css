@@ -2,12 +2,14 @@
   margin: 20px;
 }
 
-mat-grid-tile > .mat-grid-tile-content {
-  align-items: stretch;
+.card-tile {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .dashboard-card {
-  width: 100%;
+  flex: 0 1 auto;
+  width: 300px;
   margin: 5px;
 }
 

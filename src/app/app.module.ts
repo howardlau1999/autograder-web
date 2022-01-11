@@ -21,6 +21,8 @@ import {DashboardPageComponent} from './dashboard-page/dashboard-page.component'
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatMenuModule} from '@angular/material/menu';
 import {LayoutModule} from '@angular/cdk/layout';
+import { CoursePageComponent } from './course-page/course-page.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import {LayoutModule} from '@angular/cdk/layout';
     LoginPageComponent,
     AssignmentPageComponent,
     DashboardPageComponent,
+    CoursePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatGridListModule,
     MatMenuModule,
     LayoutModule,
+    MatSortModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
