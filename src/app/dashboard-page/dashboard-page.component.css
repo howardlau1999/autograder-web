@@ -1,0 +1,18 @@
+.grid-container {
+  margin: 20px;
+}
+
+mat-grid-tile > .mat-grid-tile-content {
+  align-items: stretch;
+}
+
+.dashboard-card {
+  width: 100%;
+  margin: 5px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}

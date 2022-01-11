@@ -1,0 +1,26 @@
+<div class="grid-container">
+  <h1>我的课程</h1>
+  <mat-grid-list cols="5" rowHeight="4:3">
+    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows" class="card-tile">
+      <mat-card class="dashboard-card">
+        <mat-card-title>
+          {{card.title}}
+          <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="after">
+            <button mat-menu-item>Expand</button>
+            <button mat-menu-item>Remove</button>
+          </mat-menu>
+        </mat-card-title>
+        <mat-card-content class="dashboard-card-content">
+          <div>课程简介</div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button>Like</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
