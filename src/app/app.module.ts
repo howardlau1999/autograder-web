@@ -23,6 +23,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {LayoutModule} from '@angular/cdk/layout';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { MatSortModule } from '@angular/material/sort';
+import { SubmissionPageComponent } from './submission-page/submission-page.component';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { MatSortModule } from '@angular/material/sort';
     AssignmentPageComponent,
     DashboardPageComponent,
     CoursePageComponent,
+    SubmissionPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatMenuModule,
     LayoutModule,
     MatSortModule,
+    MatTreeModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}

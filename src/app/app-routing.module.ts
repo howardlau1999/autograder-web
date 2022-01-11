@@ -4,12 +4,14 @@ import {AssignmentPageComponent} from './assignment-page/assignment-page.compone
 import {LoginPageComponent} from './login-page/login-page.component';
 import {DashboardPageComponent} from "./dashboard-page/dashboard-page.component";
 import {CoursePageComponent} from "./course-page/course-page.component";
+import {SubmissionPageComponent} from "./submission-page/submission-page.component";
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
   {path: 'assignment', component: AssignmentPageComponent},
   {path: 'dashboard', component: DashboardPageComponent},
   {path: 'course', component: CoursePageComponent},
+  {path: 'submission', component: SubmissionPageComponent},
 ];
 
 @NgModule({
