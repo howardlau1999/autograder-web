@@ -3,7 +3,7 @@
   <div class="card-tile">
     <mat-card *ngFor="let card of cards | async" class="dashboard-card">
       <mat-card-title>
-        {{card.title}}
+        {{card.getName()}}
         <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
