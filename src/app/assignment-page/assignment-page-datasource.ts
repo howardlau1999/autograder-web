@@ -3,21 +3,19 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {map} from 'rxjs/operators';
 import {Observable, of as observableOf, merge} from 'rxjs';
-import {GetAssignmentsInCourseResponse} from "../api/proto/api_pb";
+import {GetAssignmentsInCourseResponse, GetSubmissionsInAssignmentResponse} from "../api/proto/api_pb";
 import {ApiService} from "../api/api.service";
 
-type Item = GetAssignmentsInCourseResponse.CourseAssignmentInfo;
-export type CoursePageItem = Item;
+export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
 
 /**
  * Data source for the CoursePage view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class CoursePageDataSource extends DataSource<Item> {
-  data: Observable<GetAssignmentsInCourseResponse> = this.apiService.getAssignmentsInCourse(0);
+export class AssignmentPageDataSource extends DataSource<Item> {
+  data: Observable<GetSubmissionsInAssignmentResponse> = this.apiService.getSubmissionsInAssignment(0);
   dataArray: Item[] = [];
-  dataLength: number = 0;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -35,8 +33,7 @@ export class CoursePageDataSource extends DataSource<Item> {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(this.data.pipe(map((response) => {
-        this.dataArray = response.getAssignmentsList();
-        this.dataLength = this.dataArray.length;
+        this.dataArray = response.getSubmissionsList();
         return this.dataArray;
       })), this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
@@ -79,10 +76,6 @@ export class CoursePageDataSource extends DataSource<Item> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'name':
-          return compare(a.getName(), b.getName(), isAsc);
-        case 'id':
-          return compare(+a.getAssignmentId(), +b.getAssignmentId(), isAsc);
         default:
           return 0;
       }

@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-
-export interface SubmissionHistory {
-  submissionId: string;
-  assignmentId: string;
-  submittedAt: Date;
-  score: number;
-  testedScore: number;
-  fullScore: number;
-  status: string;
-}
+import {ApiService} from "../api/api.service";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatTable} from "@angular/material/table";
+import {AssignmentPageDataSource, Item} from "./assignment-page-datasource";
 
 @Component({
   selector: 'app-assignment-page',
@@ -24,24 +19,25 @@ export interface SubmissionHistory {
   ],
 })
 export class AssignmentPageComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatTable) table!: MatTable<Item>;
+  dataSource: AssignmentPageDataSource;
 
-  dummyArray: SubmissionHistory[] = [{
-    submissionId: '1',
-    assignmentId: '1',
-    submittedAt: new Date(),
-    score: 30,
-    testedScore: 70,
-    fullScore: 100,
-    status: 'Queued',
-  }];
+  columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
 
-  columnsToDisplay = ['submissionId', 'submittedAt', 'status', 'score', 'operations'];
+  expandedSubmission: Item | null = null;
 
-  expandedSubmission: SubmissionHistory | null = null;
-
-  constructor() { }
+  constructor(private apiService: ApiService) {
+    this.dataSource = new AssignmentPageDataSource(apiService);
+  }
 
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.table.dataSource = this.dataSource;
+  }
 }

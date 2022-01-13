@@ -22,10 +22,30 @@ type AutograderServiceGetCourseList = {
   readonly responseType: typeof proto_api_pb.GetCourseListResponse;
 };
 
+type AutograderServiceGetAssignmentsInCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proto_api_pb.GetAssignmentsInCourseRequest;
+  readonly responseType: typeof proto_api_pb.GetAssignmentsInCourseResponse;
+};
+
+type AutograderServiceGetSubmissionsInAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proto_api_pb.GetSubmissionsInAssignmentRequest;
+  readonly responseType: typeof proto_api_pb.GetSubmissionsInAssignmentResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
   static readonly GetCourseList: AutograderServiceGetCourseList;
+  static readonly GetAssignmentsInCourse: AutograderServiceGetAssignmentsInCourse;
+  static readonly GetSubmissionsInAssignment: AutograderServiceGetSubmissionsInAssignment;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -77,6 +97,24 @@ export class AutograderServiceClient {
   getCourseList(
     requestMessage: proto_api_pb.GetCourseListRequest,
     callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetCourseListResponse|null) => void
+  ): UnaryResponse;
+  getAssignmentsInCourse(
+    requestMessage: proto_api_pb.GetAssignmentsInCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetAssignmentsInCourseResponse|null) => void
+  ): UnaryResponse;
+  getAssignmentsInCourse(
+    requestMessage: proto_api_pb.GetAssignmentsInCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetAssignmentsInCourseResponse|null) => void
+  ): UnaryResponse;
+  getSubmissionsInAssignment(
+    requestMessage: proto_api_pb.GetSubmissionsInAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetSubmissionsInAssignmentResponse|null) => void
+  ): UnaryResponse;
+  getSubmissionsInAssignment(
+    requestMessage: proto_api_pb.GetSubmissionsInAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetSubmissionsInAssignmentResponse|null) => void
   ): UnaryResponse;
 }
 

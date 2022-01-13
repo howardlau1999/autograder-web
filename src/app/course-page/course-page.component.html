@@ -1,37 +1,56 @@
-<mat-card class="course-info-card">
-  <mat-card-title>
-    课程标题
-  </mat-card-title>
-  <mat-card-subtitle>
-    #课程 ID
-  </mat-card-subtitle>
-  <mat-card-content>
-    课程的详情
-  </mat-card-content>
-</mat-card>
-<div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
-    </ng-container>
+<div class="course-page-container">
+  <mat-card class="course-info-card">
+    <mat-card-title>
+      课程标题
+    </mat-card-title>
+    <mat-card-subtitle>
+      #课程 ID
+    </mat-card-subtitle>
+    <mat-card-content>
+      课程的详情
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="assignment-table-card">
+    <table mat-table class="full-width-table" matSort aria-label="Elements">
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{row.getAssignmentId()}}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let row">{{row.name}}</td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>名称</th>
+        <td mat-cell *matCellDef="let row">{{row.getName()}}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="submitted">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>已提交</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon *ngIf="row.getSubmitted()">done</mat-icon>
+        </td>
+      </ng-container>
 
-  <mat-paginator #paginator
-      [length]="dataSource?.data?.length"
-      [pageIndex]="0"
-      [pageSize]="10"
-      [pageSizeOptions]="[5, 10, 20]"
-      aria-label="Select page">
-  </mat-paginator>
+      <ng-container matColumnDef="release_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>开始时间</th>
+        <td mat-cell *matCellDef="let row">{{row.getReleaseDate().toDate() | date:"medium"}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="due_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>截止时间</th>
+        <td mat-cell *matCellDef="let row">{{row.getDueDate().toDate() | date:"medium"}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator
+                   [length]="dataSource?.dataLength"
+                   [pageIndex]="0"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]"
+                   aria-label="Select page">
+    </mat-paginator>
+  </mat-card>
 </div>

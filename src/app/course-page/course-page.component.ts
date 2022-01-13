@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { CoursePageDataSource, CoursePageItem } from './course-page-datasource';
+import {ApiService} from "../api/api.service";
 
 @Component({
   selector: 'app-course-page',
@@ -16,10 +17,10 @@ export class CoursePageComponent implements AfterViewInit {
   dataSource: CoursePageDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['id', 'name', 'submitted', 'release_date', 'due_date'];
 
-  constructor() {
-    this.dataSource = new CoursePageDataSource();
+  constructor(private apiService: ApiService) {
+    this.dataSource = new CoursePageDataSource(apiService);
   }
 
   ngAfterViewInit(): void {
