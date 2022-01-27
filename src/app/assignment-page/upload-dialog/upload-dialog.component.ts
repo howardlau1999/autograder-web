@@ -28,6 +28,15 @@ export class UploadDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onDrop(event: any) {
+    event.preventDefault();
+  }
+
+  onDragOver(event: any) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   onCancelClicked(): void {
     this.dialogRef.close();
   }
