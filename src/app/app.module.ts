@@ -21,10 +21,15 @@ import {DashboardPageComponent} from './dashboard-page/dashboard-page.component'
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatMenuModule} from '@angular/material/menu';
 import {LayoutModule} from '@angular/cdk/layout';
-import { CoursePageComponent } from './course-page/course-page.component';
-import { MatSortModule } from '@angular/material/sort';
-import { SubmissionPageComponent } from './submission-page/submission-page.component';
-import { MatTreeModule } from '@angular/material/tree';
+import {CoursePageComponent} from './course-page/course-page.component';
+import {MatSortModule} from '@angular/material/sort';
+import {SubmissionPageComponent} from './submission-page/submission-page.component';
+import {MatTreeModule} from '@angular/material/tree';
+import {UploadDialogComponent} from './assignment-page/upload-dialog/upload-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import { FilesTableComponent } from './assignment-page/upload-dialog/files-table/files-table.component';
 
 @NgModule({
   declarations: [
@@ -34,10 +39,13 @@ import { MatTreeModule } from '@angular/material/tree';
     DashboardPageComponent,
     CoursePageComponent,
     SubmissionPageComponent,
+    UploadDialogComponent,
+    FilesTableComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -55,6 +63,8 @@ import { MatTreeModule } from '@angular/material/tree';
     LayoutModule,
     MatSortModule,
     MatTreeModule,
+    MatDialogModule,
+    FormsModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}

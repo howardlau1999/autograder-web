@@ -5,6 +5,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTable} from "@angular/material/table";
 import {AssignmentPageDataSource, Item} from "./assignment-page-datasource";
+import {MatDialog} from "@angular/material/dialog";
+import {UploadDialogComponent} from "./upload-dialog/upload-dialog.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-assignment-page',
@@ -27,8 +30,9 @@ export class AssignmentPageComponent implements OnInit {
   columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
 
   expandedSubmission: Item | null = null;
+  uploadDialogSubscription: Subscription | null = null;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, public dialog: MatDialog) {
     this.dataSource = new AssignmentPageDataSource(apiService);
   }
 
@@ -39,5 +43,15 @@ export class AssignmentPageComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+  }
+
+  openSubmissionDialog(): void {
+    const dialogRef = this.dialog.open(UploadDialogComponent);
+    if (this.uploadDialogSubscription === null) {
+      this.uploadDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+        this.uploadDialogSubscription?.unsubscribe();
+      });
+    }
   }
 }

@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "@improbable-eng/grpc-web": "^0.15.0",
+    "@zip.js/zip.js": "^2.4.1",
     "google-protobuf": "^3.19.2",
     "rxjs": "~7.4.0",
     "ts-protoc-gen": "^0.15.0",

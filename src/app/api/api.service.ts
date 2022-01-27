@@ -9,14 +9,16 @@ import {
 } from "./proto/api_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 import {AsyncSubject, Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  autograderClient = new AutograderServiceClient("http://localhost:9315");
+  host = "http://localhost:9315"
+  autograderClient = new AutograderServiceClient(this.host);
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   private messageCallback<T>(subject: AsyncSubject<T>) : (err: ServiceError | null, response: T | null) => void {
     return (err, response) => {
@@ -51,5 +53,14 @@ export class ApiService {
     const subject = new AsyncSubject<GetSubmissionsInAssignmentResponse>();
     this.autograderClient.getSubmissionsInAssignment(request, this.messageCallback(subject));
     return subject.asObservable();
+  }
+
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.post(`${this.host}/AutograderService/FileUpload`, formData, {
+      reportProgress: true,
+      observe: "events",
+    });
   }
 }

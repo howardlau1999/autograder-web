@@ -1,7 +1,7 @@
 // package: 
-// file: proto/api.proto
+// file: api.proto
 
-import * as proto_api_pb from "../proto/api_pb";
+import * as api_pb from "./api_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
 type AutograderServiceLogin = {
@@ -9,8 +9,8 @@ type AutograderServiceLogin = {
   readonly service: typeof AutograderService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof proto_api_pb.LoginRequest;
-  readonly responseType: typeof proto_api_pb.LoginResponse;
+  readonly requestType: typeof api_pb.LoginRequest;
+  readonly responseType: typeof api_pb.LoginResponse;
 };
 
 type AutograderServiceGetCourseList = {
@@ -18,8 +18,8 @@ type AutograderServiceGetCourseList = {
   readonly service: typeof AutograderService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof proto_api_pb.GetCourseListRequest;
-  readonly responseType: typeof proto_api_pb.GetCourseListResponse;
+  readonly requestType: typeof api_pb.GetCourseListRequest;
+  readonly responseType: typeof api_pb.GetCourseListResponse;
 };
 
 type AutograderServiceGetAssignmentsInCourse = {
@@ -27,8 +27,8 @@ type AutograderServiceGetAssignmentsInCourse = {
   readonly service: typeof AutograderService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof proto_api_pb.GetAssignmentsInCourseRequest;
-  readonly responseType: typeof proto_api_pb.GetAssignmentsInCourseResponse;
+  readonly requestType: typeof api_pb.GetAssignmentsInCourseRequest;
+  readonly responseType: typeof api_pb.GetAssignmentsInCourseResponse;
 };
 
 type AutograderServiceGetSubmissionsInAssignment = {
@@ -36,8 +36,71 @@ type AutograderServiceGetSubmissionsInAssignment = {
   readonly service: typeof AutograderService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof proto_api_pb.GetSubmissionsInAssignmentRequest;
-  readonly responseType: typeof proto_api_pb.GetSubmissionsInAssignmentResponse;
+  readonly requestType: typeof api_pb.GetSubmissionsInAssignmentRequest;
+  readonly responseType: typeof api_pb.GetSubmissionsInAssignmentResponse;
+};
+
+type AutograderServiceSubscribeSubmissions = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof api_pb.SubscribeSubmissionsRequest;
+  readonly responseType: typeof api_pb.SubscribeSubmissionsResponse;
+};
+
+type AutograderServiceStreamSubmissionLog = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof api_pb.StreamSubmissionLogRequest;
+  readonly responseType: typeof api_pb.ChunkResponse;
+};
+
+type AutograderServiceGetFile = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof api_pb.GetFileRequest;
+  readonly responseType: typeof api_pb.ChunkResponse;
+};
+
+type AutograderServiceGetSubmissionDetails = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetSubmissionDetailsRequest;
+  readonly responseType: typeof api_pb.GetSubmissionDetailsResponse;
+};
+
+type AutograderServiceCreateManifest = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CreateManifestRequest;
+  readonly responseType: typeof api_pb.CreateManifestResponse;
+};
+
+type AutograderServiceCreateSubmission = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CreateSubmissionRequest;
+  readonly responseType: typeof api_pb.CreateSubmissionResponse;
+};
+
+type AutograderServiceInitUpload = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.InitUploadRequest;
+  readonly responseType: typeof api_pb.InitUploadResponse;
 };
 
 export class AutograderService {
@@ -46,6 +109,13 @@ export class AutograderService {
   static readonly GetCourseList: AutograderServiceGetCourseList;
   static readonly GetAssignmentsInCourse: AutograderServiceGetAssignmentsInCourse;
   static readonly GetSubmissionsInAssignment: AutograderServiceGetSubmissionsInAssignment;
+  static readonly SubscribeSubmissions: AutograderServiceSubscribeSubmissions;
+  static readonly StreamSubmissionLog: AutograderServiceStreamSubmissionLog;
+  static readonly GetFile: AutograderServiceGetFile;
+  static readonly GetSubmissionDetails: AutograderServiceGetSubmissionDetails;
+  static readonly CreateManifest: AutograderServiceCreateManifest;
+  static readonly CreateSubmission: AutograderServiceCreateSubmission;
+  static readonly InitUpload: AutograderServiceInitUpload;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -81,40 +151,79 @@ export class AutograderServiceClient {
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
   login(
-    requestMessage: proto_api_pb.LoginRequest,
+    requestMessage: api_pb.LoginRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.LoginResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: api_pb.LoginResponse|null) => void
   ): UnaryResponse;
   login(
-    requestMessage: proto_api_pb.LoginRequest,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.LoginResponse|null) => void
+    requestMessage: api_pb.LoginRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.LoginResponse|null) => void
   ): UnaryResponse;
   getCourseList(
-    requestMessage: proto_api_pb.GetCourseListRequest,
+    requestMessage: api_pb.GetCourseListRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetCourseListResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseListResponse|null) => void
   ): UnaryResponse;
   getCourseList(
-    requestMessage: proto_api_pb.GetCourseListRequest,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetCourseListResponse|null) => void
+    requestMessage: api_pb.GetCourseListRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseListResponse|null) => void
   ): UnaryResponse;
   getAssignmentsInCourse(
-    requestMessage: proto_api_pb.GetAssignmentsInCourseRequest,
+    requestMessage: api_pb.GetAssignmentsInCourseRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetAssignmentsInCourseResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentsInCourseResponse|null) => void
   ): UnaryResponse;
   getAssignmentsInCourse(
-    requestMessage: proto_api_pb.GetAssignmentsInCourseRequest,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetAssignmentsInCourseResponse|null) => void
+    requestMessage: api_pb.GetAssignmentsInCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentsInCourseResponse|null) => void
   ): UnaryResponse;
   getSubmissionsInAssignment(
-    requestMessage: proto_api_pb.GetSubmissionsInAssignmentRequest,
+    requestMessage: api_pb.GetSubmissionsInAssignmentRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetSubmissionsInAssignmentResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionsInAssignmentResponse|null) => void
   ): UnaryResponse;
   getSubmissionsInAssignment(
-    requestMessage: proto_api_pb.GetSubmissionsInAssignmentRequest,
-    callback: (error: ServiceError|null, responseMessage: proto_api_pb.GetSubmissionsInAssignmentResponse|null) => void
+    requestMessage: api_pb.GetSubmissionsInAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionsInAssignmentResponse|null) => void
+  ): UnaryResponse;
+  subscribeSubmissions(requestMessage: api_pb.SubscribeSubmissionsRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.SubscribeSubmissionsResponse>;
+  streamSubmissionLog(requestMessage: api_pb.StreamSubmissionLogRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
+  getFile(requestMessage: api_pb.GetFileRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
+  getSubmissionDetails(
+    requestMessage: api_pb.GetSubmissionDetailsRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionDetailsResponse|null) => void
+  ): UnaryResponse;
+  getSubmissionDetails(
+    requestMessage: api_pb.GetSubmissionDetailsRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionDetailsResponse|null) => void
+  ): UnaryResponse;
+  createManifest(
+    requestMessage: api_pb.CreateManifestRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateManifestResponse|null) => void
+  ): UnaryResponse;
+  createManifest(
+    requestMessage: api_pb.CreateManifestRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateManifestResponse|null) => void
+  ): UnaryResponse;
+  createSubmission(
+    requestMessage: api_pb.CreateSubmissionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateSubmissionResponse|null) => void
+  ): UnaryResponse;
+  createSubmission(
+    requestMessage: api_pb.CreateSubmissionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateSubmissionResponse|null) => void
+  ): UnaryResponse;
+  initUpload(
+    requestMessage: api_pb.InitUploadRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InitUploadResponse|null) => void
+  ): UnaryResponse;
+  initUpload(
+    requestMessage: api_pb.InitUploadRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InitUploadResponse|null) => void
   ): UnaryResponse;
 }
 
