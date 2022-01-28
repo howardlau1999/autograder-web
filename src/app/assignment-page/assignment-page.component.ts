@@ -29,6 +29,7 @@ export class AssignmentPageComponent implements OnInit {
 
   columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
 
+  assignmentId: number = 1;
   expandedSubmission: Item | null = null;
   uploadDialogSubscription: Subscription | null = null;
 
@@ -46,7 +47,11 @@ export class AssignmentPageComponent implements OnInit {
   }
 
   openSubmissionDialog(): void {
-    const dialogRef = this.dialog.open(UploadDialogComponent);
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
+      data: {
+        assignmentId: this.assignmentId,
+      }
+    });
     if (this.uploadDialogSubscription === null) {
       this.uploadDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         console.log(`Dialog result: ${result}`);

@@ -1,12 +1,13 @@
 <h1 mat-dialog-title>创建提交</h1>
 <span>{{ filename || "还没有选择文件" }}</span> &nbsp;
 <button mat-flat-button color="primary" (click)="fileInput.click()">浏览</button>
+<mat-progress-bar [mode]="progressBarMode" [value]="uploadProgress" *ngIf="uploading"></mat-progress-bar>
 <input style="display: none;" type="file" #fileInput id="uploadFile" (change)="uploadFileEvent($event)"
        name="uploadFile"/>
 <mat-dialog-content style="width: 400px;">
   <app-files-table></app-files-table>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>取消</button>
+  <button mat-button (click)="onCancelClicked()">取消</button>
   <button mat-raised-button color="primary">提交</button>
 </mat-dialog-actions>
