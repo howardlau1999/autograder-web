@@ -1,10 +1,10 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 
-import { FilesTableComponent } from './files-table.component';
+import {FilesTableComponent} from './files-table.component';
 
 describe('FilesTableComponent', () => {
   let component: FilesTableComponent;
@@ -12,7 +12,7 @@ describe('FilesTableComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilesTableComponent ],
+      declarations: [FilesTableComponent],
       imports: [
         NoopAnimationsModule,
         MatPaginatorModule,

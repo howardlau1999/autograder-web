@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import { FilesTableDataSource, FilesTableItem } from './files-table-datasource';
+import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTable} from '@angular/material/table';
+import {FilesTableDataSource, FilesTableItem} from './files-table-datasource';
+import {Observable, of} from "rxjs";
+import {UploadEntry} from "./upload-dialog.component";
 
 @Component({
   selector: 'app-files-table',
@@ -13,16 +15,18 @@ export class FilesTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<FilesTableItem>;
+  @Input() uploadEntries!: Observable<{ [filename: string]: UploadEntry; }>;
   dataSource: FilesTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['filename', 'progress'];
 
   constructor() {
-    this.dataSource = new FilesTableDataSource();
+    this.dataSource = new FilesTableDataSource(of({}));
   }
 
   ngAfterViewInit(): void {
+    this.dataSource = new FilesTableDataSource(this.uploadEntries);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;

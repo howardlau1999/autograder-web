@@ -9,7 +9,7 @@ import {
   GetSubmissionsInAssignmentRequest,
   GetSubmissionsInAssignmentResponse,
   InitUploadRequest,
-  InitUploadResponse
+  InitUploadResponse, LoginRequest, LoginResponse
 } from "./proto/api_pb";
 import {AsyncSubject, Observable, Subscriber} from "rxjs";
 import {HttpClient} from "@angular/common/http";
@@ -21,9 +21,10 @@ export class ApiService {
   host = "http://localhost:9315"
   autograderClient = new AutograderServiceClient(this.host);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  private messageCallback<T>(subscriber: Subscriber<T>) : (err: ServiceError | null, response: T | null) => void {
+  private messageCallback<T>(subscriber: Subscriber<T>): (err: ServiceError | null, response: T | null) => void {
     return (err, response) => {
       if (err !== null || response === null) {
         subscriber.error(err);
@@ -32,6 +33,15 @@ export class ApiService {
       subscriber.next(response);
       subscriber.complete();
     }
+  }
+
+  login(username: string, password: string) {
+    const request = new LoginRequest();
+    request.setUsername(username);
+    request.setPassword(password);
+    return new Observable<LoginResponse>(subscriber => {
+      this.autograderClient.login(request, this.messageCallback(subscriber));
+    })
   }
 
   getCourseList() {
@@ -58,7 +68,7 @@ export class ApiService {
     });
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: Blob) {
     const formData = new FormData();
     formData.append("file", file);
     return this.http.post(`${this.host}/AutograderService/FileUpload`, formData, {

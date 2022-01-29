@@ -1,10 +1,10 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 
-import { CoursePageComponent } from './course-page.component';
+import {CoursePageComponent} from './course-page.component';
 
 describe('CoursePageComponent', () => {
   let component: CoursePageComponent;
@@ -12,7 +12,7 @@ describe('CoursePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePageComponent ],
+      declarations: [CoursePageComponent],
       imports: [
         NoopAnimationsModule,
         MatPaginatorModule,

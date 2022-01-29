@@ -12,7 +12,10 @@
   </mat-card>
   <mat-card class="submission-history-table">
     <mat-card-content>
-      <button mat-raised-button color="primary" (click)="openSubmissionDialog()"><mat-icon>add</mat-icon>上传提交</button>
+      <button mat-raised-button color="primary" (click)="openSubmissionDialog()">
+        <mat-icon>add</mat-icon>
+        上传提交
+      </button>
       <table mat-table matSort multiTemplateDataRows class="submission-history-table">
         <ng-container matColumnDef="submissionId">
           <th mat-header-cell *matHeaderCellDef i18n="submission-id">提交 ID</th>

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import {Component} from '@angular/core';
+import {map} from 'rxjs/operators';
+import {Breakpoints, BreakpointObserver} from '@angular/cdk/layout';
 import {ApiService} from "../api/api.service";
 
 @Component({
@@ -13,5 +13,6 @@ export class DashboardPageComponent {
     return response.getCoursesList();
   }));
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+  }
 }

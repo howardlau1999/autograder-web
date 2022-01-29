@@ -1,9 +1,9 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTreeModule } from '@angular/material/tree';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTreeModule} from '@angular/material/tree';
 
-import { SubmissionPageComponent } from './submission-page.component';
+import {SubmissionPageComponent} from './submission-page.component';
 
 describe('SubmissionPageComponent', () => {
   let component: SubmissionPageComponent;
@@ -11,7 +11,7 @@ describe('SubmissionPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubmissionPageComponent ],
+      declarations: [SubmissionPageComponent],
       imports: [
         MatButtonModule,
         MatIconModule,

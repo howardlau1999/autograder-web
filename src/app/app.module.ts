@@ -27,9 +27,9 @@ import {SubmissionPageComponent} from './submission-page/submission-page.compone
 import {MatTreeModule} from '@angular/material/tree';
 import {UploadDialogComponent} from './assignment-page/upload-dialog/upload-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import { FilesTableComponent } from './assignment-page/upload-dialog/files-table/files-table.component';
+import {FilesTableComponent} from './assignment-page/upload-dialog/files-table.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +65,7 @@ import { FilesTableComponent } from './assignment-page/upload-dialog/files-table
     MatTreeModule,
     MatDialogModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
