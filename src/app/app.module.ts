@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -16,7 +16,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatMenuModule} from '@angular/material/menu';
@@ -30,6 +30,26 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {FilesTableComponent} from './assignment-page/upload-dialog/files-table.component';
+import {Subject} from "rxjs";
+
+@Injectable()
+export class PaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  firstPageLabel = $localize`首页`;
+  itemsPerPageLabel = $localize`每页个数`;
+  lastPageLabel = $localize`尾页`;
+  nextPageLabel = $localize`下一页`;
+  previousPageLabel = $localize`上一页`;
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`第 1/1 页`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`第 ${page + 1}/${amountPages} 页`;
+  }
+}
 
 @NgModule({
   declarations: [
@@ -68,7 +88,8 @@ import {FilesTableComponent} from './assignment-page/upload-dialog/files-table.c
     ReactiveFormsModule,
   ],
   providers: [
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},
+    {provide: MatPaginatorIntl, useClass: PaginatorIntl},
   ],
   bootstrap: [AppComponent]
 })
