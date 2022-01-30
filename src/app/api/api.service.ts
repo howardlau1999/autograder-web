@@ -68,12 +68,15 @@ export class ApiService {
     });
   }
 
-  uploadFile(file: Blob) {
+  uploadFile(file: Blob, uploadToken: string) {
     const formData = new FormData();
     formData.append("file", file);
     return this.http.post(`${this.host}/AutograderService/FileUpload`, formData, {
       reportProgress: true,
       observe: "events",
+      headers: {
+        "Upload-token": uploadToken,
+      }
     });
   }
 

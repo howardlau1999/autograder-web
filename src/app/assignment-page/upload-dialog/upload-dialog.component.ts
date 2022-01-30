@@ -99,7 +99,9 @@ export class UploadDialogComponent implements OnInit {
         const entry = this.uploadEntries[filename];
         entry.sub = this.apiService.initUpload(filename, manifestId).pipe(mergeMap(resp => {
           entry.progressBarMode = 'determinate';
-          return this.apiService.uploadFile(blob);
+          const token = resp.getToken();
+          console.log(filename, token);
+          return this.apiService.uploadFile(blob, token);
         })).subscribe((event) => {
           if (event.type == HttpEventType.UploadProgress) {
             entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
