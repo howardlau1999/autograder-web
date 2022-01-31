@@ -9,7 +9,7 @@ import {ApiService} from "../api/api.service";
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent {
-  cards = this.apiService.getCourseList().pipe(map((response) => {
+  cards = this.apiService.getCourseList(1).pipe(map((response) => {
     return response.getCoursesList();
   }));
 

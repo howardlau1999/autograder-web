@@ -15,7 +15,7 @@ export type CoursePageItem = Item;
  * (including sorting, pagination, and filtering).
  */
 export class CoursePageDataSource extends DataSource<Item> {
-  data: Observable<GetAssignmentsInCourseResponse> = this.apiService.getAssignmentsInCourse(0);
+  data: Observable<GetAssignmentsInCourseResponse> = this.apiService.getAssignmentsInCourse(1);
   dataArray: Item[] = [];
   dataLength: number = 0;
   paginator: MatPaginator | undefined;

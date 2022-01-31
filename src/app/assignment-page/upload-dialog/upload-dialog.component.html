@@ -8,5 +8,8 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancelClicked()">取消</button>
-  <button mat-raised-button color="primary" [disabled]="total != uploaded">提交</button>
+  <button mat-raised-button color="primary" (click)="onSubmitClicked()"
+          [disabled]="!manifestId || total == 0 || total != uploaded">
+    提交
+  </button>
 </mat-dialog-actions>

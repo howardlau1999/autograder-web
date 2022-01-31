@@ -7,21 +7,25 @@
         <p>
           <mat-form-field class="login-form-control" appearance="standard">
             <mat-label i18n="username">用户名</mat-label>
-            <input matInput i18n-placeholder="username" placeholder="用户名" formControlName="username">
+            <input matInput required i18n-placeholder="username" placeholder="用户名" formControlName="username">
             <mat-icon matSuffix>account_circle</mat-icon>
           </mat-form-field>
         </p>
         <p>
           <mat-form-field class="login-form-control" appearance="standard">
             <mat-label i18n="password">密码</mat-label>
-            <input matInput i18n-placeholder="password" placeholder="密码" type="password" formControlName="password">
+            <input matInput required i18n-placeholder="password" placeholder="密码" type="password" formControlName="password">
             <mat-icon matSuffix>password</mat-icon>
+            <mat-error *ngIf="errorMessage !== null">{{errorMessage}}</mat-error>
           </mat-form-field>
         </p>
         <p class="login-button-container">
           <button mat-button class="login-button" i18n="forgot-password">忘记密码</button>
           <span class="login-button-spacer"></span>
-          <button mat-raised-button color="primary" class="login-button" i18n="login" type="submit">登录</button>
+          <button mat-raised-button [disabled]="loggingIn" color="primary" type="submit">
+            <span class="login-button" i18n="login" *ngIf="!loggingIn">登录</span>
+            <span class="login-button" i18n="login" *ngIf="loggingIn">登录中</span>
+          </button>
         </p>
       </form>
     </mat-card-content>

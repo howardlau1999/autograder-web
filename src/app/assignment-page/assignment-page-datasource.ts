@@ -14,7 +14,7 @@ export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
  * (including sorting, pagination, and filtering).
  */
 export class AssignmentPageDataSource extends DataSource<Item> {
-  data: Observable<GetSubmissionsInAssignmentResponse> = this.apiService.getSubmissionsInAssignment(0);
+  data: Observable<GetSubmissionsInAssignmentResponse> = this.apiService.getSubmissionsInAssignment(1);
   dataArray: Item[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;

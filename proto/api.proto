@@ -43,6 +43,7 @@ message GetCourseListResponse {
   message CourseCardInfo {
     string name = 1;
     string short_name = 2;
+    CourseRole role = 3;
   }
   repeated CourseCardInfo courses = 2;
 }
@@ -154,10 +155,20 @@ message CreateSubmissionRequest {
   uint64 user_id = 1;
   uint64 assignment_id = 2;
   uint64 manifest_id = 3;
+  repeated uint64 submitters = 4;
 }
 
 message CreateSubmissionResponse {
   uint64 submission_id = 1;
+  repeated string files = 2;
+  repeated string submitters = 3;
+}
+
+message UploadTokenPayload {
+  uint64 user_id = 1;
+  uint64 assignment_id = 2;
+  uint64 manifest_id = 3;
+  string filename = 4;
 }
 
 service AutograderService {

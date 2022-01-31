@@ -1,13 +1,11 @@
-// package:
+// package: 
 // file: api.proto
 
 var api_pb = require("./api_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var AutograderService = (function () {
-  function AutograderService() {
-  }
-
+  function AutograderService() {}
   AutograderService.serviceName = "AutograderService";
   return AutograderService;
 }());
@@ -261,10 +259,10 @@ AutograderServiceClient.prototype.subscribeSubmissions = function subscribeSubmi
     },
     onEnd: function (status, statusMessage, trailers) {
       listeners.status.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners.end.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners = null;
     }
@@ -300,10 +298,10 @@ AutograderServiceClient.prototype.streamSubmissionLog = function streamSubmissio
     },
     onEnd: function (status, statusMessage, trailers) {
       listeners.status.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners.end.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners = null;
     }
@@ -339,10 +337,10 @@ AutograderServiceClient.prototype.getFile = function getFile(requestMessage, met
     },
     onEnd: function (status, statusMessage, trailers) {
       listeners.status.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners.end.forEach(function (handler) {
-        handler({code: status, details: statusMessage, metadata: trailers});
+        handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners = null;
     }

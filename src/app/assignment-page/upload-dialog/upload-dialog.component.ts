@@ -19,6 +19,11 @@ export class UploadEntry {
   uploadProgress: number = 0;
   progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
 
+  constructor(filename: string) {
+    this.filename = filename;
+    this.uploading = true;
+  }
+
   finishUpload() {
     this.uploaded = true;
     this.uploading = false;
@@ -71,29 +76,39 @@ export class UploadDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  createSubmission() {
+    return this.apiService.createSubmission(1, this.assignmentId, this.manifestId!, [1]);
+  }
+
+  onSubmitClicked(): void {
+    this.createSubmission().subscribe(resp => {
+      console.log(resp.getFilesList());
+      console.log(resp.getSubmissionId());
+      this.dialogRef.close();
+    });
+  }
+
   onCancelUpload(): void {
     this.cancelUpload();
   }
 
   uploadFileEvent(event: any) {
-    console.log(event);
     const file: File = event.target.files[0];
     if (!file) return;
     if (file.type !== 'application/x-zip-compressed') return;
     const blobReader = new zipjs.BlobReader(file);
     const zipReader = new zipjs.ZipReader(blobReader, {useWebWorkers: true});
-    (this.manifestId === null ? this.apiService.createManifest(this.assignmentId).pipe(first(), map(resp => {
+    (this.manifestId === null ? this.apiService.createManifest(1, this.assignmentId).pipe(first(), map(resp => {
       return this.manifestId = resp.getManifestId();
     })) : of(this.manifestId)).subscribe(manifestId => {
       from(zipReader.getEntries()).pipe(mergeMap(entries => {
-        return from(entries);
-      }), filter(entry => !entry.directory && entry.getData !== undefined), mergeMap(entry => {
-        const uploadEntry = new UploadEntry();
-        uploadEntry.filename = entry.filename;
-        uploadEntry.uploading = true;
-        this.uploadEntries[entry.filename] = uploadEntry;
+        const fileEntries = entries.filter(entry => !entry.directory && entry.getData !== undefined)
+        const uploadEntries = fileEntries.map(entry => new UploadEntry(entry.filename));
+        uploadEntries.forEach(entry => this.uploadEntries[entry.filename] = entry);
         this.updateUploadEntries();
         this.updateProgress();
+        return from(fileEntries);
+      }), filter(entry => !entry.directory && entry.getData !== undefined), mergeMap(entry => {
         return zip(of(entry.filename), from(entry.getData!(new BlobWriter()) as Promise<Blob>));
       })).subscribe(([filename, blob]) => {
         const entry = this.uploadEntries[filename];
@@ -104,7 +119,6 @@ export class UploadDialogComponent implements OnInit {
         })).subscribe((event) => {
           if (event.type == HttpEventType.UploadProgress) {
             entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
-            console.log(filename, entry.uploadProgress);
           }
           if (event.type == HttpEventType.Response) {
             entry.finishUpload();

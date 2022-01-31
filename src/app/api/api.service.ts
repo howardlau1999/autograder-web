@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AutograderServiceClient, ServiceError} from "./proto/api_pb_service";
 import {
   CreateManifestRequest,
-  CreateManifestResponse,
+  CreateManifestResponse, CreateSubmissionRequest, CreateSubmissionResponse,
   GetAssignmentsInCourseRequest,
   GetAssignmentsInCourseResponse,
   GetCourseListRequest, GetCourseListResponse,
@@ -27,7 +27,7 @@ export class ApiService {
   private messageCallback<T>(subscriber: Subscriber<T>): (err: ServiceError | null, response: T | null) => void {
     return (err, response) => {
       if (err !== null || response === null) {
-        subscriber.error(err);
+        subscriber.error(err?.message);
         return;
       }
       subscriber.next(response);
@@ -41,12 +41,12 @@ export class ApiService {
     request.setPassword(password);
     return new Observable<LoginResponse>(subscriber => {
       this.autograderClient.login(request, this.messageCallback(subscriber));
-    })
+    });
   }
 
-  getCourseList() {
+  getCourseList(userId: number) {
     const request = new GetCourseListRequest();
-    request.setUserId(0);
+    request.setUserId(userId);
     return new Observable<GetCourseListResponse>(subscriber => {
       this.autograderClient.getCourseList(request, this.messageCallback(subscriber));
     });
@@ -63,6 +63,7 @@ export class ApiService {
   getSubmissionsInAssignment(assignmentId: number) {
     const request = new GetSubmissionsInAssignmentRequest();
     request.setAssignmentId(assignmentId);
+    request.setUserId(1);
     return new Observable<GetSubmissionsInAssignmentResponse>(subscriber => {
       this.autograderClient.getSubmissionsInAssignment(request, this.messageCallback(subscriber));
     });
@@ -89,12 +90,23 @@ export class ApiService {
     });
   }
 
-  createManifest(assignmentId: number) {
+  createManifest(userId: number, assignmentId: number) {
     const request = new CreateManifestRequest();
-    request.setUserId(1);
+    request.setUserId(userId);
     request.setAssignmentId(assignmentId);
     return new Observable<CreateManifestResponse>(subscriber => {
       this.autograderClient.createManifest(request, this.messageCallback(subscriber));
+    });
+  }
+
+  createSubmission(userId: number, assigmentId: number, manifestId: number, submitters: number[]) {
+    const request = new CreateSubmissionRequest();
+    request.setUserId(userId);
+    request.setSubmittersList(submitters);
+    request.setManifestId(manifestId);
+    request.setAssignmentId(assigmentId);
+    return new Observable<CreateSubmissionResponse>(subscriber => {
+      this.autograderClient.createSubmission(request, this.messageCallback(subscriber));
     });
   }
 }
