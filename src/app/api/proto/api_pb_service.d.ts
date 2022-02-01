@@ -67,15 +67,6 @@ type AutograderServiceGetFile = {
   readonly responseType: typeof api_pb.ChunkResponse;
 };
 
-type AutograderServiceGetSubmissionDetails = {
-  readonly methodName: string;
-  readonly service: typeof AutograderService;
-  readonly requestStream: false;
-  readonly responseStream: false;
-  readonly requestType: typeof api_pb.GetSubmissionDetailsRequest;
-  readonly responseType: typeof api_pb.GetSubmissionDetailsResponse;
-};
-
 type AutograderServiceCreateManifest = {
   readonly methodName: string;
   readonly service: typeof AutograderService;
@@ -103,6 +94,15 @@ type AutograderServiceInitUpload = {
   readonly responseType: typeof api_pb.InitUploadResponse;
 };
 
+type AutograderServiceGetSubmissionReport = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetSubmissionReportRequest;
+  readonly responseType: typeof api_pb.GetSubmissionReportResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -112,10 +112,10 @@ export class AutograderService {
   static readonly SubscribeSubmissions: AutograderServiceSubscribeSubmissions;
   static readonly StreamSubmissionLog: AutograderServiceStreamSubmissionLog;
   static readonly GetFile: AutograderServiceGetFile;
-  static readonly GetSubmissionDetails: AutograderServiceGetSubmissionDetails;
   static readonly CreateManifest: AutograderServiceCreateManifest;
   static readonly CreateSubmission: AutograderServiceCreateSubmission;
   static readonly InitUpload: AutograderServiceInitUpload;
+  static readonly GetSubmissionReport: AutograderServiceGetSubmissionReport;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -189,15 +189,6 @@ export class AutograderServiceClient {
   subscribeSubmissions(requestMessage: api_pb.SubscribeSubmissionsRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.SubscribeSubmissionsResponse>;
   streamSubmissionLog(requestMessage: api_pb.StreamSubmissionLogRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
   getFile(requestMessage: api_pb.GetFileRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
-  getSubmissionDetails(
-    requestMessage: api_pb.GetSubmissionDetailsRequest,
-    metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionDetailsResponse|null) => void
-  ): UnaryResponse;
-  getSubmissionDetails(
-    requestMessage: api_pb.GetSubmissionDetailsRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionDetailsResponse|null) => void
-  ): UnaryResponse;
   createManifest(
     requestMessage: api_pb.CreateManifestRequest,
     metadata: grpc.Metadata,
@@ -224,6 +215,15 @@ export class AutograderServiceClient {
   initUpload(
     requestMessage: api_pb.InitUploadRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.InitUploadResponse|null) => void
+  ): UnaryResponse;
+  getSubmissionReport(
+    requestMessage: api_pb.GetSubmissionReportRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionReportResponse|null) => void
+  ): UnaryResponse;
+  getSubmissionReport(
+    requestMessage: api_pb.GetSubmissionReportRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionReportResponse|null) => void
   ): UnaryResponse;
 }
 

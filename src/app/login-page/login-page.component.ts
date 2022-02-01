@@ -17,7 +17,7 @@ export class LoginPageComponent implements OnInit {
   loginForm = this.formBuilder.group({
     username: '',
     password: '',
-  })
+  });
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
   }

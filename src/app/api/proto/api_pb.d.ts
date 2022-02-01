@@ -427,66 +427,6 @@ export namespace GetSubmissionsInAssignmentResponse {
   }
 }
 
-export class GetSubmissionDetailsRequest extends jspb.Message {
-  getSubmissionId(): number;
-  setSubmissionId(value: number): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetSubmissionDetailsRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetSubmissionDetailsRequest): GetSubmissionDetailsRequest.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GetSubmissionDetailsRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetSubmissionDetailsRequest;
-  static deserializeBinaryFromReader(message: GetSubmissionDetailsRequest, reader: jspb.BinaryReader): GetSubmissionDetailsRequest;
-}
-
-export namespace GetSubmissionDetailsRequest {
-  export type AsObject = {
-    submissionId: number,
-  }
-}
-
-export class GetSubmissionDetailsResponse extends jspb.Message {
-  getSubmissionId(): number;
-  setSubmissionId(value: number): void;
-
-  getScore(): number;
-  setScore(value: number): void;
-
-  getExecutionTime(): number;
-  setExecutionTime(value: number): void;
-
-  clearFilesList(): void;
-  getFilesList(): Array<string>;
-  setFilesList(value: Array<string>): void;
-  addFiles(value: string, index?: number): string;
-
-  clearTestsList(): void;
-  getTestsList(): Array<model_pb.SubmissionReportTestcase>;
-  setTestsList(value: Array<model_pb.SubmissionReportTestcase>): void;
-  addTests(value?: model_pb.SubmissionReportTestcase, index?: number): model_pb.SubmissionReportTestcase;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetSubmissionDetailsResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetSubmissionDetailsResponse): GetSubmissionDetailsResponse.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GetSubmissionDetailsResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetSubmissionDetailsResponse;
-  static deserializeBinaryFromReader(message: GetSubmissionDetailsResponse, reader: jspb.BinaryReader): GetSubmissionDetailsResponse;
-}
-
-export namespace GetSubmissionDetailsResponse {
-  export type AsObject = {
-    submissionId: number,
-    score: number,
-    executionTime: number,
-    filesList: Array<string>,
-    testsList: Array<model_pb.SubmissionReportTestcase.AsObject>,
-  }
-}
-
 export class SubscribeSubmissionsRequest extends jspb.Message {
   clearSubmissionIdsList(): void;
   getSubmissionIdsList(): Array<number>;
@@ -810,6 +750,72 @@ export namespace UploadTokenPayload {
     assignmentId: number,
     manifestId: number,
     filename: string,
+  }
+}
+
+export class UserTokenPayload extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UserTokenPayload.AsObject;
+  static toObject(includeInstance: boolean, msg: UserTokenPayload): UserTokenPayload.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UserTokenPayload, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UserTokenPayload;
+  static deserializeBinaryFromReader(message: UserTokenPayload, reader: jspb.BinaryReader): UserTokenPayload;
+}
+
+export namespace UserTokenPayload {
+  export type AsObject = {
+    userId: number,
+    username: string,
+  }
+}
+
+export class GetSubmissionReportRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSubmissionReportRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSubmissionReportRequest): GetSubmissionReportRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSubmissionReportRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSubmissionReportRequest;
+  static deserializeBinaryFromReader(message: GetSubmissionReportRequest, reader: jspb.BinaryReader): GetSubmissionReportRequest;
+}
+
+export namespace GetSubmissionReportRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class GetSubmissionReportResponse extends jspb.Message {
+  hasReport(): boolean;
+  clearReport(): void;
+  getReport(): model_pb.SubmissionReport | undefined;
+  setReport(value?: model_pb.SubmissionReport): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSubmissionReportResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSubmissionReportResponse): GetSubmissionReportResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSubmissionReportResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSubmissionReportResponse;
+  static deserializeBinaryFromReader(message: GetSubmissionReportResponse, reader: jspb.BinaryReader): GetSubmissionReportResponse;
+}
+
+export namespace GetSubmissionReportResponse {
+  export type AsObject = {
+    report?: model_pb.SubmissionReport.AsObject,
   }
 }
 

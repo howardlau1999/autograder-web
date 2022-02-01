@@ -2223,7 +2223,8 @@ proto.SubmissionReportTestcase.toObject = function(includeInstance, msg) {
     order: jspb.Message.getFieldWithDefault(msg, 4, 0),
     tagsList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
     output: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    outputPath: jspb.Message.getFieldWithDefault(msg, 7, "")
+    outputPath: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    visibility: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -2287,6 +2288,10 @@ proto.SubmissionReportTestcase.deserializeBinaryFromReader = function(msg, reade
     case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setOutputPath(value);
+      break;
+    case 8:
+      var value = /** @type {!proto.TestcaseVisibility} */ (reader.readEnum());
+      msg.setVisibility(value);
       break;
     default:
       reader.skipField();
@@ -2363,6 +2368,13 @@ proto.SubmissionReportTestcase.serializeBinaryToWriter = function(message, write
   if (f.length > 0) {
     writer.writeString(
       7,
+      f
+    );
+  }
+  f = message.getVisibility();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      8,
       f
     );
   }
@@ -2514,6 +2526,24 @@ proto.SubmissionReportTestcase.prototype.setOutputPath = function(value) {
 };
 
 
+/**
+ * optional TestcaseVisibility visibility = 8;
+ * @return {!proto.TestcaseVisibility}
+ */
+proto.SubmissionReportTestcase.prototype.getVisibility = function() {
+  return /** @type {!proto.TestcaseVisibility} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {!proto.TestcaseVisibility} value
+ * @return {!proto.SubmissionReportTestcase} returns this
+ */
+proto.SubmissionReportTestcase.prototype.setVisibility = function(value) {
+  return jspb.Message.setProto3EnumField(this, 8, value);
+};
+
+
 
 /**
  * List of repeated fields within this message type.
@@ -2555,6 +2585,7 @@ proto.SubmissionReport.toObject = function(includeInstance, msg) {
   var f, obj = {
     submissionId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     score: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    maxScore: jspb.Message.getFieldWithDefault(msg, 12, 0),
     executionTime: jspb.Message.getFieldWithDefault(msg, 3, 0),
     output: jspb.Message.getFieldWithDefault(msg, 4, ""),
     outputPath: jspb.Message.getFieldWithDefault(msg, 5, ""),
@@ -2563,7 +2594,9 @@ proto.SubmissionReport.toObject = function(includeInstance, msg) {
     testsList: jspb.Message.toObjectList(msg.getTestsList(),
     proto.SubmissionReportTestcase.toObject, includeInstance),
     leaderboardList: jspb.Message.toObjectList(msg.getLeaderboardList(),
-    proto.LeaderboardItem.toObject, includeInstance)
+    proto.LeaderboardItem.toObject, includeInstance),
+    exitCode: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    internalError: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -2608,6 +2641,10 @@ proto.SubmissionReport.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {number} */ (reader.readUint64());
       msg.setScore(value);
       break;
+    case 12:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setMaxScore(value);
+      break;
     case 3:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setExecutionTime(value);
@@ -2637,6 +2674,14 @@ proto.SubmissionReport.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.LeaderboardItem;
       reader.readMessage(value,proto.LeaderboardItem.deserializeBinaryFromReader);
       msg.addLeaderboard(value);
+      break;
+    case 10:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setExitCode(value);
+      break;
+    case 11:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setInternalError(value);
       break;
     default:
       reader.skipField();
@@ -2678,6 +2723,13 @@ proto.SubmissionReport.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeUint64(
       2,
+      f
+    );
+  }
+  f = message.getMaxScore();
+  if (f !== 0) {
+    writer.writeUint64(
+      12,
       f
     );
   }
@@ -2732,6 +2784,20 @@ proto.SubmissionReport.serializeBinaryToWriter = function(message, writer) {
       proto.LeaderboardItem.serializeBinaryToWriter
     );
   }
+  f = message.getExitCode();
+  if (f !== 0) {
+    writer.writeInt64(
+      10,
+      f
+    );
+  }
+  f = message.getInternalError();
+  if (f !== 0) {
+    writer.writeInt64(
+      11,
+      f
+    );
+  }
 };
 
 
@@ -2768,6 +2834,24 @@ proto.SubmissionReport.prototype.getScore = function() {
  */
 proto.SubmissionReport.prototype.setScore = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional uint64 max_score = 12;
+ * @return {number}
+ */
+proto.SubmissionReport.prototype.getMaxScore = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.SubmissionReport} returns this
+ */
+proto.SubmissionReport.prototype.setMaxScore = function(value) {
+  return jspb.Message.setProto3IntField(this, 12, value);
 };
 
 
@@ -2934,6 +3018,42 @@ proto.SubmissionReport.prototype.addLeaderboard = function(opt_value, opt_index)
  */
 proto.SubmissionReport.prototype.clearLeaderboardList = function() {
   return this.setLeaderboardList([]);
+};
+
+
+/**
+ * optional int64 exit_code = 10;
+ * @return {number}
+ */
+proto.SubmissionReport.prototype.getExitCode = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.SubmissionReport} returns this
+ */
+proto.SubmissionReport.prototype.setExitCode = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional int64 internal_error = 11;
+ * @return {number}
+ */
+proto.SubmissionReport.prototype.getInternalError = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.SubmissionReport} returns this
+ */
+proto.SubmissionReport.prototype.setInternalError = function(value) {
+  return jspb.Message.setProto3IntField(this, 11, value);
 };
 
 

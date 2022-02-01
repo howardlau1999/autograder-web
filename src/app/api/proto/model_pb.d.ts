@@ -280,6 +280,9 @@ export class SubmissionReportTestcase extends jspb.Message {
   getOutputPath(): string;
   setOutputPath(value: string): void;
 
+  getVisibility(): TestcaseVisibilityMap[keyof TestcaseVisibilityMap];
+  setVisibility(value: TestcaseVisibilityMap[keyof TestcaseVisibilityMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubmissionReportTestcase.AsObject;
   static toObject(includeInstance: boolean, msg: SubmissionReportTestcase): SubmissionReportTestcase.AsObject;
@@ -299,6 +302,7 @@ export namespace SubmissionReportTestcase {
     tagsList: Array<string>,
     output: string,
     outputPath: string,
+    visibility: TestcaseVisibilityMap[keyof TestcaseVisibilityMap],
   }
 }
 
@@ -308,6 +312,9 @@ export class SubmissionReport extends jspb.Message {
 
   getScore(): number;
   setScore(value: number): void;
+
+  getMaxScore(): number;
+  setMaxScore(value: number): void;
 
   getExecutionTime(): number;
   setExecutionTime(value: number): void;
@@ -334,6 +341,12 @@ export class SubmissionReport extends jspb.Message {
   setLeaderboardList(value: Array<LeaderboardItem>): void;
   addLeaderboard(value?: LeaderboardItem, index?: number): LeaderboardItem;
 
+  getExitCode(): number;
+  setExitCode(value: number): void;
+
+  getInternalError(): number;
+  setInternalError(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubmissionReport.AsObject;
   static toObject(includeInstance: boolean, msg: SubmissionReport): SubmissionReport.AsObject;
@@ -348,6 +361,7 @@ export namespace SubmissionReport {
   export type AsObject = {
     submissionId: number,
     score: number,
+    maxScore: number,
     executionTime: number,
     output: string,
     outputPath: string,
@@ -355,6 +369,8 @@ export namespace SubmissionReport {
     stdoutVisibility: TestcaseVisibilityMap[keyof TestcaseVisibilityMap],
     testsList: Array<SubmissionReportTestcase.AsObject>,
     leaderboardList: Array<LeaderboardItem.AsObject>,
+    exitCode: number,
+    internalError: number,
   }
 }
 

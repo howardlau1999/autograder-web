@@ -94,18 +94,6 @@ message GetSubmissionsInAssignmentResponse {
   repeated SubmissionInfo submissions = 1;
 }
 
-message GetSubmissionDetailsRequest {
-  uint64 submission_id = 1;
-}
-
-message GetSubmissionDetailsResponse {
-  uint64 submission_id = 1;
-  uint64 score = 2;
-  uint64 execution_time = 3;
-  repeated string files = 4;
-  repeated SubmissionReportTestcase tests = 5;
-}
-
 message SubscribeSubmissionsRequest {
   repeated uint64 submission_ids = 1;
 }
@@ -171,6 +159,19 @@ message UploadTokenPayload {
   string filename = 4;
 }
 
+message UserTokenPayload {
+  uint64 user_id = 1;
+  string username = 2;
+}
+
+message GetSubmissionReportRequest {
+  uint64 submission_id = 1;
+}
+
+message GetSubmissionReportResponse {
+  SubmissionReport report = 1;
+}
+
 service AutograderService {
    rpc Login(LoginRequest) returns (LoginResponse);
    rpc GetCourseList(GetCourseListRequest) returns (GetCourseListResponse);
@@ -179,8 +180,8 @@ service AutograderService {
    rpc SubscribeSubmissions(SubscribeSubmissionsRequest) returns (stream SubscribeSubmissionsResponse);
    rpc StreamSubmissionLog(StreamSubmissionLogRequest) returns (stream ChunkResponse);
    rpc GetFile(GetFileRequest) returns (stream ChunkResponse);
-   rpc GetSubmissionDetails(GetSubmissionDetailsRequest) returns (GetSubmissionDetailsResponse);
    rpc CreateManifest(CreateManifestRequest) returns (CreateManifestResponse);
    rpc CreateSubmission(CreateSubmissionRequest) returns (CreateSubmissionResponse);
    rpc InitUpload(InitUploadRequest) returns (InitUploadResponse);
+   rpc GetSubmissionReport(GetSubmissionReportRequest) returns (GetSubmissionReportResponse);
 }

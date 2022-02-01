@@ -73,15 +73,6 @@ AutograderService.GetFile = {
   responseType: api_pb.ChunkResponse
 };
 
-AutograderService.GetSubmissionDetails = {
-  methodName: "GetSubmissionDetails",
-  service: AutograderService,
-  requestStream: false,
-  responseStream: false,
-  requestType: api_pb.GetSubmissionDetailsRequest,
-  responseType: api_pb.GetSubmissionDetailsResponse
-};
-
 AutograderService.CreateManifest = {
   methodName: "CreateManifest",
   service: AutograderService,
@@ -107,6 +98,15 @@ AutograderService.InitUpload = {
   responseStream: false,
   requestType: api_pb.InitUploadRequest,
   responseType: api_pb.InitUploadResponse
+};
+
+AutograderService.GetSubmissionReport = {
+  methodName: "GetSubmissionReport",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetSubmissionReportRequest,
+  responseType: api_pb.GetSubmissionReportResponse
 };
 
 exports.AutograderService = AutograderService;
@@ -357,37 +357,6 @@ AutograderServiceClient.prototype.getFile = function getFile(requestMessage, met
   };
 };
 
-AutograderServiceClient.prototype.getSubmissionDetails = function getSubmissionDetails(requestMessage, metadata, callback) {
-  if (arguments.length === 2) {
-    callback = arguments[1];
-  }
-  var client = grpc.unary(AutograderService.GetSubmissionDetails, {
-    request: requestMessage,
-    host: this.serviceHost,
-    metadata: metadata,
-    transport: this.options.transport,
-    debug: this.options.debug,
-    onEnd: function (response) {
-      if (callback) {
-        if (response.status !== grpc.Code.OK) {
-          var err = new Error(response.statusMessage);
-          err.code = response.status;
-          err.metadata = response.trailers;
-          callback(err, null);
-        } else {
-          callback(null, response.message);
-        }
-      }
-    }
-  });
-  return {
-    cancel: function () {
-      callback = null;
-      client.close();
-    }
-  };
-};
-
 AutograderServiceClient.prototype.createManifest = function createManifest(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
@@ -455,6 +424,37 @@ AutograderServiceClient.prototype.initUpload = function initUpload(requestMessag
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.InitUpload, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getSubmissionReport = function getSubmissionReport(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetSubmissionReport, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
