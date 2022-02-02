@@ -819,6 +819,54 @@ export namespace GetSubmissionReportResponse {
   }
 }
 
+export class SubscribeSubmissionRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubscribeSubmissionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SubscribeSubmissionRequest): SubscribeSubmissionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SubscribeSubmissionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubscribeSubmissionRequest;
+  static deserializeBinaryFromReader(message: SubscribeSubmissionRequest, reader: jspb.BinaryReader): SubscribeSubmissionRequest;
+}
+
+export namespace SubscribeSubmissionRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class SubscribeSubmissionResponse extends jspb.Message {
+  getScore(): number;
+  setScore(value: number): void;
+
+  getMaxscore(): number;
+  setMaxscore(value: number): void;
+
+  getStatus(): SubmissionStatusMap[keyof SubmissionStatusMap];
+  setStatus(value: SubmissionStatusMap[keyof SubmissionStatusMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubscribeSubmissionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SubscribeSubmissionResponse): SubscribeSubmissionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SubscribeSubmissionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubscribeSubmissionResponse;
+  static deserializeBinaryFromReader(message: SubscribeSubmissionResponse, reader: jspb.BinaryReader): SubscribeSubmissionResponse;
+}
+
+export namespace SubscribeSubmissionResponse {
+  export type AsObject = {
+    score: number,
+    maxscore: number,
+    status: SubmissionStatusMap[keyof SubmissionStatusMap],
+  }
+}
+
 export interface SubmissionStatusMap {
   QUEUED: 0;
   ABORTED: 1;

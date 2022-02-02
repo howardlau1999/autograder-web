@@ -73,7 +73,7 @@ export class UploadDialogComponent implements OnInit {
 
   onCancelClicked(): void {
     this.cancelUpload();
-    this.dialogRef.close();
+    this.dialogRef.close(null);
   }
 
   createSubmission() {
@@ -82,9 +82,7 @@ export class UploadDialogComponent implements OnInit {
 
   onSubmitClicked(): void {
     this.createSubmission().subscribe(resp => {
-      console.log(resp.getFilesList());
-      console.log(resp.getSubmissionId());
-      this.dialogRef.close();
+      this.dialogRef.close(resp.getSubmissionId());
     });
   }
 

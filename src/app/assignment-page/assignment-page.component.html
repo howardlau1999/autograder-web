@@ -65,7 +65,7 @@
         <tr mat-row *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row"></tr>
       </table>
     </mat-card-content>
-    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10]"
+    <mat-paginator [length]="dataSource?.data?.length" [pageSize]="10" [pageSizeOptions]="[5, 10]"
                    showFirstLastButtons></mat-paginator>
   </mat-card>
 </div>

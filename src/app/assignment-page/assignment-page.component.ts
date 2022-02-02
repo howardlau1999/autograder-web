@@ -55,6 +55,10 @@ export class AssignmentPageComponent implements OnInit {
     if (this.uploadDialogSubscription === null) {
       this.uploadDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         this.uploadDialogSubscription?.unsubscribe();
+        this.uploadDialogSubscription = null;
+        if (result !== null) {
+          this.dataSource.fetchSubmissions();
+        }
       });
     }
   }

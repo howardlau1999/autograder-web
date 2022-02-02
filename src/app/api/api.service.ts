@@ -9,7 +9,7 @@ import {
   GetSubmissionsInAssignmentRequest,
   GetSubmissionsInAssignmentResponse,
   InitUploadRequest,
-  InitUploadResponse, LoginRequest, LoginResponse
+  InitUploadResponse, LoginRequest, LoginResponse, SubscribeSubmissionRequest, SubscribeSubmissionResponse
 } from "./proto/api_pb";
 import {AsyncSubject, Observable, Subscriber} from "rxjs";
 import {HttpClient} from "@angular/common/http";
@@ -106,7 +106,23 @@ export class ApiService {
     request.setManifestId(manifestId);
     request.setAssignmentId(assigmentId);
     return new Observable<CreateSubmissionResponse>(subscriber => {
-      this.autograderClient.createSubmission(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.createSubmission(request, this.messageCallback(subscriber));
+      return () => resp.cancel();
+    });
+  }
+
+  subscribeSubmission(submissionId: number) {
+    const request = new SubscribeSubmissionRequest();
+    request.setSubmissionId(submissionId);
+    const stream = this.autograderClient.subscribeSubmission(request);
+    return new Observable<SubscribeSubmissionResponse>(subscriber => {
+      stream.on("data", (resp) => {
+        subscriber.next(resp);
+      });
+      stream.on("end", (status) => {
+        subscriber.complete();
+      });
+      return () => stream.cancel();
     });
   }
 }
