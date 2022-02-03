@@ -32,6 +32,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {FilesTableComponent} from './assignment-page/upload-dialog/files-table.component';
 import {Subject} from "rxjs";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatListModule} from "@angular/material/list";
+import { LeaderboardComponent } from './submission-page/leaderboard/leaderboard.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -62,33 +66,37 @@ export class PaginatorIntl implements MatPaginatorIntl {
     SubmissionPageComponent,
     UploadDialogComponent,
     FilesTableComponent,
+    LeaderboardComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTableModule,
-        MatProgressBarModule,
-        MatToolbarModule,
-        MatBadgeModule,
-        MatSidenavModule,
-        MatPaginatorModule,
-        MatGridListModule,
-        MatMenuModule,
-        LayoutModule,
-        MatSortModule,
-        MatTreeModule,
-        MatDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatBadgeModule,
+    MatSidenavModule,
+    MatPaginatorModule,
+    MatGridListModule,
+    MatMenuModule,
+    LayoutModule,
+    MatSortModule,
+    MatTreeModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatListModule,
+  ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},
     {provide: MatPaginatorIntl, useClass: PaginatorIntl},

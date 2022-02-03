@@ -5,7 +5,7 @@ import {
   CreateManifestResponse, CreateSubmissionRequest, CreateSubmissionResponse,
   GetAssignmentsInCourseRequest,
   GetAssignmentsInCourseResponse,
-  GetCourseListRequest, GetCourseListResponse,
+  GetCourseListRequest, GetCourseListResponse, GetSubmissionReportRequest, GetSubmissionReportResponse,
   GetSubmissionsInAssignmentRequest,
   GetSubmissionsInAssignmentResponse,
   InitUploadRequest,
@@ -40,7 +40,8 @@ export class ApiService {
     request.setUsername(username);
     request.setPassword(password);
     return new Observable<LoginResponse>(subscriber => {
-      this.autograderClient.login(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.login(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -48,7 +49,8 @@ export class ApiService {
     const request = new GetCourseListRequest();
     request.setUserId(userId);
     return new Observable<GetCourseListResponse>(subscriber => {
-      this.autograderClient.getCourseList(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.getCourseList(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -56,7 +58,8 @@ export class ApiService {
     const request = new GetAssignmentsInCourseRequest();
     request.setCourseId(courseId);
     return new Observable<GetAssignmentsInCourseResponse>(subscriber => {
-      this.autograderClient.getAssignmentsInCourse(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.getAssignmentsInCourse(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -65,7 +68,8 @@ export class ApiService {
     request.setAssignmentId(assignmentId);
     request.setUserId(1);
     return new Observable<GetSubmissionsInAssignmentResponse>(subscriber => {
-      this.autograderClient.getSubmissionsInAssignment(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.getSubmissionsInAssignment(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -86,7 +90,8 @@ export class ApiService {
     request.setFilename(filename);
     request.setManifestId(manifestId);
     return new Observable<InitUploadResponse>(subscriber => {
-      this.autograderClient.initUpload(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.initUpload(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -95,7 +100,8 @@ export class ApiService {
     request.setUserId(userId);
     request.setAssignmentId(assignmentId);
     return new Observable<CreateManifestResponse>(subscriber => {
-      this.autograderClient.createManifest(request, this.messageCallback(subscriber));
+      const resp = this.autograderClient.createManifest(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 
@@ -107,7 +113,7 @@ export class ApiService {
     request.setAssignmentId(assigmentId);
     return new Observable<CreateSubmissionResponse>(subscriber => {
       const resp = this.autograderClient.createSubmission(request, this.messageCallback(subscriber));
-      return () => resp.cancel();
+      return resp.cancel;
     });
   }
 
@@ -122,7 +128,16 @@ export class ApiService {
       stream.on("end", (status) => {
         subscriber.complete();
       });
-      return () => stream.cancel();
+      return stream.cancel;
+    });
+  }
+
+  getSubmissionReport(submissionId: number) {
+    const request = new GetSubmissionReportRequest();
+    request.setSubmissionId(submissionId);
+    return new Observable<GetSubmissionReportResponse>(subscriber => {
+      const resp = this.autograderClient.getSubmissionReport(request, this.messageCallback(subscriber));
+      return resp.cancel;
     });
   }
 }

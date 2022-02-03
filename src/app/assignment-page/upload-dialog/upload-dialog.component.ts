@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../api/api.service";
 import {HttpEventType} from "@angular/common/http";
-import {AsyncSubject, BehaviorSubject, filter, first, from, mergeMap, of, Subscription, zip} from "rxjs";
+import {BehaviorSubject, filter, first, from, mergeMap, of, retry, Subscription, zip} from "rxjs";
 import {map} from "rxjs/operators";
 import * as zipjs from "@zip.js/zip.js";
 import {BlobWriter} from "@zip.js/zip.js";
@@ -14,9 +14,11 @@ export interface UploadDialogData {
 export class UploadEntry {
   sub: Subscription | null = null;
   filename = '';
+  uploadToken: string = '';
   uploading: boolean = false;
   uploaded: boolean = false;
   uploadProgress: number = 0;
+  error: string | null = null;
   progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
 
   constructor(filename: string) {
@@ -111,10 +113,11 @@ export class UploadDialogComponent implements OnInit {
       })).subscribe(([filename, blob]) => {
         const entry = this.uploadEntries[filename];
         entry.sub = this.apiService.initUpload(filename, manifestId).pipe(mergeMap(resp => {
-          entry.progressBarMode = 'determinate';
           const token = resp.getToken();
+          entry.progressBarMode = 'determinate';
+          entry.uploadToken = token;
           return this.apiService.uploadFile(blob, token);
-        })).subscribe((event) => {
+        }), retry(5)).subscribe((event) => {
           if (event.type == HttpEventType.UploadProgress) {
             entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
           }

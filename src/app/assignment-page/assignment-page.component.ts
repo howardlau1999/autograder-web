@@ -8,6 +8,7 @@ import {AssignmentPageDataSource, Item} from "./assignment-page-datasource";
 import {MatDialog} from "@angular/material/dialog";
 import {UploadDialogComponent} from "./upload-dialog/upload-dialog.component";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-assignment-page',
@@ -33,7 +34,7 @@ export class AssignmentPageComponent implements OnInit {
   expandedSubmission: Item | null = null;
   uploadDialogSubscription: Subscription | null = null;
 
-  constructor(private apiService: ApiService, public dialog: MatDialog) {
+  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router) {
     this.dataSource = new AssignmentPageDataSource(apiService);
   }
 
@@ -44,6 +45,10 @@ export class AssignmentPageComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+  }
+
+  viewSubmissionReport(): void {
+    this.router.navigate(["submission"]).then();
   }
 
   openSubmissionDialog(): void {

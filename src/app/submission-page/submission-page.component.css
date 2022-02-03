@@ -2,3 +2,46 @@
   color: #757575;
   margin-right: 5px;
 }
+
+.tab-container {
+  margin-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+}
+
+.files-tab-container {
+  margin-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+}
+
+.leaderboard-tab-container {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+}
+
+.testcase-accordion {
+  flex: 2 2 auto;
+}
+
+.testcase-list {
+  flex: 1 1 auto;
+  max-height: 100%;
+}
+
+.submission-report-container {
+  margin: 10px;
+}
+
+.testcase-output {
+  max-height: 30em;
+}
+
+.red-font {
+  color: #FF0000;
+}
+
+.green-font {
+  color: #00CC00;
+}

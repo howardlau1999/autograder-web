@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {files} from './example-data';
+import {ApiService} from "../api/api.service";
+import {GetSubmissionReportResponse} from "../api/proto/api_pb";
+import {SubmissionReport, SubmissionReportTestcase} from "../api/proto/model_pb";
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -21,13 +24,15 @@ export interface FlatTreeNode {
   expandable: boolean;
 }
 
+type Report = SubmissionReport;
+
 @Component({
   selector: 'app-submission-page',
   templateUrl: './submission-page.component.html',
   styleUrls: ['./submission-page.component.css']
 })
 export class SubmissionPageComponent {
-
+  testcases: SubmissionReportTestcase[] | undefined = [];
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -37,7 +42,13 @@ export class SubmissionPageComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor() {
+  fetchSubmissionReport() {
+    this.apiService.getSubmissionReport(1).subscribe(resp => {
+      this.testcases = resp.getReport()?.getTestsList();
+    })
+  }
+
+  constructor(private apiService: ApiService) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -47,6 +58,7 @@ export class SubmissionPageComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = files;
+    this.fetchSubmissionReport();
   }
 
   /** Transform the data to something the tree can read. */
