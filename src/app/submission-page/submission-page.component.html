@@ -3,7 +3,7 @@
     <mat-tab label="分数详情">
       <div class="tab-container">
         <mat-accordion class="testcase-accordion" multi>
-          <mat-expansion-panel *ngFor="let testcase of testcases; index as i" [id]="i">
+          <mat-expansion-panel class="testcase-panel" *ngFor="let testcase of testcases; index as i" [id]="i">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <span
@@ -12,8 +12,8 @@
                 </span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <code class="testcase-output">
-              <pre>{{testcase.getOutput()}}</pre>
+            <code>
+              <pre class="testcase-output">{{testcase.getOutput()}}</pre>
             </code>
           </mat-expansion-panel>
         </mat-accordion>

@@ -35,7 +35,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatListModule} from "@angular/material/list";
-import { LeaderboardComponent } from './submission-page/leaderboard/leaderboard.component';
+import {LeaderboardComponent} from './submission-page/leaderboard/leaderboard.component';
+import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -67,6 +68,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
     UploadDialogComponent,
     FilesTableComponent,
     LeaderboardComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     BrowserModule,

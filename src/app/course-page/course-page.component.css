@@ -18,3 +18,19 @@
   flex-wrap: wrap;
   padding: 10px;
 }
+
+tr.assignment-row:hover {
+  cursor: pointer;
+}
+
+tr.assignment-row:not(.assignment-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.assignment-row:not(.assignment-expanded-row):active {
+  background: #efefef;
+}
+
+.assignment-row td {
+  border-bottom-width: 0;
+}

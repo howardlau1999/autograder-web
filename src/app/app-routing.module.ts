@@ -7,12 +7,13 @@ import {CoursePageComponent} from "./course-page/course-page.component";
 import {SubmissionPageComponent} from "./submission-page/submission-page.component";
 
 const routes: Routes = [
-  {path: '', component: LoginPageComponent},
-  {path: 'assignment', component: AssignmentPageComponent},
-  {path: 'dashboard', component: DashboardPageComponent},
-  {path: 'course', component: CoursePageComponent},
-  {path: 'submission', component: SubmissionPageComponent},
-];
+    {path: '', component: LoginPageComponent},
+    {path: 'courses', component: DashboardPageComponent},
+    {path: 'courses/:courseId', component: CoursePageComponent},
+    {path: 'courses/:courseId/assignments/:assignmentId', component: AssignmentPageComponent},
+    {path: 'courses/:courseId/assignments/:assignmentId/submissions/:submissionId', component: SubmissionPageComponent},
+  ]
+;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

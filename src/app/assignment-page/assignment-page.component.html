@@ -61,7 +61,7 @@
         <tr mat-row *matRowDef="let submission; columns: columnsToDisplay"
             class="submission-element-row"
             [class.submission-expanded-row]="expandedSubmission === submission"
-            (click)="viewSubmissionReport()// expandedSubmission = expandedSubmission === submission ? null : submission"></tr>
+            (click)="viewSubmissionReport(submission.getSubmissionId())// expandedSubmission = expandedSubmission === submission ? null : submission"></tr>
         <tr mat-row *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row"></tr>
       </table>
     </mat-card-content>

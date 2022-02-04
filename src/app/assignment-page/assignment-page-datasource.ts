@@ -1,8 +1,8 @@
 import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {map} from 'rxjs/operators';
-import {Observable, of as observableOf, merge, BehaviorSubject} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
+import {Observable, of as observableOf, merge, BehaviorSubject, tap, Subscription} from 'rxjs';
 import {GetSubmissionsInAssignmentResponse, SubmissionStatus} from "../api/proto/api_pb";
 import {ApiService} from "../api/api.service";
 
@@ -14,29 +14,30 @@ export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
  * (including sorting, pagination, and filtering).
  */
 export class AssignmentPageDataSource extends DataSource<Item> {
-  data$: BehaviorSubject<Item[]> = new BehaviorSubject([] as Item[]);
+  data$: Observable<Item[]>;
+  subs: Subscription[] = [];
   data: Item[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, params$: Observable<number[]>) {
     super();
-  }
-
-  fetchSubmissions() {
-    this.apiService.getSubmissionsInAssignment(1).subscribe(resp => {
-      const submissions = resp.getSubmissionsList();
-      submissions.forEach(submission => {
-       if (submission.getStatus() === SubmissionStatus.RUNNING) {
-         this.apiService.subscribeSubmission(submission.getSubmissionId()).subscribe(resp => {
-           submission.setStatus(resp.getStatus());
-           submission.setScore(resp.getScore());
-           submission.setMaxScore(resp.getMaxscore());
-         });
-       }
-      })
-      this.data$.next(submissions);
-    });
+    this.data$ = params$.pipe(switchMap(ids => {
+      this.subs.forEach(sub => sub.unsubscribe());
+      this.subs = [];
+      const [courseId, assignmentId] = ids;
+      return this.apiService.getSubmissionsInAssignment(courseId, assignmentId);
+    }), map(resp => {
+      this.data = resp.getSubmissionsList();
+      this.subs = this.data.filter(submission => submission.getStatus() === SubmissionStatus.RUNNING).map(submission => {
+        return this.apiService.subscribeSubmission(submission.getSubmissionId()).subscribe(resp => {
+          submission.setStatus(resp.getStatus());
+          submission.setScore(resp.getScore());
+          submission.setMaxScore(resp.getMaxscore());
+        });
+      });
+      return this.data;
+    }));
   }
 
   /**
@@ -48,7 +49,6 @@ export class AssignmentPageDataSource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      this.fetchSubmissions();
       return merge(this.data$.pipe(map((submissions) => {
         this.data = submissions;
         return this.data;
@@ -66,7 +66,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
    * any open connections or free any held resources that were set up during connect.
    */
   disconnect(): void {
-    this.data$.complete();
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   /**

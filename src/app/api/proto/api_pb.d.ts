@@ -208,6 +208,9 @@ export namespace GetCourseListResponse {
     getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
     setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
 
+    getCourseId(): number;
+    setCourseId(value: number): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): CourseCardInfo.AsObject;
     static toObject(includeInstance: boolean, msg: CourseCardInfo): CourseCardInfo.AsObject;
@@ -223,6 +226,7 @@ export namespace GetCourseListResponse {
       name: string,
       shortName: string,
       role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
+      courseId: number,
     }
   }
 }

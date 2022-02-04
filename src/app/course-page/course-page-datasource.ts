@@ -1,7 +1,7 @@
 import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {Observable, of as observableOf, merge} from 'rxjs';
 import {GetAssignmentsInCourseResponse} from "../api/proto/api_pb";
 import {ApiService} from "../api/api.service";
@@ -15,14 +15,15 @@ export type CoursePageItem = Item;
  * (including sorting, pagination, and filtering).
  */
 export class CoursePageDataSource extends DataSource<Item> {
-  data: Observable<GetAssignmentsInCourseResponse> = this.apiService.getAssignmentsInCourse(1);
-  dataArray: Item[] = [];
+  assignments$: Observable<GetAssignmentsInCourseResponse>;
+  assignments: Item[] = [];
   dataLength: number = 0;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, courseId$: Observable<number>) {
     super();
+    this.assignments$ = courseId$.pipe(switchMap(courseId => this.apiService.getAssignmentsInCourse(courseId)));
   }
 
   /**
@@ -34,13 +35,13 @@ export class CoursePageDataSource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data.pipe(map((response) => {
-        this.dataArray = response.getAssignmentsList();
-        this.dataLength = this.dataArray.length;
-        return this.dataArray;
+      return merge(this.assignments$.pipe(map((response) => {
+        this.assignments = response.getAssignmentsList();
+        this.dataLength = this.assignments.length;
+        return this.assignments;
       })), this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
-          return this.getPagedData(this.getSortedData(this.dataArray));
+          return this.getPagedData(this.getSortedData(this.assignments));
         }));
     } else {
       throw Error('Please set the paginator and sort on the data source before connecting.');

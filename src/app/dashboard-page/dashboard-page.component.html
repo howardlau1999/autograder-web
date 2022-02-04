@@ -1,7 +1,7 @@
 <div class="grid-container">
   <h1>我的课程</h1>
   <div class="card-tile">
-    <mat-card *ngFor="let card of cards | async" class="dashboard-card">
+    <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
       <mat-card-title>
         {{card.getName()}}
         <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
@@ -16,8 +16,7 @@
         <div>Content</div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button>Like</button>
-        <button mat-button>SHARE</button>
+        <button mat-button (click)="gotoCourse(card.getCourseId())">进入</button>
       </mat-card-actions>
     </mat-card>
   </div>

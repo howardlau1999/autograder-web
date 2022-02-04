@@ -31,8 +31,8 @@ export class LoginPageComponent implements OnInit {
     this.errorMessage = null;
     this.loginForm.get("password")?.setErrors(null);
     this.userService.login(username as string, password as string).subscribe({
-      next: resp => {
-        this.router.navigate(["dashboard"]).then();
+      next: _ => {
+        this.router.navigate(["courses"]).then();
       },
       error: err => {
         this.errorMessage = err;

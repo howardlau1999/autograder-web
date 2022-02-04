@@ -7,6 +7,8 @@
   margin-top: 10px;
   padding-bottom: 10px;
   display: flex;
+  align-items: flex-start;
+  overflow: visible;
 }
 
 .files-tab-container {
@@ -19,15 +21,22 @@
   margin-top: 10px;
   padding: 10px;
   display: flex;
+  overflow: auto;
 }
 
 .testcase-accordion {
-  flex: 2 2 auto;
+  width: 80%;
+  flex-grow: 1;
 }
 
 .testcase-list {
-  flex: 1 1 auto;
-  max-height: 100%;
+  top: 0;
+  position: sticky;
+  position: -webkit-sticky;
+  align-self: flex-start;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .submission-report-container {
@@ -36,6 +45,7 @@
 
 .testcase-output {
   max-height: 30em;
+  overflow-x: auto;
 }
 
 .red-font {

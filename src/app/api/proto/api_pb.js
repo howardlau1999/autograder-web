@@ -2095,7 +2095,8 @@ proto.GetCourseListResponse.CourseCardInfo.toObject = function(includeInstance, 
   var f, obj = {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
     shortName: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    role: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    role: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    courseId: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2144,6 +2145,10 @@ proto.GetCourseListResponse.CourseCardInfo.deserializeBinaryFromReader = functio
       var value = /** @type {!proto.CourseRole} */ (reader.readEnum());
       msg.setRole(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setCourseId(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2191,6 +2196,13 @@ proto.GetCourseListResponse.CourseCardInfo.serializeBinaryToWriter = function(me
   if (f !== 0.0) {
     writer.writeEnum(
       3,
+      f
+    );
+  }
+  f = message.getCourseId();
+  if (f !== 0) {
+    writer.writeUint64(
+      4,
       f
     );
   }
@@ -2248,6 +2260,24 @@ proto.GetCourseListResponse.CourseCardInfo.prototype.getRole = function() {
  */
 proto.GetCourseListResponse.CourseCardInfo.prototype.setRole = function(value) {
   return jspb.Message.setProto3EnumField(this, 3, value);
+};
+
+
+/**
+ * optional uint64 course_id = 4;
+ * @return {number}
+ */
+proto.GetCourseListResponse.CourseCardInfo.prototype.getCourseId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.GetCourseListResponse.CourseCardInfo} returns this
+ */
+proto.GetCourseListResponse.CourseCardInfo.prototype.setCourseId = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 

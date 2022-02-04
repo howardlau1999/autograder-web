@@ -44,6 +44,7 @@ message GetCourseListResponse {
     string name = 1;
     string short_name = 2;
     CourseRole role = 3;
+    uint64 course_id = 4;
   }
   repeated CourseCardInfo courses = 2;
 }

@@ -7,8 +7,9 @@ import {MatTable} from "@angular/material/table";
 import {AssignmentPageDataSource, Item} from "./assignment-page-datasource";
 import {MatDialog} from "@angular/material/dialog";
 import {UploadDialogComponent} from "./upload-dialog/upload-dialog.component";
-import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {AsyncSubject, BehaviorSubject, mergeWith, Subject, Subscription, tap} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-assignment-page',
@@ -29,13 +30,20 @@ export class AssignmentPageComponent implements OnInit {
   dataSource: AssignmentPageDataSource;
 
   columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
-
-  assignmentId: number = 1;
+  assignmentId: number = 0;
+  courseId: number = 0;
   expandedSubmission: Item | null = null;
   uploadDialogSubscription: Subscription | null = null;
+  ids$: Subject<number[]> = new Subject<number[]>();
 
-  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router) {
-    this.dataSource = new AssignmentPageDataSource(apiService);
+  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
+    this.dataSource = new AssignmentPageDataSource(apiService, this.route.paramMap.pipe(map(params => {
+      return [Number.parseInt(params.get("courseId") || "0"), Number.parseInt(params.get("assignmentId") || "0")];
+    }), mergeWith(this.ids$), tap(ids => {
+      const [courseId, assignmentId] = ids;
+      this.courseId = courseId;
+      this.assignmentId = assignmentId;
+    })));
   }
 
   ngOnInit(): void {
@@ -47,8 +55,8 @@ export class AssignmentPageComponent implements OnInit {
     this.table.dataSource = this.dataSource;
   }
 
-  viewSubmissionReport(): void {
-    this.router.navigate(["submission"]).then();
+  viewSubmissionReport(submissionId: number): void {
+    this.router.navigate(["submissions", submissionId], {relativeTo: this.route}).then();
   }
 
   openSubmissionDialog(): void {
@@ -62,7 +70,7 @@ export class AssignmentPageComponent implements OnInit {
         this.uploadDialogSubscription?.unsubscribe();
         this.uploadDialogSubscription = null;
         if (result !== null) {
-          this.dataSource.fetchSubmissions();
+          this.ids$.next([this.courseId, this.assignmentId]);
         }
       });
     }

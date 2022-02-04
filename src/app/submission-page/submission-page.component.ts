@@ -5,6 +5,8 @@ import {files} from './example-data';
 import {ApiService} from "../api/api.service";
 import {GetSubmissionReportResponse} from "../api/proto/api_pb";
 import {SubmissionReport, SubmissionReportTestcase} from "../api/proto/model_pb";
+import {ActivatedRoute, Router} from "@angular/router";
+import {switchMap} from "rxjs";
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -42,13 +44,7 @@ export class SubmissionPageComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  fetchSubmissionReport() {
-    this.apiService.getSubmissionReport(1).subscribe(resp => {
-      this.testcases = resp.getReport()?.getTestsList();
-    })
-  }
-
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -58,7 +54,11 @@ export class SubmissionPageComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = files;
-    this.fetchSubmissionReport();
+    this.route.paramMap.pipe(switchMap(
+      params => this.apiService.getSubmissionReport(Number.parseInt(params.get("submissionId") || "0"))))
+      .subscribe(resp => {
+        this.testcases = resp.getReport()?.getTestsList();
+      });
   }
 
   /** Transform the data to something the tree can read. */
