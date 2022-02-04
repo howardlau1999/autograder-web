@@ -118,6 +118,24 @@ AutograderService.GetSubmissionReport = {
   responseType: api_pb.GetSubmissionReportResponse
 };
 
+AutograderService.GetAssignment = {
+  methodName: "GetAssignment",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetAssignmentRequest,
+  responseType: api_pb.GetAssignmentResponse
+};
+
+AutograderService.GetCourse = {
+  methodName: "GetCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetCourseRequest,
+  responseType: api_pb.GetCourseResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -503,6 +521,68 @@ AutograderServiceClient.prototype.getSubmissionReport = function getSubmissionRe
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetSubmissionReport, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getAssignment = function getAssignment(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetAssignment, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getCourse = function getCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetCourse, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

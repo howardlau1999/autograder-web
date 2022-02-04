@@ -13,7 +13,7 @@
         </mat-menu>
       </mat-card-title>
       <mat-card-content class="dashboard-card-content">
-        <div>Content</div>
+        <div>{{card.getShortName()}}</div>
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-button (click)="gotoCourse(card.getCourseId())">进入</button>

@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {AutograderServiceClient, ServiceError, UnaryResponse} from "./proto/api_pb_service";
 import {
   CreateManifestRequest,
-  CreateSubmissionRequest,
+  CreateSubmissionRequest, GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
-  GetCourseListRequest,
+  GetCourseListRequest, GetCourseRequest,
   GetSubmissionReportRequest,
   GetSubmissionsInAssignmentRequest,
   InitUploadRequest,
@@ -44,7 +44,7 @@ export class ApiService {
     request: Request
   ): Observable<Response> {
     return new Observable<Response>(subscriber => {
-      const response = endpoint(request, this.messageCallback(subscriber));
+      const response = endpoint.bind(this.autograderClient)(request, this.messageCallback(subscriber));
       return response.cancel;
     });
   }
@@ -129,5 +129,17 @@ export class ApiService {
     const request = new GetSubmissionReportRequest();
     request.setSubmissionId(submissionId);
     return this.unary(this.autograderClient.getSubmissionReport, request);
+  }
+
+  getAssignment(assignmentId: number) {
+    const request = new GetAssignmentRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(this.autograderClient.getAssignment, request);
+  }
+
+  getCourse(courseId: number) {
+    const request = new GetCourseRequest();
+    request.setCourseId(courseId);
+    return this.unary(this.autograderClient.getCourse, request);
   }
 }

@@ -382,8 +382,8 @@ export namespace GetSubmissionsInAssignmentResponse {
     getMaxScore(): number;
     setMaxScore(value: number): void;
 
-    getStatus(): SubmissionStatusMap[keyof SubmissionStatusMap];
-    setStatus(value: SubmissionStatusMap[keyof SubmissionStatusMap]): void;
+    getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
+    setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): SubmissionInfo.AsObject;
@@ -402,7 +402,7 @@ export namespace GetSubmissionsInAssignmentResponse {
       submittersList: Array<GetSubmissionsInAssignmentResponse.SubmissionInfo.Submitter.AsObject>,
       score: number,
       maxScore: number,
-      status: SubmissionStatusMap[keyof SubmissionStatusMap],
+      status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
     }
 
     export class Submitter extends jspb.Message {
@@ -481,8 +481,8 @@ export namespace SubscribeSubmissionsResponse {
     getScore(): number;
     setScore(value: number): void;
 
-    getStatus(): SubmissionStatusMap[keyof SubmissionStatusMap];
-    setStatus(value: SubmissionStatusMap[keyof SubmissionStatusMap]): void;
+    getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
+    setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): StatusUpdate.AsObject;
@@ -498,7 +498,7 @@ export namespace SubscribeSubmissionsResponse {
     export type AsObject = {
       submissionId: number,
       score: number,
-      status: SubmissionStatusMap[keyof SubmissionStatusMap],
+      status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
     }
   }
 }
@@ -807,6 +807,9 @@ export class GetSubmissionReportResponse extends jspb.Message {
   getReport(): model_pb.SubmissionReport | undefined;
   setReport(value?: model_pb.SubmissionReport): void;
 
+  getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
+  setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetSubmissionReportResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetSubmissionReportResponse): GetSubmissionReportResponse.AsObject;
@@ -820,6 +823,7 @@ export class GetSubmissionReportResponse extends jspb.Message {
 export namespace GetSubmissionReportResponse {
   export type AsObject = {
     report?: model_pb.SubmissionReport.AsObject,
+    status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
   }
 }
 
@@ -850,8 +854,8 @@ export class SubscribeSubmissionResponse extends jspb.Message {
   getMaxscore(): number;
   setMaxscore(value: number): void;
 
-  getStatus(): SubmissionStatusMap[keyof SubmissionStatusMap];
-  setStatus(value: SubmissionStatusMap[keyof SubmissionStatusMap]): void;
+  getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
+  setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubscribeSubmissionResponse.AsObject;
@@ -867,18 +871,91 @@ export namespace SubscribeSubmissionResponse {
   export type AsObject = {
     score: number,
     maxscore: number,
-    status: SubmissionStatusMap[keyof SubmissionStatusMap],
+    status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
   }
 }
 
-export interface SubmissionStatusMap {
-  QUEUED: 0;
-  ABORTED: 1;
-  FINISHED: 2;
-  CANCELLED: 3;
-  RUNNING: 4;
-  CANCELLING: 5;
+export class GetAssignmentRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAssignmentRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAssignmentRequest): GetAssignmentRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAssignmentRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAssignmentRequest;
+  static deserializeBinaryFromReader(message: GetAssignmentRequest, reader: jspb.BinaryReader): GetAssignmentRequest;
 }
 
-export const SubmissionStatus: SubmissionStatusMap;
+export namespace GetAssignmentRequest {
+  export type AsObject = {
+    assignmentId: number,
+  }
+}
+
+export class GetAssignmentResponse extends jspb.Message {
+  hasAssignment(): boolean;
+  clearAssignment(): void;
+  getAssignment(): model_pb.Assignment | undefined;
+  setAssignment(value?: model_pb.Assignment): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAssignmentResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAssignmentResponse): GetAssignmentResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAssignmentResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAssignmentResponse;
+  static deserializeBinaryFromReader(message: GetAssignmentResponse, reader: jspb.BinaryReader): GetAssignmentResponse;
+}
+
+export namespace GetAssignmentResponse {
+  export type AsObject = {
+    assignment?: model_pb.Assignment.AsObject,
+  }
+}
+
+export class GetCourseRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCourseRequest): GetCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCourseRequest;
+  static deserializeBinaryFromReader(message: GetCourseRequest, reader: jspb.BinaryReader): GetCourseRequest;
+}
+
+export namespace GetCourseRequest {
+  export type AsObject = {
+    courseId: number,
+  }
+}
+
+export class GetCourseResponse extends jspb.Message {
+  hasCourse(): boolean;
+  clearCourse(): void;
+  getCourse(): model_pb.Course | undefined;
+  setCourse(value?: model_pb.Course): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCourseResponse): GetCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCourseResponse;
+  static deserializeBinaryFromReader(message: GetCourseResponse, reader: jspb.BinaryReader): GetCourseResponse;
+}
+
+export namespace GetCourseResponse {
+  export type AsObject = {
+    course?: model_pb.Course.AsObject,
+  }
+}
 

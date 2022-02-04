@@ -1,14 +1,19 @@
 <div class="assignment-page-container">
   <mat-card class="assignment-info-card">
-    <mat-card-title>
-      作业标题
-    </mat-card-title>
-    <mat-card-subtitle>
-      #作业 ID
-    </mat-card-subtitle>
-    <mat-card-content>
-      作业的详情
-    </mat-card-content>
+    <div *ngIf="assignment$ | async as assignment; else progressBar">
+      <mat-card-title>
+        {{assignment.getName()}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        #{{assignmentId}}
+      </mat-card-subtitle>
+      <mat-card-content>
+        {{assignment.getDescription()}}
+      </mat-card-content>
+    </div>
+    <ng-template #progressBar>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
   </mat-card>
   <mat-card class="submission-history-table">
     <mat-card-content>

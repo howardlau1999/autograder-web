@@ -11,6 +11,16 @@ message User {
   string nickname = 5;
 }
 
+enum SubmissionStatus {
+  Queued = 0;
+  Aborted = 1;
+  Finished = 2;
+  Cancelled = 3;
+  Running = 4;
+  Cancelling = 5;
+  Failed = 6;
+}
+
 enum CourseRole {
   Student = 0;
   TA = 1;
@@ -56,6 +66,7 @@ message Assignment {
   google.protobuf.Timestamp release_date = 4;
   google.protobuf.Timestamp due_date = 5;
   google.protobuf.Timestamp late_due_date = 6;
+  string description = 7;
   ProgrammingAssignmentConfig programming_config = 8;
   bool published = 9;
 }
@@ -97,6 +108,14 @@ message SubmissionReport {
   repeated LeaderboardItem leaderboard = 9;
   int64 exit_code = 10;
   int64 internal_error = 11;
+}
+
+message SubmissionBriefReport {
+  uint64 score = 1;
+  uint64 max_score = 2;
+  int64 exit_code = 3;
+  int64 internal_error = 4;
+  SubmissionStatus status = 5;
 }
 
 message Submission {

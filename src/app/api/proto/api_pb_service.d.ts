@@ -112,6 +112,24 @@ type AutograderServiceGetSubmissionReport = {
   readonly responseType: typeof api_pb.GetSubmissionReportResponse;
 };
 
+type AutograderServiceGetAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetAssignmentRequest;
+  readonly responseType: typeof api_pb.GetAssignmentResponse;
+};
+
+type AutograderServiceGetCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetCourseRequest;
+  readonly responseType: typeof api_pb.GetCourseResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -126,6 +144,8 @@ export class AutograderService {
   static readonly CreateSubmission: AutograderServiceCreateSubmission;
   static readonly InitUpload: AutograderServiceInitUpload;
   static readonly GetSubmissionReport: AutograderServiceGetSubmissionReport;
+  static readonly GetAssignment: AutograderServiceGetAssignment;
+  static readonly GetCourse: AutograderServiceGetCourse;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -235,6 +255,24 @@ export class AutograderServiceClient {
   getSubmissionReport(
     requestMessage: api_pb.GetSubmissionReportRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionReportResponse|null) => void
+  ): UnaryResponse;
+  getAssignment(
+    requestMessage: api_pb.GetAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentResponse|null) => void
+  ): UnaryResponse;
+  getAssignment(
+    requestMessage: api_pb.GetAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentResponse|null) => void
+  ): UnaryResponse;
+  getCourse(
+    requestMessage: api_pb.GetCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
+  ): UnaryResponse;
+  getCourse(
+    requestMessage: api_pb.GetCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -1,14 +1,19 @@
 <div class="course-page-container">
   <mat-card class="course-info-card">
-    <mat-card-title>
-      课程标题
-    </mat-card-title>
-    <mat-card-subtitle>
-      #课程 ID
-    </mat-card-subtitle>
-    <mat-card-content>
-      课程的详情
-    </mat-card-content>
+    <div *ngIf="course$ | async as course; else progressBar">
+      <mat-card-title>
+        {{course.getName()}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        #{{courseId}}
+      </mat-card-subtitle>
+      <mat-card-content>
+        {{course.getDescription()}}
+      </mat-card-content>
+    </div>
+    <ng-template #progressBar>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
   </mat-card>
   <mat-card class="assignment-table-card">
     <table mat-table class="full-width-table" matSort aria-label="Elements">
@@ -42,7 +47,8 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row class="assignment-row" (click)="gotoAssignment(row.getAssignmentId())" *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row class="assignment-row" (click)="gotoAssignment(row.getAssignmentId())"
+          *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
     <mat-paginator #paginator

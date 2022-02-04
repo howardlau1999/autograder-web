@@ -14,7 +14,8 @@
         <p>
           <mat-form-field class="login-form-control" appearance="standard">
             <mat-label i18n="password">密码</mat-label>
-            <input matInput required i18n-placeholder="password" placeholder="密码" type="password" formControlName="password">
+            <input matInput required i18n-placeholder="password" placeholder="密码" type="password"
+                   formControlName="password">
             <mat-icon matSuffix>password</mat-icon>
             <mat-error *ngIf="errorMessage !== null">{{errorMessage}}</mat-error>
           </mat-form-field>

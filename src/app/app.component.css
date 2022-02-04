@@ -5,3 +5,13 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+

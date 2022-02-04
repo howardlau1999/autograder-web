@@ -197,6 +197,9 @@ export class Assignment extends jspb.Message {
   getLateDueDate(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setLateDueDate(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
+  getDescription(): string;
+  setDescription(value: string): void;
+
   hasProgrammingConfig(): boolean;
   clearProgrammingConfig(): void;
   getProgrammingConfig(): ProgrammingAssignmentConfig | undefined;
@@ -223,6 +226,7 @@ export namespace Assignment {
     releaseDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     dueDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     lateDueDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    description: string,
     programmingConfig?: ProgrammingAssignmentConfig.AsObject,
     published: boolean,
   }
@@ -371,6 +375,42 @@ export namespace SubmissionReport {
     leaderboardList: Array<LeaderboardItem.AsObject>,
     exitCode: number,
     internalError: number,
+  }
+}
+
+export class SubmissionBriefReport extends jspb.Message {
+  getScore(): number;
+  setScore(value: number): void;
+
+  getMaxScore(): number;
+  setMaxScore(value: number): void;
+
+  getExitCode(): number;
+  setExitCode(value: number): void;
+
+  getInternalError(): number;
+  setInternalError(value: number): void;
+
+  getStatus(): SubmissionStatusMap[keyof SubmissionStatusMap];
+  setStatus(value: SubmissionStatusMap[keyof SubmissionStatusMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubmissionBriefReport.AsObject;
+  static toObject(includeInstance: boolean, msg: SubmissionBriefReport): SubmissionBriefReport.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SubmissionBriefReport, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubmissionBriefReport;
+  static deserializeBinaryFromReader(message: SubmissionBriefReport, reader: jspb.BinaryReader): SubmissionBriefReport;
+}
+
+export namespace SubmissionBriefReport {
+  export type AsObject = {
+    score: number,
+    maxScore: number,
+    exitCode: number,
+    internalError: number,
+    status: SubmissionStatusMap[keyof SubmissionStatusMap],
   }
 }
 
@@ -596,6 +636,18 @@ export namespace ManifestMetadata {
     assignmentId: number,
   }
 }
+
+export interface SubmissionStatusMap {
+  QUEUED: 0;
+  ABORTED: 1;
+  FINISHED: 2;
+  CANCELLED: 3;
+  RUNNING: 4;
+  CANCELLING: 5;
+  FAILED: 6;
+}
+
+export const SubmissionStatus: SubmissionStatusMap;
 
 export interface CourseRoleMap {
   STUDENT: 0;

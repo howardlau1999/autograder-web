@@ -3,55 +3,47 @@
   margin-right: 5px;
 }
 
-.tab-container {
-  margin-top: 10px;
-  padding-bottom: 10px;
-  display: flex;
-  align-items: flex-start;
-  overflow: visible;
+.submission-report-container {
+  padding: 20px 50px;
+  width: calc(100% - 241px);
 }
 
-.files-tab-container {
-  margin-top: 10px;
-  padding-bottom: 10px;
-  display: flex;
+.sidenav-nav {
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 64px);
 }
 
-.leaderboard-tab-container {
-  margin-top: 10px;
-  padding: 10px;
-  display: flex;
+.sidenav-container {
+  width: 240px;
   overflow: auto;
 }
 
-.testcase-accordion {
-  width: 80%;
-  flex-grow: 1;
-}
-
-.testcase-list {
-  top: 0;
-  position: sticky;
-  position: -webkit-sticky;
-  align-self: flex-start;
-  box-sizing: border-box;
-  display: inline-flex;
+.sidenav-content {
+  display: flex;
   flex-direction: column;
+  min-height: 100%;
 }
 
-.submission-report-container {
-  margin: 10px;
+.sidenav-body-inner {
+  display: flex;
+  flex: 1;
 }
 
-.testcase-output {
-  max-height: 30em;
-  overflow-x: auto;
+.sidenav-body-content {
+  display: flex;
+  flex: 1 1 auto;
 }
 
-.red-font {
-  color: #FF0000;
+.main-content {
+  position: relative;
+  min-height: 500px;
 }
 
-.green-font {
-  color: #00CC00;
+.submission-page {
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
 }

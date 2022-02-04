@@ -1,0 +1,39 @@
+.testcase-accordion {
+  width: 80%;
+  flex-grow: 1;
+}
+
+.report-container {
+  display: flex;
+  margin-top: 10px;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.testcase-list {
+  top: 20px;
+  position: sticky;
+  position: -webkit-sticky;
+  align-self: flex-start;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.testcase-output {
+  max-height: 30em;
+  overflow-x: auto;
+}
+
+.red-font {
+  color: #FF0000;
+}
+
+.green-font {
+  color: #00AA00;
+}
+
+.nav-header {
+  margin: 0;
+}

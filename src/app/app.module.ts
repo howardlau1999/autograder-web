@@ -37,6 +37,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatListModule} from "@angular/material/list";
 import {LeaderboardComponent} from './submission-page/leaderboard/leaderboard.component';
 import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
+import {ReportComponent} from './submission-page/report/report.component';
+import {FilesComponent} from './submission-page/files/files.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -69,6 +71,8 @@ export class PaginatorIntl implements MatPaginatorIntl {
     FilesTableComponent,
     LeaderboardComponent,
     NotFoundPageComponent,
+    ReportComponent,
+    FilesComponent,
   ],
   imports: [
     BrowserModule,
