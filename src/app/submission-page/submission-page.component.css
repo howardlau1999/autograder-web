@@ -3,9 +3,13 @@
   margin-right: 5px;
 }
 
+.container {
+  width: 100%;
+}
+
 .submission-report-container {
   padding: 20px 50px;
-  width: calc(100% - 241px);
+  width: calc(100% - 240px);
 }
 
 .sidenav-nav {

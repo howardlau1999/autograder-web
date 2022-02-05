@@ -1,6 +1,6 @@
 <div class="report-container">
   <mat-accordion class="testcase-accordion" multi>
-    <mat-expansion-panel #testcase class="testcase-panel" *ngFor="let testcase of testcases; index as i" [id]="i + 1">
+    <mat-expansion-panel #testcase class="testcase-panel" *ngFor="let testcase of testcases; index as i">
       <mat-expansion-panel-header>
         <mat-panel-title>
                 <span
@@ -15,7 +15,7 @@
     </mat-expansion-panel>
   </mat-accordion>
   <mat-nav-list class="testcase-list">
-    <a routerLink="./" [fragment]="(i + 1).toString()" (click)="scrollTo(i)" mat-list-item
+    <a (click)="scrollTo(i)" mat-list-item
        *ngFor="let testcase of testcases; index as i">
           <span
             [class]="testcase.getScore() === testcase.getMaxScore()?'green-font' : 'red-font'">{{testcase.getName()}}
