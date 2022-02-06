@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {ApiService} from "../api/api.service";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {JoinDialogComponent} from "./join-dialog/join-dialog.component";
+import {CreateDialogComponent} from "./create-dialog/create-dialog.component";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -13,7 +16,17 @@ export class DashboardPageComponent {
     return response.getCoursesList();
   }));
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private dialog: MatDialog,
+              private apiService: ApiService,
+              private router: Router) {
+  }
+
+  joinCourse() {
+    this.dialog.open(JoinDialogComponent);
+  }
+
+  createCourse() {
+    this.dialog.open(CreateDialogComponent);
   }
 
   gotoCourse(courseId: number) {

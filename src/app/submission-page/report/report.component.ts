@@ -2,7 +2,9 @@ import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/c
 import {ApiService} from "../../api/api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SubmissionReportTestcase} from "../../api/proto/model_pb";
-import {switchMap} from "rxjs";
+import {catchError, mergeMap, Observable, of, switchMap} from "rxjs";
+import {map} from "rxjs/operators";
+import {GetSubmissionReportResponse} from "../../api/proto/api_pb";
 
 @Component({
   selector: 'app-report',
@@ -10,15 +12,28 @@ import {switchMap} from "rxjs";
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit {
-  testcases: SubmissionReportTestcase[] | undefined = [];
+  testcases$: Observable<SubmissionReportTestcase[] | undefined> | undefined;
+  error: string | null = null;
   @ViewChildren("testcase", {read: ElementRef}) renderedTestcases!: QueryList<ElementRef>;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) {
-    this.route.parent?.paramMap.pipe(switchMap(
-      params => this.apiService.getSubmissionReport(Number.parseInt(params.get("submissionId") || "0"))))
-      .subscribe(resp => {
-        this.testcases = resp.getReport()?.getTestsList();
-      });
+    this.testcases$ = this.route.parent?.paramMap.pipe(switchMap(
+      params => {
+        const submissionId = Number.parseInt(params.get("submissionId") || "0")
+        return this.apiService.getSubmissionReport(submissionId).pipe(catchError(err => {
+          this.error = err;
+          if (err === "RUNNING") {
+            return this.apiService.subscribeSubmission(submissionId).pipe(mergeMap(_ => {
+              this.error = null;
+              return this.apiService.getSubmissionReport(submissionId);
+            }))
+          }
+          return of(new GetSubmissionReportResponse());
+        }), map(resp => {
+          return resp.getReport()?.getTestsList()
+        }));
+      }
+    ));
   }
 
   ngOnInit(): void {

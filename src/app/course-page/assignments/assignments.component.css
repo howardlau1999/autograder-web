@@ -1,0 +1,33 @@
+.assignments-container {
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+.assignment-table-card {
+  flex: 1 1 auto;
+}
+
+
+.course-info-card {
+  flex: 1 1 auto;
+  margin-bottom: 20px;
+}
+.full-width-table {
+  width: 100%;
+}
+
+tr.assignment-row:hover {
+  cursor: pointer;
+}
+
+tr.assignment-row:not(.assignment-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.assignment-row:not(.assignment-expanded-row):active {
+  background: #efefef;
+}
+
+.assignment-row td {
+  border-bottom-width: 0;
+}

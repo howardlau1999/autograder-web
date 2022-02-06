@@ -136,6 +136,15 @@ AutograderService.GetCourse = {
   responseType: api_pb.GetCourseResponse
 };
 
+AutograderService.GetFilesInSubmission = {
+  methodName: "GetFilesInSubmission",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetFilesInSubmissionRequest,
+  responseType: api_pb.GetFilesInSubmissionResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -583,6 +592,37 @@ AutograderServiceClient.prototype.getCourse = function getCourse(requestMessage,
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetCourse, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getFilesInSubmission = function getFilesInSubmission(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetFilesInSubmission, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

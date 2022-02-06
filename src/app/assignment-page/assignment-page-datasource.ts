@@ -17,6 +17,7 @@ export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
 export class AssignmentPageDataSource extends DataSource<Item> {
   data$: Observable<Item[]>;
   subs: Subscription[] = [];
+  count: number = 0;
   data: Item[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
@@ -30,6 +31,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
       return this.apiService.getSubmissionsInAssignment(courseId, assignmentId);
     }), map(resp => {
       this.data = resp.getSubmissionsList();
+      this.count = this.data.length;
       this.subs = this.data.filter(submission => submission.getStatus() === SubmissionStatus.RUNNING).map(submission => {
         return this.apiService.subscribeSubmission(submission.getSubmissionId()).subscribe(resp => {
           submission.setStatus(resp.getStatus());
@@ -50,10 +52,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$.pipe(map((submissions) => {
-        this.data = submissions;
-        return this.data;
-      })), this.paginator.page, this.sort.sortChange)
+      return merge(this.data$, this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
           return this.getPagedData(this.getSortedData(this.data));
         }));
@@ -77,7 +76,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
   private getPagedData(data: Item[]): Item[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-      return data.splice(startIndex, this.paginator.pageSize);
+      return data.slice(startIndex, startIndex + this.paginator.pageSize);
     } else {
       return data;
     }

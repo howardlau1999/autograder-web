@@ -1,28 +1,33 @@
 <div class="container">
-    <div class="sidenav-body-content">
-      <div class="sidenav-body-inner">
-        <div class="sidenav-nav">
-          <div class="sidenav-container">
-            <mat-nav-list>
-              <a mat-list-item>回到作业详情</a>
-              <a mat-list-item>回到课程页面</a>
-            </mat-nav-list>
-          </div>
-        </div>
-
-        <div class="submission-report-container">
-          <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-            <a mat-tab-link *ngFor="let link of links;"
-               routerLinkActive #rla="routerLinkActive"
-               [routerLinkActiveOptions]="{exact:true}"
-               [active]="rla.isActive"
-               [routerLink]="link.path"
-            > {{link.title}} </a>
-          </nav>
-          <mat-tab-nav-panel #tabPanel class="main-content">
-            <router-outlet></router-outlet>
-          </mat-tab-nav-panel>
+  <mat-toolbar color="primary">提交详情</mat-toolbar>
+  <div class="sidenav-body-content">
+    <div class="sidenav-body-inner">
+      <div class="sidenav-nav">
+        <div class="sidenav-container">
+          <mat-nav-list>
+            <a mat-list-item routerLink="../..">
+              <mat-icon>arrow_back</mat-icon>
+              &nbsp;回到作业详情</a>
+            <a mat-list-item routerLink="../../..">
+              <mat-icon>arrow_back</mat-icon>
+              &nbsp;回到课程页面</a>
+          </mat-nav-list>
         </div>
       </div>
+
+      <div class="submission-report-container">
+        <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+          <a mat-tab-link *ngFor="let link of links;"
+             routerLinkActive #rla="routerLinkActive"
+             [routerLinkActiveOptions]="{exact:true}"
+             [active]="rla.isActive"
+             [routerLink]="link.path"
+          > {{link.title}} </a>
+        </nav>
+        <mat-tab-nav-panel #tabPanel class="main-content">
+          <router-outlet></router-outlet>
+        </mat-tab-nav-panel>
+      </div>
     </div>
+  </div>
 </div>

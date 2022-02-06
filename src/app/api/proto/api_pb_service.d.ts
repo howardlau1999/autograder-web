@@ -130,6 +130,15 @@ type AutograderServiceGetCourse = {
   readonly responseType: typeof api_pb.GetCourseResponse;
 };
 
+type AutograderServiceGetFilesInSubmission = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetFilesInSubmissionRequest;
+  readonly responseType: typeof api_pb.GetFilesInSubmissionResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -146,6 +155,7 @@ export class AutograderService {
   static readonly GetSubmissionReport: AutograderServiceGetSubmissionReport;
   static readonly GetAssignment: AutograderServiceGetAssignment;
   static readonly GetCourse: AutograderServiceGetCourse;
+  static readonly GetFilesInSubmission: AutograderServiceGetFilesInSubmission;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -273,6 +283,15 @@ export class AutograderServiceClient {
   getCourse(
     requestMessage: api_pb.GetCourseRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
+  ): UnaryResponse;
+  getFilesInSubmission(
+    requestMessage: api_pb.GetFilesInSubmissionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetFilesInSubmissionResponse|null) => void
+  ): UnaryResponse;
+  getFilesInSubmission(
+    requestMessage: api_pb.GetFilesInSubmissionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetFilesInSubmissionResponse|null) => void
   ): UnaryResponse;
 }
 

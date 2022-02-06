@@ -1,5 +1,9 @@
 <div class="grid-container">
-  <h1>我的课程</h1>
+  <mat-toolbar color="primary">课程列表</mat-toolbar>
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="joinCourse()">加入课程</button>
+    <button mat-flat-button (click)="createCourse()"><mat-icon>add</mat-icon>创建课程</button>
+  </div>
   <div class="card-tile">
     <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
       <mat-card-title>
@@ -8,8 +12,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu" xPosition="after">
-          <button mat-menu-item>Expand</button>
-          <button mat-menu-item>Remove</button>
+          <button mat-menu-item><mat-icon>settings</mat-icon>管理课程</button>
         </mat-menu>
       </mat-card-title>
       <mat-card-content class="dashboard-card-content">

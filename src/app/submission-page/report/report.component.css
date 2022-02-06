@@ -1,6 +1,7 @@
 .testcase-accordion {
   width: 80%;
   flex-grow: 1;
+  padding-bottom: 10px;
 }
 
 .report-container {

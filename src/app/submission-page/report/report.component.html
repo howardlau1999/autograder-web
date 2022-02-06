@@ -1,4 +1,4 @@
-<div class="report-container">
+<div class="report-container" *ngIf="testcases$ | async as testcases; else errorMsg">
   <mat-accordion class="testcase-accordion" multi>
     <mat-expansion-panel #testcase class="testcase-panel" *ngFor="let testcase of testcases; index as i">
       <mat-expansion-panel-header>
@@ -24,3 +24,15 @@
     </a>
   </mat-nav-list>
 </div>
+<ng-template #errorMsg>
+  <div class="report-container" [ngSwitch]="error">
+    <div style="width: 100%">
+      <mat-card *ngSwitchCase="'RUNNING'">
+        <mat-card-title>测试运行中…</mat-card-title>
+        <p></p>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+      </mat-card>
+      <mat-card *ngSwitchDefault><mat-progress-bar></mat-progress-bar></mat-card>
+    </div>
+  </div>
+</ng-template>

@@ -1,62 +1,25 @@
 <div class="course-page-container">
-  <mat-card class="course-info-card">
-    <div *ngIf="course$ | async as course; else progressBar">
-      <mat-card-title>
-        {{course.getName()}}
-      </mat-card-title>
-      <mat-card-subtitle>
-        #{{courseId}}
-      </mat-card-subtitle>
-      <mat-card-content>
-        {{course.getDescription()}}
-      </mat-card-content>
+  <mat-toolbar color="primary">课程详情</mat-toolbar>
+  <div class="sidenav-body-content">
+    <div class="sidenav-body-inner">
+      <div class="sidenav-nav">
+        <div class="sidenav-container">
+          <mat-nav-list>
+            <a mat-list-item routerLink="assignments">
+              <mat-icon>list</mat-icon>
+              &nbsp;作业列表</a>
+            <a mat-list-item routerLink="members">
+              <mat-icon>people</mat-icon>
+              &nbsp;课程成员</a>
+            <a mat-list-item routerLink="../">
+              <mat-icon>arrow_back</mat-icon>
+              &nbsp;回到课程列表</a>
+          </mat-nav-list>
+        </div>
+      </div>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-    <ng-template #progressBar>
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </ng-template>
-  </mat-card>
-  <mat-card class="assignment-table-card">
-    <table mat-table class="full-width-table" matSort aria-label="Elements">
-      <!-- Id Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let row">{{row.getAssignmentId()}}</td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>名称</th>
-        <td mat-cell *matCellDef="let row">{{row.getName()}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="submitted">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>已提交</th>
-        <td mat-cell *matCellDef="let row">
-          <mat-icon *ngIf="row.getSubmitted()">done</mat-icon>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="release_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>开始时间</th>
-        <td mat-cell *matCellDef="let row">{{row.getReleaseDate().toDate() | date:"medium"}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="due_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>截止时间</th>
-        <td mat-cell *matCellDef="let row">{{row.getDueDate().toDate() | date:"medium"}}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row class="assignment-row" (click)="gotoAssignment(row.getAssignmentId())"
-          *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <mat-paginator #paginator
-                   [length]="dataSource?.dataLength"
-                   [pageIndex]="0"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 20]"
-                   aria-label="Select page">
-    </mat-paginator>
-  </mat-card>
+  </div>
 </div>

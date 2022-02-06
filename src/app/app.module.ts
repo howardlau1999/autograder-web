@@ -39,6 +39,16 @@ import {LeaderboardComponent} from './submission-page/leaderboard/leaderboard.co
 import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
 import {ReportComponent} from './submission-page/report/report.component';
 import {FilesComponent} from './submission-page/files/files.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {
+  CreateDialogComponent as CourseCreateDialogComponent
+} from './dashboard-page/create-dialog/create-dialog.component';
+import {
+  CreateDialogComponent as AssignmentCreateDialogComponent
+} from './course-page/create-dialog/create-dialog.component';
+import {JoinDialogComponent} from './dashboard-page/join-dialog/join-dialog.component';
+import { MembersComponent } from './course-page/members/members.component';
+import { AssignmentsComponent } from './course-page/assignments/assignments.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -73,6 +83,11 @@ export class PaginatorIntl implements MatPaginatorIntl {
     NotFoundPageComponent,
     ReportComponent,
     FilesComponent,
+    CourseCreateDialogComponent,
+    JoinDialogComponent,
+    AssignmentCreateDialogComponent,
+    MembersComponent,
+    AssignmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +117,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
     MatTabsModule,
     MatExpansionModule,
     MatListModule,
+    MatSnackBarModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},

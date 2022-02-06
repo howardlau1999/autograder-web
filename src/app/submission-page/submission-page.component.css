@@ -8,11 +8,13 @@
 }
 
 .submission-report-container {
-  padding: 20px 50px;
-  width: calc(100% - 240px);
+  padding-top: 20px;
+  padding-left: 20px;
+  width: calc(100% - 280px);
 }
 
 .sidenav-nav {
+  border-right: rgba(0,0,0,0.2) 1px solid;
   position: sticky;
   top: 0;
   height: calc(100vh - 64px);

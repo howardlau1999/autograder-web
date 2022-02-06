@@ -1,36 +1,43 @@
-.assignment-table-card {
-  width: 100%;
-  flex: 1 1 auto;
-}
 
-.full-width-table {
-  width: 100%;
-}
-
-.course-info-card {
-  width: 100%;
-  flex: 1 1 auto;
-  margin-bottom: 20px;
-}
 
 .course-page-container {
+  width: 100%;
+}
+
+
+.sidenav-nav {
+  border-right: rgba(0, 0, 0, 0.2) 1px solid;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 64px);
+}
+
+.sidenav-container {
+  width: 240px;
+  overflow: auto;
+}
+
+.sidenav-content {
   display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-tr.assignment-row:hover {
-  cursor: pointer;
+.sidenav-body-inner {
+  display: flex;
+  flex: 1;
 }
 
-tr.assignment-row:not(.assignment-expanded-row):hover {
-  background: whitesmoke;
+.sidenav-body-content {
+  display: flex;
+  flex: 1 1 auto;
 }
 
-tr.assignment-row:not(.assignment-expanded-row):active {
-  background: #efefef;
+.main-content {
+  position: relative;
+  min-height: 500px;
 }
 
-.assignment-row td {
-  border-bottom-width: 0;
+.container {
+  width: 100%;
 }

@@ -1,5 +1,52 @@
 .files-tab-container {
   margin-top: 10px;
-  padding-bottom: 10px;
+  /*display: flex;*/
+}
+
+.sidenav-nav {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.sidenav-nav::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.sidenav-nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.sidenav-container {
+  width: 300px;
+  overflow: auto;
+  height: 100%;
+}
+
+.sidenav-content {
   display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.sidenav-body-inner {
+  display: flex;
+  flex: 1;
+}
+
+.sidenav-body-content {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.file-preview-container {
+  margin-left: 10px;
 }

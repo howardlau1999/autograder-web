@@ -191,6 +191,25 @@ message GetCourseResponse {
   Course course = 1;
 }
 
+message GetFilesInSubmissionRequest {
+  uint64 submission_id = 1;
+}
+
+message FileTreeNode {
+  string name = 1;
+  enum Type {
+    Folder = 0;
+    File = 1;
+  }
+  Type node_type = 2;
+  repeated FileTreeNode children = 3;
+  string path = 4;
+}
+
+message GetFilesInSubmissionResponse {
+  repeated FileTreeNode roots = 1;
+}
+
 service AutograderService {
    rpc Login(LoginRequest) returns (LoginResponse);
    rpc GetCourseList(GetCourseListRequest) returns (GetCourseListResponse);
@@ -206,4 +225,5 @@ service AutograderService {
    rpc GetSubmissionReport(GetSubmissionReportRequest) returns (GetSubmissionReportResponse);
    rpc GetAssignment(GetAssignmentRequest) returns (GetAssignmentResponse);
    rpc GetCourse(GetCourseRequest) returns (GetCourseResponse);
+   rpc GetFilesInSubmission(GetFilesInSubmissionRequest) returns (GetFilesInSubmissionResponse);
 }

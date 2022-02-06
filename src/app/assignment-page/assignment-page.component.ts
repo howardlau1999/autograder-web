@@ -11,6 +11,7 @@ import {AsyncSubject, BehaviorSubject, mergeWith, Observable, Subject, Subscript
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
 import {Assignment} from "../api/proto/model_pb";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-assignment-page',
@@ -38,7 +39,11 @@ export class AssignmentPageComponent implements OnInit {
   ids$: Subject<number[]> = new Subject<number[]>();
   assignment$: Observable<Assignment | undefined>;
 
-  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
+  constructor(private apiService: ApiService,
+              public dialog: MatDialog,
+              private router: Router,
+              private route: ActivatedRoute,
+              private snackBar: MatSnackBar) {
     this.dataSource = new AssignmentPageDataSource(apiService, this.route.paramMap.pipe(map(params => {
       return [Number.parseInt(params.get("courseId") || "0"), Number.parseInt(params.get("assignmentId") || "0")];
     }), mergeWith(this.ids$), tap(ids => {
@@ -75,8 +80,14 @@ export class AssignmentPageComponent implements OnInit {
       this.uploadDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         this.uploadDialogSubscription?.unsubscribe();
         this.uploadDialogSubscription = null;
+        const config: MatSnackBarConfig = {
+          duration: 3000,
+        }
         if (result !== null) {
           this.ids$.next([this.courseId, this.assignmentId]);
+          this.snackBar.open("提交成功", "关闭", config);
+        } else {
+          this.snackBar.open("提交取消", "关闭", config);
         }
       });
     }

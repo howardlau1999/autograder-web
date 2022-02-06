@@ -9,7 +9,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-app-submission-page {
+app-submission-page, app-course-page, app-assignment-page, app-dashboard-page {
   margin-top: 64px;
   overflow: auto;
   display: flex;

@@ -8,11 +8,25 @@ import {SubmissionPageComponent} from "./submission-page/submission-page.compone
 import {ReportComponent} from "./submission-page/report/report.component";
 import {LeaderboardComponent} from "./submission-page/leaderboard/leaderboard.component";
 import {FilesComponent} from "./submission-page/files/files.component";
+import {AssignmentsComponent} from "./course-page/assignments/assignments.component";
+import {MembersComponent} from "./course-page/members/members.component";
 
 const routes: Routes = [
     {path: '', component: LoginPageComponent},
     {path: 'courses', component: DashboardPageComponent},
-    {path: 'courses/:courseId', component: CoursePageComponent},
+    {
+      path: 'courses/:courseId', component: CoursePageComponent, children: [
+        {
+          path: 'assignments', component: AssignmentsComponent,
+        },
+        {
+          path: 'members', component: MembersComponent,
+        },
+        {
+          path: '', redirectTo: 'assignments', pathMatch: 'full',
+        }
+      ]
+    },
     {path: 'courses/:courseId/assignments/:assignmentId', component: AssignmentPageComponent},
     {
       path: 'courses/:courseId/assignments/:assignmentId/submissions/:submissionId',

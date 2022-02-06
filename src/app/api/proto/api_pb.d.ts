@@ -959,3 +959,86 @@ export namespace GetCourseResponse {
   }
 }
 
+export class GetFilesInSubmissionRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetFilesInSubmissionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetFilesInSubmissionRequest): GetFilesInSubmissionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetFilesInSubmissionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetFilesInSubmissionRequest;
+  static deserializeBinaryFromReader(message: GetFilesInSubmissionRequest, reader: jspb.BinaryReader): GetFilesInSubmissionRequest;
+}
+
+export namespace GetFilesInSubmissionRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class FileTreeNode extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getNodeType(): FileTreeNode.TypeMap[keyof FileTreeNode.TypeMap];
+  setNodeType(value: FileTreeNode.TypeMap[keyof FileTreeNode.TypeMap]): void;
+
+  clearChildrenList(): void;
+  getChildrenList(): Array<FileTreeNode>;
+  setChildrenList(value: Array<FileTreeNode>): void;
+  addChildren(value?: FileTreeNode, index?: number): FileTreeNode;
+
+  getPath(): string;
+  setPath(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): FileTreeNode.AsObject;
+  static toObject(includeInstance: boolean, msg: FileTreeNode): FileTreeNode.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: FileTreeNode, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FileTreeNode;
+  static deserializeBinaryFromReader(message: FileTreeNode, reader: jspb.BinaryReader): FileTreeNode;
+}
+
+export namespace FileTreeNode {
+  export type AsObject = {
+    name: string,
+    nodeType: FileTreeNode.TypeMap[keyof FileTreeNode.TypeMap],
+    childrenList: Array<FileTreeNode.AsObject>,
+    path: string,
+  }
+
+  export interface TypeMap {
+    FOLDER: 0;
+    FILE: 1;
+  }
+
+  export const Type: TypeMap;
+}
+
+export class GetFilesInSubmissionResponse extends jspb.Message {
+  clearRootsList(): void;
+  getRootsList(): Array<FileTreeNode>;
+  setRootsList(value: Array<FileTreeNode>): void;
+  addRoots(value?: FileTreeNode, index?: number): FileTreeNode;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetFilesInSubmissionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetFilesInSubmissionResponse): GetFilesInSubmissionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetFilesInSubmissionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetFilesInSubmissionResponse;
+  static deserializeBinaryFromReader(message: GetFilesInSubmissionResponse, reader: jspb.BinaryReader): GetFilesInSubmissionResponse;
+}
+
+export namespace GetFilesInSubmissionResponse {
+  export type AsObject = {
+    rootsList: Array<FileTreeNode.AsObject>,
+  }
+}
+

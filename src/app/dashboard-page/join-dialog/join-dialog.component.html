@@ -1,0 +1,16 @@
+<h2>加入课程</h2>
+<mat-dialog-content>
+  <form class="course-join-form">
+    <mat-form-field>
+      <mat-label>加课码</mat-label>
+      <input matInput type="text" [formControl]="invitationCode">
+      <button *ngIf="invitationCode.value" matSuffix mat-icon-button (click)="invitationCode.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button (click)="onCancelClicked()">取消</button>
+  <button mat-raised-button color="primary" [disabled]="!invitationCode.value">加入</button>
+</mat-dialog-actions>

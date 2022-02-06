@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
-import {files} from "./example-data";
+import {FileTreeNode} from "../../api/proto/api_pb";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription, switchMap} from "rxjs";
+import {ApiService} from "../../api/api.service";
+import {map} from "rxjs/operators";
 
 /** File node data with possible child nodes. */
-export interface FileNode {
-  name: string;
-  type: string;
-  children?: FileNode[];
-}
+export type FileNode = FileTreeNode;
 
 /**
  * Flattened tree node that has been created from a FileNode through the flattener. Flattened
@@ -19,6 +19,7 @@ export interface FlatTreeNode {
   type: string;
   level: number;
   expandable: boolean;
+  path: string;
 }
 
 @Component({
@@ -34,7 +35,9 @@ export class FilesComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor() {
+  sub: Subscription | undefined;
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -43,19 +46,31 @@ export class FilesComponent implements OnInit {
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.dataSource.data = files;
+    this.sub = this.route.parent?.paramMap.pipe(switchMap(params => {
+      const submissionId = Number.parseInt(params.get('submissionId') || '0');
+      return this.apiService.getFilesInSubmission(submissionId);
+    }), map(resp => {
+      return resp.getRootsList();
+    })).subscribe(nodes => {
+      this.dataSource.data = nodes;
+    });
   }
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number): FlatTreeNode {
     return {
-      name: node.name,
-      type: node.type,
+      name: node.getName(),
+      type: node.getNodeType() === FileTreeNode.Type.FILE ? 'file' : 'folder',
       level,
-      expandable: !!node.children
+      expandable: node.getNodeType() === FileTreeNode.Type.FOLDER,
+      path: node.getPath(),
     };
   }
 
@@ -76,6 +91,10 @@ export class FilesComponent implements OnInit {
 
   /** Get the children for the node. */
   getChildren(node: FileNode): FileNode[] | null | undefined {
-    return node.children;
+    return node.getChildrenList();
+  }
+
+  treeNodeClicked(node: FileTreeNode) {
+    console.log(node);
   }
 }

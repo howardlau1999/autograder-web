@@ -4,7 +4,7 @@ import {
   CreateManifestRequest,
   CreateSubmissionRequest, GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
-  GetCourseListRequest, GetCourseRequest,
+  GetCourseListRequest, GetCourseRequest, GetFilesInSubmissionRequest,
   GetSubmissionReportRequest,
   GetSubmissionsInAssignmentRequest,
   InitUploadRequest,
@@ -141,5 +141,11 @@ export class ApiService {
     const request = new GetCourseRequest();
     request.setCourseId(courseId);
     return this.unary(this.autograderClient.getCourse, request);
+  }
+
+  getFilesInSubmission(submissionId: number) {
+    const request = new GetFilesInSubmissionRequest();
+    request.setSubmissionId(submissionId);
+    return this.unary(this.autograderClient.getFilesInSubmission, request);
   }
 }
