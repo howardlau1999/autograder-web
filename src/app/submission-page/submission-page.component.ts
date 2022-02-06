@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {Observable, of, switchMap} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 interface TabLink {
   path: string;
@@ -22,7 +24,12 @@ export class SubmissionPageComponent {
     title: '提交文件'
   }];
 
-  constructor() {
+  submissionId$: Observable<number>;
+
+  constructor(private route: ActivatedRoute) {
+    this.submissionId$ = this.route.paramMap.pipe(
+      switchMap(params => of(Number.parseInt(params.get('submissionId') || '0')),
+      ));
   }
 
 

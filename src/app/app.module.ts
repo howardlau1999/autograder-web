@@ -35,7 +35,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatListModule} from "@angular/material/list";
-import {LeaderboardComponent} from './submission-page/leaderboard/leaderboard.component';
+import {LeaderboardComponent} from './assignment-page/leaderboard/leaderboard.component';
 import {NotFoundPageComponent} from './not-found-page/not-found-page.component';
 import {ReportComponent} from './submission-page/report/report.component';
 import {FilesComponent} from './submission-page/files/files.component';
@@ -49,6 +49,7 @@ import {
 import {JoinDialogComponent} from './dashboard-page/join-dialog/join-dialog.component';
 import { MembersComponent } from './course-page/members/members.component';
 import { AssignmentsComponent } from './course-page/assignments/assignments.component';
+import { SubmissionsComponent } from './assignment-page/submissions/submissions.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -88,6 +89,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
     AssignmentCreateDialogComponent,
     MembersComponent,
     AssignmentsComponent,
+    SubmissionsComponent,
   ],
   imports: [
     BrowserModule,

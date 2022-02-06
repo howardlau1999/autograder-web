@@ -1,10 +1,16 @@
 <div class="container">
-  <mat-toolbar color="primary">提交详情</mat-toolbar>
+  <mat-toolbar color="primary">提交详情 (#{{submissionId$ | async}})</mat-toolbar>
   <div class="sidenav-body-content">
     <div class="sidenav-body-inner">
       <div class="sidenav-nav">
         <div class="sidenav-container">
           <mat-nav-list>
+            <a mat-list-item routerLink="report">
+              <mat-icon>assessment</mat-icon>
+              &nbsp;测试报告</a>
+            <a mat-list-item routerLink="files">
+              <mat-icon>folder</mat-icon>
+              &nbsp;提交文件</a>
             <a mat-list-item routerLink="../..">
               <mat-icon>arrow_back</mat-icon>
               &nbsp;回到作业详情</a>
@@ -16,17 +22,7 @@
       </div>
 
       <div class="submission-report-container">
-        <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-          <a mat-tab-link *ngFor="let link of links;"
-             routerLinkActive #rla="routerLinkActive"
-             [routerLinkActiveOptions]="{exact:true}"
-             [active]="rla.isActive"
-             [routerLink]="link.path"
-          > {{link.title}} </a>
-        </nav>
-        <mat-tab-nav-panel #tabPanel class="main-content">
-          <router-outlet></router-outlet>
-        </mat-tab-nav-panel>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

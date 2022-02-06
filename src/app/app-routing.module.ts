@@ -6,10 +6,11 @@ import {DashboardPageComponent} from "./dashboard-page/dashboard-page.component"
 import {CoursePageComponent} from "./course-page/course-page.component";
 import {SubmissionPageComponent} from "./submission-page/submission-page.component";
 import {ReportComponent} from "./submission-page/report/report.component";
-import {LeaderboardComponent} from "./submission-page/leaderboard/leaderboard.component";
+import {LeaderboardComponent} from "./assignment-page/leaderboard/leaderboard.component";
 import {FilesComponent} from "./submission-page/files/files.component";
 import {AssignmentsComponent} from "./course-page/assignments/assignments.component";
 import {MembersComponent} from "./course-page/members/members.component";
+import {SubmissionsComponent} from "./assignment-page/submissions/submissions.component";
 
 const routes: Routes = [
     {path: '', component: LoginPageComponent},
@@ -27,7 +28,12 @@ const routes: Routes = [
         }
       ]
     },
-    {path: 'courses/:courseId/assignments/:assignmentId', component: AssignmentPageComponent},
+    {
+      path: 'courses/:courseId/assignments/:assignmentId', component: AssignmentPageComponent, children: [
+        {path: 'submissions', component: SubmissionsComponent},
+        {path: '', redirectTo: 'submissions', pathMatch: 'full'},
+      ]
+    },
     {
       path: 'courses/:courseId/assignments/:assignmentId/submissions/:submissionId',
       component: SubmissionPageComponent,

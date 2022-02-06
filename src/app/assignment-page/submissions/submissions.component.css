@@ -1,0 +1,53 @@
+
+.submission-history-table {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.score-bar {
+  width: 90%;
+}
+
+
+tr.submission-detail-row {
+  height: 0;
+}
+
+tr.submission-element-row:hover {
+  cursor: pointer;
+}
+
+tr.submission-element-row:not(.submission-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.submission-element-row:not(.submission-expanded-row):active {
+  background: #efefef;
+}
+
+.submission-element-row td {
+  border-bottom-width: 0;
+}
+
+.submission-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.submission-element-description {
+  padding: 16px;
+}
+
+.submission-element-description-attribution {
+  opacity: 0.5;
+}
+
+.assignment-info-card {
+  flex: 1 1 auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.submissions-container {
+  padding: 20px;
+}
