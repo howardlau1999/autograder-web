@@ -1,25 +1,28 @@
-<div class="leaderboard-tab-container mat-elevation-z1">
-  <table aria-label="Elements" class="full-width-table" mat-table matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Id</th>
-      <td *matCellDef="let row" mat-cell>{{row.id}}</td>
-    </ng-container>
+<div class="leaderboard-container">
+  <h2>排行榜</h2>
+  <div class="leaderboard-tab-container mat-elevation-z1">
+    <table aria-label="Elements" class="full-width-table" mat-table matSort>
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Id</th>
+        <td *matCellDef="let row" mat-cell>{{row.id}}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
-      <td *matCellDef="let row" mat-cell>{{row.name}}</td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+        <td *matCellDef="let row" mat-cell>{{row.name}}</td>
+      </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
-  <mat-paginator #paginator
-                 [length]="dataSource?.data?.length"
-                 [pageIndex]="0"
-                 [pageSizeOptions]="[5, 10, 20]"
-                 [pageSize]="10"
-                 aria-label="Select page">
-  </mat-paginator>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+    <mat-paginator #paginator
+                   [length]="dataSource?.data?.length"
+                   [pageIndex]="0"
+                   [pageSizeOptions]="[5, 10, 20]"
+                   [pageSize]="10"
+                   aria-label="Select page">
+    </mat-paginator>
+  </div>
 </div>

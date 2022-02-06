@@ -6,3 +6,7 @@
   margin-top: 10px;
   overflow: auto;
 }
+
+.leaderboard-container {
+  padding: 20px;
+}

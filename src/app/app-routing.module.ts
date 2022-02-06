@@ -30,8 +30,15 @@ const routes: Routes = [
     },
     {
       path: 'courses/:courseId/assignments/:assignmentId', component: AssignmentPageComponent, children: [
-        {path: 'submissions', component: SubmissionsComponent},
-        {path: '', redirectTo: 'submissions', pathMatch: 'full'},
+        {
+          path: 'submissions', component: SubmissionsComponent
+        },
+        {
+          path: 'leaderboard', component: LeaderboardComponent
+        },
+        {
+          path: '', redirectTo: 'submissions', pathMatch: 'full'
+        },
       ]
     },
     {
