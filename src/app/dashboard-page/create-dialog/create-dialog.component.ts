@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
 
@@ -13,7 +13,9 @@ export class CreateDialogComponent implements OnInit {
     'shortName': '',
     'description': '',
   });
-  constructor(private dialogRef: MatDialogRef<CreateDialogComponent>, private formBuilder: FormBuilder) { }
+
+  constructor(private dialogRef: MatDialogRef<CreateDialogComponent>, private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
   }

@@ -1,27 +1,27 @@
-<table mat-table class="full-width-table" matSort aria-label="">
+<table aria-label="" class="full-width-table" mat-table matSort>
   <ng-container matColumnDef="filename">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>文件名</th>
-    <td mat-cell *matCellDef="let row">{{row.filename}}</td>
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>文件名</th>
+    <td *matCellDef="let row" mat-cell>{{row.filename}}</td>
   </ng-container>
 
   <ng-container matColumnDef="progress">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>上传进度</th>
-    <td mat-cell *matCellDef="let row">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>上传进度</th>
+    <td *matCellDef="let row" mat-cell>
       <mat-progress-bar *ngIf="row.uploading" [mode]="row.progressBarMode"
                         [value]="row.uploadProgress"></mat-progress-bar>
       <mat-icon *ngIf="row.uploaded">done</mat-icon>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 </table>
 
 <mat-paginator #paginator
                [length]="dataSource?.data?.length"
                [pageIndex]="0"
-               [pageSize]="100"
                [pageSizeOptions]="[50, 100]"
-               showFirstLastButtons
-               aria-label="Select page">
+               [pageSize]="100"
+               aria-label="Select page"
+               showFirstLastButtons>
 </mat-paginator>

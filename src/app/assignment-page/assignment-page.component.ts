@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Observable, of, switchMap} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -20,8 +19,6 @@ export class AssignmentPageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-
 
 
 }

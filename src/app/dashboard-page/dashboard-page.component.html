@@ -1,25 +1,31 @@
 <div class="grid-container">
   <mat-toolbar color="primary">课程列表</mat-toolbar>
   <div class="buttons">
-    <button mat-raised-button color="primary" (click)="joinCourse()">加入课程</button>
-    <button mat-flat-button (click)="createCourse()"><mat-icon>add</mat-icon>创建课程</button>
+    <button (click)="joinCourse()" color="primary" mat-raised-button>加入课程</button>
+    <button (click)="createCourse()" mat-flat-button>
+      <mat-icon>add</mat-icon>
+      创建课程
+    </button>
   </div>
   <div class="card-tile">
     <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
       <mat-card-title>
         {{card.getName()}}
-        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <button [matMenuTriggerFor]="menu" aria-label="Toggle menu" class="more-button" mat-icon-button>
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu" xPosition="after">
-          <button mat-menu-item><mat-icon>settings</mat-icon>管理课程</button>
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            管理课程
+          </button>
         </mat-menu>
       </mat-card-title>
       <mat-card-content class="dashboard-card-content">
         <div>{{card.getShortName()}}</div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button (click)="gotoCourse(card.getCourseId())">进入</button>
+        <button (click)="gotoCourse(card.getCourseId())" mat-button>进入</button>
       </mat-card-actions>
     </mat-card>
   </div>

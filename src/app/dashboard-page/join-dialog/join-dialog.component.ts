@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormControl} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-join-dialog',
@@ -10,7 +10,8 @@ import {FormBuilder, FormControl} from "@angular/forms";
 export class JoinDialogComponent implements OnInit {
   invitationCode = new FormControl('');
 
-  constructor(private dialogRef: MatDialogRef<JoinDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<JoinDialogComponent>) {
+  }
 
   ngOnInit(): void {
   }

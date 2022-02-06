@@ -1,8 +1,8 @@
-import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import {DataSource} from '@angular/cdk/collections';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {map} from 'rxjs/operators';
+import {merge, Observable, of as observableOf} from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface MembersItem {
@@ -59,7 +59,7 @@ export class MembersDataSource extends DataSource<MembersItem> {
       // stream for the data-table to consume.
       return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
-          return this.getPagedData(this.getSortedData([...this.data ]));
+          return this.getPagedData(this.getSortedData([...this.data]));
         }));
     } else {
       throw Error('Please set the paginator and sort on the data source before connecting.');
@@ -70,7 +70,8 @@ export class MembersDataSource extends DataSource<MembersItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {}
+  disconnect(): void {
+  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -97,9 +98,12 @@ export class MembersDataSource extends DataSource<MembersItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
-        default: return 0;
+        case 'name':
+          return compare(a.name, b.name, isAsc);
+        case 'id':
+          return compare(+a.id, +b.id, isAsc);
+        default:
+          return 0;
       }
     });
   }

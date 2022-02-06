@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTable} from "@angular/material/table";
@@ -37,6 +37,7 @@ export class AssignmentsComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
   }
+
   gotoAssignment(assignmentId: number) {
     this.router.navigate([assignmentId], {relativeTo: this.route}).then();
   }

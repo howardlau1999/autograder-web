@@ -18,61 +18,61 @@
   </mat-card>
   <mat-card>
     <mat-card-content>
-      <button mat-raised-button color="primary" (click)="openSubmissionDialog()">
+      <button (click)="openSubmissionDialog()" color="primary" mat-raised-button>
         <mat-icon>add</mat-icon>
         上传提交
       </button>
-      <table mat-table matSort multiTemplateDataRows class="submission-history-table">
+      <table class="submission-history-table" mat-table matSort multiTemplateDataRows>
         <ng-container matColumnDef="submissionId">
-          <th mat-header-cell *matHeaderCellDef i18n="submission-id">提交 ID</th>
-          <td mat-cell *matCellDef="let submission">{{submission.getSubmissionId()}}</td>
+          <th *matHeaderCellDef i18n="submission-id" mat-header-cell>提交 ID</th>
+          <td *matCellDef="let submission" mat-cell>{{submission.getSubmissionId()}}</td>
         </ng-container>
         <ng-container matColumnDef="submittedAt">
-          <th mat-header-cell *matHeaderCellDef i18n="submitted-at">提交时间</th>
-          <td mat-cell *matCellDef="let submission">{{submission.getSubmittedAt().toDate() | date:"medium" }}</td>
+          <th *matHeaderCellDef i18n="submitted-at" mat-header-cell>提交时间</th>
+          <td *matCellDef="let submission" mat-cell>{{submission.getSubmittedAt().toDate() | date:"medium" }}</td>
         </ng-container>
         <ng-container matColumnDef="score">
-          <th mat-header-cell *matHeaderCellDef i18n="score">得分</th>
-          <td mat-cell *matCellDef="let submission">
+          <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
+          <td *matCellDef="let submission" mat-cell>
                   <span *ngIf="submission.getStatus() == 2"> {{submission.getScore()}}
                     /{{submission.getMaxScore()}}</span>
-            <mat-progress-bar class="score-bar" [mode]="submission.getStatus() == 4 ? 'buffer' : 'determinate'"
-                              [value]="submission.getScore()/submission.getMaxScore()*100">
+            <mat-progress-bar [mode]="submission.getStatus() == 4 ? 'buffer' : 'determinate'" [value]="submission.getScore()/submission.getMaxScore()*100"
+                              class="score-bar">
             </mat-progress-bar>
           </td>
         </ng-container>
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef i18n="status">状态</th>
-          <td mat-cell *matCellDef="let submission">{{submission.getStatus()}}</td>
+          <th *matHeaderCellDef i18n="status" mat-header-cell>状态</th>
+          <td *matCellDef="let submission" mat-cell>{{submission.getStatus()}}</td>
         </ng-container>
         <ng-container matColumnDef="operations">
-          <th mat-header-cell *matHeaderCellDef i18n="operations">操作</th>
-          <td mat-cell *matCellDef="let submission">
-            <button mat-button i18n="view">
+          <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
+          <td *matCellDef="let submission" mat-cell>
+            <button i18n="view" mat-button>
               <mat-icon>description</mat-icon>
             </button>
-            <button mat-button i18n="download">
+            <button i18n="download" mat-button>
               <mat-icon>download</mat-icon>
             </button>
           </td>
         </ng-container>
         <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let submission" [attr.colspan]="columnsToDisplay.length">
-            <div class="submission-element-detail"
-                 [@detailExpand]="submission === expandedSubmission ? 'expanded' : 'collapsed'">
+          <td *matCellDef="let submission" [attr.colspan]="columnsToDisplay.length" mat-cell>
+            <div [@detailExpand]="submission === expandedSubmission ? 'expanded' : 'collapsed'"
+                 class="submission-element-detail">
               提交记录详情
             </div>
           </td>
         </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let submission; columns: columnsToDisplay"
-            class="submission-element-row"
+        <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+        <tr (click)="viewSubmissionReport(submission.getSubmissionId())// expandedSubmission = expandedSubmission === submission ? null : submission" *matRowDef="let submission; columns: columnsToDisplay"
             [class.submission-expanded-row]="expandedSubmission === submission"
-            (click)="viewSubmissionReport(submission.getSubmissionId())// expandedSubmission = expandedSubmission === submission ? null : submission"></tr>
-        <tr mat-row *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row"></tr>
+            class="submission-element-row"
+            mat-row></tr>
+        <tr *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row" mat-row></tr>
       </table>
     </mat-card-content>
-    <mat-paginator [length]="dataSource?.count" [pageSize]="10" [pageSizeOptions]="[5, 10]"
+    <mat-paginator [length]="dataSource?.count" [pageSizeOptions]="[5, 10]" [pageSize]="10"
                    showFirstLastButtons></mat-paginator>
   </mat-card>
 </div>

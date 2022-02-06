@@ -5,22 +5,23 @@
       <div class="sidenav-nav">
         <div class="sidenav-container">
           <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-            <mat-tree-node *matTreeNodeDef="let node" class="clickable" matTreeNodeToggle matTreeNodePadding (click)="treeNodeClicked(node)">
-              <button mat-icon-button disabled></button>
-              <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+            <mat-tree-node (click)="treeNodeClicked(node)" *matTreeNodeDef="let node" class="clickable" matTreeNodePadding
+                           matTreeNodeToggle>
+              <button disabled mat-icon-button></button>
+              <mat-icon [attr.aria-label]="node.type + 'icon'" class="type-icon">
                 {{ node.type === 'file' ? 'description' : 'folder' }}
               </mat-icon>
               {{node.name}}
             </mat-tree-node>
 
             <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-              <button mat-icon-button matTreeNodeToggle
-                      [attr.aria-label]="'Toggle ' + node.name">
+              <button [attr.aria-label]="'Toggle ' + node.name" mat-icon-button
+                      matTreeNodeToggle>
                 <mat-icon class="mat-icon-rtl-mirror">
                   {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                 </mat-icon>
               </button>
-              <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+              <mat-icon [attr.aria-label]="node.type + 'icon'" class="type-icon">
                 {{ node.type === 'file' ? 'description' : 'folder' }}
               </mat-icon>
               {{node.name}}
@@ -29,7 +30,9 @@
         </div>
       </div>
       <div class="file-preview-container">
-        <code><pre>Lorem ipsum</pre></code>
+        <code>
+          <pre>Lorem ipsum</pre>
+        </code>
       </div>
     </div>
   </div>

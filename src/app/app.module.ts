@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -47,9 +47,9 @@ import {
   CreateDialogComponent as AssignmentCreateDialogComponent
 } from './course-page/create-dialog/create-dialog.component';
 import {JoinDialogComponent} from './dashboard-page/join-dialog/join-dialog.component';
-import { MembersComponent } from './course-page/members/members.component';
-import { AssignmentsComponent } from './course-page/assignments/assignments.component';
-import { SubmissionsComponent } from './assignment-page/submissions/submissions.component';
+import {MembersComponent} from './course-page/members/members.component';
+import {AssignmentsComponent} from './course-page/assignments/assignments.component';
+import {SubmissionsComponent} from './assignment-page/submissions/submissions.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {

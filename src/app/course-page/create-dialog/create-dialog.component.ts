@@ -16,7 +16,8 @@ export class CreateDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<CreateDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: CourseCreateDialogData,
               private apiService: ApiService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }

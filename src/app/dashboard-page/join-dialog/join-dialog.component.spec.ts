@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JoinDialogComponent } from './join-dialog.component';
+import {JoinDialogComponent} from './join-dialog.component';
 
 describe('JoinDialogComponent', () => {
   let component: JoinDialogComponent;
@@ -8,9 +8,9 @@ describe('JoinDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ JoinDialogComponent ]
+      declarations: [JoinDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

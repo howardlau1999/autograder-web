@@ -3,29 +3,29 @@
     <mat-card-title i18n="login">登录</mat-card-title>
     <mat-card-content>
       <br/>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <p>
-          <mat-form-field class="login-form-control" appearance="standard">
+          <mat-form-field appearance="standard" class="login-form-control">
             <mat-label i18n="username">用户名</mat-label>
-            <input matInput required i18n-placeholder="username" placeholder="用户名" formControlName="username">
+            <input formControlName="username" i18n-placeholder="username" matInput placeholder="用户名" required>
             <mat-icon matSuffix>account_circle</mat-icon>
           </mat-form-field>
         </p>
         <p>
-          <mat-form-field class="login-form-control" appearance="standard">
+          <mat-form-field appearance="standard" class="login-form-control">
             <mat-label i18n="password">密码</mat-label>
-            <input matInput required i18n-placeholder="password" placeholder="密码" type="password"
-                   formControlName="password">
+            <input formControlName="password" i18n-placeholder="password" matInput placeholder="密码" required
+                   type="password">
             <mat-icon matSuffix>password</mat-icon>
             <mat-error *ngIf="errorMessage !== null">{{errorMessage}}</mat-error>
           </mat-form-field>
         </p>
         <p class="login-button-container">
-          <button mat-button class="login-button" i18n="forgot-password">忘记密码</button>
+          <button class="login-button" i18n="forgot-password" mat-button>忘记密码</button>
           <span class="login-button-spacer"></span>
-          <button mat-raised-button [disabled]="loggingIn" color="primary" type="submit">
-            <span class="login-button" i18n="login" *ngIf="!loggingIn">登录</span>
-            <span class="login-button" i18n="login" *ngIf="loggingIn">登录中</span>
+          <button [disabled]="loggingIn" color="primary" mat-raised-button type="submit">
+            <span *ngIf="!loggingIn" class="login-button" i18n="login">登录</span>
+            <span *ngIf="loggingIn" class="login-button" i18n="login">登录中</span>
           </button>
         </p>
       </form>
@@ -36,7 +36,7 @@
     <mat-card-content>
       <br/>
       <p>
-        <button mat-raised-button class="one-line-button" i18n="github-login">使用 GitHub 登录</button>
+        <button class="one-line-button" i18n="github-login" mat-raised-button>使用 GitHub 登录</button>
       </p>
     </mat-card-content>
   </mat-card>

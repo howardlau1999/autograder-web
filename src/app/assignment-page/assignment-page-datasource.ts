@@ -2,7 +2,7 @@ import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {map, switchMap} from 'rxjs/operators';
-import {Observable, of as observableOf, merge, BehaviorSubject, tap, Subscription} from 'rxjs';
+import {merge, Observable, Subscription} from 'rxjs';
 import {GetSubmissionsInAssignmentResponse} from "../api/proto/api_pb";
 import {ApiService} from "../api/api.service";
 import {SubmissionStatus} from "../api/proto/model_pb";

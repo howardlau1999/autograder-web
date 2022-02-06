@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../api/api.service";
 import {FormBuilder} from "@angular/forms";
-import {first} from "rxjs";
-import {map} from "rxjs/operators";
 import {UserService} from "../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
