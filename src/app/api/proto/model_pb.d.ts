@@ -3,6 +3,7 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 
 export class User extends jspb.Message {
   getUsername(): string;
@@ -236,11 +237,13 @@ export class LeaderboardItem extends jspb.Message {
   getName(): string;
   setName(value: string): void;
 
-  getValue(): string;
-  setValue(value: string): void;
+  hasValue(): boolean;
+  clearValue(): void;
+  getValue(): google_protobuf_struct_pb.Value | undefined;
+  setValue(value?: google_protobuf_struct_pb.Value): void;
 
-  getOrder(): string;
-  setOrder(value: string): void;
+  getOrder(): LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap];
+  setOrder(value: LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap]): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardItem.AsObject;
@@ -255,8 +258,45 @@ export class LeaderboardItem extends jspb.Message {
 export namespace LeaderboardItem {
   export type AsObject = {
     name: string,
-    value: string,
-    order: string,
+    value?: google_protobuf_struct_pb.Value.AsObject,
+    order: LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap],
+  }
+
+  export interface OrderMap {
+    ASC: 0;
+    DESC: 1;
+  }
+
+  export const Order: OrderMap;
+}
+
+export class LeaderboardEntry extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  getNickname(): string;
+  setNickname(value: string): void;
+
+  clearItemsList(): void;
+  getItemsList(): Array<LeaderboardItem>;
+  setItemsList(value: Array<LeaderboardItem>): void;
+  addItems(value?: LeaderboardItem, index?: number): LeaderboardItem;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): LeaderboardEntry.AsObject;
+  static toObject(includeInstance: boolean, msg: LeaderboardEntry): LeaderboardEntry.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: LeaderboardEntry, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): LeaderboardEntry;
+  static deserializeBinaryFromReader(message: LeaderboardEntry, reader: jspb.BinaryReader): LeaderboardEntry;
+}
+
+export namespace LeaderboardEntry {
+  export type AsObject = {
+    submissionId: number,
+    nickname: string,
+    itemsList: Array<LeaderboardItem.AsObject>,
   }
 }
 
@@ -436,6 +476,12 @@ export class Submission extends jspb.Message {
   setFilesList(value: Array<string>): void;
   addFiles(value: string, index?: number): string;
 
+  getLeaderboardName(): string;
+  setLeaderboardName(value: string): void;
+
+  getUserId(): number;
+  setUserId(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Submission.AsObject;
   static toObject(includeInstance: boolean, msg: Submission): Submission.AsObject;
@@ -453,6 +499,8 @@ export namespace Submission {
     submittersList: Array<number>,
     path: string,
     filesList: Array<string>,
+    leaderboardName: string,
+    userId: number,
   }
 }
 

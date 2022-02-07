@@ -11,6 +11,7 @@ import {FilesComponent} from "./submission-page/files/files.component";
 import {AssignmentsComponent} from "./course-page/assignments/assignments.component";
 import {MembersComponent} from "./course-page/members/members.component";
 import {SubmissionsComponent} from "./assignment-page/submissions/submissions.component";
+import {AssignmentsManagementComponent} from "./course-page/assignments-management/assignments-management.component";
 
 const routes: Routes = [
     {path: '', component: LoginPageComponent},
@@ -24,8 +25,11 @@ const routes: Routes = [
           path: 'members', component: MembersComponent,
         },
         {
+          path: 'assignments/admin', component: AssignmentsManagementComponent,
+        },
+        {
           path: '', redirectTo: 'assignments', pathMatch: 'full',
-        }
+        },
       ]
     },
     {

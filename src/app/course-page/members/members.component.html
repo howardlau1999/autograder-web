@@ -1,15 +1,44 @@
-<div class="mat-elevation-z8">
+<div class="members-container">
+  <h2>课程成员</h2>
+  <div class="operation-bar">
+    <button mat-raised-button (click)="onAddMemberClicked()"><mat-icon>person_add</mat-icon>&nbsp;添加成员</button>
+    <button mat-flat-button (click)="onBatchAddMemberClicked()"><mat-icon>group_add</mat-icon>&nbsp;批量添加</button>
+    <div class="spacer"></div>
+    <form>
+      <mat-form-field>
+        <mat-label>搜索</mat-label>
+        <input matInput [(ngModel)]="search" name="search">
+        <button mat-icon-button matSuffix (click)="search = ''" *ngIf="search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+  </div>
+  <div class="table-container mat-elevation-z1">
   <table aria-label="Elements" class="full-width-table" mat-table matSort>
     <!-- Id Column -->
     <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Id</th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>用户 ID</th>
       <td *matCellDef="let row" mat-cell>{{row.id}}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>用户名</th>
       <td *matCellDef="let row" mat-cell>{{row.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
+      <td *matCellDef="let row" mat-cell>{{row.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="operations">
+      <th *matHeaderCellDef mat-header-cell>操作</th>
+      <td *matCellDef="let row" mat-cell><button mat-icon-button><mat-icon>person_remove</mat-icon></button></td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
@@ -19,8 +48,9 @@
   <mat-paginator #paginator
                  [length]="dataSource?.data?.length"
                  [pageIndex]="0"
-                 [pageSizeOptions]="[5, 10, 20]"
+                 [pageSizeOptions]="[5, 10, 20, 50]"
                  [pageSize]="10"
+                 showFirstLastButtons
                  aria-label="Select page">
-  </mat-paginator>
+  </mat-paginator></div>
 </div>

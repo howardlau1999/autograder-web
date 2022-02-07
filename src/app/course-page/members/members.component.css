@@ -1,3 +1,20 @@
 .full-width-table {
   width: 100%;
 }
+
+.members-container {
+  padding: 20px;
+}
+
+.table-container {
+  margin-top: 10px;
+}
+
+.operation-bar {
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {ApiService} from "../api/api.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {JoinDialogComponent} from "./join-dialog/join-dialog.component";
-import {CreateDialogComponent} from "./create-dialog/create-dialog.component";
+import {CourseCreateDialogComponent} from "./course-create-dialog/course-create-dialog.component";
+import {mergeWith, Subject, Subscription} from "rxjs";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -12,13 +14,20 @@ import {CreateDialogComponent} from "./create-dialog/create-dialog.component";
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent {
-  cards$ = this.apiService.getCourseList(1).pipe(map((response) => {
-    return response.getCoursesList();
-  }));
+  refresher: Subject<null> = new Subject<null>();
+  cards$ = this.refresher.pipe(
+    mergeWith(this.route.paramMap),
+    switchMap(_ => this.apiService.getCourseList(1).pipe(
+      map((response) => {
+        return response.getCoursesList();
+      }),
+    )),
+  );
+  createDialogSubscription: Subscription | null = null;
 
   constructor(private dialog: MatDialog,
               private apiService: ApiService,
-              private router: Router) {
+              private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar) {
   }
 
   joinCourse() {
@@ -26,7 +35,20 @@ export class DashboardPageComponent {
   }
 
   createCourse() {
-    this.dialog.open(CreateDialogComponent);
+    const dialogRef = this.dialog.open(CourseCreateDialogComponent);
+    if (this.createDialogSubscription === null) {
+      const config: MatSnackBarConfig = {
+        duration: 3000,
+      }
+      this.createDialogSubscription = dialogRef.afterClosed().subscribe(result => {
+        if (result !== null) {
+          this.refresher.next(null);
+          this.snackBar.open("课程创建成功", "关闭", config);
+        } else {
+          this.snackBar.open("创建已取消", "关闭", config);
+        }
+      });
+    }
   }
 
   gotoCourse(courseId: number) {

@@ -4,6 +4,11 @@
     <td *matCellDef="let row" mat-cell>{{row.filename}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="filesize">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>文件大小</th>
+    <td *matCellDef="let row" mat-cell>{{row.filesize | filesize}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="progress">
     <th *matHeaderCellDef mat-header-cell mat-sort-header>上传进度</th>
     <td *matCellDef="let row" mat-cell>
@@ -13,15 +18,12 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="operations">
+    <th *matHeaderCellDef mat-header-cell>操作</th>
+    <td *matCellDef="let row" mat-cell><mat-icon>delete</mat-icon></td>
+  </ng-container>
+
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 </table>
 
-<mat-paginator #paginator
-               [length]="dataSource?.data?.length"
-               [pageIndex]="0"
-               [pageSizeOptions]="[50, 100]"
-               [pageSize]="100"
-               aria-label="Select page"
-               showFirstLastButtons>
-</mat-paginator>

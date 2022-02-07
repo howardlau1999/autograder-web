@@ -41,15 +41,19 @@ import {ReportComponent} from './submission-page/report/report.component';
 import {FilesComponent} from './submission-page/files/files.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {
-  CreateDialogComponent as CourseCreateDialogComponent
-} from './dashboard-page/create-dialog/create-dialog.component';
+  CourseCreateDialogComponent as CourseCreateDialogComponent
+} from './dashboard-page/course-create-dialog/course-create-dialog.component';
 import {
-  CreateDialogComponent as AssignmentCreateDialogComponent
-} from './course-page/create-dialog/create-dialog.component';
+  AssignmentCreateDialogComponent as AssignmentCreateDialogComponent
+} from './course-page/assignment-create-dialog/assignment-create-dialog.component';
 import {JoinDialogComponent} from './dashboard-page/join-dialog/join-dialog.component';
 import {MembersComponent} from './course-page/members/members.component';
 import {AssignmentsComponent} from './course-page/assignments/assignments.component';
 import {SubmissionsComponent} from './assignment-page/submissions/submissions.component';
+import {FilesizePipe} from './filesize.pipe';
+import {AddMemberDialogComponent} from './course-page/members/add-member-dialog/add-member-dialog.component';
+import { BatchAddMemberDialogComponent } from './course-page/members/batch-add-member-dialog/batch-add-member-dialog.component';
+import { AssignmentsManagementComponent } from './course-page/assignments-management/assignments-management.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -90,6 +94,10 @@ export class PaginatorIntl implements MatPaginatorIntl {
     MembersComponent,
     AssignmentsComponent,
     SubmissionsComponent,
+    FilesizePipe,
+    AddMemberDialogComponent,
+    BatchAddMemberDialogComponent,
+    AssignmentsManagementComponent,
   ],
   imports: [
     BrowserModule,

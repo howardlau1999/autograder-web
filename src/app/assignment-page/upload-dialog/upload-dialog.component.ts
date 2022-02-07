@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../api/api.service";
 import {HttpEventType} from "@angular/common/http";
@@ -6,6 +6,7 @@ import {BehaviorSubject, filter, first, from, mergeMap, of, retry, Subscription,
 import {map} from "rxjs/operators";
 import * as zipjs from "@zip.js/zip.js";
 import {BlobWriter} from "@zip.js/zip.js";
+import {MatPaginator} from "@angular/material/paginator";
 
 export interface UploadDialogData {
   assignmentId: number
@@ -14,6 +15,7 @@ export interface UploadDialogData {
 export class UploadEntry {
   sub: Subscription | null = null;
   filename = '';
+  filesize: number = 0;
   uploadToken: string = '';
   uploading: boolean = false;
   uploaded: boolean = false;
@@ -21,9 +23,10 @@ export class UploadEntry {
   error: string | null = null;
   progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
 
-  constructor(filename: string) {
+  constructor(filename: string, filesize: number) {
     this.filename = filename;
     this.uploading = true;
+    this.filesize = filesize;
   }
 
   finishUpload() {
@@ -44,7 +47,7 @@ export class UploadEntry {
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./upload-dialog.component.css']
 })
-export class UploadDialogComponent implements OnInit {
+export class UploadDialogComponent implements OnInit, AfterViewInit {
   assignmentId: number;
   manifestId: number | null = null;
   uploadEntries: { [filename: string]: UploadEntry } = {};
@@ -79,7 +82,7 @@ export class UploadDialogComponent implements OnInit {
   }
 
   createSubmission() {
-    return this.apiService.createSubmission(1, this.assignmentId, this.manifestId!, [1]);
+    return this.apiService.createSubmission(1, this.assignmentId, this.manifestId!, [1], "Howard Lau");
   }
 
   onSubmitClicked(): void {
@@ -103,7 +106,7 @@ export class UploadDialogComponent implements OnInit {
     })) : of(this.manifestId)).subscribe(manifestId => {
       from(zipReader.getEntries()).pipe(mergeMap(entries => {
         const fileEntries = entries.filter(entry => !entry.directory && entry.getData !== undefined)
-        const uploadEntries = fileEntries.map(entry => new UploadEntry(entry.filename));
+        const uploadEntries = fileEntries.map(entry => new UploadEntry(entry.filename, entry.uncompressedSize));
         uploadEntries.forEach(entry => this.uploadEntries[entry.filename] = entry);
         this.updateUploadEntries();
         this.updateProgress();
@@ -151,5 +154,9 @@ export class UploadDialogComponent implements OnInit {
     }
     this.uploadEntries = {};
     this.updateUploadEntries();
+  }
+
+  ngAfterViewInit(): void {
+
   }
 }

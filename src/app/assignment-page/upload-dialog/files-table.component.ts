@@ -12,14 +12,14 @@ import {UploadEntry} from "./upload-dialog.component";
   styleUrls: ['./files-table.component.css']
 })
 export class FilesTableComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @Input() paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<FilesTableItem>;
   @Input() uploadEntries!: Observable<{ [filename: string]: UploadEntry; }>;
   dataSource: FilesTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['filename', 'progress'];
+  displayedColumns = ['filename', 'filesize', 'progress', 'operations'];
 
   constructor() {
     this.dataSource = new FilesTableDataSource(of({}));

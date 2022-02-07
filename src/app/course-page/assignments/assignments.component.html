@@ -17,6 +17,9 @@
       </ng-template>
     </mat-card>
     <mat-card class="assignment-table-card">
+      <button mat-raised-button (click)="onAddAssignmentClicked()">
+        <mat-icon>settings</mat-icon>
+        &nbsp;添加作业</button>
       <table aria-label="Elements" class="full-width-table" mat-table matSort>
         <!-- Id Column -->
         <ng-container matColumnDef="id">

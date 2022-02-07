@@ -674,6 +674,9 @@ export class CreateSubmissionRequest extends jspb.Message {
   setSubmittersList(value: Array<number>): void;
   addSubmitters(value: number, index?: number): number;
 
+  getLeaderboardName(): string;
+  setLeaderboardName(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateSubmissionRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateSubmissionRequest): CreateSubmissionRequest.AsObject;
@@ -690,6 +693,7 @@ export namespace CreateSubmissionRequest {
     assignmentId: number,
     manifestId: number,
     submittersList: Array<number>,
+    leaderboardName: string,
   }
 }
 
@@ -1039,6 +1043,146 @@ export class GetFilesInSubmissionResponse extends jspb.Message {
 export namespace GetFilesInSubmissionResponse {
   export type AsObject = {
     rootsList: Array<FileTreeNode.AsObject>,
+  }
+}
+
+export class GetLeaderboardRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetLeaderboardRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetLeaderboardRequest): GetLeaderboardRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetLeaderboardRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetLeaderboardRequest;
+  static deserializeBinaryFromReader(message: GetLeaderboardRequest, reader: jspb.BinaryReader): GetLeaderboardRequest;
+}
+
+export namespace GetLeaderboardRequest {
+  export type AsObject = {
+    assignmentId: number,
+  }
+}
+
+export class GetLeaderboardResponse extends jspb.Message {
+  clearEntriesList(): void;
+  getEntriesList(): Array<model_pb.LeaderboardEntry>;
+  setEntriesList(value: Array<model_pb.LeaderboardEntry>): void;
+  addEntries(value?: model_pb.LeaderboardEntry, index?: number): model_pb.LeaderboardEntry;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetLeaderboardResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetLeaderboardResponse): GetLeaderboardResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetLeaderboardResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetLeaderboardResponse;
+  static deserializeBinaryFromReader(message: GetLeaderboardResponse, reader: jspb.BinaryReader): GetLeaderboardResponse;
+}
+
+export namespace GetLeaderboardResponse {
+  export type AsObject = {
+    entriesList: Array<model_pb.LeaderboardEntry.AsObject>,
+  }
+}
+
+export class HasLeaderboardRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): HasLeaderboardRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: HasLeaderboardRequest): HasLeaderboardRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: HasLeaderboardRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): HasLeaderboardRequest;
+  static deserializeBinaryFromReader(message: HasLeaderboardRequest, reader: jspb.BinaryReader): HasLeaderboardRequest;
+}
+
+export namespace HasLeaderboardRequest {
+  export type AsObject = {
+    assignmentId: number,
+  }
+}
+
+export class HasLeaderboardResponse extends jspb.Message {
+  getHasLeaderboard(): boolean;
+  setHasLeaderboard(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): HasLeaderboardResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: HasLeaderboardResponse): HasLeaderboardResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: HasLeaderboardResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): HasLeaderboardResponse;
+  static deserializeBinaryFromReader(message: HasLeaderboardResponse, reader: jspb.BinaryReader): HasLeaderboardResponse;
+}
+
+export namespace HasLeaderboardResponse {
+  export type AsObject = {
+    hasLeaderboard: boolean,
+  }
+}
+
+export class CreateCourseRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getShortName(): string;
+  setShortName(value: string): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateCourseRequest): CreateCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateCourseRequest;
+  static deserializeBinaryFromReader(message: CreateCourseRequest, reader: jspb.BinaryReader): CreateCourseRequest;
+}
+
+export namespace CreateCourseRequest {
+  export type AsObject = {
+    name: string,
+    shortName: string,
+    description: string,
+    userId: number,
+  }
+}
+
+export class CreateCourseResponse extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  hasCourse(): boolean;
+  clearCourse(): void;
+  getCourse(): model_pb.Course | undefined;
+  setCourse(value?: model_pb.Course): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateCourseResponse): CreateCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateCourseResponse;
+  static deserializeBinaryFromReader(message: CreateCourseResponse, reader: jspb.BinaryReader): CreateCourseResponse;
+}
+
+export namespace CreateCourseResponse {
+  export type AsObject = {
+    courseId: number,
+    course?: model_pb.Course.AsObject,
   }
 }
 

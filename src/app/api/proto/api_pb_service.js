@@ -136,6 +136,15 @@ AutograderService.GetCourse = {
   responseType: api_pb.GetCourseResponse
 };
 
+AutograderService.CreateCourse = {
+  methodName: "CreateCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.CreateCourseRequest,
+  responseType: api_pb.CreateCourseResponse
+};
+
 AutograderService.GetFilesInSubmission = {
   methodName: "GetFilesInSubmission",
   service: AutograderService,
@@ -143,6 +152,24 @@ AutograderService.GetFilesInSubmission = {
   responseStream: false,
   requestType: api_pb.GetFilesInSubmissionRequest,
   responseType: api_pb.GetFilesInSubmissionResponse
+};
+
+AutograderService.GetLeaderboard = {
+  methodName: "GetLeaderboard",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetLeaderboardRequest,
+  responseType: api_pb.GetLeaderboardResponse
+};
+
+AutograderService.HasLeaderboard = {
+  methodName: "HasLeaderboard",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.HasLeaderboardRequest,
+  responseType: api_pb.HasLeaderboardResponse
 };
 
 exports.AutograderService = AutograderService;
@@ -618,11 +645,104 @@ AutograderServiceClient.prototype.getCourse = function getCourse(requestMessage,
   };
 };
 
+AutograderServiceClient.prototype.createCourse = function createCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.CreateCourse, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
 AutograderServiceClient.prototype.getFilesInSubmission = function getFilesInSubmission(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetFilesInSubmission, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getLeaderboard = function getLeaderboard(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetLeaderboard, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.hasLeaderboard = function hasLeaderboard(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.HasLeaderboard, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

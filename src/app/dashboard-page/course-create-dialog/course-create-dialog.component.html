@@ -1,21 +1,21 @@
 <h2>创建课程</h2>
 <mat-dialog-content>
-  <form [formGroup]="courseCreateForm" class="course-create-form">
+  <form class="course-create-form">
     <mat-form-field>
       <mat-label>课程名称</mat-label>
-      <input formControlName="name" matInput required>
+      <input [formControl]="name" matInput required>
     </mat-form-field>
     <mat-form-field>
       <mat-label>课程号</mat-label>
-      <input formControlName="shortName" matInput required>
+      <input [formControl]="shortName" matInput required>
     </mat-form-field>
     <mat-form-field>
       <mat-label>课程描述</mat-label>
-      <input formControlName="description" matInput required>
+      <textarea [formControl]="description" matInput required></textarea>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
-  <button color="primary" mat-raised-button>确定</button>
+  <button (click)="onCreateClicked()" [disabled]="!name.value || !shortName.value || !description.value" color="primary" mat-raised-button>确定</button>
 </mat-dialog-actions>

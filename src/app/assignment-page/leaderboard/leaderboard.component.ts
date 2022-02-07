@@ -3,6 +3,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable} from '@angular/material/table';
 import {LeaderboardDataSource, LeaderboardItem} from './leaderboard-datasource';
+import {ApiService} from "../../api/api.service";
+import {ActivatedRoute} from "@angular/router";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-leaderboard',
@@ -16,10 +20,14 @@ export class LeaderboardComponent implements AfterViewInit {
   dataSource: LeaderboardDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['rank', 'name', 'Accuracy'];
+  columns$: Observable<string[]>;
 
-  constructor() {
-    this.dataSource = new LeaderboardDataSource();
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {
+    this.dataSource = new LeaderboardDataSource(apiService, this.route.parent!.paramMap.pipe(map(params => {
+      return Number.parseInt(params.get('assignmentId') || '0');
+    })));
+    this.columns$ = this.dataSource.columns$;
   }
 
   ngAfterViewInit(): void {

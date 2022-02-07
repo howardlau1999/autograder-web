@@ -83,6 +83,10 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
       switch (this.sort?.active) {
         case 'filename':
           return compare(a.filename, b.filename, isAsc);
+        case 'progress':
+          return compare(a.uploadProgress, b.uploadProgress, isAsc);
+        case 'filesize':
+          return compare(a.filesize, b.filesize, isAsc);
         default:
           return 0;
       }

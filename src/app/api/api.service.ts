@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {AutograderServiceClient, ServiceError, UnaryResponse} from "./proto/api_pb_service";
 import {
+  CreateCourseRequest,
   CreateManifestRequest,
   CreateSubmissionRequest, GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
-  GetCourseListRequest, GetCourseRequest, GetFilesInSubmissionRequest,
+  GetCourseListRequest, GetCourseRequest, GetFilesInSubmissionRequest, GetLeaderboardRequest,
   GetSubmissionReportRequest,
   GetSubmissionsInAssignmentRequest,
   InitUploadRequest,
@@ -101,12 +102,13 @@ export class ApiService {
     return this.unary(this.autograderClient.createManifest, request);
   }
 
-  createSubmission(userId: number, assigmentId: number, manifestId: number, submitters: number[]) {
+  createSubmission(userId: number, assigmentId: number, manifestId: number, submitters: number[], nickname: string) {
     const request = new CreateSubmissionRequest();
     request.setUserId(userId);
     request.setSubmittersList(submitters);
     request.setManifestId(manifestId);
     request.setAssignmentId(assigmentId);
+    request.setLeaderboardName(nickname);
     return this.unary(this.autograderClient.createSubmission, request);
   }
 
@@ -147,5 +149,20 @@ export class ApiService {
     const request = new GetFilesInSubmissionRequest();
     request.setSubmissionId(submissionId);
     return this.unary(this.autograderClient.getFilesInSubmission, request);
+  }
+
+  getLeaderboard(assignmentId: number) {
+    const request = new GetLeaderboardRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(this.autograderClient.getLeaderboard, request);
+  }
+
+  createCourse(name: string, shortName: string, description: string) {
+    const request = new CreateCourseRequest();
+    request.setUserId(1);
+    request.setName(name);
+    request.setShortName(shortName);
+    request.setDescription(description);
+    return this.unary(this.autograderClient.createCourse, request);
   }
 }

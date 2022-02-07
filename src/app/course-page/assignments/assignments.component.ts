@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
 import {Observable, switchMap, tap} from "rxjs";
 import {Course} from "../../api/proto/model_pb";
+import {MatDialog} from "@angular/material/dialog";
+import {AssignmentCreateDialogComponent} from "../assignment-create-dialog/assignment-create-dialog.component";
 
 @Component({
   selector: 'app-assignments',
@@ -23,7 +25,7 @@ export class AssignmentsComponent implements AfterViewInit {
   course$: Observable<Course | undefined>;
   courseId: number = 0;
 
-  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) {
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) {
     const id$ = this.route.parent!.paramMap.pipe(
       map(params => Number.parseInt(params.get('courseId') || "0")), tap(courseId => {
         this.courseId = courseId;
@@ -40,5 +42,13 @@ export class AssignmentsComponent implements AfterViewInit {
 
   gotoAssignment(assignmentId: number) {
     this.router.navigate([assignmentId], {relativeTo: this.route}).then();
+  }
+
+  gotoAdmin() {
+    this.router.navigate(["admin"], {relativeTo: this.route}).then();
+  }
+
+  onAddAssignmentClicked() {
+    this.dialog.open(AssignmentCreateDialogComponent);
   }
 }

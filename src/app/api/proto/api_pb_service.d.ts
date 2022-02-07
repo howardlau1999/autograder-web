@@ -130,6 +130,15 @@ type AutograderServiceGetCourse = {
   readonly responseType: typeof api_pb.GetCourseResponse;
 };
 
+type AutograderServiceCreateCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CreateCourseRequest;
+  readonly responseType: typeof api_pb.CreateCourseResponse;
+};
+
 type AutograderServiceGetFilesInSubmission = {
   readonly methodName: string;
   readonly service: typeof AutograderService;
@@ -137,6 +146,24 @@ type AutograderServiceGetFilesInSubmission = {
   readonly responseStream: false;
   readonly requestType: typeof api_pb.GetFilesInSubmissionRequest;
   readonly responseType: typeof api_pb.GetFilesInSubmissionResponse;
+};
+
+type AutograderServiceGetLeaderboard = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetLeaderboardRequest;
+  readonly responseType: typeof api_pb.GetLeaderboardResponse;
+};
+
+type AutograderServiceHasLeaderboard = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.HasLeaderboardRequest;
+  readonly responseType: typeof api_pb.HasLeaderboardResponse;
 };
 
 export class AutograderService {
@@ -155,7 +182,10 @@ export class AutograderService {
   static readonly GetSubmissionReport: AutograderServiceGetSubmissionReport;
   static readonly GetAssignment: AutograderServiceGetAssignment;
   static readonly GetCourse: AutograderServiceGetCourse;
+  static readonly CreateCourse: AutograderServiceCreateCourse;
   static readonly GetFilesInSubmission: AutograderServiceGetFilesInSubmission;
+  static readonly GetLeaderboard: AutograderServiceGetLeaderboard;
+  static readonly HasLeaderboard: AutograderServiceHasLeaderboard;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -284,6 +314,15 @@ export class AutograderServiceClient {
     requestMessage: api_pb.GetCourseRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
   ): UnaryResponse;
+  createCourse(
+    requestMessage: api_pb.CreateCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateCourseResponse|null) => void
+  ): UnaryResponse;
+  createCourse(
+    requestMessage: api_pb.CreateCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateCourseResponse|null) => void
+  ): UnaryResponse;
   getFilesInSubmission(
     requestMessage: api_pb.GetFilesInSubmissionRequest,
     metadata: grpc.Metadata,
@@ -292,6 +331,24 @@ export class AutograderServiceClient {
   getFilesInSubmission(
     requestMessage: api_pb.GetFilesInSubmissionRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetFilesInSubmissionResponse|null) => void
+  ): UnaryResponse;
+  getLeaderboard(
+    requestMessage: api_pb.GetLeaderboardRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetLeaderboardResponse|null) => void
+  ): UnaryResponse;
+  getLeaderboard(
+    requestMessage: api_pb.GetLeaderboardRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetLeaderboardResponse|null) => void
+  ): UnaryResponse;
+  hasLeaderboard(
+    requestMessage: api_pb.HasLeaderboardRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.HasLeaderboardResponse|null) => void
+  ): UnaryResponse;
+  hasLeaderboard(
+    requestMessage: api_pb.HasLeaderboardRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.HasLeaderboardResponse|null) => void
   ): UnaryResponse;
 }
 
