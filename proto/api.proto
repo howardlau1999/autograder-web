@@ -239,6 +239,21 @@ message CreateCourseResponse {
   Course course = 2;
 }
 
+message CreateAssignmentRequest {
+  string name = 1;
+  uint64 course_id = 2;
+  AssignmentType assignment_type = 3;
+  google.protobuf.Timestamp release_date = 4;
+  google.protobuf.Timestamp due_date = 5;
+  google.protobuf.Timestamp late_due_date = 6;
+  string description = 7;
+}
+
+message CreateAssignmentResponse {
+  Assignment assignment = 1;
+  uint64 assignment_id = 2;
+}
+
 service AutograderService {
    rpc Login(LoginRequest) returns (LoginResponse);
    rpc GetCourseList(GetCourseListRequest) returns (GetCourseListResponse);
@@ -258,4 +273,5 @@ service AutograderService {
    rpc GetFilesInSubmission(GetFilesInSubmissionRequest) returns (GetFilesInSubmissionResponse);
    rpc GetLeaderboard(GetLeaderboardRequest) returns (GetLeaderboardResponse);
    rpc HasLeaderboard(HasLeaderboardRequest) returns (HasLeaderboardResponse);
+   rpc CreateAssignment(CreateAssignmentRequest) returns (CreateAssignmentResponse);
 }

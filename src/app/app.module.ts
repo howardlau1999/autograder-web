@@ -52,8 +52,15 @@ import {AssignmentsComponent} from './course-page/assignments/assignments.compon
 import {SubmissionsComponent} from './assignment-page/submissions/submissions.component';
 import {FilesizePipe} from './filesize.pipe';
 import {AddMemberDialogComponent} from './course-page/members/add-member-dialog/add-member-dialog.component';
-import { BatchAddMemberDialogComponent } from './course-page/members/batch-add-member-dialog/batch-add-member-dialog.component';
-import { AssignmentsManagementComponent } from './course-page/assignments-management/assignments-management.component';
+import {
+  BatchAddMemberDialogComponent
+} from './course-page/members/batch-add-member-dialog/batch-add-member-dialog.component';
+import {AssignmentsManagementComponent} from './course-page/assignments-management/assignments-management.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatSelectModule} from "@angular/material/select";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import {MAT_DATE_LOCALE} from "@angular/material/core";
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -128,10 +135,15 @@ export class PaginatorIntl implements MatPaginatorIntl {
     MatExpansionModule,
     MatListModule,
     MatSnackBarModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},
     {provide: MatPaginatorIntl, useClass: PaginatorIntl},
+    {provide: MAT_DATE_LOCALE, useValue: 'zh-CN'},
   ],
   bootstrap: [AppComponent]
 })

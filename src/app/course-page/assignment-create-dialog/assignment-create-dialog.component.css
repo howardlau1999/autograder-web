@@ -1,0 +1,8 @@
+.config-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-select {
+  width: 2.5em;
+}

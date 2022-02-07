@@ -48,10 +48,10 @@
         <ng-container matColumnDef="operations">
           <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
           <td *matCellDef="let submission" mat-cell>
-            <button i18n="view" mat-button>
+            <button (click)="viewSubmissionReport(submission.getSubmissionId())" i18n="view" mat-icon-button>
               <mat-icon>description</mat-icon>
             </button>
-            <button i18n="download" mat-button>
+            <button i18n="download" mat-icon-button>
               <mat-icon>download</mat-icon>
             </button>
           </td>
@@ -65,7 +65,7 @@
           </td>
         </ng-container>
         <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
-        <tr (click)="viewSubmissionReport(submission.getSubmissionId())// expandedSubmission = expandedSubmission === submission ? null : submission" *matRowDef="let submission; columns: columnsToDisplay"
+        <tr *matRowDef="let submission; columns: columnsToDisplay"
             [class.submission-expanded-row]="expandedSubmission === submission"
             class="submission-element-row"
             mat-row></tr>
