@@ -14,7 +14,7 @@ tr.submission-detail-row {
 }
 
 tr.submission-element-row:hover {
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 
 tr.submission-element-row:not(.submission-expanded-row):hover {

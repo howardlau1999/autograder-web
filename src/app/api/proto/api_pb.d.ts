@@ -785,6 +785,30 @@ export namespace UserTokenPayload {
   }
 }
 
+export class DownloadTokenPayload extends jspb.Message {
+  getRealPath(): string;
+  setRealPath(value: string): void;
+
+  getFilename(): string;
+  setFilename(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DownloadTokenPayload.AsObject;
+  static toObject(includeInstance: boolean, msg: DownloadTokenPayload): DownloadTokenPayload.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DownloadTokenPayload, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DownloadTokenPayload;
+  static deserializeBinaryFromReader(message: DownloadTokenPayload, reader: jspb.BinaryReader): DownloadTokenPayload;
+}
+
+export namespace DownloadTokenPayload {
+  export type AsObject = {
+    realPath: string,
+    filename: string,
+  }
+}
+
 export class GetSubmissionReportRequest extends jspb.Message {
   getSubmissionId(): number;
   setSubmissionId(value: number): void;
@@ -1185,4 +1209,187 @@ export namespace CreateCourseResponse {
     course?: model_pb.Course.AsObject,
   }
 }
+
+export class CreateAssignmentRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  getAssignmentType(): model_pb.AssignmentTypeMap[keyof model_pb.AssignmentTypeMap];
+  setAssignmentType(value: model_pb.AssignmentTypeMap[keyof model_pb.AssignmentTypeMap]): void;
+
+  hasReleaseDate(): boolean;
+  clearReleaseDate(): void;
+  getReleaseDate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setReleaseDate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  hasDueDate(): boolean;
+  clearDueDate(): void;
+  getDueDate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setDueDate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  hasLateDueDate(): boolean;
+  clearLateDueDate(): void;
+  getLateDueDate(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setLateDueDate(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
+
+  hasProgrammingConfig(): boolean;
+  clearProgrammingConfig(): void;
+  getProgrammingConfig(): model_pb.ProgrammingAssignmentConfig | undefined;
+  setProgrammingConfig(value?: model_pb.ProgrammingAssignmentConfig): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateAssignmentRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateAssignmentRequest): CreateAssignmentRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateAssignmentRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateAssignmentRequest;
+  static deserializeBinaryFromReader(message: CreateAssignmentRequest, reader: jspb.BinaryReader): CreateAssignmentRequest;
+}
+
+export namespace CreateAssignmentRequest {
+  export type AsObject = {
+    name: string,
+    courseId: number,
+    assignmentType: model_pb.AssignmentTypeMap[keyof model_pb.AssignmentTypeMap],
+    releaseDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    dueDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    lateDueDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    description: string,
+    programmingConfig?: model_pb.ProgrammingAssignmentConfig.AsObject,
+  }
+}
+
+export class CreateAssignmentResponse extends jspb.Message {
+  hasAssignment(): boolean;
+  clearAssignment(): void;
+  getAssignment(): model_pb.Assignment | undefined;
+  setAssignment(value?: model_pb.Assignment): void;
+
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateAssignmentResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateAssignmentResponse): CreateAssignmentResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateAssignmentResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateAssignmentResponse;
+  static deserializeBinaryFromReader(message: CreateAssignmentResponse, reader: jspb.BinaryReader): CreateAssignmentResponse;
+}
+
+export namespace CreateAssignmentResponse {
+  export type AsObject = {
+    assignment?: model_pb.Assignment.AsObject,
+    assignmentId: number,
+  }
+}
+
+export class DeleteFileInManifestRequest extends jspb.Message {
+  getManifestId(): number;
+  setManifestId(value: number): void;
+
+  getFilename(): string;
+  setFilename(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteFileInManifestRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteFileInManifestRequest): DeleteFileInManifestRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteFileInManifestRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteFileInManifestRequest;
+  static deserializeBinaryFromReader(message: DeleteFileInManifestRequest, reader: jspb.BinaryReader): DeleteFileInManifestRequest;
+}
+
+export namespace DeleteFileInManifestRequest {
+  export type AsObject = {
+    manifestId: number,
+    filename: string,
+  }
+}
+
+export class DeleteFileInManifestResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteFileInManifestResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteFileInManifestResponse): DeleteFileInManifestResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteFileInManifestResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteFileInManifestResponse;
+  static deserializeBinaryFromReader(message: DeleteFileInManifestResponse, reader: jspb.BinaryReader): DeleteFileInManifestResponse;
+}
+
+export namespace DeleteFileInManifestResponse {
+  export type AsObject = {
+  }
+}
+
+export class InitDownloadRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  getFilename(): string;
+  setFilename(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitDownloadRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InitDownloadRequest): InitDownloadRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: InitDownloadRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitDownloadRequest;
+  static deserializeBinaryFromReader(message: InitDownloadRequest, reader: jspb.BinaryReader): InitDownloadRequest;
+}
+
+export namespace InitDownloadRequest {
+  export type AsObject = {
+    submissionId: number,
+    filename: string,
+  }
+}
+
+export class InitDownloadResponse extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): void;
+
+  getFileType(): DownloadFileTypeMap[keyof DownloadFileTypeMap];
+  setFileType(value: DownloadFileTypeMap[keyof DownloadFileTypeMap]): void;
+
+  getFilename(): string;
+  setFilename(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitDownloadResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: InitDownloadResponse): InitDownloadResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: InitDownloadResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitDownloadResponse;
+  static deserializeBinaryFromReader(message: InitDownloadResponse, reader: jspb.BinaryReader): InitDownloadResponse;
+}
+
+export namespace InitDownloadResponse {
+  export type AsObject = {
+    token: string,
+    fileType: DownloadFileTypeMap[keyof DownloadFileTypeMap],
+    filename: string,
+  }
+}
+
+export interface DownloadFileTypeMap {
+  BINARY: 0;
+  TEXT: 1;
+  IMAGE: 2;
+  PDF: 3;
+}
+
+export const DownloadFileType: DownloadFileTypeMap;
 

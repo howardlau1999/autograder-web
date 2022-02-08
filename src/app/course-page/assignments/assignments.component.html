@@ -18,7 +18,7 @@
     </mat-card>
     <mat-card class="assignment-table-card">
       <button mat-raised-button (click)="onAddAssignmentClicked()">
-        <mat-icon>settings</mat-icon>
+        <mat-icon>add</mat-icon>
         &nbsp;添加作业</button>
       <table aria-label="Elements" class="full-width-table" mat-table matSort>
         <!-- Id Column -->
@@ -40,14 +40,14 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="release_date">
+        <ng-container matColumnDef="releaseDate">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>开始时间</th>
-          <td *matCellDef="let row" mat-cell>{{row.getReleaseDate().toDate() | date:"medium"}}</td>
+          <td *matCellDef="let row" mat-cell>{{row.getReleaseDate().toDate() | date:"YYYY-MM-dd HH:mm"}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="due_date">
+        <ng-container matColumnDef="dueDate">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>截止时间</th>
-          <td *matCellDef="let row" mat-cell>{{row.getDueDate().toDate() | date:"medium"}}</td>
+          <td *matCellDef="let row" mat-cell>{{row.getDueDate().toDate() | date:"YYYY-MM-dd HH:mm"}}</td>
         </ng-container>
 
         <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
@@ -60,6 +60,7 @@
                      [pageIndex]="0"
                      [pageSizeOptions]="[5, 10, 20]"
                      [pageSize]="10"
+                     showFirstLastButtons
                      aria-label="Select page">
       </mat-paginator>
     </mat-card>

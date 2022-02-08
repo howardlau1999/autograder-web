@@ -172,6 +172,33 @@ AutograderService.HasLeaderboard = {
   responseType: api_pb.HasLeaderboardResponse
 };
 
+AutograderService.CreateAssignment = {
+  methodName: "CreateAssignment",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.CreateAssignmentRequest,
+  responseType: api_pb.CreateAssignmentResponse
+};
+
+AutograderService.DeleteFileInManifest = {
+  methodName: "DeleteFileInManifest",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.DeleteFileInManifestRequest,
+  responseType: api_pb.DeleteFileInManifestResponse
+};
+
+AutograderService.InitDownload = {
+  methodName: "InitDownload",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.InitDownloadRequest,
+  responseType: api_pb.InitDownloadResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -743,6 +770,99 @@ AutograderServiceClient.prototype.hasLeaderboard = function hasLeaderboard(reque
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.HasLeaderboard, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.createAssignment = function createAssignment(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.CreateAssignment, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.deleteFileInManifest = function deleteFileInManifest(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.DeleteFileInManifest, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.initDownload = function initDownload(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.InitDownload, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

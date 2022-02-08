@@ -1,7 +1,17 @@
 <h2>测试报告</h2>
-<div *ngIf="testcases$ | async as testcases; else errorMsg" class="report-container">
+<div *ngIf="report$ | async as report; else errorMsg" class="report-container">
   <mat-accordion class="testcase-accordion" multi>
-    <mat-expansion-panel #testcase *ngFor="let testcase of testcases; index as i" class="testcase-panel">
+    <mat-expansion-panel class="testcase-panel" *ngIf="report.getOutput()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          测试输出
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <code>
+        <pre class="testcase-output">{{report.getOutput()}}</pre>
+      </code>
+    </mat-expansion-panel>
+    <mat-expansion-panel #testcase *ngFor="let testcase of report.getTestsList(); index as i" class="testcase-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
                 <span
@@ -16,7 +26,7 @@
     </mat-expansion-panel>
   </mat-accordion>
   <mat-nav-list class="testcase-list">
-    <a (click)="scrollTo(i)" *ngFor="let testcase of testcases; index as i"
+    <a (click)="scrollTo(i)" *ngFor="let testcase of report.getTestsList(); index as i"
        mat-list-item>
           <span
             [class]="testcase.getScore() === testcase.getMaxScore()?'green-font' : 'red-font'">{{testcase.getName()}}

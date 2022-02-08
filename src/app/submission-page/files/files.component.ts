@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
-import {FileTreeNode} from "../../api/proto/api_pb";
+import {DownloadFileType, DownloadFileTypeMap, FileTreeNode} from "../../api/proto/api_pb";
 import {ActivatedRoute} from "@angular/router";
-import {Subscription, switchMap} from "rxjs";
+import {of, Subject, Subscription, switchMap} from "rxjs";
 import {ApiService} from "../../api/api.service";
 import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;
@@ -35,7 +36,25 @@ export class FilesComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  sub: Subscription | undefined;
+  filesSub: Subscription | undefined;
+
+  downloadSub: Subscription;
+
+  path$: Subject<string | null> = new Subject<string | null>();
+
+  selectedPath: string | null = null;
+
+  fileType: DownloadFileTypeMap[keyof DownloadFileTypeMap] | null = null;
+
+  fileURL: string = '';
+
+  language: string = '';
+
+  DownloadFileType = DownloadFileType;
+
+  submissionId: number = 0;
+
+  serverHost = environment.serverHost;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute) {
     this.treeFlattener = new MatTreeFlattener(
@@ -46,13 +65,32 @@ export class FilesComponent implements OnInit {
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.sub = this.route.parent?.paramMap.pipe(switchMap(params => {
+    this.filesSub = this.route.parent?.paramMap.pipe(switchMap(params => {
       const submissionId = Number.parseInt(params.get('submissionId') || '0');
+      this.submissionId = submissionId;
+      this.path$.next(null);
       return this.apiService.getFilesInSubmission(submissionId);
     }), map(resp => {
       return resp.getRootsList();
     })).subscribe(nodes => {
       this.dataSource.data = nodes;
+    });
+    this.downloadSub = this.path$.pipe(switchMap(path => {
+      if (path === null) {
+        return of(null);
+      }
+      this.selectedPath = path;
+      return this.apiService.initDownload(this.submissionId, path);
+    })).subscribe(resp => {
+      if (resp == null) {
+        this.fileType = null;
+        return;
+      }
+      const url = new URL(`/AutograderService/FileDownload/${resp.getFilename()}`, this.serverHost);
+      url.searchParams.set("token", resp.getToken());
+      this.language = resp.getFilename().split(".").pop() || "";
+      this.fileURL = url.toString();
+      this.fileType = resp.getFileType();
     });
   }
 
@@ -60,7 +98,8 @@ export class FilesComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.sub?.unsubscribe();
+    this.filesSub?.unsubscribe();
+    this.downloadSub.unsubscribe();
   }
 
   /** Transform the data to something the tree can read. */
@@ -94,7 +133,7 @@ export class FilesComponent implements OnInit {
     return node.getChildrenList();
   }
 
-  treeNodeClicked(node: FileTreeNode) {
-    console.log(node);
+  treeNodeClicked(node: FlatTreeNode) {
+    this.path$.next(node.path);
   }
 }

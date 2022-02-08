@@ -5,7 +5,7 @@
       <form>
         <mat-form-field>
           <mat-label>作业类型</mat-label>
-          <mat-select>
+          <mat-select [(value)]="assignmentType">
             <mat-option value="programming">编程作业</mat-option>
           </mat-select>
         </mat-form-field>
@@ -17,51 +17,17 @@
       <form class="config-form">
         <mat-form-field>
           <mat-label>作业名称</mat-label>
-          <input required type="text" matInput>
+          <input required type="text" matInput [(ngModel)]="name" name="name">
         </mat-form-field>
-        <form class="time-select-form">
-          <mat-form-field>
-            <mat-label>开始日期</mat-label>
-            <input required matInput [matDatepicker]="releaseDatePicker">
-            <mat-datepicker-toggle matSuffix [for]="releaseDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker disabled="false" #releaseDatePicker></mat-datepicker>
-          </mat-form-field>
-          &nbsp;
-          <mat-form-field class="time-select">
-            <mat-select>
-              <mat-option *ngFor="let hour of hours" [value]="hour">{{hour.toString().padStart(2, '0')}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          &nbsp;:&nbsp;
-          <mat-form-field class="time-select">
-            <mat-select>
-              <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute.toString().padStart(2, '0')}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
-        <form class="time-select-form">
-          <mat-form-field>
-            <mat-label>截止日期</mat-label>
-            <input required matInput [matDatepicker]="dueDatePicker">
-            <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker disabled="false" #dueDatePicker></mat-datepicker>
-          </mat-form-field>
-          &nbsp;
-          <mat-form-field class="time-select">
-            <mat-select>
-              <mat-option *ngFor="let hour of hours" [value]="hour">{{hour.toString().padStart(2, '0')}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          &nbsp;:&nbsp;
-          <mat-form-field class="time-select">
-            <mat-select>
-              <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute.toString().padStart(2, '0')}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
+        <app-datetime-picker [(timestamp)]="releaseDate" label="开始时间"></app-datetime-picker>
+        <app-datetime-picker [(timestamp)]="dueDate" label="截止时间"></app-datetime-picker>
         <mat-form-field>
           <mat-label>Docker 镜像</mat-label>
-          <input matInput required>
+          <input matInput required [(ngModel)]="dockerImage" name="dockerImage">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>作业描述</mat-label>
+          <textarea matInput [(ngModel)]="description" name="description"></textarea>
         </mat-form-field>
       </form>
       <button mat-button matStepperPrevious>上一步</button>
@@ -69,9 +35,14 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>确认作业信息</ng-template>
-      <p>确认创建作业</p>
+      <p>作业类型：{{assignmentType}}</p>
+      <p>作业名称：{{name}}</p>
+      <p>开始时间：{{releaseDate.toJSDate() | date:"medium"}}</p>
+      <p>截止时间：{{dueDate.toJSDate() | date:"medium"}}</p>
+      <p>Docker 镜像：{{dockerImage}}</p>
+      <p>作业描述：{{description}}</p>
       <button mat-button matStepperPrevious>上一步</button>
-      <button mat-raised-button color="primary">确认</button>
+      <button mat-raised-button color="primary" (click)="onConfirmClicked()">确认</button>
     </mat-step>
   </mat-stepper>
 </mat-dialog-content>

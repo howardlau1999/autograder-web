@@ -29,7 +29,7 @@
         </ng-container>
         <ng-container matColumnDef="submittedAt">
           <th *matHeaderCellDef i18n="submitted-at" mat-header-cell>提交时间</th>
-          <td *matCellDef="let submission" mat-cell>{{submission.getSubmittedAt().toDate() | date:"medium" }}</td>
+          <td *matCellDef="let submission" mat-cell>{{submission.getSubmittedAt().toDate() | date:"YYYY-MM-dd HH:mm:ss" }}</td>
         </ng-container>
         <ng-container matColumnDef="score">
           <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>

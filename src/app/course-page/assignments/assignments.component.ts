@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTable} from "@angular/material/table";
-import {CoursePageDataSource, CoursePageItem} from "../course-page-datasource";
+import {AssignmentsPageDatasource, CoursePageItem} from "./assignments-page-datasource";
 import {ApiService} from "../../api/api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
@@ -20,8 +20,8 @@ export class AssignmentsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<CoursePageItem>;
-  dataSource: CoursePageDataSource;
-  displayedColumns = ['id', 'name', 'submitted', 'release_date', 'due_date'];
+  dataSource: AssignmentsPageDatasource;
+  displayedColumns = ['id', 'name', 'submitted', 'releaseDate', 'dueDate'];
   course$: Observable<Course | undefined>;
   courseId: number = 0;
 
@@ -30,7 +30,7 @@ export class AssignmentsComponent implements AfterViewInit {
       map(params => Number.parseInt(params.get('courseId') || "0")), tap(courseId => {
         this.courseId = courseId;
       }))
-    this.dataSource = new CoursePageDataSource(apiService, id$);
+    this.dataSource = new AssignmentsPageDatasource(apiService, id$);
     this.course$ = id$.pipe(switchMap(courseId => this.apiService.getCourse(courseId)), map(resp => resp.getCourse()));
   }
 
@@ -49,6 +49,10 @@ export class AssignmentsComponent implements AfterViewInit {
   }
 
   onAddAssignmentClicked() {
-    this.dialog.open(AssignmentCreateDialogComponent);
+    this.dialog.open(AssignmentCreateDialogComponent, {
+      data: {
+        courseId: this.courseId,
+      }
+    });
   }
 }

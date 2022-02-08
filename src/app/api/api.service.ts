@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {AutograderServiceClient, ServiceError, UnaryResponse} from "./proto/api_pb_service";
 import {
+  CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
   CreateSubmissionRequest, GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
   GetCourseListRequest, GetCourseRequest, GetFilesInSubmissionRequest, GetLeaderboardRequest,
   GetSubmissionReportRequest,
-  GetSubmissionsInAssignmentRequest,
+  GetSubmissionsInAssignmentRequest, InitDownloadRequest,
   InitUploadRequest,
   LoginRequest,
   SubscribeSubmissionRequest,
@@ -15,6 +16,10 @@ import {
 } from "./proto/api_pb";
 import {Observable, Subscriber} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {DateTime} from "luxon";
+import {AssignmentType, ProgrammingAssignmentConfig} from "./proto/model_pb";
+import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
+import {environment} from "../../environments/environment";
 
 
 type UnaryCallback<Response> = (err: ServiceError | null, response: Response | null) => void;
@@ -23,7 +28,7 @@ type UnaryCallback<Response> = (err: ServiceError | null, response: Response | n
   providedIn: 'root'
 })
 export class ApiService {
-  host = "http://localhost:9315"
+  host = environment.serverHost;
   autograderClient = new AutograderServiceClient(this.host);
 
   constructor(private http: HttpClient) {
@@ -164,5 +169,26 @@ export class ApiService {
     request.setShortName(shortName);
     request.setDescription(description);
     return this.unary(this.autograderClient.createCourse, request);
+  }
+
+  createProgrammingAssignment(courseId: number, name: string, releaseDate: DateTime, dueDate: DateTime, description: string, dockerImage: string) {
+    const request = new CreateAssignmentRequest();
+    const programmingConfig = new ProgrammingAssignmentConfig();
+    request.setAssignmentType(AssignmentType.PROGRAMMING);
+    request.setCourseId(courseId);
+    request.setName(name);
+    request.setDescription(description);
+    request.setReleaseDate(Timestamp.fromDate(releaseDate.toJSDate()));
+    request.setDueDate(Timestamp.fromDate(dueDate.toJSDate()));
+    programmingConfig.setImage(dockerImage);
+    request.setProgrammingConfig(programmingConfig);
+    return this.unary(this.autograderClient.createAssignment, request);
+  }
+
+  initDownload(submissionId: number, filename: string) {
+    const request = new InitDownloadRequest();
+    request.setFilename(filename);
+    request.setSubmissionId(submissionId);
+    return this.unary(this.autograderClient.initDownload, request);
   }
 }

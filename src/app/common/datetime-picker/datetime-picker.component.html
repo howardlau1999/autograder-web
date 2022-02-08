@@ -1,0 +1,21 @@
+<form class="time-select-form">
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <input [value]="timestamp.toJSDate()" (dateChange)="onDateChange($event)" (dateInput)="onDateChange($event)"
+           required matInput [matDatepicker]="datePicker">
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker disabled="false" #datePicker></mat-datepicker>
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field class="time-select">
+    <mat-select placeholder="时" [value]="timestamp.hour" (selectionChange)="onHourChange($event)">
+      <mat-option *ngFor="let hour of hours" [value]="hour">{{hour.toString().padStart(2, '0')}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  &nbsp;:&nbsp;
+  <mat-form-field class="time-select">
+    <mat-select placeholder="分" [value]="timestamp.minute" (selectionChange)="onMinuteChange($event)">
+      <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute.toString().padStart(2, '0')}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

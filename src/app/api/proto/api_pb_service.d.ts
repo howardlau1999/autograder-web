@@ -166,6 +166,33 @@ type AutograderServiceHasLeaderboard = {
   readonly responseType: typeof api_pb.HasLeaderboardResponse;
 };
 
+type AutograderServiceCreateAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CreateAssignmentRequest;
+  readonly responseType: typeof api_pb.CreateAssignmentResponse;
+};
+
+type AutograderServiceDeleteFileInManifest = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.DeleteFileInManifestRequest;
+  readonly responseType: typeof api_pb.DeleteFileInManifestResponse;
+};
+
+type AutograderServiceInitDownload = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.InitDownloadRequest;
+  readonly responseType: typeof api_pb.InitDownloadResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -186,6 +213,9 @@ export class AutograderService {
   static readonly GetFilesInSubmission: AutograderServiceGetFilesInSubmission;
   static readonly GetLeaderboard: AutograderServiceGetLeaderboard;
   static readonly HasLeaderboard: AutograderServiceHasLeaderboard;
+  static readonly CreateAssignment: AutograderServiceCreateAssignment;
+  static readonly DeleteFileInManifest: AutograderServiceDeleteFileInManifest;
+  static readonly InitDownload: AutograderServiceInitDownload;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -349,6 +379,33 @@ export class AutograderServiceClient {
   hasLeaderboard(
     requestMessage: api_pb.HasLeaderboardRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.HasLeaderboardResponse|null) => void
+  ): UnaryResponse;
+  createAssignment(
+    requestMessage: api_pb.CreateAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateAssignmentResponse|null) => void
+  ): UnaryResponse;
+  createAssignment(
+    requestMessage: api_pb.CreateAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CreateAssignmentResponse|null) => void
+  ): UnaryResponse;
+  deleteFileInManifest(
+    requestMessage: api_pb.DeleteFileInManifestRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteFileInManifestResponse|null) => void
+  ): UnaryResponse;
+  deleteFileInManifest(
+    requestMessage: api_pb.DeleteFileInManifestRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteFileInManifestResponse|null) => void
+  ): UnaryResponse;
+  initDownload(
+    requestMessage: api_pb.InitDownloadRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InitDownloadResponse|null) => void
+  ): UnaryResponse;
+  initDownload(
+    requestMessage: api_pb.InitDownloadRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InitDownloadResponse|null) => void
   ): UnaryResponse;
 }
 

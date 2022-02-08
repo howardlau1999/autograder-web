@@ -59,8 +59,12 @@ import {AssignmentsManagementComponent} from './course-page/assignments-manageme
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
+import {DatetimePickerComponent} from './common/datetime-picker/datetime-picker.component';
+import {MatLuxonDateModule} from "@angular/material-luxon-adapter";
+import {HIGHLIGHT_OPTIONS, HighlightModule} from "ngx-highlightjs";
+import {HighlightPlusModule} from "ngx-highlightjs/plus";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -105,11 +109,14 @@ export class PaginatorIntl implements MatPaginatorIntl {
     AddMemberDialogComponent,
     BatchAddMemberDialogComponent,
     AssignmentsManagementComponent,
+    DatetimePickerComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    HighlightModule,
+    HighlightPlusModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -138,12 +145,18 @@ export class PaginatorIntl implements MatPaginatorIntl {
     MatStepperModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatMomentDateModule,
+    MatLuxonDateModule,
+    NgxExtendedPdfViewerModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},
     {provide: MatPaginatorIntl, useClass: PaginatorIntl},
-    {provide: MAT_DATE_LOCALE, useValue: 'zh-CN'},
+    {provide: MAT_DATE_LOCALE, useValue: 'zh-CN'}, {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        fullLibraryLoader: () => import('highlight.js'),
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

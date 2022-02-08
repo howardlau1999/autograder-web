@@ -3,28 +3,37 @@
   /*display: flex;*/
 }
 
+.file-preview-container {
+  width: 100%;
+}
+
+.file-previewer {
+  height: calc(100vh - 184px);
+  overflow-y: auto;
+  width: 100%;
+}
+
 .sidenav-nav {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
   position: sticky;
   top: 0;
-  height: calc(100vh - 80px);
-  overflow-y: auto;
+  height: calc(100vh - 144px);
+  overflow: auto;
   padding-right: 10px;
 }
 
-.sidenav-nav::-webkit-scrollbar {
+.sidenav-nav::-webkit-scrollbar, .file-previewer::-webkit-scrollbar {
   height: 4px;
   width: 4px;
 }
 
-.sidenav-nav::-webkit-scrollbar-thumb {
+.sidenav-nav::-webkit-scrollbar-thumb, .file-previewer::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.25);
 }
 
 .sidenav-container {
-  width: 300px;
-  overflow: auto;
-  height: 100%;
+  width: 350px;
+  /*overflow: auto;*/
 }
 
 .sidenav-content {
