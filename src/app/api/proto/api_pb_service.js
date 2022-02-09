@@ -46,15 +46,6 @@ AutograderService.GetSubmissionsInAssignment = {
   responseType: api_pb.GetSubmissionsInAssignmentResponse
 };
 
-AutograderService.SubscribeSubmissions = {
-  methodName: "SubscribeSubmissions",
-  service: AutograderService,
-  requestStream: false,
-  responseStream: true,
-  requestType: api_pb.SubscribeSubmissionsRequest,
-  responseType: api_pb.SubscribeSubmissionsResponse
-};
-
 AutograderService.SubscribeSubmission = {
   methodName: "SubscribeSubmission",
   service: AutograderService,
@@ -62,24 +53,6 @@ AutograderService.SubscribeSubmission = {
   responseStream: true,
   requestType: api_pb.SubscribeSubmissionRequest,
   responseType: api_pb.SubscribeSubmissionResponse
-};
-
-AutograderService.StreamSubmissionLog = {
-  methodName: "StreamSubmissionLog",
-  service: AutograderService,
-  requestStream: false,
-  responseStream: true,
-  requestType: api_pb.StreamSubmissionLogRequest,
-  responseType: api_pb.ChunkResponse
-};
-
-AutograderService.GetFile = {
-  methodName: "GetFile",
-  service: AutograderService,
-  requestStream: false,
-  responseStream: true,
-  requestType: api_pb.GetFileRequest,
-  responseType: api_pb.ChunkResponse
 };
 
 AutograderService.CreateManifest = {
@@ -330,45 +303,6 @@ AutograderServiceClient.prototype.getSubmissionsInAssignment = function getSubmi
   };
 };
 
-AutograderServiceClient.prototype.subscribeSubmissions = function subscribeSubmissions(requestMessage, metadata) {
-  var listeners = {
-    data: [],
-    end: [],
-    status: []
-  };
-  var client = grpc.invoke(AutograderService.SubscribeSubmissions, {
-    request: requestMessage,
-    host: this.serviceHost,
-    metadata: metadata,
-    transport: this.options.transport,
-    debug: this.options.debug,
-    onMessage: function (responseMessage) {
-      listeners.data.forEach(function (handler) {
-        handler(responseMessage);
-      });
-    },
-    onEnd: function (status, statusMessage, trailers) {
-      listeners.status.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners.end.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners = null;
-    }
-  });
-  return {
-    on: function (type, handler) {
-      listeners[type].push(handler);
-      return this;
-    },
-    cancel: function () {
-      listeners = null;
-      client.close();
-    }
-  };
-};
-
 AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmission(requestMessage, metadata) {
   var listeners = {
     data: [],
@@ -376,84 +310,6 @@ AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmis
     status: []
   };
   var client = grpc.invoke(AutograderService.SubscribeSubmission, {
-    request: requestMessage,
-    host: this.serviceHost,
-    metadata: metadata,
-    transport: this.options.transport,
-    debug: this.options.debug,
-    onMessage: function (responseMessage) {
-      listeners.data.forEach(function (handler) {
-        handler(responseMessage);
-      });
-    },
-    onEnd: function (status, statusMessage, trailers) {
-      listeners.status.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners.end.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners = null;
-    }
-  });
-  return {
-    on: function (type, handler) {
-      listeners[type].push(handler);
-      return this;
-    },
-    cancel: function () {
-      listeners = null;
-      client.close();
-    }
-  };
-};
-
-AutograderServiceClient.prototype.streamSubmissionLog = function streamSubmissionLog(requestMessage, metadata) {
-  var listeners = {
-    data: [],
-    end: [],
-    status: []
-  };
-  var client = grpc.invoke(AutograderService.StreamSubmissionLog, {
-    request: requestMessage,
-    host: this.serviceHost,
-    metadata: metadata,
-    transport: this.options.transport,
-    debug: this.options.debug,
-    onMessage: function (responseMessage) {
-      listeners.data.forEach(function (handler) {
-        handler(responseMessage);
-      });
-    },
-    onEnd: function (status, statusMessage, trailers) {
-      listeners.status.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners.end.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners = null;
-    }
-  });
-  return {
-    on: function (type, handler) {
-      listeners[type].push(handler);
-      return this;
-    },
-    cancel: function () {
-      listeners = null;
-      client.close();
-    }
-  };
-};
-
-AutograderServiceClient.prototype.getFile = function getFile(requestMessage, metadata) {
-  var listeners = {
-    data: [],
-    end: [],
-    status: []
-  };
-  var client = grpc.invoke(AutograderService.GetFile, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

@@ -7,6 +7,7 @@ import {map} from "rxjs/operators";
 import * as zipjs from "@zip.js/zip.js";
 import {BlobWriter} from "@zip.js/zip.js";
 import {MatPaginator} from "@angular/material/paginator";
+import {UserService} from "../../service/user.service";
 
 export interface UploadDialogData {
   assignmentId: number
@@ -57,7 +58,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
 
   constructor(public dialogRef: MatDialogRef<UploadDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: UploadDialogData,
-              private apiService: ApiService) {
+              private apiService: ApiService, private userService: UserService) {
     this.assignmentId = data.assignmentId;
   }
 
@@ -82,7 +83,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
   }
 
   createSubmission() {
-    return this.apiService.createSubmission(1, this.assignmentId, this.manifestId!, [1], "Howard Lau");
+    return this.apiService.createSubmission( this.assignmentId, this.manifestId!, [this.userService.user.userId!], "Howard Lau");
   }
 
   onSubmitClicked(): void {
@@ -101,7 +102,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
     if (file.type !== 'application/x-zip-compressed') return;
     const blobReader = new zipjs.BlobReader(file);
     const zipReader = new zipjs.ZipReader(blobReader, {useWebWorkers: true});
-    (this.manifestId === null ? this.apiService.createManifest(1, this.assignmentId).pipe(first(), map(resp => {
+    (this.manifestId === null ? this.apiService.createManifest(this.assignmentId).pipe(first(), map(resp => {
       return this.manifestId = resp.getManifestId();
     })) : of(this.manifestId)).subscribe(manifestId => {
       from(zipReader.getEntries()).pipe(mergeMap(entries => {

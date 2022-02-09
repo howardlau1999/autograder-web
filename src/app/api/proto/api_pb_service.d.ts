@@ -40,15 +40,6 @@ type AutograderServiceGetSubmissionsInAssignment = {
   readonly responseType: typeof api_pb.GetSubmissionsInAssignmentResponse;
 };
 
-type AutograderServiceSubscribeSubmissions = {
-  readonly methodName: string;
-  readonly service: typeof AutograderService;
-  readonly requestStream: false;
-  readonly responseStream: true;
-  readonly requestType: typeof api_pb.SubscribeSubmissionsRequest;
-  readonly responseType: typeof api_pb.SubscribeSubmissionsResponse;
-};
-
 type AutograderServiceSubscribeSubmission = {
   readonly methodName: string;
   readonly service: typeof AutograderService;
@@ -56,24 +47,6 @@ type AutograderServiceSubscribeSubmission = {
   readonly responseStream: true;
   readonly requestType: typeof api_pb.SubscribeSubmissionRequest;
   readonly responseType: typeof api_pb.SubscribeSubmissionResponse;
-};
-
-type AutograderServiceStreamSubmissionLog = {
-  readonly methodName: string;
-  readonly service: typeof AutograderService;
-  readonly requestStream: false;
-  readonly responseStream: true;
-  readonly requestType: typeof api_pb.StreamSubmissionLogRequest;
-  readonly responseType: typeof api_pb.ChunkResponse;
-};
-
-type AutograderServiceGetFile = {
-  readonly methodName: string;
-  readonly service: typeof AutograderService;
-  readonly requestStream: false;
-  readonly responseStream: true;
-  readonly requestType: typeof api_pb.GetFileRequest;
-  readonly responseType: typeof api_pb.ChunkResponse;
 };
 
 type AutograderServiceCreateManifest = {
@@ -199,10 +172,7 @@ export class AutograderService {
   static readonly GetCourseList: AutograderServiceGetCourseList;
   static readonly GetAssignmentsInCourse: AutograderServiceGetAssignmentsInCourse;
   static readonly GetSubmissionsInAssignment: AutograderServiceGetSubmissionsInAssignment;
-  static readonly SubscribeSubmissions: AutograderServiceSubscribeSubmissions;
   static readonly SubscribeSubmission: AutograderServiceSubscribeSubmission;
-  static readonly StreamSubmissionLog: AutograderServiceStreamSubmissionLog;
-  static readonly GetFile: AutograderServiceGetFile;
   static readonly CreateManifest: AutograderServiceCreateManifest;
   static readonly CreateSubmission: AutograderServiceCreateSubmission;
   static readonly InitUpload: AutograderServiceInitUpload;
@@ -286,10 +256,7 @@ export class AutograderServiceClient {
     requestMessage: api_pb.GetSubmissionsInAssignmentRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionsInAssignmentResponse|null) => void
   ): UnaryResponse;
-  subscribeSubmissions(requestMessage: api_pb.SubscribeSubmissionsRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.SubscribeSubmissionsResponse>;
   subscribeSubmission(requestMessage: api_pb.SubscribeSubmissionRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.SubscribeSubmissionResponse>;
-  streamSubmissionLog(requestMessage: api_pb.StreamSubmissionLogRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
-  getFile(requestMessage: api_pb.GetFileRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.ChunkResponse>;
   createManifest(
     requestMessage: api_pb.CreateManifestRequest,
     metadata: grpc.Metadata,

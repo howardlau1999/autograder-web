@@ -131,14 +131,6 @@ export class LoginResponse extends jspb.Message {
   getUserId(): number;
   setUserId(value: number): void;
 
-  getToken(): string;
-  setToken(value: string): void;
-
-  hasExpireAt(): boolean;
-  clearExpireAt(): void;
-  getExpireAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
-  setExpireAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginResponse.AsObject;
   static toObject(includeInstance: boolean, msg: LoginResponse): LoginResponse.AsObject;
@@ -152,15 +144,10 @@ export class LoginResponse extends jspb.Message {
 export namespace LoginResponse {
   export type AsObject = {
     userId: number,
-    token: string,
-    expireAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 }
 
 export class GetCourseListRequest extends jspb.Message {
-  getUserId(): number;
-  setUserId(value: number): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetCourseListRequest.AsObject;
   static toObject(includeInstance: boolean, msg: GetCourseListRequest): GetCourseListRequest.AsObject;
@@ -173,7 +160,6 @@ export class GetCourseListRequest extends jspb.Message {
 
 export namespace GetCourseListRequest {
   export type AsObject = {
-    userId: number,
   }
 }
 
@@ -232,9 +218,6 @@ export namespace GetCourseListResponse {
 }
 
 export class GetAssignmentsInCourseRequest extends jspb.Message {
-  getUserId(): number;
-  setUserId(value: number): void;
-
   getCourseId(): number;
   setCourseId(value: number): void;
 
@@ -250,7 +233,6 @@ export class GetAssignmentsInCourseRequest extends jspb.Message {
 
 export namespace GetAssignmentsInCourseRequest {
   export type AsObject = {
-    userId: number,
     courseId: number,
   }
 }
@@ -318,9 +300,6 @@ export namespace GetAssignmentsInCourseResponse {
 }
 
 export class GetSubmissionsInAssignmentRequest extends jspb.Message {
-  getUserId(): number;
-  setUserId(value: number): void;
-
   getAssignmentId(): number;
   setAssignmentId(value: number): void;
 
@@ -336,7 +315,6 @@ export class GetSubmissionsInAssignmentRequest extends jspb.Message {
 
 export namespace GetSubmissionsInAssignmentRequest {
   export type AsObject = {
-    userId: number,
     assignmentId: number,
   }
 }
@@ -564,9 +542,6 @@ export namespace ChunkResponse {
 }
 
 export class CreateManifestRequest extends jspb.Message {
-  getUserId(): number;
-  setUserId(value: number): void;
-
   getAssignmentId(): number;
   setAssignmentId(value: number): void;
 
@@ -582,7 +557,6 @@ export class CreateManifestRequest extends jspb.Message {
 
 export namespace CreateManifestRequest {
   export type AsObject = {
-    userId: number,
     assignmentId: number,
   }
 }
@@ -660,9 +634,6 @@ export namespace InitUploadResponse {
 }
 
 export class CreateSubmissionRequest extends jspb.Message {
-  getUserId(): number;
-  setUserId(value: number): void;
-
   getAssignmentId(): number;
   setAssignmentId(value: number): void;
 
@@ -689,7 +660,6 @@ export class CreateSubmissionRequest extends jspb.Message {
 
 export namespace CreateSubmissionRequest {
   export type AsObject = {
-    userId: number,
     assignmentId: number,
     manifestId: number,
     submittersList: Array<number>,
@@ -971,6 +941,9 @@ export class GetCourseResponse extends jspb.Message {
   getCourse(): model_pb.Course | undefined;
   setCourse(value?: model_pb.Course): void;
 
+  getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
+  setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetCourseResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetCourseResponse): GetCourseResponse.AsObject;
@@ -984,6 +957,7 @@ export class GetCourseResponse extends jspb.Message {
 export namespace GetCourseResponse {
   export type AsObject = {
     course?: model_pb.Course.AsObject,
+    role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
   }
 }
 

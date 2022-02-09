@@ -2071,9 +2071,7 @@ proto.LoginResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.LoginResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    expireAt: (f = msg.getExpireAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -2114,15 +2112,6 @@ proto.LoginResponse.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {number} */ (reader.readUint64());
       msg.setUserId(value);
       break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    case 3:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
-      msg.setExpireAt(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -2159,21 +2148,6 @@ proto.LoginResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-  f = message.getExpireAt();
-  if (f != null) {
-    writer.writeMessage(
-      3,
-      f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
-    );
-  }
 };
 
 
@@ -2192,61 +2166,6 @@ proto.LoginResponse.prototype.getUserId = function() {
  */
 proto.LoginResponse.prototype.setUserId = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.LoginResponse.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.LoginResponse} returns this
- */
-proto.LoginResponse.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional google.protobuf.Timestamp expire_at = 3;
- * @return {?proto.google.protobuf.Timestamp}
- */
-proto.LoginResponse.prototype.getExpireAt = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 3));
-};
-
-
-/**
- * @param {?proto.google.protobuf.Timestamp|undefined} value
- * @return {!proto.LoginResponse} returns this
-*/
-proto.LoginResponse.prototype.setExpireAt = function(value) {
-  return jspb.Message.setWrapperField(this, 3, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.LoginResponse} returns this
- */
-proto.LoginResponse.prototype.clearExpireAt = function() {
-  return this.setExpireAt(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.LoginResponse.prototype.hasExpireAt = function() {
-  return jspb.Message.getField(this, 3) != null;
 };
 
 
@@ -2282,7 +2201,7 @@ proto.GetCourseListRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.GetCourseListRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0)
+
   };
 
   if (includeInstance) {
@@ -2319,10 +2238,6 @@ proto.GetCourseListRequest.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readUint64());
-      msg.setUserId(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -2352,31 +2267,6 @@ proto.GetCourseListRequest.prototype.serializeBinary = function() {
  */
 proto.GetCourseListRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserId();
-  if (f !== 0) {
-    writer.writeUint64(
-      1,
-      f
-    );
-  }
-};
-
-
-/**
- * optional uint64 user_id = 1;
- * @return {number}
- */
-proto.GetCourseListRequest.prototype.getUserId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.GetCourseListRequest} returns this
- */
-proto.GetCourseListRequest.prototype.setUserId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -2792,8 +2682,7 @@ proto.GetAssignmentsInCourseRequest.prototype.toObject = function(opt_includeIns
  */
 proto.GetAssignmentsInCourseRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    courseId: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    courseId: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -2832,10 +2721,6 @@ proto.GetAssignmentsInCourseRequest.deserializeBinaryFromReader = function(msg, 
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setUserId(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readUint64());
       msg.setCourseId(value);
       break;
     default:
@@ -2867,17 +2752,10 @@ proto.GetAssignmentsInCourseRequest.prototype.serializeBinary = function() {
  */
 proto.GetAssignmentsInCourseRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserId();
-  if (f !== 0) {
-    writer.writeUint64(
-      1,
-      f
-    );
-  }
   f = message.getCourseId();
   if (f !== 0) {
     writer.writeUint64(
-      2,
+      1,
       f
     );
   }
@@ -2885,10 +2763,10 @@ proto.GetAssignmentsInCourseRequest.serializeBinaryToWriter = function(message, 
 
 
 /**
- * optional uint64 user_id = 1;
+ * optional uint64 course_id = 1;
  * @return {number}
  */
-proto.GetAssignmentsInCourseRequest.prototype.getUserId = function() {
+proto.GetAssignmentsInCourseRequest.prototype.getCourseId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
@@ -2897,26 +2775,8 @@ proto.GetAssignmentsInCourseRequest.prototype.getUserId = function() {
  * @param {number} value
  * @return {!proto.GetAssignmentsInCourseRequest} returns this
  */
-proto.GetAssignmentsInCourseRequest.prototype.setUserId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional uint64 course_id = 2;
- * @return {number}
- */
-proto.GetAssignmentsInCourseRequest.prototype.getCourseId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.GetAssignmentsInCourseRequest} returns this
- */
 proto.GetAssignmentsInCourseRequest.prototype.setCourseId = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -3404,8 +3264,7 @@ proto.GetSubmissionsInAssignmentRequest.prototype.toObject = function(opt_includ
  */
 proto.GetSubmissionsInAssignmentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    assignmentId: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    assignmentId: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -3444,10 +3303,6 @@ proto.GetSubmissionsInAssignmentRequest.deserializeBinaryFromReader = function(m
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setUserId(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readUint64());
       msg.setAssignmentId(value);
       break;
     default:
@@ -3479,17 +3334,10 @@ proto.GetSubmissionsInAssignmentRequest.prototype.serializeBinary = function() {
  */
 proto.GetSubmissionsInAssignmentRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserId();
-  if (f !== 0) {
-    writer.writeUint64(
-      1,
-      f
-    );
-  }
   f = message.getAssignmentId();
   if (f !== 0) {
     writer.writeUint64(
-      2,
+      1,
       f
     );
   }
@@ -3497,10 +3345,10 @@ proto.GetSubmissionsInAssignmentRequest.serializeBinaryToWriter = function(messa
 
 
 /**
- * optional uint64 user_id = 1;
+ * optional uint64 assignment_id = 1;
  * @return {number}
  */
-proto.GetSubmissionsInAssignmentRequest.prototype.getUserId = function() {
+proto.GetSubmissionsInAssignmentRequest.prototype.getAssignmentId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
@@ -3509,26 +3357,8 @@ proto.GetSubmissionsInAssignmentRequest.prototype.getUserId = function() {
  * @param {number} value
  * @return {!proto.GetSubmissionsInAssignmentRequest} returns this
  */
-proto.GetSubmissionsInAssignmentRequest.prototype.setUserId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional uint64 assignment_id = 2;
- * @return {number}
- */
-proto.GetSubmissionsInAssignmentRequest.prototype.getAssignmentId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.GetSubmissionsInAssignmentRequest} returns this
- */
 proto.GetSubmissionsInAssignmentRequest.prototype.setAssignmentId = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -5113,8 +4943,7 @@ proto.CreateManifestRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.CreateManifestRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    assignmentId: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    assignmentId: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -5153,10 +4982,6 @@ proto.CreateManifestRequest.deserializeBinaryFromReader = function(msg, reader) 
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setUserId(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readUint64());
       msg.setAssignmentId(value);
       break;
     default:
@@ -5188,17 +5013,10 @@ proto.CreateManifestRequest.prototype.serializeBinary = function() {
  */
 proto.CreateManifestRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserId();
-  if (f !== 0) {
-    writer.writeUint64(
-      1,
-      f
-    );
-  }
   f = message.getAssignmentId();
   if (f !== 0) {
     writer.writeUint64(
-      2,
+      1,
       f
     );
   }
@@ -5206,10 +5024,10 @@ proto.CreateManifestRequest.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional uint64 user_id = 1;
+ * optional uint64 assignment_id = 1;
  * @return {number}
  */
-proto.CreateManifestRequest.prototype.getUserId = function() {
+proto.CreateManifestRequest.prototype.getAssignmentId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
@@ -5218,26 +5036,8 @@ proto.CreateManifestRequest.prototype.getUserId = function() {
  * @param {number} value
  * @return {!proto.CreateManifestRequest} returns this
  */
-proto.CreateManifestRequest.prototype.setUserId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional uint64 assignment_id = 2;
- * @return {number}
- */
-proto.CreateManifestRequest.prototype.getAssignmentId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.CreateManifestRequest} returns this
- */
 proto.CreateManifestRequest.prototype.setAssignmentId = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -5727,7 +5527,7 @@ proto.InitUploadResponse.prototype.setToken = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.CreateSubmissionRequest.repeatedFields_ = [4];
+proto.CreateSubmissionRequest.repeatedFields_ = [3];
 
 
 
@@ -5760,11 +5560,10 @@ proto.CreateSubmissionRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.CreateSubmissionRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    assignmentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    manifestId: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    submittersList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
-    leaderboardName: jspb.Message.getFieldWithDefault(msg, 5, "")
+    assignmentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    manifestId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    submittersList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    leaderboardName: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -5803,23 +5602,19 @@ proto.CreateSubmissionRequest.deserializeBinaryFromReader = function(msg, reader
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setUserId(value);
+      msg.setAssignmentId(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readUint64());
-      msg.setAssignmentId(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint64());
       msg.setManifestId(value);
       break;
-    case 4:
+    case 3:
       var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint64() : [reader.readUint64()]);
       for (var i = 0; i < values.length; i++) {
         msg.addSubmitters(values[i]);
       }
       break;
-    case 5:
+    case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setLeaderboardName(value);
       break;
@@ -5852,38 +5647,31 @@ proto.CreateSubmissionRequest.prototype.serializeBinary = function() {
  */
 proto.CreateSubmissionRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserId();
+  f = message.getAssignmentId();
   if (f !== 0) {
     writer.writeUint64(
       1,
       f
     );
   }
-  f = message.getAssignmentId();
+  f = message.getManifestId();
   if (f !== 0) {
     writer.writeUint64(
       2,
       f
     );
   }
-  f = message.getManifestId();
-  if (f !== 0) {
-    writer.writeUint64(
-      3,
-      f
-    );
-  }
   f = message.getSubmittersList();
   if (f.length > 0) {
     writer.writePackedUint64(
-      4,
+      3,
       f
     );
   }
   f = message.getLeaderboardName();
   if (f.length > 0) {
     writer.writeString(
-      5,
+      4,
       f
     );
   }
@@ -5891,10 +5679,10 @@ proto.CreateSubmissionRequest.serializeBinaryToWriter = function(message, writer
 
 
 /**
- * optional uint64 user_id = 1;
+ * optional uint64 assignment_id = 1;
  * @return {number}
  */
-proto.CreateSubmissionRequest.prototype.getUserId = function() {
+proto.CreateSubmissionRequest.prototype.getAssignmentId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
@@ -5903,16 +5691,16 @@ proto.CreateSubmissionRequest.prototype.getUserId = function() {
  * @param {number} value
  * @return {!proto.CreateSubmissionRequest} returns this
  */
-proto.CreateSubmissionRequest.prototype.setUserId = function(value) {
+proto.CreateSubmissionRequest.prototype.setAssignmentId = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * optional uint64 assignment_id = 2;
+ * optional uint64 manifest_id = 2;
  * @return {number}
  */
-proto.CreateSubmissionRequest.prototype.getAssignmentId = function() {
+proto.CreateSubmissionRequest.prototype.getManifestId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
@@ -5921,35 +5709,17 @@ proto.CreateSubmissionRequest.prototype.getAssignmentId = function() {
  * @param {number} value
  * @return {!proto.CreateSubmissionRequest} returns this
  */
-proto.CreateSubmissionRequest.prototype.setAssignmentId = function(value) {
+proto.CreateSubmissionRequest.prototype.setManifestId = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 
 /**
- * optional uint64 manifest_id = 3;
- * @return {number}
- */
-proto.CreateSubmissionRequest.prototype.getManifestId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.CreateSubmissionRequest} returns this
- */
-proto.CreateSubmissionRequest.prototype.setManifestId = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
-};
-
-
-/**
- * repeated uint64 submitters = 4;
+ * repeated uint64 submitters = 3;
  * @return {!Array<number>}
  */
 proto.CreateSubmissionRequest.prototype.getSubmittersList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 3));
 };
 
 
@@ -5958,7 +5728,7 @@ proto.CreateSubmissionRequest.prototype.getSubmittersList = function() {
  * @return {!proto.CreateSubmissionRequest} returns this
  */
 proto.CreateSubmissionRequest.prototype.setSubmittersList = function(value) {
-  return jspb.Message.setField(this, 4, value || []);
+  return jspb.Message.setField(this, 3, value || []);
 };
 
 
@@ -5968,7 +5738,7 @@ proto.CreateSubmissionRequest.prototype.setSubmittersList = function(value) {
  * @return {!proto.CreateSubmissionRequest} returns this
  */
 proto.CreateSubmissionRequest.prototype.addSubmitters = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
 };
 
 
@@ -5982,11 +5752,11 @@ proto.CreateSubmissionRequest.prototype.clearSubmittersList = function() {
 
 
 /**
- * optional string leaderboard_name = 5;
+ * optional string leaderboard_name = 4;
  * @return {string}
  */
 proto.CreateSubmissionRequest.prototype.getLeaderboardName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -5995,7 +5765,7 @@ proto.CreateSubmissionRequest.prototype.getLeaderboardName = function() {
  * @return {!proto.CreateSubmissionRequest} returns this
  */
 proto.CreateSubmissionRequest.prototype.setLeaderboardName = function(value) {
-  return jspb.Message.setProto3StringField(this, 5, value);
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -7848,7 +7618,8 @@ proto.GetCourseResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.GetCourseResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    course: (f = msg.getCourse()) && model_pb.Course.toObject(includeInstance, f)
+    course: (f = msg.getCourse()) && model_pb.Course.toObject(includeInstance, f),
+    role: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -7890,6 +7661,10 @@ proto.GetCourseResponse.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,model_pb.Course.deserializeBinaryFromReader);
       msg.setCourse(value);
       break;
+    case 2:
+      var value = /** @type {!proto.CourseRole} */ (reader.readEnum());
+      msg.setRole(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -7925,6 +7700,13 @@ proto.GetCourseResponse.serializeBinaryToWriter = function(message, writer) {
       1,
       f,
       model_pb.Course.serializeBinaryToWriter
+    );
+  }
+  f = message.getRole();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
     );
   }
 };
@@ -7964,6 +7746,24 @@ proto.GetCourseResponse.prototype.clearCourse = function() {
  */
 proto.GetCourseResponse.prototype.hasCourse = function() {
   return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional CourseRole role = 2;
+ * @return {!proto.CourseRole}
+ */
+proto.GetCourseResponse.prototype.getRole = function() {
+  return /** @type {!proto.CourseRole} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.CourseRole} value
+ * @return {!proto.GetCourseResponse} returns this
+ */
+proto.GetCourseResponse.prototype.setRole = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 

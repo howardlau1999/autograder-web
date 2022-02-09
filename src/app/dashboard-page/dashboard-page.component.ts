@@ -17,7 +17,7 @@ export class DashboardPageComponent {
   refresher: Subject<null> = new Subject<null>();
   cards$ = this.refresher.pipe(
     mergeWith(this.route.paramMap),
-    switchMap(_ => this.apiService.getCourseList(1).pipe(
+    switchMap(_ => this.apiService.getCourseList().pipe(
       map((response) => {
         return response.getCoursesList();
       }),
