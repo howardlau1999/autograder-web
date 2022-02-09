@@ -166,6 +166,15 @@ type AutograderServiceInitDownload = {
   readonly responseType: typeof api_pb.InitDownloadResponse;
 };
 
+type AutograderServiceGetCourseMembers = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetCourseMembersRequest;
+  readonly responseType: typeof api_pb.GetCourseMembersResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -186,6 +195,7 @@ export class AutograderService {
   static readonly CreateAssignment: AutograderServiceCreateAssignment;
   static readonly DeleteFileInManifest: AutograderServiceDeleteFileInManifest;
   static readonly InitDownload: AutograderServiceInitDownload;
+  static readonly GetCourseMembers: AutograderServiceGetCourseMembers;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -373,6 +383,15 @@ export class AutograderServiceClient {
   initDownload(
     requestMessage: api_pb.InitDownloadRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.InitDownloadResponse|null) => void
+  ): UnaryResponse;
+  getCourseMembers(
+    requestMessage: api_pb.GetCourseMembersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  getCourseMembers(
+    requestMessage: api_pb.GetCourseMembersRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseMembersResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable} from '@angular/material/table';
@@ -16,6 +16,7 @@ export class FilesTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<FilesTableItem>;
   @Input() uploadEntries!: Observable<{ [filename: string]: UploadEntry; }>;
+  @Output() fileDelete: EventEmitter<string> = new EventEmitter<string>();
   dataSource: FilesTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
@@ -23,6 +24,10 @@ export class FilesTableComponent implements AfterViewInit {
 
   constructor() {
     this.dataSource = new FilesTableDataSource(of({}));
+  }
+
+  onDeleteClicked(filename: string) {
+    this.fileDelete.emit(filename);
   }
 
   ngAfterViewInit(): void {

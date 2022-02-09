@@ -172,6 +172,15 @@ AutograderService.InitDownload = {
   responseType: api_pb.InitDownloadResponse
 };
 
+AutograderService.GetCourseMembers = {
+  methodName: "GetCourseMembers",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetCourseMembersRequest,
+  responseType: api_pb.GetCourseMembersResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -719,6 +728,37 @@ AutograderServiceClient.prototype.initDownload = function initDownload(requestMe
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.InitDownload, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getCourseMembers = function getCourseMembers(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetCourseMembers, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

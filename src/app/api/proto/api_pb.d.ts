@@ -1358,6 +1358,84 @@ export namespace InitDownloadResponse {
   }
 }
 
+export class GetCourseMembersRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCourseMembersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCourseMembersRequest): GetCourseMembersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetCourseMembersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCourseMembersRequest;
+  static deserializeBinaryFromReader(message: GetCourseMembersRequest, reader: jspb.BinaryReader): GetCourseMembersRequest;
+}
+
+export namespace GetCourseMembersRequest {
+  export type AsObject = {
+    courseId: number,
+  }
+}
+
+export class GetCourseMembersResponse extends jspb.Message {
+  clearMembersList(): void;
+  getMembersList(): Array<GetCourseMembersResponse.MemberInfo>;
+  setMembersList(value: Array<GetCourseMembersResponse.MemberInfo>): void;
+  addMembers(value?: GetCourseMembersResponse.MemberInfo, index?: number): GetCourseMembersResponse.MemberInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCourseMembersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCourseMembersResponse): GetCourseMembersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetCourseMembersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCourseMembersResponse;
+  static deserializeBinaryFromReader(message: GetCourseMembersResponse, reader: jspb.BinaryReader): GetCourseMembersResponse;
+}
+
+export namespace GetCourseMembersResponse {
+  export type AsObject = {
+    membersList: Array<GetCourseMembersResponse.MemberInfo.AsObject>,
+  }
+
+  export class MemberInfo extends jspb.Message {
+    getUserId(): number;
+    setUserId(value: number): void;
+
+    getUsername(): string;
+    setUsername(value: string): void;
+
+    getEmail(): string;
+    setEmail(value: string): void;
+
+    getNickname(): string;
+    setNickname(value: string): void;
+
+    getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
+    setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MemberInfo.AsObject;
+    static toObject(includeInstance: boolean, msg: MemberInfo): MemberInfo.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MemberInfo, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MemberInfo;
+    static deserializeBinaryFromReader(message: MemberInfo, reader: jspb.BinaryReader): MemberInfo;
+  }
+
+  export namespace MemberInfo {
+    export type AsObject = {
+      userId: number,
+      username: string,
+      email: string,
+      nickname: string,
+      role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
+    }
+  }
+}
+
 export interface DownloadFileTypeMap {
   BINARY: 0;
   TEXT: 1;

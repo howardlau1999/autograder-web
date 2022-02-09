@@ -1,38 +1,14 @@
 import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {map} from 'rxjs/operators';
-import {merge, Observable, of as observableOf} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
+import {merge, Observable, of as observableOf, tap} from 'rxjs';
+import {GetCourseMembersResponse} from "../../api/proto/api_pb";
+import {ApiService} from "../../api/api.service";
 
-// TODO: Replace this with your own data model type
-export interface MembersItem {
-  name: string;
-  id: number;
-}
+export type MembersItem = GetCourseMembersResponse.MemberInfo;
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: MembersItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
-];
+const EXAMPLE_DATA: MembersItem[] = [];
 
 /**
  * Data source for the Members view. This class should
@@ -40,12 +16,18 @@ const EXAMPLE_DATA: MembersItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class MembersDataSource extends DataSource<MembersItem> {
+  data$: Observable<MembersItem[]>;
   data: MembersItem[] = EXAMPLE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor() {
+  constructor(apiService: ApiService, courseId$: Observable<number>) {
     super();
+    this.data$ = courseId$.pipe(
+      switchMap(courseId => apiService.getCourseMembers(courseId)),
+      map(resp => resp.getMembersList()),
+      tap(data => this.data = data),
+    );
   }
 
   /**
@@ -57,7 +39,7 @@ export class MembersDataSource extends DataSource<MembersItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
+      return merge(this.data$, this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
           return this.getPagedData(this.getSortedData([...this.data]));
         }));
@@ -98,10 +80,10 @@ export class MembersDataSource extends DataSource<MembersItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'name':
-          return compare(a.name, b.name, isAsc);
-        case 'id':
-          return compare(+a.id, +b.id, isAsc);
+        case 'username':
+          return compare(a.getUsername(), b.getUsername(), isAsc);
+        case 'userId':
+          return compare(+a.getUserId(), +b.getUserId(), isAsc);
         default:
           return 0;
       }

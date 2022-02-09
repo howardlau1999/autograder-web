@@ -20,20 +20,30 @@
   <div class="table-container mat-elevation-z1">
   <table aria-label="Elements" class="full-width-table" mat-table matSort>
     <!-- Id Column -->
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="userId">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>用户 ID</th>
-      <td *matCellDef="let row" mat-cell>{{row.id}}</td>
+      <td *matCellDef="let row" mat-cell>{{row.getUserId()}}</td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="username">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>用户名</th>
-      <td *matCellDef="let row" mat-cell>{{row.name}}</td>
+      <td *matCellDef="let row" mat-cell>{{row.getUsername()}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nickname">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>昵称</th>
+      <td *matCellDef="let row" mat-cell>{{row.getNickname()}}</td>
     </ng-container>
 
     <ng-container matColumnDef="email">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
-      <td *matCellDef="let row" mat-cell>{{row.name}}</td>
+      <td *matCellDef="let row" mat-cell>{{row.getEmail()}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
+      <td *matCellDef="let row" mat-cell>{{mapRoleToString(row.getRole())}}</td>
     </ng-container>
 
     <ng-container matColumnDef="operations">

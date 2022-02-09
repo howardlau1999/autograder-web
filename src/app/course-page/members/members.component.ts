@@ -6,6 +6,10 @@ import {MembersDataSource, MembersItem} from './members-datasource';
 import {MatDialog} from "@angular/material/dialog";
 import {BatchAddMemberDialogComponent} from "./batch-add-member-dialog/batch-add-member-dialog.component";
 import {AddMemberDialogComponent} from "./add-member-dialog/add-member-dialog.component";
+import {ActivatedRoute} from "@angular/router";
+import {map} from "rxjs/operators";
+import {ApiService} from "../../api/api.service";
+import {CourseRole, CourseRoleMap} from "../../api/proto/model_pb";
 
 @Component({
   selector: 'app-members',
@@ -20,10 +24,12 @@ export class MembersComponent implements AfterViewInit {
   search: string = '';
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'email', 'operations'];
+  displayedColumns = ['userId', 'username', 'nickname', 'email', 'role', 'operations'];
 
-  constructor(private dialog: MatDialog) {
-    this.dataSource = new MembersDataSource();
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private apiService: ApiService) {
+    this.dataSource = new MembersDataSource(apiService, this.route.parent!.paramMap.pipe(
+      map(params => Number.parseInt(params.get("courseId") || "0"))
+    ));
   }
 
   ngAfterViewInit(): void {
@@ -38,5 +44,19 @@ export class MembersComponent implements AfterViewInit {
 
   onAddMemberClicked() {
     this.dialog.open(AddMemberDialogComponent);
+  }
+
+  mapRoleToString(role: CourseRoleMap[keyof CourseRoleMap]) {
+    switch (role) {
+      case CourseRole.INSTRUCTOR:
+        return '教师';
+      case CourseRole.TA:
+        return '助教';
+      case CourseRole.READER:
+        return '只读';
+      case CourseRole.STUDENT:
+      default:
+        return '学生';
+    }
   }
 }

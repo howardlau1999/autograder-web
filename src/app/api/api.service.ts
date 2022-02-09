@@ -4,10 +4,10 @@ import {
   CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
-  CreateSubmissionRequest,
+  CreateSubmissionRequest, DeleteFileInManifestRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
-  GetCourseListRequest,
+  GetCourseListRequest, GetCourseMembersRequest,
   GetCourseRequest,
   GetFilesInSubmissionRequest,
   GetLeaderboardRequest,
@@ -212,5 +212,18 @@ export class ApiService {
     request.setFilename(filename);
     request.setSubmissionId(submissionId);
     return this.unary(AutograderService.InitDownload, request);
+  }
+
+  deleteFileInManifest(manifestId: number, filename: string) {
+    const request = new DeleteFileInManifestRequest();
+    request.setManifestId(manifestId);
+    request.setFilename(filename);
+    return this.unary(AutograderService.DeleteFileInManifest, request);
+  }
+
+  getCourseMembers(courseId: number) {
+    const request = new GetCourseMembersRequest();
+    request.setCourseId(courseId);
+    return this.unary(AutograderService.GetCourseMembers, request);
   }
 }
