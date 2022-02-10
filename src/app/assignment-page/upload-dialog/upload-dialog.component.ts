@@ -79,11 +79,25 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onDrop(event: any) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
+
+    if (event.dataTransfer?.items) {
+      const files: File[] = [];
+      for (let i = 0; i < event.dataTransfer.items.length; ++i) {
+        const item = event.dataTransfer.items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file !== null) {
+            files.push(file);
+          }
+        }
+        this.uploadFiles(files);
+      }
+    }
   }
 
-  onDragOver(event: any) {
+  onDragOver(event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
   }
@@ -107,11 +121,11 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
     this.cancelUpload();
   }
 
-  uploadFileEvent(event: any) {
+  uploadFiles(files: File[]) {
     (this.manifestId === null ? this.apiService.createManifest(this.assignmentId).pipe(map(resp => {
       return this.manifestId = resp.getManifestId();
     })) : of(this.manifestId)).pipe(mergeMap(manifestId => {
-      return from(event.target.files as File[]).pipe(mergeMap(file => {
+      return from(files).pipe(mergeMap(file => {
         if (file.type === 'application/x-zip-compressed') {
           const blobReader = new zipjs.BlobReader(file);
           const zipReader = new zipjs.ZipReader(blobReader, {useWebWorkers: true});
@@ -148,6 +162,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit {
         }
       });
     });
+  }
+
+  uploadFileEvent(event: any) {
+    this.uploadFiles(event.target.files as File[]);
   }
 
   updateProgress() {

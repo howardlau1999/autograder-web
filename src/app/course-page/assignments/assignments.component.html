@@ -4,6 +4,9 @@
       <div *ngIf="course$ | async as course; else progressBar">
         <mat-card-title>
           {{course.getName()}}
+          <button mat-icon-button (click)="onEditCourseClicked()" class="course-edit-button">
+            <mat-icon>edit</mat-icon>
+          </button>
         </mat-card-title>
         <mat-card-subtitle>
           #{{courseId}}
@@ -19,7 +22,8 @@
     <mat-card class="assignment-table-card">
       <button mat-raised-button (click)="onAddAssignmentClicked()">
         <mat-icon>add</mat-icon>
-        &nbsp;添加作业</button>
+        &nbsp;添加作业
+      </button>
       <table aria-label="Elements" class="full-width-table" mat-table matSort>
         <!-- Id Column -->
         <ng-container matColumnDef="id">
@@ -50,8 +54,18 @@
           <td *matCellDef="let row" mat-cell>{{row.getDueDate().toDate() | date:"YYYY-MM-dd HH:mm"}}</td>
         </ng-container>
 
+        <ng-container matColumnDef="operations">
+          <th *matHeaderCellDef mat-header-cell>操作</th>
+          <td *matCellDef="let row" mat-cell>
+            <button mat-icon-button (click)="onEditAssignmentClicked($event)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
         <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-        <tr (click)="gotoAssignment(row.getAssignmentId())" *matRowDef="let row; columns: displayedColumns;" class="assignment-row"
+        <tr (click)="gotoAssignment(row.getAssignmentId())" *matRowDef="let row; columns: displayedColumns;"
+            class="assignment-row"
             mat-row></tr>
       </table>
 

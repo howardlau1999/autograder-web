@@ -1,8 +1,12 @@
 <div class="members-container">
   <h2>课程成员</h2>
   <div class="operation-bar">
-    <button mat-raised-button (click)="onAddMemberClicked()"><mat-icon>person_add</mat-icon>&nbsp;添加成员</button>
-    <button mat-flat-button (click)="onBatchAddMemberClicked()"><mat-icon>group_add</mat-icon>&nbsp;批量添加</button>
+    <button mat-raised-button (click)="onAddMemberClicked()">
+      <mat-icon>person_add</mat-icon>&nbsp;添加成员
+    </button>
+    <button mat-flat-button (click)="onBatchAddMemberClicked()">
+      <mat-icon>group_add</mat-icon>&nbsp;批量添加
+    </button>
     <div class="spacer"></div>
     <form>
       <mat-form-field>
@@ -18,51 +22,56 @@
     </form>
   </div>
   <div class="table-container mat-elevation-z1">
-  <table aria-label="Elements" class="full-width-table" mat-table matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="userId">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>用户 ID</th>
-      <td *matCellDef="let row" mat-cell>{{row.getUserId()}}</td>
-    </ng-container>
+    <table aria-label="Elements" class="full-width-table" mat-table matSort>
+      <!-- Id Column -->
+      <ng-container matColumnDef="userId">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>用户 ID</th>
+        <td *matCellDef="let row" mat-cell>{{row.getUserId()}}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="username">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>用户名</th>
-      <td *matCellDef="let row" mat-cell>{{row.getUsername()}}</td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="username">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>用户名</th>
+        <td *matCellDef="let row" mat-cell>{{row.getUsername()}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="nickname">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>昵称</th>
-      <td *matCellDef="let row" mat-cell>{{row.getNickname()}}</td>
-    </ng-container>
+      <ng-container matColumnDef="nickname">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>昵称</th>
+        <td *matCellDef="let row" mat-cell>{{row.getNickname()}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="email">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
-      <td *matCellDef="let row" mat-cell>{{row.getEmail()}}</td>
-    </ng-container>
+      <ng-container matColumnDef="email">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
+        <td *matCellDef="let row" mat-cell>{{row.getEmail()}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="role">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
-      <td *matCellDef="let row" mat-cell>
-        <app-role-select [role]="row.getRole()"></app-role-select>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="role">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
+        <td *matCellDef="let row" mat-cell>
+          <app-role-select [role]="row.getRole()"></app-role-select>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="operations">
-      <th *matHeaderCellDef mat-header-cell>操作</th>
-      <td *matCellDef="let row" mat-cell><button mat-icon-button><mat-icon>person_remove</mat-icon></button></td>
-    </ng-container>
+      <ng-container matColumnDef="operations">
+        <th *matHeaderCellDef mat-header-cell>操作</th>
+        <td *matCellDef="let row" mat-cell>
+          <button (click)="onDeleteMemberClicked(row)" mat-icon-button>
+            <mat-icon>person_remove</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
 
-  <mat-paginator #paginator
-                 [length]="dataSource?.data?.length"
-                 [pageIndex]="0"
-                 [pageSizeOptions]="[5, 10, 20, 50]"
-                 [pageSize]="10"
-                 showFirstLastButtons
-                 aria-label="Select page">
-  </mat-paginator></div>
+    <mat-paginator #paginator
+                   [length]="dataSource?.data?.length"
+                   [pageIndex]="0"
+                   [pageSizeOptions]="[5, 10, 20, 50]"
+                   [pageSize]="10"
+                   showFirstLastButtons
+                   aria-label="Select page">
+    </mat-paginator>
+  </div>
 </div>

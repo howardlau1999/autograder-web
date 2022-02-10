@@ -6,7 +6,7 @@
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <p>
           <mat-form-field appearance="standard" class="login-form-control">
-            <mat-label i18n="username">用户名</mat-label>
+            <mat-label i18n="username">用户名/电子邮箱</mat-label>
             <input formControlName="username" i18n-placeholder="username" matInput placeholder="用户名" required>
             <mat-icon matSuffix>account_circle</mat-icon>
             <mat-error *ngIf="loginForm.get('username')?.invalid">

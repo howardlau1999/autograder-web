@@ -21,7 +21,7 @@ export class AssignmentsComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<CoursePageItem>;
   dataSource: AssignmentsPageDatasource;
-  displayedColumns = ['id', 'name', 'submitted', 'releaseDate', 'dueDate'];
+  displayedColumns = ['id', 'name', 'submitted', 'releaseDate', 'dueDate', 'operations'];
   course$: Observable<Course | undefined>;
   courseId: number = 0;
 
@@ -54,5 +54,14 @@ export class AssignmentsComponent implements AfterViewInit {
         courseId: this.courseId,
       }
     });
+  }
+
+  onEditAssignmentClicked(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  onEditCourseClicked() {
+
   }
 }

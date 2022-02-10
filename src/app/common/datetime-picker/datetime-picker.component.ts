@@ -87,5 +87,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   writeValue(timestamp: DateTime): void {
     this.timestamp = timestamp;
+    this.timestampChange.emit(this.timestamp);
   }
 }

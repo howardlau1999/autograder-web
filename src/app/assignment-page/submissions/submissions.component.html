@@ -67,6 +67,7 @@
         <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
         <tr *matRowDef="let submission; columns: columnsToDisplay"
             [class.submission-expanded-row]="expandedSubmission === submission"
+            (click)="viewSubmissionReport(submission.getSubmissionId())"
             class="submission-element-row"
             mat-row></tr>
         <tr *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row" mat-row></tr>

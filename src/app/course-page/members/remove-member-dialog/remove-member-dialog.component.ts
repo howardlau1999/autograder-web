@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+
+export interface RemoveMemberDialogData {
+  nickname: string,
+  email: string,
+}
 
 @Component({
   selector: 'app-remove-member-dialog',
@@ -7,8 +12,15 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./remove-member-dialog.component.css']
 })
 export class RemoveMemberDialogComponent implements OnInit {
-
-  constructor(private dialogRef: MatDialogRef<RemoveMemberDialogComponent>) { }
+  nickname: string;
+  email: string;
+  constructor(
+    private dialogRef: MatDialogRef<RemoveMemberDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: RemoveMemberDialogData,
+  ) {
+    this.nickname = data.nickname;
+    this.email = data.email;
+  }
 
   ngOnInit(): void {
   }

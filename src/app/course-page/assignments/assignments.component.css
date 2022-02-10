@@ -26,3 +26,9 @@ tr.assignment-row:not(.assignment-expanded-row):hover {
 tr.assignment-row:not(.assignment-expanded-row):active {
   background: #efefef;
 }
+
+.course-edit-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}

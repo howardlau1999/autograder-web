@@ -1,5 +1,7 @@
 <h2 mat-dialog-title>创建提交</h2>
-<button (click)="fileInput.click()" color="primary" mat-flat-button>浏览</button>
+<div class="drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (click)="fileInput.click()">
+  单击此处或拖放文件以上传
+</div>
 <input multiple #fileInput (change)="uploadFileEvent($event)" id="uploadFile" name="uploadFile" style="display: none;"
        type="file">
 {{ this.uploaded }} / {{ this.total }}
