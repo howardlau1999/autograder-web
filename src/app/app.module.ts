@@ -65,6 +65,9 @@ import {MatLuxonDateModule} from "@angular/material-luxon-adapter";
 import {HIGHLIGHT_OPTIONS, HighlightModule} from "ngx-highlightjs";
 import {HighlightPlusModule} from "ngx-highlightjs/plus";
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import { RemoveMemberDialogComponent } from './course-page/members/remove-member-dialog/remove-member-dialog.component';
+import { RoleSelectComponent } from './course-page/members/role-select/role-select.component';
+import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -110,6 +113,9 @@ export class PaginatorIntl implements MatPaginatorIntl {
     BatchAddMemberDialogComponent,
     AssignmentsManagementComponent,
     DatetimePickerComponent,
+    RemoveMemberDialogComponent,
+    RoleSelectComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,

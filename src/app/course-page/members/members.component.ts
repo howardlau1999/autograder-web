@@ -10,6 +10,8 @@ import {ActivatedRoute} from "@angular/router";
 import {map} from "rxjs/operators";
 import {ApiService} from "../../api/api.service";
 import {CourseRole, CourseRoleMap} from "../../api/proto/model_pb";
+import {RemoveMemberDialogComponent} from "./remove-member-dialog/remove-member-dialog.component";
+import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-members',
@@ -26,7 +28,12 @@ export class MembersComponent implements AfterViewInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['userId', 'username', 'nickname', 'email', 'role', 'operations'];
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private apiService: ApiService) {
+  constructor(
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private apiService: ApiService,
+  ) {
     this.dataSource = new MembersDataSource(apiService, this.route.parent!.paramMap.pipe(
       map(params => Number.parseInt(params.get("courseId") || "0"))
     ));
@@ -46,17 +53,9 @@ export class MembersComponent implements AfterViewInit {
     this.dialog.open(AddMemberDialogComponent);
   }
 
-  mapRoleToString(role: CourseRoleMap[keyof CourseRoleMap]) {
-    switch (role) {
-      case CourseRole.INSTRUCTOR:
-        return '教师';
-      case CourseRole.TA:
-        return '助教';
-      case CourseRole.READER:
-        return '只读';
-      case CourseRole.STUDENT:
-      default:
-        return '学生';
-    }
+  onDeleteMemberClicked(data: any) {
+    console.log(data);
+    this.dialog.open(RemoveMemberDialogComponent);
   }
+
 }

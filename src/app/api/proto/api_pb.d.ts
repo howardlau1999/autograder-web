@@ -1436,6 +1436,336 @@ export namespace GetCourseMembersResponse {
   }
 }
 
+export class RemoveCourseMembersRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  clearUserIdsList(): void;
+  getUserIdsList(): Array<number>;
+  setUserIdsList(value: Array<number>): void;
+  addUserIds(value: number, index?: number): number;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RemoveCourseMembersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RemoveCourseMembersRequest): RemoveCourseMembersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RemoveCourseMembersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RemoveCourseMembersRequest;
+  static deserializeBinaryFromReader(message: RemoveCourseMembersRequest, reader: jspb.BinaryReader): RemoveCourseMembersRequest;
+}
+
+export namespace RemoveCourseMembersRequest {
+  export type AsObject = {
+    courseId: number,
+    userIdsList: Array<number>,
+  }
+}
+
+export class RemoveCourseMembersResponse extends jspb.Message {
+  clearRemovedList(): void;
+  getRemovedList(): Array<number>;
+  setRemovedList(value: Array<number>): void;
+  addRemoved(value: number, index?: number): number;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RemoveCourseMembersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RemoveCourseMembersResponse): RemoveCourseMembersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RemoveCourseMembersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RemoveCourseMembersResponse;
+  static deserializeBinaryFromReader(message: RemoveCourseMembersResponse, reader: jspb.BinaryReader): RemoveCourseMembersResponse;
+}
+
+export namespace RemoveCourseMembersResponse {
+  export type AsObject = {
+    removedList: Array<number>,
+  }
+}
+
+export class AddCourseMembersRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  clearMembersList(): void;
+  getMembersList(): Array<AddCourseMembersRequest.MemberToAdd>;
+  setMembersList(value: Array<AddCourseMembersRequest.MemberToAdd>): void;
+  addMembers(value?: AddCourseMembersRequest.MemberToAdd, index?: number): AddCourseMembersRequest.MemberToAdd;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AddCourseMembersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: AddCourseMembersRequest): AddCourseMembersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AddCourseMembersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AddCourseMembersRequest;
+  static deserializeBinaryFromReader(message: AddCourseMembersRequest, reader: jspb.BinaryReader): AddCourseMembersRequest;
+}
+
+export namespace AddCourseMembersRequest {
+  export type AsObject = {
+    courseId: number,
+    membersList: Array<AddCourseMembersRequest.MemberToAdd.AsObject>,
+  }
+
+  export class MemberToAdd extends jspb.Message {
+    getEmail(): string;
+    setEmail(value: string): void;
+
+    getName(): string;
+    setName(value: string): void;
+
+    getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
+    setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MemberToAdd.AsObject;
+    static toObject(includeInstance: boolean, msg: MemberToAdd): MemberToAdd.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MemberToAdd, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MemberToAdd;
+    static deserializeBinaryFromReader(message: MemberToAdd, reader: jspb.BinaryReader): MemberToAdd;
+  }
+
+  export namespace MemberToAdd {
+    export type AsObject = {
+      email: string,
+      name: string,
+      role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
+    }
+  }
+}
+
+export class AddCourseMembersResponse extends jspb.Message {
+  clearAddedList(): void;
+  getAddedList(): Array<model_pb.CourseMember>;
+  setAddedList(value: Array<model_pb.CourseMember>): void;
+  addAdded(value?: model_pb.CourseMember, index?: number): model_pb.CourseMember;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AddCourseMembersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: AddCourseMembersResponse): AddCourseMembersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: AddCourseMembersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AddCourseMembersResponse;
+  static deserializeBinaryFromReader(message: AddCourseMembersResponse, reader: jspb.BinaryReader): AddCourseMembersResponse;
+}
+
+export namespace AddCourseMembersResponse {
+  export type AsObject = {
+    addedList: Array<model_pb.CourseMember.AsObject>,
+  }
+}
+
+export class UpdateCourseMemberRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  hasMember(): boolean;
+  clearMember(): void;
+  getMember(): model_pb.CourseMember | undefined;
+  setMember(value?: model_pb.CourseMember): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateCourseMemberRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateCourseMemberRequest): UpdateCourseMemberRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateCourseMemberRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateCourseMemberRequest;
+  static deserializeBinaryFromReader(message: UpdateCourseMemberRequest, reader: jspb.BinaryReader): UpdateCourseMemberRequest;
+}
+
+export namespace UpdateCourseMemberRequest {
+  export type AsObject = {
+    courseId: number,
+    member?: model_pb.CourseMember.AsObject,
+  }
+}
+
+export class UpdateCourseMemberResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateCourseMemberResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateCourseMemberResponse): UpdateCourseMemberResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateCourseMemberResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateCourseMemberResponse;
+  static deserializeBinaryFromReader(message: UpdateCourseMemberResponse, reader: jspb.BinaryReader): UpdateCourseMemberResponse;
+}
+
+export namespace UpdateCourseMemberResponse {
+  export type AsObject = {
+  }
+}
+
+export class UpdateCourseRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  hasCourse(): boolean;
+  clearCourse(): void;
+  getCourse(): model_pb.Course | undefined;
+  setCourse(value?: model_pb.Course): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateCourseRequest): UpdateCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateCourseRequest;
+  static deserializeBinaryFromReader(message: UpdateCourseRequest, reader: jspb.BinaryReader): UpdateCourseRequest;
+}
+
+export namespace UpdateCourseRequest {
+  export type AsObject = {
+    courseId: number,
+    course?: model_pb.Course.AsObject,
+  }
+}
+
+export class UpdateCourseResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateCourseResponse): UpdateCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateCourseResponse;
+  static deserializeBinaryFromReader(message: UpdateCourseResponse, reader: jspb.BinaryReader): UpdateCourseResponse;
+}
+
+export namespace UpdateCourseResponse {
+  export type AsObject = {
+  }
+}
+
+export class UpdateAssignmentRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  hasAssignment(): boolean;
+  clearAssignment(): void;
+  getAssignment(): model_pb.Assignment | undefined;
+  setAssignment(value?: model_pb.Assignment): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateAssignmentRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateAssignmentRequest): UpdateAssignmentRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateAssignmentRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateAssignmentRequest;
+  static deserializeBinaryFromReader(message: UpdateAssignmentRequest, reader: jspb.BinaryReader): UpdateAssignmentRequest;
+}
+
+export namespace UpdateAssignmentRequest {
+  export type AsObject = {
+    assignmentId: number,
+    assignment?: model_pb.Assignment.AsObject,
+  }
+}
+
+export class UpdateAssignmentResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateAssignmentResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateAssignmentResponse): UpdateAssignmentResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateAssignmentResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateAssignmentResponse;
+  static deserializeBinaryFromReader(message: UpdateAssignmentResponse, reader: jspb.BinaryReader): UpdateAssignmentResponse;
+}
+
+export namespace UpdateAssignmentResponse {
+  export type AsObject = {
+  }
+}
+
+export class RequestPasswordResetRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RequestPasswordResetRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RequestPasswordResetRequest): RequestPasswordResetRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RequestPasswordResetRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RequestPasswordResetRequest;
+  static deserializeBinaryFromReader(message: RequestPasswordResetRequest, reader: jspb.BinaryReader): RequestPasswordResetRequest;
+}
+
+export namespace RequestPasswordResetRequest {
+  export type AsObject = {
+    email: string,
+  }
+}
+
+export class RequestPasswordResetResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RequestPasswordResetResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RequestPasswordResetResponse): RequestPasswordResetResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RequestPasswordResetResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RequestPasswordResetResponse;
+  static deserializeBinaryFromReader(message: RequestPasswordResetResponse, reader: jspb.BinaryReader): RequestPasswordResetResponse;
+}
+
+export namespace RequestPasswordResetResponse {
+  export type AsObject = {
+  }
+}
+
+export class ResetPasswordRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  getCode(): string;
+  setCode(value: string): void;
+
+  getPassword(): string;
+  setPassword(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ResetPasswordRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ResetPasswordRequest): ResetPasswordRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ResetPasswordRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ResetPasswordRequest;
+  static deserializeBinaryFromReader(message: ResetPasswordRequest, reader: jspb.BinaryReader): ResetPasswordRequest;
+}
+
+export namespace ResetPasswordRequest {
+  export type AsObject = {
+    email: string,
+    code: string,
+    password: string,
+  }
+}
+
+export class ResetPasswordResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ResetPasswordResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ResetPasswordResponse): ResetPasswordResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ResetPasswordResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ResetPasswordResponse;
+  static deserializeBinaryFromReader(message: ResetPasswordResponse, reader: jspb.BinaryReader): ResetPasswordResponse;
+}
+
+export namespace ResetPasswordResponse {
+  export type AsObject = {
+  }
+}
+
 export interface DownloadFileTypeMap {
   BINARY: 0;
   TEXT: 1;

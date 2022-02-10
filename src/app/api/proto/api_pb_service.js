@@ -181,6 +181,69 @@ AutograderService.GetCourseMembers = {
   responseType: api_pb.GetCourseMembersResponse
 };
 
+AutograderService.AddCourseMembers = {
+  methodName: "AddCourseMembers",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.AddCourseMembersRequest,
+  responseType: api_pb.AddCourseMembersResponse
+};
+
+AutograderService.RemoveCourseMembers = {
+  methodName: "RemoveCourseMembers",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.RemoveCourseMembersRequest,
+  responseType: api_pb.RemoveCourseMembersResponse
+};
+
+AutograderService.UpdateCourseMember = {
+  methodName: "UpdateCourseMember",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.UpdateCourseMemberRequest,
+  responseType: api_pb.UpdateCourseMemberResponse
+};
+
+AutograderService.UpdateCourse = {
+  methodName: "UpdateCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.UpdateCourseRequest,
+  responseType: api_pb.UpdateCourseResponse
+};
+
+AutograderService.UpdateAssignment = {
+  methodName: "UpdateAssignment",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.UpdateAssignmentRequest,
+  responseType: api_pb.UpdateAssignmentResponse
+};
+
+AutograderService.RequestPasswordReset = {
+  methodName: "RequestPasswordReset",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.RequestPasswordResetRequest,
+  responseType: api_pb.RequestPasswordResetResponse
+};
+
+AutograderService.ResetPassword = {
+  methodName: "ResetPassword",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.ResetPasswordRequest,
+  responseType: api_pb.ResetPasswordResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -759,6 +822,223 @@ AutograderServiceClient.prototype.getCourseMembers = function getCourseMembers(r
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetCourseMembers, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.addCourseMembers = function addCourseMembers(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.AddCourseMembers, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.removeCourseMembers = function removeCourseMembers(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.RemoveCourseMembers, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.updateCourseMember = function updateCourseMember(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.UpdateCourseMember, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.updateCourse = function updateCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.UpdateCourse, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.updateAssignment = function updateAssignment(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.UpdateAssignment, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.requestPasswordReset = function requestPasswordReset(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.RequestPasswordReset, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.resetPassword = function resetPassword(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.ResetPassword, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

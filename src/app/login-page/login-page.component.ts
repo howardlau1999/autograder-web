@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -11,18 +11,20 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class LoginPageComponent implements OnInit {
   loggingIn: boolean = false;
   errorMessage: string | null = null;
-  loginForm = this.formBuilder.group({
-    username: '',
-    password: '',
+  loginForm = new FormGroup({
+    username: new FormControl("", [Validators.required]),
+    password: new FormControl("", [Validators.required]),
   });
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
+
   onSubmit() {
+    if (this.loginForm.invalid) return;
     const {username, password} = this.loginForm.value;
     this.loggingIn = true;
     this.errorMessage = null;

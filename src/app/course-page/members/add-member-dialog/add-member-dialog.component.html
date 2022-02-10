@@ -1,4 +1,24 @@
-<p>add-member-dialog works!</p>
+<h2>添加成员</h2>
+<mat-dialog-content>
+  <form class="add-member-form">
+    <mat-form-field>
+      <mat-label>
+        邮箱
+      </mat-label>
+      <input required matInput type="email">
+      <mat-hint align="end">尚未注册的用户将自动创建账号</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        名称
+      </mat-label>
+      <input matInput>
+      <mat-hint>将</mat-hint>
+    </mat-form-field>
+    <app-role-select [formField]="true" label="权限"></app-role-select>
+  </form>
+</mat-dialog-content>
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-button>取消</button>
+  <button (click)="onConfirmClicked()" mat-raised-button color="primary">确定</button>
 </mat-dialog-actions>

@@ -17,4 +17,7 @@ export class AddMemberDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onConfirmClicked() {
+
+  }
 }

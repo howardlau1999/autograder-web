@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
-import {AutograderService, ServiceError, UnaryResponse} from "./proto/api_pb_service";
+import {AutograderService, ServiceError} from "./proto/api_pb_service";
 import {
+  AddCourseMembersRequest,
   CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
-  CreateSubmissionRequest, DeleteFileInManifestRequest,
+  CreateSubmissionRequest,
+  DeleteFileInManifestRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
-  GetCourseListRequest, GetCourseMembersRequest,
+  GetCourseListRequest,
+  GetCourseMembersRequest,
   GetCourseRequest,
   GetFilesInSubmissionRequest,
   GetLeaderboardRequest,
@@ -15,14 +18,22 @@ import {
   GetSubmissionsInAssignmentRequest,
   InitDownloadRequest,
   InitUploadRequest,
-  LoginRequest,
+  LoginRequest, RemoveCourseMembersRequest, RequestPasswordResetRequest, ResetPasswordRequest,
   SubscribeSubmissionRequest,
-  SubscribeSubmissionResponse,
+  SubscribeSubmissionResponse, UpdateAssignmentRequest, UpdateCourseMemberRequest,
+  UpdateCourseRequest,
 } from "./proto/api_pb";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {DateTime} from "luxon";
-import {AssignmentType, ProgrammingAssignmentConfig} from "./proto/model_pb";
+import {
+  Assignment,
+  AssignmentType,
+  Course,
+  CourseMember, CourseRole,
+  CourseRoleMap,
+  ProgrammingAssignmentConfig
+} from "./proto/model_pb";
 import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
 import {environment} from "../../environments/environment";
 import {TokenService} from "../service/token.service";
@@ -225,5 +236,58 @@ export class ApiService {
     const request = new GetCourseMembersRequest();
     request.setCourseId(courseId);
     return this.unary(AutograderService.GetCourseMembers, request);
+  }
+
+  addCourseMembers(courseId: number, members: AddCourseMembersRequest.MemberToAdd[]) {
+    const request = new AddCourseMembersRequest();
+    request.setCourseId(courseId);
+    request.setMembersList(members);
+    return this.unary(AutograderService.AddCourseMembers, request);
+  }
+
+  removeCourseMembers(courseId: number, userIds: number[]) {
+    const request = new RemoveCourseMembersRequest();
+    request.setCourseId(courseId);
+    request.setUserIdsList(userIds);
+    return this.unary(AutograderService.RemoveCourseMembers, request);
+  }
+
+  updateCourseMember(courseId: number, userId: number, role: keyof CourseRoleMap) {
+    const request = new UpdateCourseMemberRequest();
+    request.setCourseId(courseId);
+    const member = new CourseMember();
+    member.setCourseId(courseId);
+    member.setUserId(userId);
+    member.setRole(CourseRole[role]);
+    request.setMember(member);
+    return this.unary(AutograderService.UpdateCourseMember, request);
+  }
+
+  updateCourse(courseId: number, course: Course) {
+    const request = new UpdateCourseRequest();
+    request.setCourseId(courseId);
+    request.setCourse(course);
+    return this.unary(AutograderService.UpdateCourse, request);
+  }
+
+  updateAssignment(assignmentId: number, assignment: Assignment) {
+    const request = new UpdateAssignmentRequest();
+    request.setAssignmentId(assignmentId);
+    request.setAssignment(assignment);
+    return this.unary(AutograderService.UpdateAssignment, request);
+  }
+
+  requestPasswordReset(email: string) {
+    const request = new RequestPasswordResetRequest();
+    request.setEmail(email);
+    return this.unary(AutograderService.RequestPasswordReset, request);
+  }
+
+  resetPassword(email: string, code: string, password: string) {
+    const request = new ResetPasswordRequest();
+    request.setEmail(email);
+    request.setCode(code);
+    request.setPassword(password);
+    return this.unary(AutograderService.ResetPassword, request);
   }
 }

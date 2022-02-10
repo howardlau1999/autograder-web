@@ -23,6 +23,9 @@ export class User extends jspb.Message {
   getNickname(): string;
   setNickname(value: string): void;
 
+  getStudentId(): string;
+  setStudentId(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): User.AsObject;
   static toObject(includeInstance: boolean, msg: User): User.AsObject;
@@ -40,6 +43,7 @@ export namespace User {
     email: string,
     githubId: string,
     nickname: string,
+    studentId: string,
   }
 }
 
@@ -682,6 +686,38 @@ export namespace ManifestMetadata {
     createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     userId: number,
     assignmentId: number,
+  }
+}
+
+export class VerificationCodeMetadata extends jspb.Message {
+  getCode(): string;
+  setCode(value: string): void;
+
+  hasIssuedAt(): boolean;
+  clearIssuedAt(): void;
+  getIssuedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setIssuedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  hasExpiredAt(): boolean;
+  clearExpiredAt(): void;
+  getExpiredAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setExpiredAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VerificationCodeMetadata.AsObject;
+  static toObject(includeInstance: boolean, msg: VerificationCodeMetadata): VerificationCodeMetadata.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: VerificationCodeMetadata, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerificationCodeMetadata;
+  static deserializeBinaryFromReader(message: VerificationCodeMetadata, reader: jspb.BinaryReader): VerificationCodeMetadata;
+}
+
+export namespace VerificationCodeMetadata {
+  export type AsObject = {
+    code: string,
+    issuedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    expiredAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 }
 

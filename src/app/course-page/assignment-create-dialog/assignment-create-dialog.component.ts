@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../api/api.service";
 import {DateTime} from "luxon";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 export interface AssignmentCreateDialogData {
   courseId: number
@@ -13,13 +14,16 @@ export interface AssignmentCreateDialogData {
   styleUrls: ['./assignment-create-dialog.component.css']
 })
 export class AssignmentCreateDialogComponent implements OnInit {
-  releaseDate: DateTime = DateTime.now();
-  dueDate: DateTime = DateTime.now().plus({days: 7});
   assignmentType: string = 'programming';
-  name: string = '';
-  dockerImage: string = '';
-  description: string = '';
   courseId: number;
+
+  programmingAssignmentForm = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    releaseDate: new FormControl(DateTime.now()),
+    dueDate: new FormControl(DateTime.now().plus({days: 7})),
+    dockerImage: new FormControl("", [Validators.required]),
+    description: new FormControl("", [Validators.required]),
+  });
 
   constructor(private dialogRef: MatDialogRef<AssignmentCreateDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: AssignmentCreateDialogData,
@@ -32,14 +36,14 @@ export class AssignmentCreateDialogComponent implements OnInit {
   }
 
   onConfirmClicked() {
+    const {name, releaseDate, dueDate, description, dockerImage} = this.programmingAssignmentForm.value;
     this.apiService.createProgrammingAssignment(this.courseId,
-      this.name,
-      this.releaseDate,
-      this.dueDate,
-      this.description,
-      this.dockerImage,
+      name,
+      releaseDate,
+      dueDate,
+      description,
+      dockerImage,
     ).subscribe(resp => {
-      console.log(resp.toString());
       this.dialogRef.close();
     });
   }

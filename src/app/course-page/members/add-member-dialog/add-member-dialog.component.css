@@ -1,0 +1,6 @@
+.add-member-form {
+  display: flex;
+  flex-direction: column;
+  width: 20em;
+  overflow-y: hidden;
+}

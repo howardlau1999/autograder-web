@@ -175,6 +175,69 @@ type AutograderServiceGetCourseMembers = {
   readonly responseType: typeof api_pb.GetCourseMembersResponse;
 };
 
+type AutograderServiceAddCourseMembers = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.AddCourseMembersRequest;
+  readonly responseType: typeof api_pb.AddCourseMembersResponse;
+};
+
+type AutograderServiceRemoveCourseMembers = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RemoveCourseMembersRequest;
+  readonly responseType: typeof api_pb.RemoveCourseMembersResponse;
+};
+
+type AutograderServiceUpdateCourseMember = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UpdateCourseMemberRequest;
+  readonly responseType: typeof api_pb.UpdateCourseMemberResponse;
+};
+
+type AutograderServiceUpdateCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UpdateCourseRequest;
+  readonly responseType: typeof api_pb.UpdateCourseResponse;
+};
+
+type AutograderServiceUpdateAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UpdateAssignmentRequest;
+  readonly responseType: typeof api_pb.UpdateAssignmentResponse;
+};
+
+type AutograderServiceRequestPasswordReset = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RequestPasswordResetRequest;
+  readonly responseType: typeof api_pb.RequestPasswordResetResponse;
+};
+
+type AutograderServiceResetPassword = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.ResetPasswordRequest;
+  readonly responseType: typeof api_pb.ResetPasswordResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -196,6 +259,13 @@ export class AutograderService {
   static readonly DeleteFileInManifest: AutograderServiceDeleteFileInManifest;
   static readonly InitDownload: AutograderServiceInitDownload;
   static readonly GetCourseMembers: AutograderServiceGetCourseMembers;
+  static readonly AddCourseMembers: AutograderServiceAddCourseMembers;
+  static readonly RemoveCourseMembers: AutograderServiceRemoveCourseMembers;
+  static readonly UpdateCourseMember: AutograderServiceUpdateCourseMember;
+  static readonly UpdateCourse: AutograderServiceUpdateCourse;
+  static readonly UpdateAssignment: AutograderServiceUpdateAssignment;
+  static readonly RequestPasswordReset: AutograderServiceRequestPasswordReset;
+  static readonly ResetPassword: AutograderServiceResetPassword;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -392,6 +462,69 @@ export class AutograderServiceClient {
   getCourseMembers(
     requestMessage: api_pb.GetCourseMembersRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  addCourseMembers(
+    requestMessage: api_pb.AddCourseMembersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.AddCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  addCourseMembers(
+    requestMessage: api_pb.AddCourseMembersRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.AddCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  removeCourseMembers(
+    requestMessage: api_pb.RemoveCourseMembersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  removeCourseMembers(
+    requestMessage: api_pb.RemoveCourseMembersRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveCourseMembersResponse|null) => void
+  ): UnaryResponse;
+  updateCourseMember(
+    requestMessage: api_pb.UpdateCourseMemberRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseMemberResponse|null) => void
+  ): UnaryResponse;
+  updateCourseMember(
+    requestMessage: api_pb.UpdateCourseMemberRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseMemberResponse|null) => void
+  ): UnaryResponse;
+  updateCourse(
+    requestMessage: api_pb.UpdateCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseResponse|null) => void
+  ): UnaryResponse;
+  updateCourse(
+    requestMessage: api_pb.UpdateCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseResponse|null) => void
+  ): UnaryResponse;
+  updateAssignment(
+    requestMessage: api_pb.UpdateAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateAssignmentResponse|null) => void
+  ): UnaryResponse;
+  updateAssignment(
+    requestMessage: api_pb.UpdateAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateAssignmentResponse|null) => void
+  ): UnaryResponse;
+  requestPasswordReset(
+    requestMessage: api_pb.RequestPasswordResetRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RequestPasswordResetResponse|null) => void
+  ): UnaryResponse;
+  requestPasswordReset(
+    requestMessage: api_pb.RequestPasswordResetRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RequestPasswordResetResponse|null) => void
+  ): UnaryResponse;
+  resetPassword(
+    requestMessage: api_pb.ResetPasswordRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ResetPasswordResponse|null) => void
+  ): UnaryResponse;
+  resetPassword(
+    requestMessage: api_pb.ResetPasswordRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ResetPasswordResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -43,7 +43,9 @@
 
     <ng-container matColumnDef="role">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
-      <td *matCellDef="let row" mat-cell>{{mapRoleToString(row.getRole())}}</td>
+      <td *matCellDef="let row" mat-cell>
+        <app-role-select [role]="row.getRole()"></app-role-select>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="operations">

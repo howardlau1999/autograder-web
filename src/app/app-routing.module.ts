@@ -12,9 +12,11 @@ import {AssignmentsComponent} from "./course-page/assignments/assignments.compon
 import {MembersComponent} from "./course-page/members/members.component";
 import {SubmissionsComponent} from "./assignment-page/submissions/submissions.component";
 import {AssignmentsManagementComponent} from "./course-page/assignments-management/assignments-management.component";
+import {PasswordResetComponent} from "./login-page/password-reset/password-reset.component";
 
 const routes: Routes = [
     {path: '', component: LoginPageComponent},
+    {path: 'password-reset', component: PasswordResetComponent},
     {path: 'courses', component: DashboardPageComponent},
     {
       path: 'courses/:courseId', component: CoursePageComponent, children: [
