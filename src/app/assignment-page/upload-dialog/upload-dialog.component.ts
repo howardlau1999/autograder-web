@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../api/api.service";
 import {HttpEventType} from "@angular/common/http";
@@ -47,7 +47,7 @@ export class UploadEntry {
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./upload-dialog.component.css']
 })
-export class UploadDialogComponent implements OnInit, AfterViewInit {
+export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   assignmentId: number;
   manifestId: number | null = null;
   uploadEntries: { [filename: string]: UploadEntry } = {};

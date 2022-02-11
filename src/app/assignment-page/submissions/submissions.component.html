@@ -35,9 +35,9 @@
         <ng-container matColumnDef="score">
           <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
           <td *matCellDef="let submission" mat-cell>
-                  <span *ngIf="submission.getStatus() == 2"> {{submission.getScore()}}
+                  <span *ngIf="submission.getStatus() === 2"> {{submission.getScore()}}
                     /{{submission.getMaxScore()}}</span>
-            <mat-progress-bar [mode]="submission.getStatus() == 4 ? 'buffer' : 'determinate'"
+            <mat-progress-bar [mode]="submission.getStatus() === 4 ? 'buffer' : 'determinate'"
                               [value]="submission.getScore()/submission.getMaxScore()*100"
                               class="score-bar">
             </mat-progress-bar>

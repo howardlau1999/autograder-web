@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
 import {DownloadFileType, DownloadFileTypeMap, FileTreeNode} from "../../api/proto/api_pb";
@@ -28,7 +28,7 @@ export interface FlatTreeNode {
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent implements OnInit, OnDestroy {
 
   treeControl: FlatTreeControl<FlatTreeNode>;
 

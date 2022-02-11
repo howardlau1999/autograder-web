@@ -36,7 +36,7 @@
           <button (click)="$event.preventDefault()" (error)="onError($event)"
                   (expired)="onExpired($event)"
                   (verify)="onVerify($event)"
-                  [disabled]="signUpForm.get('username')?.invalid || signUpForm.get('email')?.invalid || requestCodeCounter != 0 || requestingCode"
+                  [disabled]="signUpForm.get('username')?.invalid || signUpForm.get('email')?.invalid || requestCodeCounter !== 0 || requestingCode"
                   class="send-code"
                   mat-raised-button
                   ngHcaptchaInvisibleButton>

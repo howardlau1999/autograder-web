@@ -20,7 +20,7 @@
 
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-button>取消</button>
-  <button (click)="onSubmitClicked()" [disabled]="!manifestId || total == 0 || total != uploaded" color="primary"
+  <button (click)="onSubmitClicked()" [disabled]="!manifestId || !total || total !== uploaded" color="primary"
           mat-raised-button>
     提交
   </button>
