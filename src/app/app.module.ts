@@ -65,11 +65,11 @@ import {MatLuxonDateModule} from "@angular/material-luxon-adapter";
 import {HIGHLIGHT_OPTIONS, HighlightModule} from "ngx-highlightjs";
 import {HighlightPlusModule} from "ngx-highlightjs/plus";
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
-import { RemoveMemberDialogComponent } from './course-page/members/remove-member-dialog/remove-member-dialog.component';
-import { RoleSelectComponent } from './course-page/members/role-select/role-select.component';
-import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
-import { AssignmentEditDialogComponent } from './course-page/assignment-edit-dialog/assignment-edit-dialog.component';
-import { CourseEditDialogComponent } from './course-page/course-edit-dialog/course-edit-dialog.component';
+import {RemoveMemberDialogComponent} from './course-page/members/remove-member-dialog/remove-member-dialog.component';
+import {RoleSelectComponent} from './course-page/members/role-select/role-select.component';
+import {PasswordResetComponent} from './login-page/password-reset/password-reset.component';
+import {AssignmentEditDialogComponent} from './course-page/assignment-edit-dialog/assignment-edit-dialog.component';
+import {CourseEditDialogComponent} from './course-page/course-edit-dialog/course-edit-dialog.component';
 import {SignUpComponent} from "./login-page/register/sign-up.component";
 import {HcaptchaModule} from "./common/hcaptcha/hcaptcha.module";
 

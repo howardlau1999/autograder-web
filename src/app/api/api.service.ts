@@ -67,7 +67,7 @@ export class ApiService {
     request: Request
   ): Observable<Response> {
     return new Observable<Response>(subscriber => {
-      grpc.unary(method, {
+      return grpc.unary(method, {
         host: this.host,
         debug: !environment.production,
         metadata: new grpc.Metadata({
@@ -85,7 +85,7 @@ export class ApiService {
           subscriber.complete();
         },
         request,
-      });
+      }).close;
     });
   }
 
