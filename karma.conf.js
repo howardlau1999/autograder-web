@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/autograder-fe'),
+      dir: require('path').join(__dirname, './coverage/autograder-web'),
       subdir: '.',
       reporters: [
         { type: 'html' },

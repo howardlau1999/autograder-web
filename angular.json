@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "autograder-fe": {
+    "autograder-web": {
       "i18n": {
         "sourceLocale": "zh-Hans"
       },
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/autograder-fe",
+            "outputPath": "dist/autograder-web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "allowedCommonJsDependencies": [
@@ -82,10 +82,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "autograder-fe:build:production"
+              "browserTarget": "autograder-web:build:production"
             },
             "development": {
-              "browserTarget": "autograder-fe:build:development"
+              "browserTarget": "autograder-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "autograder-fe:build"
+            "browserTarget": "autograder-web:build"
           }
         },
         "test": {
@@ -117,5 +117,5 @@
       }
     }
   },
-  "defaultProject": "autograder-fe"
+  "defaultProject": "autograder-web"
 }
