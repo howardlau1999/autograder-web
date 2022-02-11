@@ -21,7 +21,7 @@
   <ng-container matColumnDef="operations">
     <th *matHeaderCellDef mat-header-cell>操作</th>
     <td *matCellDef="let row" mat-cell>
-      <button mat-icon-button (click)="onDeleteClicked(row.filename)">
+      <button (click)="onDeleteClicked(row.filename)" mat-icon-button>
         <mat-icon>delete</mat-icon>
       </button>
     </td>

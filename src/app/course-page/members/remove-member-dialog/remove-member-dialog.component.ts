@@ -14,6 +14,7 @@ export interface RemoveMemberDialogData {
 export class RemoveMemberDialogComponent implements OnInit {
   nickname: string;
   email: string;
+
   constructor(
     private dialogRef: MatDialogRef<RemoveMemberDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: RemoveMemberDialogData,

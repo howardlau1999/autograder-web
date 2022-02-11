@@ -4,7 +4,7 @@
       <div *ngIf="course$ | async as course; else progressBar">
         <mat-card-title>
           {{course.getName()}}
-          <button mat-icon-button (click)="onEditCourseClicked()" class="course-edit-button">
+          <button (click)="onEditCourseClicked()" class="course-edit-button" mat-icon-button>
             <mat-icon>edit</mat-icon>
           </button>
         </mat-card-title>
@@ -20,7 +20,7 @@
       </ng-template>
     </mat-card>
     <mat-card class="assignment-table-card">
-      <button mat-raised-button (click)="onAddAssignmentClicked()">
+      <button (click)="onAddAssignmentClicked()" mat-raised-button>
         <mat-icon>add</mat-icon>
         &nbsp;添加作业
       </button>
@@ -57,7 +57,7 @@
         <ng-container matColumnDef="operations">
           <th *matHeaderCellDef mat-header-cell>操作</th>
           <td *matCellDef="let row" mat-cell>
-            <button mat-icon-button (click)="onEditAssignmentClicked($event)">
+            <button (click)="onEditAssignmentClicked($event)" mat-icon-button>
               <mat-icon>edit</mat-icon>
             </button>
           </td>
@@ -74,8 +74,8 @@
                      [pageIndex]="0"
                      [pageSizeOptions]="[5, 10, 20]"
                      [pageSize]="10"
-                     showFirstLastButtons
-                     aria-label="Select page">
+                     aria-label="Select page"
+                     showFirstLastButtons>
       </mat-paginator>
     </mat-card>
   </div>

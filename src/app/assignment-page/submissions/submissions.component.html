@@ -29,14 +29,16 @@
         </ng-container>
         <ng-container matColumnDef="submittedAt">
           <th *matHeaderCellDef i18n="submitted-at" mat-header-cell>提交时间</th>
-          <td *matCellDef="let submission" mat-cell>{{submission.getSubmittedAt().toDate() | date:"YYYY-MM-dd HH:mm:ss" }}</td>
+          <td *matCellDef="let submission"
+              mat-cell>{{submission.getSubmittedAt().toDate() | date:"YYYY-MM-dd HH:mm:ss" }}</td>
         </ng-container>
         <ng-container matColumnDef="score">
           <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
           <td *matCellDef="let submission" mat-cell>
                   <span *ngIf="submission.getStatus() == 2"> {{submission.getScore()}}
                     /{{submission.getMaxScore()}}</span>
-            <mat-progress-bar [mode]="submission.getStatus() == 4 ? 'buffer' : 'determinate'" [value]="submission.getScore()/submission.getMaxScore()*100"
+            <mat-progress-bar [mode]="submission.getStatus() == 4 ? 'buffer' : 'determinate'"
+                              [value]="submission.getScore()/submission.getMaxScore()*100"
                               class="score-bar">
             </mat-progress-bar>
           </td>
@@ -65,9 +67,9 @@
           </td>
         </ng-container>
         <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
-        <tr *matRowDef="let submission; columns: columnsToDisplay"
+        <tr (click)="viewSubmissionReport(submission.getSubmissionId())"
+            *matRowDef="let submission; columns: columnsToDisplay"
             [class.submission-expanded-row]="expandedSubmission === submission"
-            (click)="viewSubmissionReport(submission.getSubmissionId())"
             class="submission-element-row"
             mat-row></tr>
         <tr *matRowDef="let submission; columns: ['expandedDetail']" class="submission-detail-row" mat-row></tr>

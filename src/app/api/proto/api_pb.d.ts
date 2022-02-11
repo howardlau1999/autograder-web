@@ -595,6 +595,9 @@ export class InitUploadRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): void;
 
+  getFilesize(): number;
+  setFilesize(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitUploadRequest.AsObject;
   static toObject(includeInstance: boolean, msg: InitUploadRequest): InitUploadRequest.AsObject;
@@ -610,6 +613,7 @@ export namespace InitUploadRequest {
     manifestId: number,
     filename: string,
     token: string,
+    filesize: number,
   }
 }
 
@@ -712,6 +716,9 @@ export class UploadTokenPayload extends jspb.Message {
   getFilename(): string;
   setFilename(value: string): void;
 
+  getFilesize(): number;
+  setFilesize(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UploadTokenPayload.AsObject;
   static toObject(includeInstance: boolean, msg: UploadTokenPayload): UploadTokenPayload.AsObject;
@@ -728,6 +735,7 @@ export namespace UploadTokenPayload {
     assignmentId: number,
     manifestId: number,
     filename: string,
+    filesize: number,
   }
 }
 
@@ -1690,6 +1698,9 @@ export class RequestPasswordResetRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): void;
 
+  getCaptcha(): string;
+  setCaptcha(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RequestPasswordResetRequest.AsObject;
   static toObject(includeInstance: boolean, msg: RequestPasswordResetRequest): RequestPasswordResetRequest.AsObject;
@@ -1703,6 +1714,7 @@ export class RequestPasswordResetRequest extends jspb.Message {
 export namespace RequestPasswordResetRequest {
   export type AsObject = {
     email: string,
+    captcha: string,
   }
 }
 
@@ -1763,6 +1775,102 @@ export class ResetPasswordResponse extends jspb.Message {
 
 export namespace ResetPasswordResponse {
   export type AsObject = {
+  }
+}
+
+export class RequestSignUpTokenRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  getCaptcha(): string;
+  setCaptcha(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RequestSignUpTokenRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RequestSignUpTokenRequest): RequestSignUpTokenRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RequestSignUpTokenRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RequestSignUpTokenRequest;
+  static deserializeBinaryFromReader(message: RequestSignUpTokenRequest, reader: jspb.BinaryReader): RequestSignUpTokenRequest;
+}
+
+export namespace RequestSignUpTokenRequest {
+  export type AsObject = {
+    email: string,
+    username: string,
+    captcha: string,
+  }
+}
+
+export class RequestSignUpTokenResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RequestSignUpTokenResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RequestSignUpTokenResponse): RequestSignUpTokenResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RequestSignUpTokenResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RequestSignUpTokenResponse;
+  static deserializeBinaryFromReader(message: RequestSignUpTokenResponse, reader: jspb.BinaryReader): RequestSignUpTokenResponse;
+}
+
+export namespace RequestSignUpTokenResponse {
+  export type AsObject = {
+  }
+}
+
+export class SignUpRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  getCode(): string;
+  setCode(value: string): void;
+
+  getPassword(): string;
+  setPassword(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SignUpRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SignUpRequest): SignUpRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SignUpRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SignUpRequest;
+  static deserializeBinaryFromReader(message: SignUpRequest, reader: jspb.BinaryReader): SignUpRequest;
+}
+
+export namespace SignUpRequest {
+  export type AsObject = {
+    email: string,
+    username: string,
+    code: string,
+    password: string,
+  }
+}
+
+export class SignUpResponse extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SignUpResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SignUpResponse): SignUpResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SignUpResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SignUpResponse;
+  static deserializeBinaryFromReader(message: SignUpResponse, reader: jspb.BinaryReader): SignUpResponse;
+}
+
+export namespace SignUpResponse {
+  export type AsObject = {
+    userId: number,
   }
 }
 

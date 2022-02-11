@@ -1,4 +1,4 @@
-import {Injectable, NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, Injectable, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -70,6 +70,8 @@ import { RoleSelectComponent } from './course-page/members/role-select/role-sele
 import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
 import { AssignmentEditDialogComponent } from './course-page/assignment-edit-dialog/assignment-edit-dialog.component';
 import { CourseEditDialogComponent } from './course-page/course-edit-dialog/course-edit-dialog.component';
+import {SignUpComponent} from "./login-page/register/sign-up.component";
+import {HcaptchaModule} from "./common/hcaptcha/hcaptcha.module";
 
 @Injectable()
 export class PaginatorIntl implements MatPaginatorIntl {
@@ -120,6 +122,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
     PasswordResetComponent,
     AssignmentEditDialogComponent,
     CourseEditDialogComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -157,6 +160,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
     MatDatepickerModule,
     MatLuxonDateModule,
     NgxExtendedPdfViewerModule,
+    HcaptchaModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}},
@@ -168,7 +172,7 @@ export class PaginatorIntl implements MatPaginatorIntl {
       }
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

@@ -1,14 +1,25 @@
-<div class="password-reset-card-container">
-  <mat-card class="password-reset-card">
-    <mat-card-title>重置密码</mat-card-title>
+<div class="sign-up-card-container">
+  <mat-card class="sign-up-card">
+    <mat-card-title class="card-title">
+      注册
+    </mat-card-title>
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()" [formGroup]="resetForm">
+      <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+        <mat-form-field class="full-width-field">
+          <mat-label>
+            用户名
+          </mat-label>
+          <input formControlName="username" matInput required>
+          <mat-error *ngIf="signUpForm.get('username')?.invalid">
+            请输入用户名
+          </mat-error>
+        </mat-form-field>
         <mat-form-field class="full-width-field">
           <mat-label>
             电子邮箱
           </mat-label>
           <input formControlName="email" matInput required type="email">
-          <mat-error *ngIf="resetForm.get('email')?.invalid">
+          <mat-error *ngIf="signUpForm.get('email')?.invalid">
             请输入有效的电子邮箱地址
           </mat-error>
         </mat-form-field>
@@ -18,14 +29,14 @@
               验证码
             </mat-label>
             <input formControlName="code" matInput required>
-            <mat-error *ngIf="resetForm.get('code')?.invalid">
+            <mat-error *ngIf="signUpForm.get('code')?.invalid">
               请输入有效的验证码
             </mat-error>
           </mat-form-field>
           <button (click)="$event.preventDefault()" (error)="onError($event)"
                   (expired)="onExpired($event)"
                   (verify)="onVerify($event)"
-                  [disabled]="resetForm.get('email')?.invalid || requestCodeCounter != 0 || requestingCode"
+                  [disabled]="signUpForm.get('username')?.invalid || signUpForm.get('email')?.invalid || requestCodeCounter != 0 || requestingCode"
                   class="send-code"
                   mat-raised-button
                   ngHcaptchaInvisibleButton>
@@ -40,14 +51,16 @@
             新密码
           </mat-label>
           <input formControlName="password" matInput required type="password">
-          <mat-error *ngIf="resetForm.get('password')?.invalid">
+          <mat-error *ngIf="signUpForm.get('password')?.invalid">
             请输入新密码
           </mat-error>
         </mat-form-field>
         <p class="buttons-container">
           <a [routerLink]="['/', 'login']" mat-button>返回登录页面</a>
           <span class="buttons-spacer"></span>
-          <button [disabled]="!resetForm.valid || resetting" color="primary" mat-raised-button>重置密码
+          <button [disabled]="!signUpForm.valid || registering" color="primary"
+                  mat-raised-button>
+            注册
           </button>
         </p>
       </form>

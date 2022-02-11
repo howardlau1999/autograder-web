@@ -238,6 +238,24 @@ type AutograderServiceResetPassword = {
   readonly responseType: typeof api_pb.ResetPasswordResponse;
 };
 
+type AutograderServiceRequestSignUpToken = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RequestSignUpTokenRequest;
+  readonly responseType: typeof api_pb.RequestSignUpTokenResponse;
+};
+
+type AutograderServiceSignUp = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.SignUpRequest;
+  readonly responseType: typeof api_pb.SignUpResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -266,6 +284,8 @@ export class AutograderService {
   static readonly UpdateAssignment: AutograderServiceUpdateAssignment;
   static readonly RequestPasswordReset: AutograderServiceRequestPasswordReset;
   static readonly ResetPassword: AutograderServiceResetPassword;
+  static readonly RequestSignUpToken: AutograderServiceRequestSignUpToken;
+  static readonly SignUp: AutograderServiceSignUp;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -525,6 +545,24 @@ export class AutograderServiceClient {
   resetPassword(
     requestMessage: api_pb.ResetPasswordRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.ResetPasswordResponse|null) => void
+  ): UnaryResponse;
+  requestSignUpToken(
+    requestMessage: api_pb.RequestSignUpTokenRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RequestSignUpTokenResponse|null) => void
+  ): UnaryResponse;
+  requestSignUpToken(
+    requestMessage: api_pb.RequestSignUpTokenRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RequestSignUpTokenResponse|null) => void
+  ): UnaryResponse;
+  signUp(
+    requestMessage: api_pb.SignUpRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SignUpResponse|null) => void
+  ): UnaryResponse;
+  signUp(
+    requestMessage: api_pb.SignUpRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SignUpResponse|null) => void
   ): UnaryResponse;
 }
 

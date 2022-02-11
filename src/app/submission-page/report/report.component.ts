@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ApiService} from "../../api/api.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {SubmissionReport, SubmissionReportTestcase} from "../../api/proto/model_pb";
+import {SubmissionReport} from "../../api/proto/model_pb";
 import {catchError, mergeMap, Observable, of, switchMap} from "rxjs";
 import {map} from "rxjs/operators";
 import {GetSubmissionReportResponse} from "../../api/proto/api_pb";

@@ -2,12 +2,12 @@ import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable, of as observableOf} from 'rxjs';
+import {merge, Observable} from 'rxjs';
 import {ApiService} from "../../api/api.service";
 import {Value} from "google-protobuf/google/protobuf/struct_pb";
 
 export interface LeaderboardItem {
-  items: {[k: string]: {value: Value, desc: boolean}};
+  items: { [k: string]: { value: Value, desc: boolean } };
   rank: number;
   name: string;
 }
@@ -108,10 +108,10 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
 function compare(a: Value, b: Value, isDesc: boolean): number {
   let compare: number = 0;
   if (a.hasNumberValue() && b.hasNumberValue()) {
-    compare = a.getNumberValue() < b.getNumberValue() ? -1: 1;
+    compare = a.getNumberValue() < b.getNumberValue() ? -1 : 1;
   }
   if (a.hasStringValue() && b.hasStringValue()) {
-    compare = a.getStringValue() < b.getStringValue() ? -1: 1;
+    compare = a.getStringValue() < b.getStringValue() ? -1 : 1;
   }
   return compare * (isDesc ? -1 : 1);
 }

@@ -15,7 +15,8 @@
               {{node.name}}
             </mat-tree-node>
 
-            <mat-tree-node matTreeNodeToggle class="clickable" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" class="clickable" matTreeNodePadding
+                           matTreeNodeToggle>
               <button [attr.aria-label]="'Toggle ' + node.name" mat-icon-button
                       matTreeNodeToggle>
                 <mat-icon class="mat-icon-rtl-mirror">
@@ -32,12 +33,12 @@
       </div>
       <div class="file-preview-container">
         <div *ngIf="fileType !== null; else selectFile">
-          <h3>{{selectedPath}} &nbsp; <a mat-raised-button download target="_blank" [href]="fileURL">
+          <h3>{{selectedPath}} &nbsp; <a [href]="fileURL" download mat-raised-button target="_blank">
             <mat-icon>download</mat-icon>&nbsp;下载</a></h3>
-          <div class="file-previewer" [ngSwitch]="fileType">
+          <div [ngSwitch]="fileType" class="file-previewer">
             <div *ngSwitchCase="DownloadFileType.TEXT">
             <pre>
-<code [lineNumbers]="true" [languages]="[language]" [highlight]="(fileURL | codeFromUrl | async) || ''"></code>
+<code [highlight]="(fileURL | codeFromUrl | async) || ''" [languages]="[language]" [lineNumbers]="true"></code>
             </pre>
             </div>
             <div *ngSwitchCase="DownloadFileType.IMAGE">

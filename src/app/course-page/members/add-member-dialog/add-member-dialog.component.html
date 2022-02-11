@@ -5,20 +5,20 @@
       <mat-label>
         邮箱
       </mat-label>
-      <input required matInput type="email" formControlName="email">
+      <input formControlName="email" matInput required type="email">
       <mat-hint align="end">尚未注册的用户将自动创建账号</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <mat-label>
         用户名
       </mat-label>
-      <input required matInput formControlName="name">
+      <input formControlName="name" matInput required>
       <mat-hint align="end">将作为新用户的用户名</mat-hint>
     </mat-form-field>
-    <app-role-select formControlName="role" [formField]="true" label="权限"></app-role-select>
+    <app-role-select [formField]="true" formControlName="role" label="权限"></app-role-select>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-button>取消</button>
-  <button (click)="onConfirmClicked()" mat-raised-button color="primary">确定</button>
+  <button (click)="onConfirmClicked()" color="primary" mat-raised-button>确定</button>
 </mat-dialog-actions>

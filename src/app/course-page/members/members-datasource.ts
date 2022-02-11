@@ -2,7 +2,7 @@ import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable, of as observableOf, tap} from 'rxjs';
+import {merge, Observable, tap} from 'rxjs';
 import {GetCourseMembersResponse} from "../../api/proto/api_pb";
 import {ApiService} from "../../api/api.service";
 

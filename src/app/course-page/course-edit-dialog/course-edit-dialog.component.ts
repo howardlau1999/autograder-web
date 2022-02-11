@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-course-edit-dialog',
@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseEditDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

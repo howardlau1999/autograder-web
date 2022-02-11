@@ -1,4 +1,4 @@
-.password-reset-card-container {
+.sign-up-card-container {
   display: grid;
   margin-right: auto;
   margin-left: auto;
@@ -7,7 +7,7 @@
   flex-wrap: wrap;
 }
 
-.password-reset-card {
+.sign-up-card {
   max-width: 350px;
   min-width: 100px;
   margin-bottom: 20px;

@@ -21,6 +21,7 @@ export class AddMemberDialogComponent implements OnInit {
     "name": new FormControl("", [Validators.required]),
     "role": new FormControl(0),
   });
+
   constructor(private apiService: ApiService,
               @Inject(MAT_DIALOG_DATA) public data: AddMemberDialogData,
               private dialogRef: MatDialogRef<AddMemberDialogComponent>,

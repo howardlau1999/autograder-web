@@ -18,10 +18,6 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor {
   @Input() label: string | undefined;
   @Input() role: CourseRoleMap[keyof CourseRoleMap] | undefined = 0;
   @Output() roleChange: EventEmitter<CourseRoleMap[keyof CourseRoleMap]> = new EventEmitter<CourseRoleMap[keyof CourseRoleMap]>();
-  onChange = (_: CourseRoleMap[keyof CourseRoleMap]) => {
-  };
-  onTouched = () => {
-  };
   touched = false;
   disabled = false;
   roleMap = {
@@ -34,6 +30,12 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor {
 
   constructor() {
   }
+
+  onChange = (_: CourseRoleMap[keyof CourseRoleMap]) => {
+  };
+
+  onTouched = () => {
+  };
 
   ngOnInit(): void {
   }

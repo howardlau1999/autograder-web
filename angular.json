@@ -24,7 +24,8 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "allowedCommonJsDependencies": [
-              "highlight.js"
+              "highlight.js",
+              "google-protobuf"
             ],
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
@@ -49,8 +50,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

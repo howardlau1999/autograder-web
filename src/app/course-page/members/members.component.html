@@ -1,18 +1,18 @@
 <div class="members-container">
   <h2>课程成员</h2>
   <div class="operation-bar">
-    <button mat-raised-button (click)="onAddMemberClicked()">
+    <button (click)="onAddMemberClicked()" mat-raised-button>
       <mat-icon>person_add</mat-icon>&nbsp;添加成员
     </button>
-    <button mat-flat-button (click)="onBatchAddMemberClicked()">
+    <button (click)="onBatchAddMemberClicked()" mat-flat-button>
       <mat-icon>group_add</mat-icon>&nbsp;批量添加
     </button>
     <div class="spacer"></div>
     <form>
       <mat-form-field>
         <mat-label>搜索</mat-label>
-        <input matInput [(ngModel)]="search" name="search">
-        <button mat-icon-button matSuffix (click)="search = ''" *ngIf="search">
+        <input [(ngModel)]="search" matInput name="search">
+        <button (click)="search = ''" *ngIf="search" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -70,8 +70,8 @@
                    [pageIndex]="0"
                    [pageSizeOptions]="[5, 10, 20, 50]"
                    [pageSize]="10"
-                   showFirstLastButtons
-                   aria-label="Select page">
+                   aria-label="Select page"
+                   showFirstLastButtons>
     </mat-paginator>
   </div>
 </div>

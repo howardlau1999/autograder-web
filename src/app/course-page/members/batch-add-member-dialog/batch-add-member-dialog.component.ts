@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
@@ -8,7 +8,8 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class BatchAddMemberDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<BatchAddMemberDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<BatchAddMemberDialogComponent>) {
+  }
 
   ngOnInit(): void {
   }

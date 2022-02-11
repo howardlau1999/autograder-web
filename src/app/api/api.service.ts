@@ -18,9 +18,16 @@ import {
   GetSubmissionsInAssignmentRequest,
   InitDownloadRequest,
   InitUploadRequest,
-  LoginRequest, RemoveCourseMembersRequest, RequestPasswordResetRequest, ResetPasswordRequest,
+  LoginRequest,
+  RemoveCourseMembersRequest,
+  RequestPasswordResetRequest,
+  RequestSignUpTokenRequest,
+  ResetPasswordRequest,
+  SignUpRequest,
   SubscribeSubmissionRequest,
-  SubscribeSubmissionResponse, UpdateAssignmentRequest, UpdateCourseMemberRequest,
+  SubscribeSubmissionResponse,
+  UpdateAssignmentRequest,
+  UpdateCourseMemberRequest,
   UpdateCourseRequest,
 } from "./proto/api_pb";
 import {Observable} from "rxjs";
@@ -30,7 +37,8 @@ import {
   Assignment,
   AssignmentType,
   Course,
-  CourseMember, CourseRole,
+  CourseMember,
+  CourseRole,
   CourseRoleMap,
   ProgrammingAssignmentConfig
 } from "./proto/model_pb";
@@ -277,9 +285,10 @@ export class ApiService {
     return this.unary(AutograderService.UpdateAssignment, request);
   }
 
-  requestPasswordReset(email: string) {
+  requestPasswordReset(email: string, captcha: string) {
     const request = new RequestPasswordResetRequest();
     request.setEmail(email);
+    request.setCaptcha(captcha);
     return this.unary(AutograderService.RequestPasswordReset, request);
   }
 
@@ -289,5 +298,22 @@ export class ApiService {
     request.setCode(code);
     request.setPassword(password);
     return this.unary(AutograderService.ResetPassword, request);
+  }
+
+  requestSignUpToken(username: string, email: string, captcha: string) {
+    const request = new RequestSignUpTokenRequest();
+    request.setUsername(username);
+    request.setEmail(email);
+    request.setCaptcha(captcha);
+    return this.unary(AutograderService.RequestSignUpToken, request);
+  }
+
+  signUp(username: string, email: string, code: string, password: string) {
+    const request = new SignUpRequest();
+    request.setUsername(username);
+    request.setEmail(email);
+    request.setCode(code);
+    request.setPassword(password);
+    return this.unary(AutograderService.SignUp, request);
   }
 }

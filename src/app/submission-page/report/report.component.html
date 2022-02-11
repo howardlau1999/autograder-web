@@ -1,7 +1,7 @@
 <h2>测试报告</h2>
 <div *ngIf="report$ | async as report; else errorMsg" class="report-container">
   <mat-accordion class="testcase-accordion" multi>
-    <mat-expansion-panel class="testcase-panel" *ngIf="report.getOutput()">
+    <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           测试输出

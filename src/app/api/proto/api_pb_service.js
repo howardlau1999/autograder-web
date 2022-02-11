@@ -244,6 +244,24 @@ AutograderService.ResetPassword = {
   responseType: api_pb.ResetPasswordResponse
 };
 
+AutograderService.RequestSignUpToken = {
+  methodName: "RequestSignUpToken",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.RequestSignUpTokenRequest,
+  responseType: api_pb.RequestSignUpTokenResponse
+};
+
+AutograderService.SignUp = {
+  methodName: "SignUp",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.SignUpRequest,
+  responseType: api_pb.SignUpResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1039,6 +1057,68 @@ AutograderServiceClient.prototype.resetPassword = function resetPassword(request
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.ResetPassword, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.requestSignUpToken = function requestSignUpToken(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.RequestSignUpToken, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.signUp = function signUp(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.SignUp, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

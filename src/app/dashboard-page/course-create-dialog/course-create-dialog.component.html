@@ -17,5 +17,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
-  <button (click)="onCreateClicked()" [disabled]="!name.value || !shortName.value || !description.value" color="primary" mat-raised-button>确定</button>
+  <button (click)="onCreateClicked()" [disabled]="!name.value || !shortName.value || !description.value" color="primary"
+          mat-raised-button>确定
+  </button>
 </mat-dialog-actions>

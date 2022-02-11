@@ -18,10 +18,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() label: string = '';
   @Input() timestamp: DateTime = DateTime.now();
   @Output() timestampChange: EventEmitter<DateTime> = new EventEmitter<DateTime>();
-  onChange = (_: DateTime) => {
-  };
-  onTouched = () => {
-  };
   disabled = false;
   touched = false;
   hours = Array(24).fill(0).map((_, i) => i);
@@ -29,6 +25,12 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   constructor() {
   }
+
+  onChange = (_: DateTime) => {
+  };
+
+  onTouched = () => {
+  };
 
   ngOnInit(): void {
   }

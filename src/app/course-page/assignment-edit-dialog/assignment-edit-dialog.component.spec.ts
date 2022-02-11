@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AssignmentEditDialogComponent } from './assignment-edit-dialog.component';
+import {AssignmentEditDialogComponent} from './assignment-edit-dialog.component';
 
 describe('AssignmentEditDialogComponent', () => {
   let component: AssignmentEditDialogComponent;
@@ -8,9 +8,9 @@ describe('AssignmentEditDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AssignmentEditDialogComponent ]
+      declarations: [AssignmentEditDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

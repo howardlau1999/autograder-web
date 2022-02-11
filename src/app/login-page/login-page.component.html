@@ -2,33 +2,32 @@
   <mat-card class="login-card">
     <mat-card-title i18n="login">登录</mat-card-title>
     <mat-card-content>
-      <br/>
-      <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-        <p>
-          <mat-form-field appearance="standard" class="login-form-control">
-            <mat-label i18n="username">用户名/电子邮箱</mat-label>
-            <input formControlName="username" i18n-placeholder="username" matInput placeholder="用户名" required>
-            <mat-icon matSuffix>account_circle</mat-icon>
-            <mat-error *ngIf="loginForm.get('username')?.invalid">
-              请输入用户名
-            </mat-error>
-          </mat-form-field>
-        </p>
-        <p>
-          <mat-form-field appearance="standard" class="login-form-control">
-            <mat-label i18n="password">密码</mat-label>
-            <input formControlName="password" i18n-placeholder="password" matInput placeholder="密码" required
-                   type="password">
-            <mat-icon matSuffix>password</mat-icon>
-            <mat-error *ngIf="loginForm.get('password')?.invalid">
-              <span *ngIf="loginForm.get('password')?.hasError('password')">用户名或密码错误</span>
-              <span *ngIf="loginForm.get('password')?.hasError('required')">请输入密码</span>
-            </mat-error>
-          </mat-form-field>
-        </p>
+      <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="login-form">
+
+        <mat-form-field appearance="standard" class="login-form-control">
+          <mat-label i18n="username">用户名/电子邮箱</mat-label>
+          <input formControlName="username" i18n-placeholder="username" matInput placeholder="用户名" required>
+          <mat-icon matSuffix>account_circle</mat-icon>
+          <mat-error *ngIf="loginForm.get('username')?.invalid">
+            请输入用户名
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="login-form-control">
+          <mat-label i18n="password">密码</mat-label>
+          <input formControlName="password" i18n-placeholder="password" matInput placeholder="密码" required
+                 type="password">
+          <mat-icon matSuffix>password</mat-icon>
+          <mat-error *ngIf="loginForm.get('password')?.invalid">
+            <span *ngIf="loginForm.get('password')?.hasError('password')">用户名或密码错误</span>
+            <span *ngIf="loginForm.get('password')?.hasError('required')">请输入密码</span>
+          </mat-error>
+        </mat-form-field>
+
         <p class="login-button-container">
-          <a class="login-button" i18n="forgot-password" mat-button routerLink="password-reset">忘记密码</a>
+          <a [routerLink]="['/', 'password-reset']" class="login-button" i18n="forgot-password" mat-button>忘记密码</a>
           <span class="login-button-spacer"></span>
+          <a [routerLink]="['/', 'sign-up']" class="login-button" i18n="sign-up" mat-button>注册</a>
           <button [disabled]="loggingIn" color="primary" mat-raised-button type="submit">
             <span *ngIf="!loggingIn" class="login-button" i18n="login">登录</span>
             <span *ngIf="loggingIn" class="login-button" i18n="login">登录中</span>

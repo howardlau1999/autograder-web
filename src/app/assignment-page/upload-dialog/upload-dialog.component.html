@@ -1,12 +1,12 @@
 <h2 mat-dialog-title>创建提交</h2>
-<div class="drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (click)="fileInput.click()">
+<div (click)="fileInput.click()" (dragover)="onDragOver($event)" (drop)="onDrop($event)" class="drop-area">
   单击此处或拖放文件以上传
 </div>
-<input multiple #fileInput (change)="uploadFileEvent($event)" id="uploadFile" name="uploadFile" style="display: none;"
+<input #fileInput (change)="uploadFileEvent($event)" id="uploadFile" multiple name="uploadFile" style="display: none;"
        type="file">
 {{ this.uploaded }} / {{ this.total }}
 <mat-dialog-content style="max-width: 60vw; min-width: 40vw;">
-  <app-files-table [paginator]="paginator" (fileDelete)="onFileDelete($event)"
+  <app-files-table (fileDelete)="onFileDelete($event)" [paginator]="paginator"
                    [uploadEntries]="uploadEntries$"></app-files-table>
 </mat-dialog-content>
 <mat-paginator #paginator

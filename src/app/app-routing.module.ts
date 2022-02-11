@@ -13,11 +13,14 @@ import {MembersComponent} from "./course-page/members/members.component";
 import {SubmissionsComponent} from "./assignment-page/submissions/submissions.component";
 import {AssignmentsManagementComponent} from "./course-page/assignments-management/assignments-management.component";
 import {PasswordResetComponent} from "./login-page/password-reset/password-reset.component";
+import {SignUpComponent} from "./login-page/register/sign-up.component";
+import {LoginGuard} from "./login.guard";
 
 const routes: Routes = [
-    {path: '', component: LoginPageComponent},
+    {path: 'login', component: LoginPageComponent},
     {path: 'password-reset', component: PasswordResetComponent},
-    {path: 'courses', component: DashboardPageComponent},
+    {path: 'sign-up', component: SignUpComponent},
+    {path: 'courses', component: DashboardPageComponent, canActivate: [LoginGuard], canActivateChild: [LoginGuard]},
     {
       path: 'courses/:courseId', component: CoursePageComponent, children: [
         {
@@ -65,6 +68,7 @@ const routes: Routes = [
         }
       ]
     },
+    {path: '', pathMatch: 'full', redirectTo: 'login'},
   ]
 ;
 

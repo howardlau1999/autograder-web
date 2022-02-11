@@ -6,16 +6,17 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-password-reset',
-  templateUrl: './password-reset.component.html',
-  styleUrls: ['./password-reset.component.css']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.css']
 })
-export class PasswordResetComponent implements OnInit {
+export class SignUpComponent implements OnInit {
   requestingCode: boolean = false;
   requestCodeCounter: number = 0;
-  resetting: boolean = false;
+  registering: boolean = false;
   counterSub: Subscription | undefined;
-  resetForm = new FormGroup({
+  signUpForm = new FormGroup({
+    username: new FormControl("", [Validators.required]),
     email: new FormControl("", [Validators.required, Validators.email]),
     code: new FormControl("", [Validators.required]),
     password: new FormControl("", [Validators.required]),
@@ -28,30 +29,32 @@ export class PasswordResetComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.resetForm.invalid) return;
-    const {email, code, password} = this.resetForm.value;
-    this.resetting = true;
-    this.apiService.resetPassword(email, code, password).subscribe(
+    if (this.signUpForm.invalid) return;
+    const {username, email, code, password} = this.signUpForm.value;
+    this.registering = true;
+    this.apiService.signUp(username, email, code, password).subscribe(
       {
         next: resp => {
-          this.resetting = false;
-          this.snackBar.open("密码重置成功", "", {duration: 3000});
+          this.registering = false;
+          this.snackBar.open("注册成功", "", {duration: 3000});
           this.router.navigate(['/']).then();
         }, error: err => {
-          this.resetting = false;
+          this.registering = false;
           if (err === "INVALID_CODE") {
-            this.resetForm.get('code')?.setErrors({'invalid_code': true});
+            this.signUpForm.get('code')?.setErrors({'invalid_code': true});
           }
         }
       });
   }
 
   onVerify(token: string) {
+    if (this.signUpForm.get('username')?.invalid || this.signUpForm.get('email')?.invalid) return;
     this.requestingCode = true;
-    this.apiService.requestPasswordReset(this.resetForm.value.email, token).subscribe({
+    const {email, username} = this.signUpForm.value;
+    this.apiService.requestSignUpToken(username, email, token).subscribe({
       next: resp => {
         this.requestingCode = false;
-        this.snackBar.open("验证码已发送", "关闭", {duration: 3000});
+        this.snackBar.open("验证码已发送", "", {duration: 3000});
         this.requestCodeCounter = 60;
         this.counterSub = timer(1000, 1000).subscribe(_ => {
           --this.requestCodeCounter;
@@ -61,15 +64,14 @@ export class PasswordResetComponent implements OnInit {
           }
         });
       }, error: err => {
-        this.onError(err);
         this.requestingCode = false;
+        console.error(err);
       }
     });
   }
 
   onExpired(response: any) {
     console.log(response);
-    this.snackBar.open("验证码过期", "关闭", {duration: 3000});
   }
 
   onError(error: any) {
