@@ -8,8 +8,6 @@ import { ApiService } from '../../api/api.service';
 
 export type MembersItem = GetCourseMembersResponse.MemberInfo;
 
-const EXAMPLE_DATA: MembersItem[] = [];
-
 /**
  * Data source for the Members view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
@@ -18,18 +16,18 @@ const EXAMPLE_DATA: MembersItem[] = [];
 export class MembersDataSource extends DataSource<MembersItem> {
   data$: Observable<MembersItem[]>;
 
-  data: MembersItem[] = EXAMPLE_DATA;
+  data: MembersItem[] = [];
 
   paginator: MatPaginator | undefined;
 
   sort: MatSort | undefined;
 
-  constructor(apiService: ApiService, courseId$: Observable<number>) {
+  constructor(members$: Observable<MembersItem[]>) {
     super();
-    this.data$ = courseId$.pipe(
-      switchMap((courseId) => apiService.getCourseMembers(courseId)),
-      map((resp) => resp?.getMembersList() || []),
-      tap((data) => (this.data = data)),
+    this.data$ = members$.pipe(
+      tap((data) => {
+        this.data = data;
+      }),
     );
   }
 

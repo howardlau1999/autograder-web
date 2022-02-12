@@ -15,9 +15,12 @@
   width: 100%;
 }
 
-
 .course-edit-button {
   position: absolute;
   top: 5px;
   right: 10px;
+}
+
+.assignment-operations {
+  margin-bottom: 10px;
 }

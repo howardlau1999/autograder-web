@@ -4,6 +4,7 @@
   </mat-card>
 </ng-template>
 <div class="assignments-container">
+  <h2>作业列表</h2>
   <div *ngIf="course$ | async as course; else progressBar">
     <mat-card class="course-info-card">
       <div>
@@ -17,10 +18,12 @@
       </div>
     </mat-card>
     <mat-card class="assignment-table-card">
-      <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>
-        <mat-icon>add</mat-icon>
-        &nbsp;添加作业
-      </button>
+      <div class="assignment-operations">
+        <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>
+          <mat-icon>add</mat-icon>
+          &nbsp;添加作业
+        </button>
+      </div>
       <app-assignments-table
         class="full-width-table"
         [canWriteCourse]="canWriteCourse"

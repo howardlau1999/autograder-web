@@ -1,62 +1,66 @@
-<table aria-label="Elements" class="full-width-table" mat-table matSort>
-  <!-- Id Column -->
-  <ng-container matColumnDef="id">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
-    <td *matCellDef="let row" mat-cell>{{ row.getAssignmentId() }}</td>
-  </ng-container>
+<div>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <table [class.hidden]="loading" aria-label="Elements" class="full-width-table" mat-table matSort>
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
+      <td *matCellDef="let row" mat-cell>{{ row.getAssignmentId() }}</td>
+    </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>名称</th>
-    <td *matCellDef="let row" mat-cell>{{ row.getName() }}</td>
-  </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>名称</th>
+      <td *matCellDef="let row" mat-cell>{{ row.getName() }}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="submitted">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>已提交</th>
-    <td *matCellDef="let row" mat-cell>
-      <mat-icon *ngIf="row.getSubmitted()">done</mat-icon>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="submitted">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>已提交</th>
+      <td *matCellDef="let row" mat-cell>
+        <mat-icon *ngIf="row.getSubmitted()">done</mat-icon>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="releaseDate">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>开始时间</th>
-    <td *matCellDef="let row" mat-cell>
-      {{ row.getReleaseDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="releaseDate">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>开始时间</th>
+      <td *matCellDef="let row" mat-cell>
+        {{ row.getReleaseDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="dueDate">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>截止时间</th>
-    <td *matCellDef="let row" mat-cell>
-      {{ row.getDueDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="dueDate">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>截止时间</th>
+      <td *matCellDef="let row" mat-cell>
+        {{ row.getDueDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="operations">
-    <th *matHeaderCellDef mat-header-cell>操作</th>
-    <td *matCellDef="let row" mat-cell>
-      <button (click)="onEditAssignmentClicked($event)" mat-icon-button>
-        <mat-icon>edit</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="operations">
+      <th *matHeaderCellDef mat-header-cell>操作</th>
+      <td *matCellDef="let row" mat-cell>
+        <button (click)="onEditAssignmentClicked($event)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
-  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-  <tr
-    (click)="gotoAssignment(row.getAssignmentId())"
-    *matRowDef="let row; columns: displayedColumns"
-    class="assignment-row"
-    mat-row
-  ></tr>
-</table>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr
+      (click)="gotoAssignment(row.getAssignmentId())"
+      *matRowDef="let row; columns: displayedColumns"
+      class="assignment-row"
+      mat-row
+    ></tr>
+  </table>
 
-<mat-paginator
-  #paginator
-  [length]="dataSource?.dataLength"
-  [pageIndex]="0"
-  [pageSizeOptions]="[5, 10, 20]"
-  [pageSize]="10"
-  aria-label="Select page"
-  showFirstLastButtons
->
-</mat-paginator>
+  <mat-paginator
+    [class.hidden]="loading"
+    #paginator
+    [length]="dataSource?.dataLength"
+    [pageIndex]="0"
+    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="10"
+    aria-label="Select page"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

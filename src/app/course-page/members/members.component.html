@@ -48,14 +48,21 @@
       <ng-container matColumnDef="role">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
         <td *matCellDef="let row" mat-cell>
-          <app-role-select [role]="row.getRole()"></app-role-select>
+          <app-role-select
+            [disabled]="row.getUserId() === userId"
+            [role]="row.getRole()"
+          ></app-role-select>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="operations">
         <th *matHeaderCellDef mat-header-cell>操作</th>
         <td *matCellDef="let row" mat-cell>
-          <button (click)="onDeleteMemberClicked(row)" mat-icon-button>
+          <button
+            *ngIf="row.getUserId() !== userId"
+            (click)="onDeleteMemberClicked(row)"
+            mat-icon-button
+          >
             <mat-icon>person_remove</mat-icon>
           </button>
         </td>

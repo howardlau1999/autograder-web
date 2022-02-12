@@ -13,3 +13,7 @@ tr.assignment-row:not(.assignment-expanded-row):hover {
 tr.assignment-row:not(.assignment-expanded-row):active {
   background: #efefef;
 }
+
+.hidden {
+  display: none;
+}

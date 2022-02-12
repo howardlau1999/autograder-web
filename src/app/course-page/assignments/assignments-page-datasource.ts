@@ -1,14 +1,18 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { GetAssignmentsInCourseResponse } from '../../api/proto/api_pb';
-import { ApiService } from '../../api/api.service';
 import { CourseService } from '../../service/course.service';
 
 type Item = GetAssignmentsInCourseResponse.CourseAssignmentInfo;
-export type CoursePageItem = Item;
+export type AssignmentsTableItem = Item;
+
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: string | number | Date, b: string | number | Date, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
 
 /**
  * Data source for the CoursePage view. This class should
@@ -16,7 +20,7 @@ export type CoursePageItem = Item;
  * (including sorting, pagination, and filtering).
  */
 export class AssignmentsPageDatasource extends DataSource<Item> {
-  assignments$: Observable<GetAssignmentsInCourseResponse | null>;
+  assignments$: Observable<Item[]>;
 
   assignments: Item[] = [];
 
@@ -26,11 +30,9 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
 
   sort: MatSort | undefined;
 
-  constructor(private courseService: CourseService, courseId$: Observable<number>) {
+  constructor(assignments$: Observable<Item[]>) {
     super();
-    this.assignments$ = courseId$.pipe(
-      switchMap((courseId) => this.courseService.getAssignmentsInCourse(courseId)),
-    );
+    this.assignments$ = assignments$.pipe(tap((assignments) => (this.assignments = assignments)));
   }
 
   /**
@@ -42,17 +44,7 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(
-        this.assignments$.pipe(
-          map((response) => {
-            this.assignments = response?.getAssignmentsList() || [];
-            this.dataLength = this.assignments.length;
-            return this.assignments;
-          }),
-        ),
-        this.paginator.page,
-        this.sort.sortChange,
-      ).pipe(
+      return merge(this.assignments$, this.paginator.page, this.sort.sortChange).pipe(
         map(() => {
           return this.getPagedData(this.getSortedData([...this.assignments]));
         }),
@@ -114,9 +106,4 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
       }
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number | Date, b: string | number | Date, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

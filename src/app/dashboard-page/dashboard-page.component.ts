@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { repeatWhen, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { mergeWith, Observable, Subject, Subscription } from 'rxjs';
+import { catchError, Observable, of, Subject, Subscription } from 'rxjs';
 import { JoinDialogComponent } from './join-dialog/join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
 import { DashboardService } from '../service/dashboard.service';
 import { NotificationService } from '../service/notification.service';
 import { GetCourseListResponse } from '../api/proto/api_pb';
-import { CourseRole } from '../api/proto/model_pb';
+import { CourseRole, CourseRoleMap } from '../api/proto/model_pb';
 import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
 
 @Component({
@@ -17,16 +17,23 @@ import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent {
-  refresher: Subject<null> = new Subject<null>();
+  refresher$: Subject<null> = new Subject<null>();
+
+  loading: boolean = true;
 
   cards$: Observable<CourseCardInfo[]> = this.route.paramMap.pipe(
-    mergeWith(this.refresher),
-    switchMap(() => this.dashboardService.getCourseList()),
+    switchMap(() => this.dashboardService.getCourseList().pipe(repeatWhen(() => this.refresher$))),
+    tap(() => {
+      this.loading = false;
+    }),
+    catchError(({ message }) => {
+      this.loading = false;
+      this.notificationService.showSnackBar(`获取课程列表失败 ${message}`);
+      return of([]);
+    }),
   );
 
   createDialogSubscription: Subscription | null = null;
-
-  CourseRole = CourseRole;
 
   constructor(
     private dialog: MatDialog,
@@ -40,12 +47,16 @@ export class DashboardPageComponent {
     this.dialog.open(JoinDialogComponent);
   }
 
+  canEditCourse(role: CourseRoleMap[keyof CourseRoleMap]) {
+    return role === CourseRole.INSTRUCTOR;
+  }
+
   createCourse() {
     const dialogRef = this.dialog.open(CourseCreateDialogComponent);
     if (this.createDialogSubscription === null) {
       this.createDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         if (result !== null) {
-          this.refresher.next(null);
+          this.refresher$.next(null);
           this.notificationService.showSnackBar('课程创建成功');
         } else {
           this.notificationService.showSnackBar('创建取消');

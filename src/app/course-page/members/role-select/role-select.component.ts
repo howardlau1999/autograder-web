@@ -28,7 +28,7 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor {
 
   touched = false;
 
-  disabled = false;
+  @Input() disabled = false;
 
   roleMap = {
     [CourseRole.TA]: '助教',

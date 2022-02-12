@@ -8,11 +8,12 @@
     </button>
   </div>
   <div class="card-tile">
+    <mat-spinner *ngIf="loading"></mat-spinner>
     <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
       <mat-card-title>
         {{ card.getName() }}
         <button
-          *ngIf="card.getRole() === CourseRole.INSTRUCTOR"
+          *ngIf="canEditCourse(card.getRole())"
           [matMenuTriggerFor]="menu"
           aria-label="Toggle menu"
           class="more-button"

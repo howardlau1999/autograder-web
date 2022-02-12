@@ -29,6 +29,14 @@ export class UserService {
 
   user: User = { userId: null, username: null };
 
+  get userId() {
+    return this.user.userId;
+  }
+
+  get username() {
+    return this.user.username;
+  }
+
   constructor(
     private apiService: ApiService,
     private tokenService: TokenService,
