@@ -3,7 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { pipe } from 'fp-ts/function';
+import { match } from 'fp-ts/Either';
 import { ApiService } from '../../api/api.service';
+import { UserService } from '../../service/user.service';
+import { ErrorService } from '../../service/error.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-password-reset',
@@ -29,6 +34,8 @@ export class PasswordResetComponent implements OnInit {
     private apiService: ApiService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private userService: UserService,
+    private errorService: ErrorService,
   ) {}
 
   ngOnInit(): void {}
@@ -37,49 +44,47 @@ export class PasswordResetComponent implements OnInit {
     if (this.resetForm.invalid) return;
     const { email, code, password } = this.resetForm.value;
     this.resetting = true;
-    this.apiService.resetPassword(email, code, password).subscribe({
-      next: (resp) => {
-        this.resetting = false;
-        this.snackBar.open('密码重置成功', '', { duration: 3000 });
-        this.router.navigate(['/']).then();
-      },
-      error: (err) => {
-        this.resetting = false;
-        if (err === 'INVALID_CODE') {
-          this.resetForm.get('code')?.setErrors({ invalid_code: true });
-        }
-      },
+    this.userService.resetPassword(email, code, password).subscribe((result) => {
+      this.resetting = false;
+      pipe(
+        result,
+        match(this.errorService.handleFormError(this.resetForm), () => {
+          this.snackBar.open('密码重置成功', '关闭', { duration: 3000 });
+          this.router.navigate(['/']).then();
+        }),
+      );
     });
   }
 
   onVerify(token: string) {
     this.requestingCode = true;
-    this.apiService.requestPasswordReset(this.resetForm.value.email, token).subscribe({
-      next: (resp) => {
-        this.requestingCode = false;
-        this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
-        this.requestCodeCounter = 60;
-        this.counterSub = timer(1000, 1000).subscribe((_) => {
-          --this.requestCodeCounter;
-          if (this.requestCodeCounter === 0) {
-            this.counterSub?.unsubscribe();
-            this.counterSub = undefined;
-          }
-        });
-      },
-      error: (err) => {
-        this.onError(err);
-        this.requestingCode = false;
-      },
+    this.userService.requestPasswordReset(this.resetForm.value.email, token).subscribe((result) => {
+      this.requestingCode = false;
+      pipe(
+        result,
+        match(this.errorService.handleFormError(this.resetForm), () => {
+          this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
+          this.requestCodeCounter = 60;
+          this.counterSub = timer(1000, 1000).subscribe(() => {
+            this.requestCodeCounter -= 1;
+            if (this.requestCodeCounter === 0) {
+              this.counterSub?.unsubscribe();
+              this.counterSub = undefined;
+            }
+          });
+        }),
+      );
     });
   }
 
   onExpired(response: any) {
-    console.log(response);
-    this.snackBar.open('验证码过期', '关闭', { duration: 3000 });
+    if (!environment.production) {
+      console.log(response);
+    }
+    this.snackBar.open('图形验证码过期，请重试', '关闭', { duration: 3000 });
   }
 
   onError(error: any) {
-    this.snackBar.open(`请求验证码出错：${error}`, '关闭');
+    this.snackBar.open(`请求图形验证码出错 ${error}`, '关闭');
   }
 }
