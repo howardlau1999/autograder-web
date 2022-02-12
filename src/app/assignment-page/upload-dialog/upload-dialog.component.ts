@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpEventType } from '@angular/common/http';
-import { BehaviorSubject, from, mergeMap, of, retry, zip } from 'rxjs';
+import { BehaviorSubject, catchError, from, mergeMap, of, retry, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
@@ -32,6 +32,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   total: number = 0;
 
   uploaded: number = 0;
+
+  errored: number = 0;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
@@ -162,11 +164,29 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
               const token = resp?.getToken() || '';
               entry.progressBarMode = 'determinate';
               entry.uploadToken = token;
-              return this.apiService.uploadFile(blob, token);
+              return this.apiService.uploadFile(blob, token).pipe(
+                catchError((err) => {
+                  entry.progressBarMode = 'indeterminate';
+                  throw err;
+                }),
+                retry({ delay: 1000, count: 5 }),
+              );
             }),
-            retry(5),
+            catchError((err) => {
+              entry.progressBarMode = 'indeterminate';
+              throw err;
+            }),
+            retry({ delay: 1000, count: 5 }),
+            catchError((err) => {
+              entry.error = err;
+              return of(null);
+            }),
           )
           .subscribe((event) => {
+            if (event === null) {
+              this.updateUploadEntries();
+              return;
+            }
             if (event.type === HttpEventType.UploadProgress) {
               entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
             }
@@ -186,8 +206,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const filenames = Object.keys(this.uploadEntries);
     const total = filenames.length;
     let uploaded = 0;
+    let errored = 0;
     filenames.forEach((fn) => {
       if (this.uploadEntries[fn].uploaded) uploaded += 1;
+      if (this.uploadEntries[fn].error !== null) errored += 1;
     });
     this.total = total;
     this.uploaded = uploaded;
