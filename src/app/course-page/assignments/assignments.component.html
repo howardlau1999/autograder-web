@@ -4,9 +4,6 @@
       <div *ngIf="course$ | async as course; else progressBar">
         <mat-card-title>
           {{ course.getName() }}
-          <button (click)="onEditCourseClicked()" class="course-edit-button" mat-icon-button>
-            <mat-icon>edit</mat-icon>
-          </button>
         </mat-card-title>
         <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
         <mat-card-content>

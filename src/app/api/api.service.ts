@@ -223,7 +223,6 @@ export class ApiService {
 
   createCourse(name: string, shortName: string, description: string) {
     const request = new CreateCourseRequest();
-    request.setUserId(1);
     request.setName(name);
     request.setShortName(shortName);
     request.setDescription(description);

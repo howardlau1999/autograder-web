@@ -12,6 +12,7 @@
       <mat-card-title>
         {{ card.getName() }}
         <button
+          *ngIf="card.getRole() === CourseRole.INSTRUCTOR"
           [matMenuTriggerFor]="menu"
           aria-label="Toggle menu"
           class="more-button"
@@ -21,8 +22,8 @@
         </button>
         <mat-menu #menu="matMenu" xPosition="after">
           <button mat-menu-item>
-            <mat-icon>settings</mat-icon>
-            管理课程
+            <mat-icon>edit</mat-icon>
+            编辑课程
           </button>
         </mat-menu>
       </mat-card-title>
@@ -30,7 +31,7 @@
         <div>{{ card.getShortName() }}</div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button (click)="gotoCourse(card.getCourseId())" mat-button>进入</button>
+        <a [routerLink]="['/courses', card.getCourseId()]" mat-button>进入</a>
       </mat-card-actions>
     </mat-card>
   </div>

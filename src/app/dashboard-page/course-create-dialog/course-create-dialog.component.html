@@ -1,17 +1,20 @@
 <h2>创建课程</h2>
 <mat-dialog-content>
-  <form class="course-create-form">
+  <form [formGroup]="courseForm" class="course-create-form">
     <mat-form-field>
       <mat-label>课程名称</mat-label>
-      <input [formControl]="name" matInput required />
+      <input formControlName="name" matInput required />
+      <mat-error *ngIf="courseForm.get('name')?.invalid"> 请输入课程名称 </mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>课程号</mat-label>
-      <input [formControl]="shortName" matInput required />
+      <input formControlName="shortName" matInput required />
+      <mat-error *ngIf="courseForm.get('shortName')?.invalid"> 请输入课程代码 </mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>课程描述</mat-label>
-      <textarea [formControl]="description" matInput required></textarea>
+      <textarea formControlName="description" matInput required></textarea>
+      <mat-error *ngIf="courseForm.get('description')?.invalid"> 请输入课程描述 </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -19,7 +22,7 @@
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
   <button
     (click)="onCreateClicked()"
-    [disabled]="!name.value || !shortName.value || !description.value"
+    [disabled]="courseForm.invalid"
     color="primary"
     mat-raised-button
   >

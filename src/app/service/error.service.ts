@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup } from '@angular/forms';
+import { grpc } from '@improbable-eng/grpc-web';
+import { toLowerCase } from 'fp-ts/string';
+import { of } from 'rxjs';
+import { left } from 'fp-ts/Either';
+import { RPCError } from '../api/api.service';
 
 export type FormFieldError = 'invalid' | 'duplicated';
 
@@ -18,6 +23,19 @@ export class ErrorService {
 
   handleUnknownError(errorMessage: string) {
     this.snackBar.open(`未知错误 ${errorMessage}`, '关闭', { duration: 3000 });
+  }
+
+  getFormError(err: RPCError) {
+    const { status, message } = err;
+    const error: FormFieldError = status === grpc.Code.AlreadyExists ? 'duplicated' : 'invalid';
+    const field = toLowerCase(message).replace(/_([a-z])/g, (s) => s[1].toUpperCase());
+    return of(
+      left({
+        field,
+        error,
+        message,
+      }),
+    );
   }
 
   handleFormError(form: FormGroup): (err: FormError) => any {

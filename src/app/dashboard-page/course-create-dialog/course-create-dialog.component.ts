@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
-import { ApiService } from '../../api/api.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { pipe } from 'fp-ts/function';
+import { match } from 'fp-ts/Either';
+import { CourseService } from '../../service/course.service';
+import { ErrorService } from '../../service/error.service';
 
 @Component({
   selector: 'app-assignment-course-create-dialog',
@@ -9,29 +12,32 @@ import { ApiService } from '../../api/api.service';
   styleUrls: ['./course-create-dialog.component.css'],
 })
 export class CourseCreateDialogComponent implements OnInit {
-  name = new FormControl('');
+  creating: boolean = false;
 
-  shortName = new FormControl('');
-
-  description = new FormControl('');
+  courseForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    shortName: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+  });
 
   constructor(
     private dialogRef: MatDialogRef<CourseCreateDialogComponent>,
-    private apiService: ApiService,
+    private courseService: CourseService,
+    private errorService: ErrorService,
   ) {}
 
   ngOnInit(): void {}
 
   onCreateClicked() {
-    this.apiService
-      .createCourse(
-        this.name.value as string,
-        this.shortName.value as string,
-        this.description.value as string,
-      )
-      .subscribe((resp) => {
-        this.dialogRef.close(resp?.getCourseId());
-      });
+    const { name, shortName, description } = this.courseForm.value;
+    this.courseService.createCourse(name, shortName, description).subscribe((result) => {
+      pipe(
+        result,
+        match(this.errorService.handleFormError(this.courseForm), (resp) => {
+          this.dialogRef.close(resp.getCourseId());
+        }),
+      );
+    });
   }
 
   onCancelClicked() {

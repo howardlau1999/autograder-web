@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { mergeWith, Subject, Subscription } from 'rxjs';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { mergeWith, Observable, Subject, Subscription } from 'rxjs';
 import { JoinDialogComponent } from './join-dialog/join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
-import { ApiService } from '../api/api.service';
+import { DashboardService } from '../service/dashboard.service';
+import { NotificationService } from '../service/notification.service';
+import { GetCourseListResponse } from '../api/proto/api_pb';
+import { CourseRole } from '../api/proto/model_pb';
+import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
 
 @Component({
   selector: 'app-dashboard-page',
@@ -16,25 +19,21 @@ import { ApiService } from '../api/api.service';
 export class DashboardPageComponent {
   refresher: Subject<null> = new Subject<null>();
 
-  cards$ = this.refresher.pipe(
-    mergeWith(this.route.paramMap),
-    switchMap((_) =>
-      this.apiService.getCourseList().pipe(
-        map((response) => {
-          return response?.getCoursesList() || [];
-        }),
-      ),
-    ),
+  cards$: Observable<CourseCardInfo[]> = this.route.paramMap.pipe(
+    mergeWith(this.refresher),
+    switchMap(() => this.dashboardService.getCourseList()),
   );
 
   createDialogSubscription: Subscription | null = null;
 
+  CourseRole = CourseRole;
+
   constructor(
     private dialog: MatDialog,
-    private apiService: ApiService,
+    private dashboardService: DashboardService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   joinCourse() {
@@ -44,21 +43,14 @@ export class DashboardPageComponent {
   createCourse() {
     const dialogRef = this.dialog.open(CourseCreateDialogComponent);
     if (this.createDialogSubscription === null) {
-      const config: MatSnackBarConfig = {
-        duration: 3000,
-      };
       this.createDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         if (result !== null) {
           this.refresher.next(null);
-          this.snackBar.open('课程创建成功', '关闭', config);
+          this.notificationService.showSnackBar('课程创建成功');
         } else {
-          this.snackBar.open('创建已取消', '关闭', config);
+          this.notificationService.showSnackBar('创建取消');
         }
       });
     }
-  }
-
-  gotoCourse(courseId: number) {
-    this.router.navigate(['/courses', courseId]).then();
   }
 }
