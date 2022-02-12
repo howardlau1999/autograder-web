@@ -1,53 +1,16 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpEventType } from '@angular/common/http';
-import { BehaviorSubject, from, mergeMap, of, retry, Subscription, zip } from 'rxjs';
+import { BehaviorSubject, from, mergeMap, of, retry, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
 import { ApiService } from '../../api/api.service';
 import { UserService } from '../../service/user.service';
+import { UploadEntry } from './upload.entry';
 
 export interface UploadDialogData {
   assignmentId: number;
-}
-
-export class UploadEntry {
-  sub: Subscription | null = null;
-
-  filename = '';
-
-  filesize: number = 0;
-
-  uploadToken: string = '';
-
-  uploading: boolean = false;
-
-  uploaded: boolean = false;
-
-  uploadProgress: number = 0;
-
-  error: string | null = null;
-
-  progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
-
-  constructor(filename: string, filesize: number) {
-    this.filename = filename;
-    this.uploading = true;
-    this.filesize = filesize;
-  }
-
-  finishUpload() {
-    this.uploaded = true;
-    this.uploading = false;
-    this.sub?.unsubscribe();
-  }
-
-  cancelUpload() {
-    this.sub?.unsubscribe();
-    this.uploading = false;
-    this.uploaded = false;
-  }
 }
 
 @Component({
@@ -85,14 +48,12 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onFileDelete(filename: string) {
     this.uploadEntries[filename].cancelUpload();
-    const sub$ = this.apiService
-      .deleteFileInManifest(this.manifestId!, filename)
-      .subscribe((resp) => {
-        delete this.uploadEntries[filename];
-        this.updateProgress();
-        this.updateUploadEntries();
-        sub$.unsubscribe();
-      });
+    const sub$ = this.apiService.deleteFileInManifest(this.manifestId!, filename).subscribe(() => {
+      delete this.uploadEntries[filename];
+      this.updateProgress();
+      this.updateUploadEntries();
+      sub$.unsubscribe();
+    });
   }
 
   onDrop(event: DragEvent) {
@@ -100,7 +61,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (event.dataTransfer?.items) {
       const files: File[] = [];
-      for (let i = 0; i < event.dataTransfer.items.length; ++i) {
+      for (let i = 0; i < event.dataTransfer.items.length; i += 1) {
         const item = event.dataTransfer.items[i];
         if (item.kind === 'file') {
           const file = item.getAsFile();
@@ -146,7 +107,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     (this.manifestId === null
       ? this.apiService.createManifest(this.assignmentId).pipe(
           map((resp) => {
-            return (this.manifestId = resp?.getManifestId() || 0);
+            this.manifestId = resp?.getManifestId() || 0;
+            return this.manifestId;
           }),
         )
       : of(this.manifestId)
@@ -166,7 +128,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                     const uploadEntries = fileEntries.map(
                       (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
                     );
-                    uploadEntries.forEach((entry) => (this.uploadEntries[entry.filename] = entry));
+                    uploadEntries.forEach((entry) => {
+                      this.uploadEntries[entry.filename] = entry;
+                      return entry;
+                    });
                     this.updateUploadEntries();
                     this.updateProgress();
                     return from(fileEntries);
@@ -202,10 +167,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             retry(5),
           )
           .subscribe((event) => {
-            if (event.type == HttpEventType.UploadProgress) {
+            if (event.type === HttpEventType.UploadProgress) {
               entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
             }
-            if (event.type == HttpEventType.Response) {
+            if (event.type === HttpEventType.Response) {
               entry.finishUpload();
               this.updateProgress();
             }
@@ -218,12 +183,12 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateProgress() {
-    let total = 0;
+    const filenames = Object.keys(this.uploadEntries);
+    const total = filenames.length;
     let uploaded = 0;
-    for (const fn in this.uploadEntries) {
-      total++;
-      if (this.uploadEntries[fn].uploaded) uploaded++;
-    }
+    filenames.forEach((fn) => {
+      if (this.uploadEntries[fn].uploaded) uploaded += 1;
+    });
     this.total = total;
     this.uploaded = uploaded;
   }
@@ -234,9 +199,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   cancelUpload() {
     const filenames = Object.keys(this.uploadEntries);
-    for (const filename of filenames) {
+    filenames.forEach((filename) => {
       this.uploadEntries[filename].cancelUpload();
-    }
+    });
     this.uploadEntries = {};
     this.updateUploadEntries();
   }

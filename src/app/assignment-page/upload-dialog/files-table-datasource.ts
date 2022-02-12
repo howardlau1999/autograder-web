@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
-import { UploadEntry } from './upload-dialog.component';
+import { UploadEntry } from './upload.entry';
 
 // TODO: Replace this with your own data model type
 export type FilesTableItem = UploadEntry;
