@@ -262,6 +262,15 @@ AutograderService.SignUp = {
   responseType: api_pb.SignUpResponse
 };
 
+AutograderService.CanWriteCourse = {
+  methodName: "CanWriteCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.CanWriteCourseRequest,
+  responseType: api_pb.CanWriteCourseResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1119,6 +1128,37 @@ AutograderServiceClient.prototype.signUp = function signUp(requestMessage, metad
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.SignUp, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.canWriteCourse = function canWriteCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.CanWriteCourse, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

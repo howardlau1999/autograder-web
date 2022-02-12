@@ -256,6 +256,15 @@ type AutograderServiceSignUp = {
   readonly responseType: typeof api_pb.SignUpResponse;
 };
 
+type AutograderServiceCanWriteCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CanWriteCourseRequest;
+  readonly responseType: typeof api_pb.CanWriteCourseResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -286,6 +295,7 @@ export class AutograderService {
   static readonly ResetPassword: AutograderServiceResetPassword;
   static readonly RequestSignUpToken: AutograderServiceRequestSignUpToken;
   static readonly SignUp: AutograderServiceSignUp;
+  static readonly CanWriteCourse: AutograderServiceCanWriteCourse;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -563,6 +573,15 @@ export class AutograderServiceClient {
   signUp(
     requestMessage: api_pb.SignUpRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.SignUpResponse|null) => void
+  ): UnaryResponse;
+  canWriteCourse(
+    requestMessage: api_pb.CanWriteCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CanWriteCourseResponse|null) => void
+  ): UnaryResponse;
+  canWriteCourse(
+    requestMessage: api_pb.CanWriteCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CanWriteCourseResponse|null) => void
   ): UnaryResponse;
 }
 

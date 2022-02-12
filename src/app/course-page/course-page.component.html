@@ -9,7 +9,7 @@
               <mat-icon>list</mat-icon>
               &nbsp;作业列表</a
             >
-            <a mat-list-item routerLink="members">
+            <a *ngIf="canWriteCourse$ | async" mat-list-item routerLink="members">
               <mat-icon>people</mat-icon>
               &nbsp;课程成员</a
             >

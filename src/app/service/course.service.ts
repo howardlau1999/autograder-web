@@ -12,6 +12,10 @@ import { CreateCourseResponse } from '../api/proto/api_pb';
 export class CourseService {
   constructor(private apiService: ApiService, private errorService: ErrorService) {}
 
+  canWriteCourse(courseId: number) {
+    return this.apiService.canWriteCourse(courseId);
+  }
+
   createCourse(
     name: string,
     shortName: string,
@@ -21,5 +25,13 @@ export class CourseService {
       map((resp) => right(resp)),
       catchError(this.errorService.getFormError),
     );
+  }
+
+  getCourse(courseId: number) {
+    return this.apiService.getCourse(courseId);
+  }
+
+  getAssignmentsInCourse(courseId: number) {
+    return this.apiService.getAssignmentsInCourse(courseId);
   }
 }

@@ -5,6 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { GetAssignmentsInCourseResponse } from '../../api/proto/api_pb';
 import { ApiService } from '../../api/api.service';
+import { CourseService } from '../../service/course.service';
 
 type Item = GetAssignmentsInCourseResponse.CourseAssignmentInfo;
 export type CoursePageItem = Item;
@@ -25,10 +26,10 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
 
   sort: MatSort | undefined;
 
-  constructor(private apiService: ApiService, courseId$: Observable<number>) {
+  constructor(private courseService: CourseService, courseId$: Observable<number>) {
     super();
     this.assignments$ = courseId$.pipe(
-      switchMap((courseId) => this.apiService.getAssignmentsInCourse(courseId)),
+      switchMap((courseId) => this.courseService.getAssignmentsInCourse(courseId)),
     );
   }
 

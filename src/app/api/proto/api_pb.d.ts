@@ -1870,6 +1870,46 @@ export namespace SignUpResponse {
   }
 }
 
+export class CanWriteCourseRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CanWriteCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CanWriteCourseRequest): CanWriteCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CanWriteCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CanWriteCourseRequest;
+  static deserializeBinaryFromReader(message: CanWriteCourseRequest, reader: jspb.BinaryReader): CanWriteCourseRequest;
+}
+
+export namespace CanWriteCourseRequest {
+  export type AsObject = {
+    courseId: number,
+  }
+}
+
+export class CanWriteCourseResponse extends jspb.Message {
+  getWritePermission(): boolean;
+  setWritePermission(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CanWriteCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CanWriteCourseResponse): CanWriteCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CanWriteCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CanWriteCourseResponse;
+  static deserializeBinaryFromReader(message: CanWriteCourseResponse, reader: jspb.BinaryReader): CanWriteCourseResponse;
+}
+
+export namespace CanWriteCourseResponse {
+  export type AsObject = {
+    writePermission: boolean,
+  }
+}
+
 export interface DownloadFileTypeMap {
   BINARY: 0;
   TEXT: 1;

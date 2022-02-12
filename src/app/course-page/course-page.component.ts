@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of, switchMap } from 'rxjs';
+import { catchError, Observable, of, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CourseService } from '../service/course.service';
 
 @Component({
   selector: 'app-course-page',
@@ -10,9 +12,16 @@ import { Observable, of, switchMap } from 'rxjs';
 export class CoursePageComponent implements OnInit {
   courseId$: Observable<number>;
 
-  constructor(private route: ActivatedRoute) {
+  canWriteCourse$: Observable<boolean>;
+
+  constructor(private route: ActivatedRoute, private courseService: CourseService) {
     this.courseId$ = this.route.paramMap.pipe(
-      switchMap((params) => of(Number.parseInt(params.get('courseId') || '0'))),
+      map((params) => Number.parseInt(params.get('courseId') || '0', 10)),
+    );
+    this.canWriteCourse$ = this.courseId$.pipe(
+      switchMap((courseId) => this.courseService.canWriteCourse(courseId)),
+      map((resp) => resp.getWritePermission()),
+      catchError(() => of(false)),
     );
   }
 

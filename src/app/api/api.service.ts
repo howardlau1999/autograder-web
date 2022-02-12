@@ -8,6 +8,7 @@ import { Either, of, right } from 'fp-ts/Either';
 import { AutograderService, ServiceError } from './proto/api_pb_service';
 import {
   AddCourseMembersRequest,
+  CanWriteCourseRequest,
   CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
@@ -339,5 +340,11 @@ export class ApiService {
     request.setCode(code);
     request.setPassword(password);
     return this.unary(AutograderService.SignUp, request);
+  }
+
+  canWriteCourse(courseId: number) {
+    const request = new CanWriteCourseRequest();
+    request.setCourseId(courseId);
+    return this.unary(AutograderService.CanWriteCourse, request);
   }
 }

@@ -66,6 +66,7 @@ import { CourseEditDialogComponent } from './course-page/course-edit-dialog/cour
 import { SignUpComponent } from './login-page/register/sign-up.component';
 import { HcaptchaModule } from './common/hcaptcha/hcaptcha.module';
 import { PaginatorIntl } from './service/paginator-intl.service';
+import { AssignmentsTableComponent } from './course-page/assignments/assignments-table/assignments-table.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { PaginatorIntl } from './service/paginator-intl.service';
     AssignmentEditDialogComponent,
     CourseEditDialogComponent,
     SignUpComponent,
+    AssignmentsTableComponent,
   ],
   imports: [
     BrowserModule,

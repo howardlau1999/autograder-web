@@ -15,17 +15,6 @@
   width: 100%;
 }
 
-tr.assignment-row:hover {
-  cursor: pointer;
-}
-
-tr.assignment-row:not(.assignment-expanded-row):hover {
-  background: whitesmoke;
-}
-
-tr.assignment-row:not(.assignment-expanded-row):active {
-  background: #efefef;
-}
 
 .course-edit-button {
   position: absolute;
