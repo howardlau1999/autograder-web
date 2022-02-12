@@ -5,57 +5,67 @@
       <div class="sidenav-nav">
         <div class="sidenav-container">
           <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-            <mat-tree-node (click)="treeNodeClicked(node)" *matTreeNodeDef="let node" class="clickable"
-                           matTreeNodePadding
-                           matTreeNodeToggle>
+            <mat-tree-node
+              (click)="treeNodeClicked(node)"
+              *matTreeNodeDef="let node"
+              class="clickable"
+              matTreeNodePadding
+              matTreeNodeToggle
+            >
               <button disabled mat-icon-button></button>
               <mat-icon [attr.aria-label]="node.type + 'icon'" class="type-icon">
                 {{ node.type === 'file' ? 'description' : 'folder' }}
               </mat-icon>
-              {{node.name}}
+              {{ node.name }}
             </mat-tree-node>
 
-            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" class="clickable" matTreeNodePadding
-                           matTreeNodeToggle>
-              <button [attr.aria-label]="'Toggle ' + node.name" mat-icon-button
-                      matTreeNodeToggle>
+            <mat-tree-node
+              *matTreeNodeDef="let node; when: hasChild"
+              class="clickable"
+              matTreeNodePadding
+              matTreeNodeToggle
+            >
+              <button [attr.aria-label]="'Toggle ' + node.name" mat-icon-button matTreeNodeToggle>
                 <mat-icon class="mat-icon-rtl-mirror">
-                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                  {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
                 </mat-icon>
               </button>
               <mat-icon [attr.aria-label]="node.type + 'icon'" class="type-icon">
                 {{ node.type === 'file' ? 'description' : 'folder' }}
               </mat-icon>
-              {{node.name}}
+              {{ node.name }}
             </mat-tree-node>
           </mat-tree>
         </div>
       </div>
       <div class="file-preview-container">
         <div *ngIf="fileType !== null; else selectFile">
-          <h3>{{selectedPath}} &nbsp; <a [href]="fileURL" download mat-raised-button target="_blank">
-            <mat-icon>download</mat-icon>&nbsp;下载</a></h3>
+          <h3>
+            {{ selectedPath }} &nbsp;
+            <a [href]="fileURL" download mat-raised-button target="_blank">
+              <mat-icon>download</mat-icon>&nbsp;下载</a
+            >
+          </h3>
           <div [ngSwitch]="fileType" class="file-previewer">
             <div *ngSwitchCase="DownloadFileType.TEXT">
-            <pre>
+              <pre>
 <code [highlight]="(fileURL | codeFromUrl | async) || ''" [languages]="[language]" [lineNumbers]="true"></code>
             </pre>
             </div>
             <div *ngSwitchCase="DownloadFileType.IMAGE">
-              <img [src]="fileURL">
+              <img [src]="fileURL" />
             </div>
             <div *ngSwitchCase="DownloadFileType.PDF">
-              <ngx-extended-pdf-viewer [src]="fileURL" [useBrowserLocale]="true"></ngx-extended-pdf-viewer>
+              <ngx-extended-pdf-viewer
+                [src]="fileURL"
+                [useBrowserLocale]="true"
+              ></ngx-extended-pdf-viewer>
             </div>
-            <div *ngSwitchDefault>
-              该文件无法预览，请直接下载。
-            </div>
+            <div *ngSwitchDefault>该文件无法预览，请直接下载。</div>
           </div>
         </div>
       </div>
-      <ng-template #selectFile>
-        请选择文件预览。
-      </ng-template>
+      <ng-template #selectFile> 请选择文件预览。 </ng-template>
     </div>
   </div>
 </div>

@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  serverHost: "http://localhost:9315",
-  hcaptchaSiteKey: "2455162a-fa3f-496f-93d0-96d49bf8564e",
+  serverHost: 'http://localhost:9315',
+  hcaptchaSiteKey: '2455162a-fa3f-496f-93d0-96d49bf8564e',
 };
 
 /*

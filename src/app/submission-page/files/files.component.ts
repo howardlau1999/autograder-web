@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FlatTreeControl} from "@angular/cdk/tree";
-import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
-import {DownloadFileType, DownloadFileTypeMap, FileTreeNode} from "../../api/proto/api_pb";
-import {ActivatedRoute} from "@angular/router";
-import {of, Subject, Subscription, switchMap} from "rxjs";
-import {ApiService} from "../../api/api.service";
-import {map} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { ActivatedRoute } from '@angular/router';
+import { of, Subject, Subscription, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from '../../api/api.service';
+import { DownloadFileType, DownloadFileTypeMap, FileTreeNode } from '../../api/proto/api_pb';
+import { environment } from '../../../environments/environment';
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;
@@ -26,10 +26,9 @@ export interface FlatTreeNode {
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
-  styleUrls: ['./files.component.css']
+  styleUrls: ['./files.component.css'],
 })
 export class FilesComponent implements OnInit, OnDestroy {
-
   treeControl: FlatTreeControl<FlatTreeNode>;
 
   treeFlattener: MatTreeFlattener<FileNode, FlatTreeNode>;
@@ -61,41 +60,53 @@ export class FilesComponent implements OnInit, OnDestroy {
       this.transformer,
       this.getLevel,
       this.isExpandable,
-      this.getChildren);
+      this.getChildren,
+    );
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.filesSub = this.route.parent?.paramMap.pipe(switchMap(params => {
-      const submissionId = Number.parseInt(params.get('submissionId') || '0');
-      this.submissionId = submissionId;
-      this.path$.next(null);
-      return this.apiService.getFilesInSubmission(submissionId);
-    }), map(resp => {
-      return resp.getRootsList();
-    })).subscribe(nodes => {
-      this.dataSource.data = nodes;
-    });
-    this.downloadSub = this.path$.pipe(switchMap(path => {
-      if (path === null) {
-        return of(null);
-      }
-      this.selectedPath = path;
-      return this.apiService.initDownload(this.submissionId, path);
-    })).subscribe(resp => {
-      if (resp == null) {
-        this.fileType = null;
-        return;
-      }
-      const url = new URL(`/AutograderService/FileDownload/${resp.getFilename()}`, this.serverHost);
-      url.searchParams.set("token", resp.getToken());
-      this.language = resp.getFilename().split(".").pop() || "";
-      this.fileURL = url.toString();
-      this.fileType = resp.getFileType();
-    });
+    this.filesSub = this.route.parent?.paramMap
+      .pipe(
+        switchMap((params) => {
+          const submissionId = Number.parseInt(params.get('submissionId') || '0');
+          this.submissionId = submissionId;
+          this.path$.next(null);
+          return this.apiService.getFilesInSubmission(submissionId);
+        }),
+        map((resp) => {
+          return resp?.getRootsList() || [];
+        }),
+      )
+      .subscribe((nodes) => {
+        this.dataSource.data = nodes;
+      });
+    this.downloadSub = this.path$
+      .pipe(
+        switchMap((path) => {
+          if (path === null) {
+            return of(null);
+          }
+          this.selectedPath = path;
+          return this.apiService.initDownload(this.submissionId, path);
+        }),
+      )
+      .subscribe((resp) => {
+        if (resp == null) {
+          this.fileType = null;
+          return;
+        }
+        const url = new URL(
+          `/AutograderService/FileDownload/${resp.getFilename()}`,
+          this.serverHost,
+        );
+        url.searchParams.set('token', resp.getToken());
+        this.language = resp.getFilename().split('.').pop() || '';
+        this.fileURL = url.toString();
+        this.fileType = resp.getFileType();
+      });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.filesSub?.unsubscribe();

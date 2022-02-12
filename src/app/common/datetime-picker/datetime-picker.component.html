@@ -1,21 +1,35 @@
 <form class="time-select-form">
   <mat-form-field>
-    <mat-label>{{label}}</mat-label>
-    <input (dateChange)="onDateChange($event)" (dateInput)="onDateChange($event)" [matDatepicker]="datePicker"
-           [value]="timestamp.toJSDate()" matInput required>
+    <mat-label>{{ label }}</mat-label>
+    <input
+      (dateChange)="onDateChange($event)"
+      (dateInput)="onDateChange($event)"
+      [matDatepicker]="datePicker"
+      [value]="timestamp.toJSDate()"
+      matInput
+      required
+    />
     <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #datePicker disabled="false"></mat-datepicker>
   </mat-form-field>
   &nbsp;
   <mat-form-field class="time-select">
     <mat-select (selectionChange)="onHourChange($event)" [value]="timestamp.hour" placeholder="时">
-      <mat-option *ngFor="let hour of hours" [value]="hour">{{hour.toString().padStart(2, '0')}}</mat-option>
+      <mat-option *ngFor="let hour of hours" [value]="hour">{{
+        hour.toString().padStart(2, '0')
+      }}</mat-option>
     </mat-select>
   </mat-form-field>
   &nbsp;:&nbsp;
   <mat-form-field class="time-select">
-    <mat-select (selectionChange)="onMinuteChange($event)" [value]="timestamp.minute" placeholder="分">
-      <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute.toString().padStart(2, '0')}}</mat-option>
+    <mat-select
+      (selectionChange)="onMinuteChange($event)"
+      [value]="timestamp.minute"
+      placeholder="分"
+    >
+      <mat-option *ngFor="let minute of minutes" [value]="minute">{{
+        minute.toString().padStart(2, '0')
+      }}</mat-option>
     </mat-select>
   </mat-form-field>
 </form>

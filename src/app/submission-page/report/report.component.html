@@ -3,35 +3,38 @@
   <mat-accordion class="testcase-accordion" multi>
     <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          测试输出
-        </mat-panel-title>
+        <mat-panel-title> 测试输出 </mat-panel-title>
       </mat-expansion-panel-header>
       <code>
-        <pre class="testcase-output">{{report.getOutput()}}</pre>
+        <pre class="testcase-output">{{ report.getOutput() }}</pre>
       </code>
     </mat-expansion-panel>
-    <mat-expansion-panel #testcase *ngFor="let testcase of report.getTestsList(); index as i" class="testcase-panel">
+    <mat-expansion-panel
+      #testcase
+      *ngFor="let testcase of report.getTestsList(); index as i"
+      class="testcase-panel"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>
-                <span
-                  [class]="testcase.getScore() === testcase.getMaxScore()?'green-font' : 'red-font'">{{testcase.getName()}}
-                  ({{testcase.getScore()}}/{{testcase.getMaxScore()}})
-                </span>
+          <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
+            >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+          </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <code>
-        <pre class="testcase-output">{{testcase.getOutput()}}</pre>
+        <pre class="testcase-output">{{ testcase.getOutput() }}</pre>
       </code>
     </mat-expansion-panel>
   </mat-accordion>
   <mat-nav-list class="testcase-list">
-    <a (click)="scrollTo(i)" *ngFor="let testcase of report.getTestsList(); index as i"
-       mat-list-item>
-          <span
-            [class]="testcase.getScore() === testcase.getMaxScore()?'green-font' : 'red-font'">{{testcase.getName()}}
-            ({{testcase.getScore()}}/{{testcase.getMaxScore()}})
-          </span>
+    <a
+      (click)="scrollTo(i)"
+      *ngFor="let testcase of report.getTestsList(); index as i"
+      mat-list-item
+    >
+      <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
+        >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+      </span>
     </a>
   </mat-nav-list>
 </div>

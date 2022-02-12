@@ -2,17 +2,13 @@
 <mat-dialog-content>
   <form [formGroup]="addMemberForm" class="add-member-form">
     <mat-form-field>
-      <mat-label>
-        邮箱
-      </mat-label>
-      <input formControlName="email" matInput required type="email">
+      <mat-label> 邮箱 </mat-label>
+      <input formControlName="email" matInput required type="email" />
       <mat-hint align="end">尚未注册的用户将自动创建账号</mat-hint>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>
-        用户名
-      </mat-label>
-      <input formControlName="name" matInput required>
+      <mat-label> 用户名 </mat-label>
+      <input formControlName="name" matInput required />
       <mat-hint align="end">将作为新用户的用户名</mat-hint>
     </mat-form-field>
     <app-role-select [formField]="true" formControlName="role" label="权限"></app-role-select>

@@ -1,39 +1,47 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DateTime} from 'luxon';
-import {MatDatepickerInputEvent} from "@angular/material/datepicker";
-import {MatSelectChange} from "@angular/material/select";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DateTime } from 'luxon';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatSelectChange } from '@angular/material/select';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-datetime-picker',
   templateUrl: './datetime-picker.component.html',
   styleUrls: ['./datetime-picker.component.css'],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    multi: true,
-    useExisting: DatetimePickerComponent,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: DatetimePickerComponent,
+    },
+  ],
 })
 export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() label: string = '';
+
   @Input() timestamp: DateTime = DateTime.now();
+
   @Output() timestampChange: EventEmitter<DateTime> = new EventEmitter<DateTime>();
+
   disabled = false;
+
   touched = false;
-  hours = Array(24).fill(0).map((_, i) => i);
-  minutes = Array(60).fill(0).map((_, i) => i);
 
-  constructor() {
-  }
+  hours = Array(24)
+    .fill(0)
+    .map((_, i) => i);
 
-  onChange = (_: DateTime) => {
-  };
+  minutes = Array(60)
+    .fill(0)
+    .map((_, i) => i);
 
-  onTouched = () => {
-  };
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  onChange = (_: DateTime) => {};
+
+  onTouched = () => {};
+
+  ngOnInit(): void {}
 
   onDateChange(event: MatDatepickerInputEvent<DateTime>) {
     this.markAsTouched();
@@ -50,7 +58,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   onHourChange(event: MatSelectChange) {
     this.markAsTouched();
-    const newHour = Number.parseInt(event.value || "0");
+    const newHour = Number.parseInt(event.value || '0');
     this.timestamp = this.timestamp.set({
       hour: newHour,
     });
@@ -60,7 +68,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   onMinuteChange(event: MatSelectChange) {
     this.markAsTouched();
-    const newMinute = Number.parseInt(event.value || "0");
+    const newMinute = Number.parseInt(event.value || '0');
     this.timestamp = this.timestamp.set({
       minute: newMinute,
     });

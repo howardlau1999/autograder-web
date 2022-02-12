@@ -1,10 +1,10 @@
-import {DataSource} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable, tap} from 'rxjs';
-import {GetCourseMembersResponse} from "../../api/proto/api_pb";
-import {ApiService} from "../../api/api.service";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map, switchMap } from 'rxjs/operators';
+import { merge, Observable, tap } from 'rxjs';
+import { GetCourseMembersResponse } from '../../api/proto/api_pb';
+import { ApiService } from '../../api/api.service';
 
 export type MembersItem = GetCourseMembersResponse.MemberInfo;
 
@@ -17,16 +17,19 @@ const EXAMPLE_DATA: MembersItem[] = [];
  */
 export class MembersDataSource extends DataSource<MembersItem> {
   data$: Observable<MembersItem[]>;
+
   data: MembersItem[] = EXAMPLE_DATA;
+
   paginator: MatPaginator | undefined;
+
   sort: MatSort | undefined;
 
   constructor(apiService: ApiService, courseId$: Observable<number>) {
     super();
     this.data$ = courseId$.pipe(
-      switchMap(courseId => apiService.getCourseMembers(courseId)),
-      map(resp => resp.getMembersList()),
-      tap(data => this.data = data),
+      switchMap((courseId) => apiService.getCourseMembers(courseId)),
+      map((resp) => resp?.getMembersList() || []),
+      tap((data) => (this.data = data)),
     );
   }
 
@@ -39,21 +42,20 @@ export class MembersDataSource extends DataSource<MembersItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+        map(() => {
           return this.getPagedData(this.getSortedData([...this.data]));
-        }));
-    } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+        }),
+      );
     }
+    throw Error('Please set the paginator and sort on the data source before connecting.');
   }
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -63,9 +65,8 @@ export class MembersDataSource extends DataSource<MembersItem> {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      return data;
     }
+    return data;
   }
 
   /**

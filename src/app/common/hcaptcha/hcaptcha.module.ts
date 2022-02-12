@@ -1,7 +1,6 @@
-import {NgModule} from '@angular/core';
-import {NgHcaptchaModule} from "ng-hcaptcha";
-import {environment} from "../../../environments/environment";
-
+import { NgModule } from '@angular/core';
+import { NgHcaptchaModule } from 'ng-hcaptcha';
+import { environment } from '../../../environments/environment';
 
 @NgModule({
   imports: [
@@ -11,5 +10,4 @@ import {environment} from "../../../environments/environment";
   ],
   exports: [NgHcaptchaModule],
 })
-export class HcaptchaModule {
-}
+export class HcaptchaModule {}

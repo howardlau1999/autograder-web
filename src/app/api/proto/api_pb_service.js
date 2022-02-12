@@ -1,265 +1,265 @@
-// package: 
+// package:
 // file: api.proto
 
-var api_pb = require("./api_pb");
-var grpc = require("@improbable-eng/grpc-web").grpc;
+var api_pb = require('./api_pb');
+var grpc = require('@improbable-eng/grpc-web').grpc;
 
 var AutograderService = (function () {
   function AutograderService() {}
-  AutograderService.serviceName = "AutograderService";
+  AutograderService.serviceName = 'AutograderService';
   return AutograderService;
-}());
+})();
 
 AutograderService.Login = {
-  methodName: "Login",
+  methodName: 'Login',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.LoginRequest,
-  responseType: api_pb.LoginResponse
+  responseType: api_pb.LoginResponse,
 };
 
 AutograderService.GetCourseList = {
-  methodName: "GetCourseList",
+  methodName: 'GetCourseList',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetCourseListRequest,
-  responseType: api_pb.GetCourseListResponse
+  responseType: api_pb.GetCourseListResponse,
 };
 
 AutograderService.GetAssignmentsInCourse = {
-  methodName: "GetAssignmentsInCourse",
+  methodName: 'GetAssignmentsInCourse',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetAssignmentsInCourseRequest,
-  responseType: api_pb.GetAssignmentsInCourseResponse
+  responseType: api_pb.GetAssignmentsInCourseResponse,
 };
 
 AutograderService.GetSubmissionsInAssignment = {
-  methodName: "GetSubmissionsInAssignment",
+  methodName: 'GetSubmissionsInAssignment',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetSubmissionsInAssignmentRequest,
-  responseType: api_pb.GetSubmissionsInAssignmentResponse
+  responseType: api_pb.GetSubmissionsInAssignmentResponse,
 };
 
 AutograderService.SubscribeSubmission = {
-  methodName: "SubscribeSubmission",
+  methodName: 'SubscribeSubmission',
   service: AutograderService,
   requestStream: false,
   responseStream: true,
   requestType: api_pb.SubscribeSubmissionRequest,
-  responseType: api_pb.SubscribeSubmissionResponse
+  responseType: api_pb.SubscribeSubmissionResponse,
 };
 
 AutograderService.CreateManifest = {
-  methodName: "CreateManifest",
+  methodName: 'CreateManifest',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.CreateManifestRequest,
-  responseType: api_pb.CreateManifestResponse
+  responseType: api_pb.CreateManifestResponse,
 };
 
 AutograderService.CreateSubmission = {
-  methodName: "CreateSubmission",
+  methodName: 'CreateSubmission',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.CreateSubmissionRequest,
-  responseType: api_pb.CreateSubmissionResponse
+  responseType: api_pb.CreateSubmissionResponse,
 };
 
 AutograderService.InitUpload = {
-  methodName: "InitUpload",
+  methodName: 'InitUpload',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.InitUploadRequest,
-  responseType: api_pb.InitUploadResponse
+  responseType: api_pb.InitUploadResponse,
 };
 
 AutograderService.GetSubmissionReport = {
-  methodName: "GetSubmissionReport",
+  methodName: 'GetSubmissionReport',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetSubmissionReportRequest,
-  responseType: api_pb.GetSubmissionReportResponse
+  responseType: api_pb.GetSubmissionReportResponse,
 };
 
 AutograderService.GetAssignment = {
-  methodName: "GetAssignment",
+  methodName: 'GetAssignment',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetAssignmentRequest,
-  responseType: api_pb.GetAssignmentResponse
+  responseType: api_pb.GetAssignmentResponse,
 };
 
 AutograderService.GetCourse = {
-  methodName: "GetCourse",
+  methodName: 'GetCourse',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetCourseRequest,
-  responseType: api_pb.GetCourseResponse
+  responseType: api_pb.GetCourseResponse,
 };
 
 AutograderService.CreateCourse = {
-  methodName: "CreateCourse",
+  methodName: 'CreateCourse',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.CreateCourseRequest,
-  responseType: api_pb.CreateCourseResponse
+  responseType: api_pb.CreateCourseResponse,
 };
 
 AutograderService.GetFilesInSubmission = {
-  methodName: "GetFilesInSubmission",
+  methodName: 'GetFilesInSubmission',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetFilesInSubmissionRequest,
-  responseType: api_pb.GetFilesInSubmissionResponse
+  responseType: api_pb.GetFilesInSubmissionResponse,
 };
 
 AutograderService.GetLeaderboard = {
-  methodName: "GetLeaderboard",
+  methodName: 'GetLeaderboard',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetLeaderboardRequest,
-  responseType: api_pb.GetLeaderboardResponse
+  responseType: api_pb.GetLeaderboardResponse,
 };
 
 AutograderService.HasLeaderboard = {
-  methodName: "HasLeaderboard",
+  methodName: 'HasLeaderboard',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.HasLeaderboardRequest,
-  responseType: api_pb.HasLeaderboardResponse
+  responseType: api_pb.HasLeaderboardResponse,
 };
 
 AutograderService.CreateAssignment = {
-  methodName: "CreateAssignment",
+  methodName: 'CreateAssignment',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.CreateAssignmentRequest,
-  responseType: api_pb.CreateAssignmentResponse
+  responseType: api_pb.CreateAssignmentResponse,
 };
 
 AutograderService.DeleteFileInManifest = {
-  methodName: "DeleteFileInManifest",
+  methodName: 'DeleteFileInManifest',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.DeleteFileInManifestRequest,
-  responseType: api_pb.DeleteFileInManifestResponse
+  responseType: api_pb.DeleteFileInManifestResponse,
 };
 
 AutograderService.InitDownload = {
-  methodName: "InitDownload",
+  methodName: 'InitDownload',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.InitDownloadRequest,
-  responseType: api_pb.InitDownloadResponse
+  responseType: api_pb.InitDownloadResponse,
 };
 
 AutograderService.GetCourseMembers = {
-  methodName: "GetCourseMembers",
+  methodName: 'GetCourseMembers',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.GetCourseMembersRequest,
-  responseType: api_pb.GetCourseMembersResponse
+  responseType: api_pb.GetCourseMembersResponse,
 };
 
 AutograderService.AddCourseMembers = {
-  methodName: "AddCourseMembers",
+  methodName: 'AddCourseMembers',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.AddCourseMembersRequest,
-  responseType: api_pb.AddCourseMembersResponse
+  responseType: api_pb.AddCourseMembersResponse,
 };
 
 AutograderService.RemoveCourseMembers = {
-  methodName: "RemoveCourseMembers",
+  methodName: 'RemoveCourseMembers',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.RemoveCourseMembersRequest,
-  responseType: api_pb.RemoveCourseMembersResponse
+  responseType: api_pb.RemoveCourseMembersResponse,
 };
 
 AutograderService.UpdateCourseMember = {
-  methodName: "UpdateCourseMember",
+  methodName: 'UpdateCourseMember',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.UpdateCourseMemberRequest,
-  responseType: api_pb.UpdateCourseMemberResponse
+  responseType: api_pb.UpdateCourseMemberResponse,
 };
 
 AutograderService.UpdateCourse = {
-  methodName: "UpdateCourse",
+  methodName: 'UpdateCourse',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.UpdateCourseRequest,
-  responseType: api_pb.UpdateCourseResponse
+  responseType: api_pb.UpdateCourseResponse,
 };
 
 AutograderService.UpdateAssignment = {
-  methodName: "UpdateAssignment",
+  methodName: 'UpdateAssignment',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.UpdateAssignmentRequest,
-  responseType: api_pb.UpdateAssignmentResponse
+  responseType: api_pb.UpdateAssignmentResponse,
 };
 
 AutograderService.RequestPasswordReset = {
-  methodName: "RequestPasswordReset",
+  methodName: 'RequestPasswordReset',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.RequestPasswordResetRequest,
-  responseType: api_pb.RequestPasswordResetResponse
+  responseType: api_pb.RequestPasswordResetResponse,
 };
 
 AutograderService.ResetPassword = {
-  methodName: "ResetPassword",
+  methodName: 'ResetPassword',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.ResetPasswordRequest,
-  responseType: api_pb.ResetPasswordResponse
+  responseType: api_pb.ResetPasswordResponse,
 };
 
 AutograderService.RequestSignUpToken = {
-  methodName: "RequestSignUpToken",
+  methodName: 'RequestSignUpToken',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.RequestSignUpTokenRequest,
-  responseType: api_pb.RequestSignUpTokenResponse
+  responseType: api_pb.RequestSignUpTokenResponse,
 };
 
 AutograderService.SignUp = {
-  methodName: "SignUp",
+  methodName: 'SignUp',
   service: AutograderService,
   requestStream: false,
   responseStream: false,
   requestType: api_pb.SignUpRequest,
-  responseType: api_pb.SignUpResponse
+  responseType: api_pb.SignUpResponse,
 };
 
 exports.AutograderService = AutograderService;
@@ -290,17 +290,21 @@ AutograderServiceClient.prototype.login = function login(requestMessage, metadat
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getCourseList = function getCourseList(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getCourseList = function getCourseList(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -321,17 +325,21 @@ AutograderServiceClient.prototype.getCourseList = function getCourseList(request
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getAssignmentsInCourse = function getAssignmentsInCourse(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getAssignmentsInCourse = function getAssignmentsInCourse(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -352,17 +360,21 @@ AutograderServiceClient.prototype.getAssignmentsInCourse = function getAssignmen
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getSubmissionsInAssignment = function getSubmissionsInAssignment(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getSubmissionsInAssignment = function getSubmissionsInAssignment(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -383,21 +395,24 @@ AutograderServiceClient.prototype.getSubmissionsInAssignment = function getSubmi
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmission(requestMessage, metadata) {
+AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmission(
+  requestMessage,
+  metadata,
+) {
   var listeners = {
     data: [],
     end: [],
-    status: []
+    status: [],
   };
   var client = grpc.invoke(AutograderService.SubscribeSubmission, {
     request: requestMessage,
@@ -418,7 +433,7 @@ AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmis
         handler({ code: status, details: statusMessage, metadata: trailers });
       });
       listeners = null;
-    }
+    },
   });
   return {
     on: function (type, handler) {
@@ -428,11 +443,15 @@ AutograderServiceClient.prototype.subscribeSubmission = function subscribeSubmis
     cancel: function () {
       listeners = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.createManifest = function createManifest(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.createManifest = function createManifest(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -453,17 +472,21 @@ AutograderServiceClient.prototype.createManifest = function createManifest(reque
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.createSubmission = function createSubmission(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.createSubmission = function createSubmission(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -484,17 +507,21 @@ AutograderServiceClient.prototype.createSubmission = function createSubmission(r
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.initUpload = function initUpload(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.initUpload = function initUpload(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -515,17 +542,21 @@ AutograderServiceClient.prototype.initUpload = function initUpload(requestMessag
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getSubmissionReport = function getSubmissionReport(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getSubmissionReport = function getSubmissionReport(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -546,17 +577,21 @@ AutograderServiceClient.prototype.getSubmissionReport = function getSubmissionRe
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getAssignment = function getAssignment(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getAssignment = function getAssignment(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -577,17 +612,21 @@ AutograderServiceClient.prototype.getAssignment = function getAssignment(request
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getCourse = function getCourse(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getCourse = function getCourse(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -608,17 +647,21 @@ AutograderServiceClient.prototype.getCourse = function getCourse(requestMessage,
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.createCourse = function createCourse(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.createCourse = function createCourse(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -639,17 +682,21 @@ AutograderServiceClient.prototype.createCourse = function createCourse(requestMe
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getFilesInSubmission = function getFilesInSubmission(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getFilesInSubmission = function getFilesInSubmission(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -670,17 +717,21 @@ AutograderServiceClient.prototype.getFilesInSubmission = function getFilesInSubm
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getLeaderboard = function getLeaderboard(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getLeaderboard = function getLeaderboard(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -701,17 +752,21 @@ AutograderServiceClient.prototype.getLeaderboard = function getLeaderboard(reque
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.hasLeaderboard = function hasLeaderboard(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.hasLeaderboard = function hasLeaderboard(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -732,17 +787,21 @@ AutograderServiceClient.prototype.hasLeaderboard = function hasLeaderboard(reque
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.createAssignment = function createAssignment(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.createAssignment = function createAssignment(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -763,17 +822,21 @@ AutograderServiceClient.prototype.createAssignment = function createAssignment(r
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.deleteFileInManifest = function deleteFileInManifest(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.deleteFileInManifest = function deleteFileInManifest(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -794,17 +857,21 @@ AutograderServiceClient.prototype.deleteFileInManifest = function deleteFileInMa
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.initDownload = function initDownload(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.initDownload = function initDownload(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -825,17 +892,21 @@ AutograderServiceClient.prototype.initDownload = function initDownload(requestMe
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.getCourseMembers = function getCourseMembers(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.getCourseMembers = function getCourseMembers(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -856,17 +927,21 @@ AutograderServiceClient.prototype.getCourseMembers = function getCourseMembers(r
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.addCourseMembers = function addCourseMembers(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.addCourseMembers = function addCourseMembers(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -887,17 +962,21 @@ AutograderServiceClient.prototype.addCourseMembers = function addCourseMembers(r
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.removeCourseMembers = function removeCourseMembers(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.removeCourseMembers = function removeCourseMembers(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -918,17 +997,21 @@ AutograderServiceClient.prototype.removeCourseMembers = function removeCourseMem
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.updateCourseMember = function updateCourseMember(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.updateCourseMember = function updateCourseMember(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -949,17 +1032,21 @@ AutograderServiceClient.prototype.updateCourseMember = function updateCourseMemb
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.updateCourse = function updateCourse(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.updateCourse = function updateCourse(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -980,17 +1067,21 @@ AutograderServiceClient.prototype.updateCourse = function updateCourse(requestMe
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.updateAssignment = function updateAssignment(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.updateAssignment = function updateAssignment(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -1011,17 +1102,21 @@ AutograderServiceClient.prototype.updateAssignment = function updateAssignment(r
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.requestPasswordReset = function requestPasswordReset(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.requestPasswordReset = function requestPasswordReset(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -1042,17 +1137,21 @@ AutograderServiceClient.prototype.requestPasswordReset = function requestPasswor
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.resetPassword = function resetPassword(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.resetPassword = function resetPassword(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -1073,17 +1172,21 @@ AutograderServiceClient.prototype.resetPassword = function resetPassword(request
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
-AutograderServiceClient.prototype.requestSignUpToken = function requestSignUpToken(requestMessage, metadata, callback) {
+AutograderServiceClient.prototype.requestSignUpToken = function requestSignUpToken(
+  requestMessage,
+  metadata,
+  callback,
+) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
@@ -1104,13 +1207,13 @@ AutograderServiceClient.prototype.requestSignUpToken = function requestSignUpTok
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
@@ -1135,15 +1238,14 @@ AutograderServiceClient.prototype.signUp = function signUp(requestMessage, metad
           callback(null, response.message);
         }
       }
-    }
+    },
   });
   return {
     cancel: function () {
       callback = null;
       client.close();
-    }
+    },
   };
 };
 
 exports.AutograderServiceClient = AutograderServiceClient;
-

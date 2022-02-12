@@ -1,10 +1,10 @@
-import {DataSource} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable} from 'rxjs';
-import {GetAssignmentsInCourseResponse} from "../../api/proto/api_pb";
-import {ApiService} from "../../api/api.service";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map, switchMap } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { GetAssignmentsInCourseResponse } from '../../api/proto/api_pb';
+import { ApiService } from '../../api/api.service';
 
 type Item = GetAssignmentsInCourseResponse.CourseAssignmentInfo;
 export type CoursePageItem = Item;
@@ -15,15 +15,21 @@ export type CoursePageItem = Item;
  * (including sorting, pagination, and filtering).
  */
 export class AssignmentsPageDatasource extends DataSource<Item> {
-  assignments$: Observable<GetAssignmentsInCourseResponse>;
+  assignments$: Observable<GetAssignmentsInCourseResponse | null>;
+
   assignments: Item[] = [];
+
   dataLength: number = 0;
+
   paginator: MatPaginator | undefined;
+
   sort: MatSort | undefined;
 
   constructor(private apiService: ApiService, courseId$: Observable<number>) {
     super();
-    this.assignments$ = courseId$.pipe(switchMap(courseId => this.apiService.getAssignmentsInCourse(courseId)));
+    this.assignments$ = courseId$.pipe(
+      switchMap((courseId) => this.apiService.getAssignmentsInCourse(courseId)),
+    );
   }
 
   /**
@@ -35,25 +41,30 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.assignments$.pipe(map((response) => {
-        this.assignments = response.getAssignmentsList();
-        this.dataLength = this.assignments.length;
-        return this.assignments;
-      })), this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(
+        this.assignments$.pipe(
+          map((response) => {
+            this.assignments = response?.getAssignmentsList() || [];
+            this.dataLength = this.assignments.length;
+            return this.assignments;
+          }),
+        ),
+        this.paginator.page,
+        this.sort.sortChange,
+      ).pipe(
+        map(() => {
           return this.getPagedData(this.getSortedData([...this.assignments]));
-        }));
-    } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+        }),
+      );
     }
+    throw Error('Please set the paginator and sort on the data source before connecting.');
   }
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -63,9 +74,8 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      return data;
     }
+    return data;
   }
 
   /**
@@ -87,9 +97,17 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
         case 'submitted':
           return compare(+a.getSubmitted(), +b.getSubmitted(), isAsc);
         case 'releaseDate':
-          return compare(a.getReleaseDate()?.toDate() || new Date(), b.getReleaseDate()?.toDate() || new Date(), isAsc);
+          return compare(
+            a.getReleaseDate()?.toDate() || new Date(),
+            b.getReleaseDate()?.toDate() || new Date(),
+            isAsc,
+          );
         case 'dueDate':
-          return compare(a.getDueDate()?.toDate() || new Date(), b.getDueDate()?.toDate() || new Date(), isAsc);
+          return compare(
+            a.getDueDate()?.toDate() || new Date(),
+            b.getDueDate()?.toDate() || new Date(),
+            isAsc,
+          );
         default:
           return 0;
       }

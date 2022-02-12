@@ -1,3 +1,2 @@
-// package: 
+// package:
 // file: model.proto
-

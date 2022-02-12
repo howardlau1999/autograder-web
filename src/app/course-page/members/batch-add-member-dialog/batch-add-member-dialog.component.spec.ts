@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {BatchAddMemberDialogComponent} from './batch-add-member-dialog.component';
+import { BatchAddMemberDialogComponent } from './batch-add-member-dialog.component';
 
 describe('BatchAddMemberDialogComponent', () => {
   let component: BatchAddMemberDialogComponent;
@@ -8,9 +8,8 @@ describe('BatchAddMemberDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatchAddMemberDialogComponent]
-    })
-      .compileComponents();
+      declarations: [BatchAddMemberDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

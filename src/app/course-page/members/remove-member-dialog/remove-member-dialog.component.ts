@@ -1,18 +1,19 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface RemoveMemberDialogData {
-  nickname: string,
-  email: string,
+  nickname: string;
+  email: string;
 }
 
 @Component({
   selector: 'app-remove-member-dialog',
   templateUrl: './remove-member-dialog.component.html',
-  styleUrls: ['./remove-member-dialog.component.css']
+  styleUrls: ['./remove-member-dialog.component.css'],
 })
 export class RemoveMemberDialogComponent implements OnInit {
   nickname: string;
+
   email: string;
 
   constructor(
@@ -23,8 +24,7 @@ export class RemoveMemberDialogComponent implements OnInit {
     this.email = data.email;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onConfirmClicked() {
     this.dialogRef.close(true);

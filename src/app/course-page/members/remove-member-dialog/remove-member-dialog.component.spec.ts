@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {RemoveMemberDialogComponent} from './remove-member-dialog.component';
+import { RemoveMemberDialogComponent } from './remove-member-dialog.component';
 
 describe('RemoveMemberDialogComponent', () => {
   let component: RemoveMemberDialogComponent;
@@ -8,9 +8,8 @@ describe('RemoveMemberDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RemoveMemberDialogComponent]
-    })
-      .compileComponents();
+      declarations: [RemoveMemberDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

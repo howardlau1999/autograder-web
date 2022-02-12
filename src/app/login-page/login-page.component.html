@@ -3,32 +3,54 @@
     <mat-card-title i18n="login">登录</mat-card-title>
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="login-form">
-
         <mat-form-field appearance="standard" class="login-form-control">
           <mat-label i18n="username">用户名/电子邮箱</mat-label>
-          <input formControlName="username" i18n-placeholder="username" matInput placeholder="用户名" required>
+          <input
+            formControlName="username"
+            i18n-placeholder="username"
+            matInput
+            placeholder="用户名"
+            required
+          />
           <mat-icon matSuffix>account_circle</mat-icon>
-          <mat-error *ngIf="loginForm.get('username')?.invalid">
-            请输入用户名
-          </mat-error>
+          <mat-error *ngIf="loginForm.get('username')?.invalid"> 请输入用户名 </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="login-form-control">
           <mat-label i18n="password">密码</mat-label>
-          <input formControlName="password" i18n-placeholder="password" matInput placeholder="密码" required
-                 type="password">
+          <input
+            formControlName="password"
+            i18n-placeholder="password"
+            matInput
+            placeholder="密码"
+            required
+            type="password"
+          />
           <mat-icon matSuffix>password</mat-icon>
           <mat-error *ngIf="loginForm.get('password')?.invalid">
-            <span *ngIf="loginForm.get('password')?.hasError('password')">用户名或密码错误</span>
-            <span *ngIf="loginForm.get('password')?.hasError('required')">请输入密码</span>
+            <span *ngIf="loginForm.get('password')?.hasError('password'); else passwordRequired"
+              >用户名或密码错误</span
+            >
+            <ng-template #passwordRequired><span>请输入密码</span></ng-template>
           </mat-error>
         </mat-form-field>
 
         <p class="login-button-container">
-          <a [routerLink]="['/', 'password-reset']" class="login-button" i18n="forgot-password" mat-button>忘记密码</a>
+          <a
+            [routerLink]="['/', 'password-reset']"
+            class="login-button"
+            i18n="forgot-password"
+            mat-button
+            >忘记密码</a
+          >
           <span class="login-button-spacer"></span>
           <a [routerLink]="['/', 'sign-up']" class="login-button" i18n="sign-up" mat-button>注册</a>
-          <button [disabled]="loggingIn" color="primary" mat-raised-button type="submit">
+          <button
+            [disabled]="loggingIn || loginForm.invalid"
+            color="primary"
+            mat-raised-button
+            type="submit"
+          >
             <span *ngIf="!loggingIn" class="login-button" i18n="login">登录</span>
             <span *ngIf="loggingIn" class="login-button" i18n="login">登录中</span>
           </button>
@@ -39,9 +61,11 @@
   <mat-card class="login-card">
     <mat-card-title i18n="third-party-login">第三方登录</mat-card-title>
     <mat-card-content>
-      <br/>
+      <br />
       <p>
-        <button class="one-line-button" i18n="github-login" mat-raised-button>使用 GitHub 登录</button>
+        <button class="one-line-button" i18n="github-login" mat-raised-button>
+          使用 GitHub 登录
+        </button>
       </p>
     </mat-card-content>
   </mat-card>

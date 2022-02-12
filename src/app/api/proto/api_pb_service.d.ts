@@ -1,8 +1,8 @@
-// package: 
+// package:
 // file: api.proto
 
-import * as api_pb from "./api_pb";
-import {grpc} from "@improbable-eng/grpc-web";
+import * as api_pb from './api_pb';
+import { grpc } from '@improbable-eng/grpc-web';
 
 type AutograderServiceLogin = {
   readonly methodName: string;
@@ -288,8 +288,8 @@ export class AutograderService {
   static readonly SignUp: AutograderServiceSignUp;
 }
 
-export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
-export type Status = { details: string, code: number; metadata: grpc.Metadata }
+export type ServiceError = { message: string; code: number; metadata: grpc.Metadata };
+export type Status = { details: string; code: number; metadata: grpc.Metadata };
 
 interface UnaryResponse {
   cancel(): void;
@@ -323,246 +323,398 @@ export class AutograderServiceClient {
   login(
     requestMessage: api_pb.LoginRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.LoginResponse|null) => void
+    callback: (error: ServiceError | null, responseMessage: api_pb.LoginResponse | null) => void,
   ): UnaryResponse;
   login(
     requestMessage: api_pb.LoginRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.LoginResponse|null) => void
+    callback: (error: ServiceError | null, responseMessage: api_pb.LoginResponse | null) => void,
   ): UnaryResponse;
   getCourseList(
     requestMessage: api_pb.GetCourseListRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseListResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseListResponse | null,
+    ) => void,
   ): UnaryResponse;
   getCourseList(
     requestMessage: api_pb.GetCourseListRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseListResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseListResponse | null,
+    ) => void,
   ): UnaryResponse;
   getAssignmentsInCourse(
     requestMessage: api_pb.GetAssignmentsInCourseRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentsInCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetAssignmentsInCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   getAssignmentsInCourse(
     requestMessage: api_pb.GetAssignmentsInCourseRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentsInCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetAssignmentsInCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   getSubmissionsInAssignment(
     requestMessage: api_pb.GetSubmissionsInAssignmentRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionsInAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetSubmissionsInAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   getSubmissionsInAssignment(
     requestMessage: api_pb.GetSubmissionsInAssignmentRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionsInAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetSubmissionsInAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
-  subscribeSubmission(requestMessage: api_pb.SubscribeSubmissionRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.SubscribeSubmissionResponse>;
+  subscribeSubmission(
+    requestMessage: api_pb.SubscribeSubmissionRequest,
+    metadata?: grpc.Metadata,
+  ): ResponseStream<api_pb.SubscribeSubmissionResponse>;
   createManifest(
     requestMessage: api_pb.CreateManifestRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateManifestResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateManifestResponse | null,
+    ) => void,
   ): UnaryResponse;
   createManifest(
     requestMessage: api_pb.CreateManifestRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateManifestResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateManifestResponse | null,
+    ) => void,
   ): UnaryResponse;
   createSubmission(
     requestMessage: api_pb.CreateSubmissionRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateSubmissionResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateSubmissionResponse | null,
+    ) => void,
   ): UnaryResponse;
   createSubmission(
     requestMessage: api_pb.CreateSubmissionRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateSubmissionResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateSubmissionResponse | null,
+    ) => void,
   ): UnaryResponse;
   initUpload(
     requestMessage: api_pb.InitUploadRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.InitUploadResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.InitUploadResponse | null,
+    ) => void,
   ): UnaryResponse;
   initUpload(
     requestMessage: api_pb.InitUploadRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.InitUploadResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.InitUploadResponse | null,
+    ) => void,
   ): UnaryResponse;
   getSubmissionReport(
     requestMessage: api_pb.GetSubmissionReportRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionReportResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetSubmissionReportResponse | null,
+    ) => void,
   ): UnaryResponse;
   getSubmissionReport(
     requestMessage: api_pb.GetSubmissionReportRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetSubmissionReportResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetSubmissionReportResponse | null,
+    ) => void,
   ): UnaryResponse;
   getAssignment(
     requestMessage: api_pb.GetAssignmentRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   getAssignment(
     requestMessage: api_pb.GetAssignmentRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   getCourse(
     requestMessage: api_pb.GetCourseRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   getCourse(
     requestMessage: api_pb.GetCourseRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   createCourse(
     requestMessage: api_pb.CreateCourseRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   createCourse(
     requestMessage: api_pb.CreateCourseRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   getFilesInSubmission(
     requestMessage: api_pb.GetFilesInSubmissionRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetFilesInSubmissionResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetFilesInSubmissionResponse | null,
+    ) => void,
   ): UnaryResponse;
   getFilesInSubmission(
     requestMessage: api_pb.GetFilesInSubmissionRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetFilesInSubmissionResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetFilesInSubmissionResponse | null,
+    ) => void,
   ): UnaryResponse;
   getLeaderboard(
     requestMessage: api_pb.GetLeaderboardRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetLeaderboardResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetLeaderboardResponse | null,
+    ) => void,
   ): UnaryResponse;
   getLeaderboard(
     requestMessage: api_pb.GetLeaderboardRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetLeaderboardResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetLeaderboardResponse | null,
+    ) => void,
   ): UnaryResponse;
   hasLeaderboard(
     requestMessage: api_pb.HasLeaderboardRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.HasLeaderboardResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.HasLeaderboardResponse | null,
+    ) => void,
   ): UnaryResponse;
   hasLeaderboard(
     requestMessage: api_pb.HasLeaderboardRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.HasLeaderboardResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.HasLeaderboardResponse | null,
+    ) => void,
   ): UnaryResponse;
   createAssignment(
     requestMessage: api_pb.CreateAssignmentRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   createAssignment(
     requestMessage: api_pb.CreateAssignmentRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.CreateAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.CreateAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   deleteFileInManifest(
     requestMessage: api_pb.DeleteFileInManifestRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteFileInManifestResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.DeleteFileInManifestResponse | null,
+    ) => void,
   ): UnaryResponse;
   deleteFileInManifest(
     requestMessage: api_pb.DeleteFileInManifestRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteFileInManifestResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.DeleteFileInManifestResponse | null,
+    ) => void,
   ): UnaryResponse;
   initDownload(
     requestMessage: api_pb.InitDownloadRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.InitDownloadResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.InitDownloadResponse | null,
+    ) => void,
   ): UnaryResponse;
   initDownload(
     requestMessage: api_pb.InitDownloadRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.InitDownloadResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.InitDownloadResponse | null,
+    ) => void,
   ): UnaryResponse;
   getCourseMembers(
     requestMessage: api_pb.GetCourseMembersRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   getCourseMembers(
     requestMessage: api_pb.GetCourseMembersRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.GetCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.GetCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   addCourseMembers(
     requestMessage: api_pb.AddCourseMembersRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.AddCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.AddCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   addCourseMembers(
     requestMessage: api_pb.AddCourseMembersRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.AddCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.AddCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   removeCourseMembers(
     requestMessage: api_pb.RemoveCourseMembersRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RemoveCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   removeCourseMembers(
     requestMessage: api_pb.RemoveCourseMembersRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveCourseMembersResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RemoveCourseMembersResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateCourseMember(
     requestMessage: api_pb.UpdateCourseMemberRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseMemberResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateCourseMemberResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateCourseMember(
     requestMessage: api_pb.UpdateCourseMemberRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseMemberResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateCourseMemberResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateCourse(
     requestMessage: api_pb.UpdateCourseRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateCourse(
     requestMessage: api_pb.UpdateCourseRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateCourseResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateCourseResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateAssignment(
     requestMessage: api_pb.UpdateAssignmentRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   updateAssignment(
     requestMessage: api_pb.UpdateAssignmentRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateAssignmentResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.UpdateAssignmentResponse | null,
+    ) => void,
   ): UnaryResponse;
   requestPasswordReset(
     requestMessage: api_pb.RequestPasswordResetRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RequestPasswordResetResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RequestPasswordResetResponse | null,
+    ) => void,
   ): UnaryResponse;
   requestPasswordReset(
     requestMessage: api_pb.RequestPasswordResetRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RequestPasswordResetResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RequestPasswordResetResponse | null,
+    ) => void,
   ): UnaryResponse;
   resetPassword(
     requestMessage: api_pb.ResetPasswordRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.ResetPasswordResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.ResetPasswordResponse | null,
+    ) => void,
   ): UnaryResponse;
   resetPassword(
     requestMessage: api_pb.ResetPasswordRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.ResetPasswordResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.ResetPasswordResponse | null,
+    ) => void,
   ): UnaryResponse;
   requestSignUpToken(
     requestMessage: api_pb.RequestSignUpTokenRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RequestSignUpTokenResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RequestSignUpTokenResponse | null,
+    ) => void,
   ): UnaryResponse;
   requestSignUpToken(
     requestMessage: api_pb.RequestSignUpTokenRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.RequestSignUpTokenResponse|null) => void
+    callback: (
+      error: ServiceError | null,
+      responseMessage: api_pb.RequestSignUpTokenResponse | null,
+    ) => void,
   ): UnaryResponse;
   signUp(
     requestMessage: api_pb.SignUpRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: api_pb.SignUpResponse|null) => void
+    callback: (error: ServiceError | null, responseMessage: api_pb.SignUpResponse | null) => void,
   ): UnaryResponse;
   signUp(
     requestMessage: api_pb.SignUpRequest,
-    callback: (error: ServiceError|null, responseMessage: api_pb.SignUpResponse|null) => void
+    callback: (error: ServiceError | null, responseMessage: api_pb.SignUpResponse | null) => void,
   ): UnaryResponse;
 }
-

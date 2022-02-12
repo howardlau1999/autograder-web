@@ -1,5 +1,5 @@
 <div class="course-page-container">
-  <mat-toolbar color="primary">课程详情 (#{{courseId$ | async}})</mat-toolbar>
+  <mat-toolbar color="primary">课程详情 (#{{ courseId$ | async }})</mat-toolbar>
   <div class="sidenav-body-content">
     <div class="sidenav-body-inner">
       <div class="sidenav-nav">
@@ -7,13 +7,16 @@
           <mat-nav-list>
             <a mat-list-item routerLink="assignments">
               <mat-icon>list</mat-icon>
-              &nbsp;作业列表</a>
+              &nbsp;作业列表</a
+            >
             <a mat-list-item routerLink="members">
               <mat-icon>people</mat-icon>
-              &nbsp;课程成员</a>
+              &nbsp;课程成员</a
+            >
             <a mat-list-item routerLink="../">
               <mat-icon>dashboard</mat-icon>
-              &nbsp;回到课程列表</a>
+              &nbsp;回到课程列表</a
+            >
           </mat-nav-list>
         </div>
       </div>

@@ -17,13 +17,13 @@
       <form [formGroup]="programmingAssignmentForm" class="config-form">
         <mat-form-field>
           <mat-label>作业名称</mat-label>
-          <input formControlName="name" matInput name="name" required type="text">
+          <input formControlName="name" matInput name="name" required type="text" />
         </mat-form-field>
         <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
         <app-datetime-picker formControlName="dueDate" label="截止时间"></app-datetime-picker>
         <mat-form-field>
           <mat-label>Docker 镜像</mat-label>
-          <input formControlName="dockerImage" matInput name="dockerImage" required>
+          <input formControlName="dockerImage" matInput name="dockerImage" required />
         </mat-form-field>
         <mat-form-field>
           <mat-label>作业描述</mat-label>
@@ -31,20 +31,39 @@
         </mat-form-field>
       </form>
       <button mat-button matStepperPrevious>上一步</button>
-      <button [disabled]="!programmingAssignmentForm.valid" color="primary" mat-raised-button matStepperNext>下一步
+      <button
+        [disabled]="!programmingAssignmentForm.valid"
+        color="primary"
+        mat-raised-button
+        matStepperNext
+      >
+        下一步
       </button>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>确认作业信息</ng-template>
-      <p>作业类型：{{assignmentType}}</p>
-      <p>作业名称：{{programmingAssignmentForm.value.name}}</p>
-      <p>开始时间：{{programmingAssignmentForm.value.releaseDate.toJSDate() | date:"YYYY-MM-dd HH:mm"}}</p>
-      <p>截止时间：{{programmingAssignmentForm.value.dueDate.toJSDate() | date:"YYYY-MM-dd HH:mm"}}</p>
-      <p>Docker 镜像：{{programmingAssignmentForm.value.dockerImage}}</p>
-      <p>作业描述：{{programmingAssignmentForm.value.description}}</p>
+      <p>作业类型：{{ assignmentType }}</p>
+      <p>作业名称：{{ programmingAssignmentForm.value.name }}</p>
+      <p>
+        开始时间：{{
+          programmingAssignmentForm.value.releaseDate.toJSDate() | date: 'YYYY-MM-dd HH:mm'
+        }}
+      </p>
+      <p>
+        截止时间：{{
+          programmingAssignmentForm.value.dueDate.toJSDate() | date: 'YYYY-MM-dd HH:mm'
+        }}
+      </p>
+      <p>Docker 镜像：{{ programmingAssignmentForm.value.dockerImage }}</p>
+      <p>作业描述：{{ programmingAssignmentForm.value.description }}</p>
       <button mat-button matStepperPrevious>上一步</button>
-      <button (click)="onConfirmClicked()" [disabled]="!programmingAssignmentForm.valid" color="primary"
-              mat-raised-button>确认
+      <button
+        (click)="onConfirmClicked()"
+        [disabled]="!programmingAssignmentForm.valid"
+        color="primary"
+        mat-raised-button
+      >
+        确认
       </button>
     </mat-step>
   </mat-stepper>

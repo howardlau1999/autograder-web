@@ -22,12 +22,14 @@
   padding-right: 10px;
 }
 
-.sidenav-nav::-webkit-scrollbar, .file-previewer::-webkit-scrollbar {
+.sidenav-nav::-webkit-scrollbar,
+.file-previewer::-webkit-scrollbar {
   height: 4px;
   width: 4px;
 }
 
-.sidenav-nav::-webkit-scrollbar-thumb, .file-previewer::-webkit-scrollbar-thumb {
+.sidenav-nav::-webkit-scrollbar-thumb,
+.file-previewer::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.25);
 }
 

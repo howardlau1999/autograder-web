@@ -1,22 +1,27 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTable} from '@angular/material/table';
-import {FilesTableDataSource, FilesTableItem} from './files-table-datasource';
-import {Observable, of} from "rxjs";
-import {UploadEntry} from "./upload-dialog.component";
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTable } from '@angular/material/table';
+import { Observable, of } from 'rxjs';
+import { FilesTableDataSource, FilesTableItem } from './files-table-datasource';
+import { UploadEntry } from './upload-dialog.component';
 
 @Component({
   selector: 'app-files-table',
   templateUrl: './files-table.component.html',
-  styleUrls: ['./files-table.component.css']
+  styleUrls: ['./files-table.component.css'],
 })
 export class FilesTableComponent implements AfterViewInit {
   @Input() paginator!: MatPaginator;
+
   @ViewChild(MatSort) sort!: MatSort;
+
   @ViewChild(MatTable) table!: MatTable<FilesTableItem>;
-  @Input() uploadEntries!: Observable<{ [filename: string]: UploadEntry; }>;
+
+  @Input() uploadEntries!: Observable<{ [filename: string]: UploadEntry }>;
+
   @Output() fileDelete: EventEmitter<string> = new EventEmitter<string>();
+
   dataSource: FilesTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */

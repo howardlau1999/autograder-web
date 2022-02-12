@@ -1,27 +1,48 @@
 <h2 mat-dialog-title>创建提交</h2>
-<div (click)="fileInput.click()" (dragover)="onDragOver($event)" (drop)="onDrop($event)" class="drop-area">
+<div
+  (click)="fileInput.click()"
+  (dragover)="onDragOver($event)"
+  (drop)="onDrop($event)"
+  class="drop-area"
+>
   单击此处或拖放文件以上传
 </div>
-<input #fileInput (change)="uploadFileEvent($event)" id="uploadFile" multiple name="uploadFile" style="display: none;"
-       type="file">
+<input
+  #fileInput
+  (change)="uploadFileEvent($event)"
+  id="uploadFile"
+  multiple
+  name="uploadFile"
+  style="display: none"
+  type="file"
+/>
 {{ this.uploaded }} / {{ this.total }}
-<mat-dialog-content style="max-width: 60vw; min-width: 40vw;">
-  <app-files-table (fileDelete)="onFileDelete($event)" [paginator]="paginator"
-                   [uploadEntries]="uploadEntries$"></app-files-table>
+<mat-dialog-content style="max-width: 60vw; min-width: 40vw">
+  <app-files-table
+    (fileDelete)="onFileDelete($event)"
+    [paginator]="paginator"
+    [uploadEntries]="uploadEntries$"
+  ></app-files-table>
 </mat-dialog-content>
-<mat-paginator #paginator
-               [length]="total"
-               [pageIndex]="0"
-               [pageSizeOptions]="[50, 100]"
-               [pageSize]="100"
-               aria-label="Select page"
-               showFirstLastButtons>
+<mat-paginator
+  #paginator
+  [length]="total"
+  [pageIndex]="0"
+  [pageSizeOptions]="[50, 100]"
+  [pageSize]="100"
+  aria-label="Select page"
+  showFirstLastButtons
+>
 </mat-paginator>
 
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-button>取消</button>
-  <button (click)="onSubmitClicked()" [disabled]="!manifestId || !total || total !== uploaded" color="primary"
-          mat-raised-button>
+  <button
+    (click)="onSubmitClicked()"
+    [disabled]="!manifestId || !total || total !== uploaded"
+    color="primary"
+    mat-raised-button
+  >
     提交
   </button>
 </mat-dialog-actions>

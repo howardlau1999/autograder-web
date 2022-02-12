@@ -1,20 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {FormControl} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-join-dialog',
   templateUrl: './join-dialog.component.html',
-  styleUrls: ['./join-dialog.component.css']
+  styleUrls: ['./join-dialog.component.css'],
 })
 export class JoinDialogComponent implements OnInit {
   invitationCode = new FormControl('');
 
-  constructor(private dialogRef: MatDialogRef<JoinDialogComponent>) {
-  }
+  constructor(private dialogRef: MatDialogRef<JoinDialogComponent>) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onCancelClicked() {
     this.dialogRef.close();

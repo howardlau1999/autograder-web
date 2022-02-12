@@ -1,5 +1,11 @@
-import {Injectable} from '@angular/core';
-import {AutograderService, ServiceError} from "./proto/api_pb_service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { DateTime } from 'luxon';
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
+import { grpc } from '@improbable-eng/grpc-web';
+import { Either, of, right } from 'fp-ts/Either';
+import { AutograderService, ServiceError } from './proto/api_pb_service';
 import {
   AddCourseMembersRequest,
   CreateAssignmentRequest,
@@ -29,10 +35,7 @@ import {
   UpdateAssignmentRequest,
   UpdateCourseMemberRequest,
   UpdateCourseRequest,
-} from "./proto/api_pb";
-import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {DateTime} from "luxon";
+} from './proto/api_pb';
 import {
   Assignment,
   AssignmentType,
@@ -40,46 +43,56 @@ import {
   CourseMember,
   CourseRole,
   CourseRoleMap,
-  ProgrammingAssignmentConfig
-} from "./proto/model_pb";
-import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
-import {environment} from "../../environments/environment";
-import {TokenService} from "../service/token.service";
-import {grpc} from "@improbable-eng/grpc-web";
+  ProgrammingAssignmentConfig,
+} from './proto/model_pb';
+import { environment } from '../../environments/environment';
+import { TokenService } from '../service/token.service';
 import UnaryMethodDefinition = grpc.UnaryMethodDefinition;
 import ProtobufMessage = grpc.ProtobufMessage;
 import UnaryOutput = grpc.UnaryOutput;
+import { ErrorService } from '../service/error.service';
 
-
-type UnaryCallback<Response> = (err: ServiceError | null, response: Response | null) => void;
+export interface RPCError {
+  status: grpc.Code;
+  message: string;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   host = environment.serverHost;
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {
-  }
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private errorService: ErrorService,
+  ) {}
 
   private unary<Request extends ProtobufMessage, Response extends ProtobufMessage>(
     method: UnaryMethodDefinition<Request, Response>,
-    request: Request
-  ): Observable<Response> {
-    return new Observable<Response>(subscriber => {
+    request: Request,
+  ) {
+    return new Observable<Response>((subscriber) => {
       return grpc.unary(method, {
         host: this.host,
         debug: !environment.production,
         metadata: new grpc.Metadata({
-          'authorization': `bearer ${this.tokenService.getToken()}`,
+          authorization: `bearer ${this.tokenService.getToken()}`,
         }),
         onEnd: (output: UnaryOutput<Response>) => {
+          if (!environment.production) {
+            console.log(output);
+          }
           if (output.status !== grpc.Code.OK || output.message === null) {
-            subscriber.error(output.statusMessage);
+            if (output.status === grpc.Code.Unknown) {
+              this.errorService.handleUnknownError(output.statusMessage);
+            }
+            subscriber.error({ status: output.status, message: output.statusMessage });
             return;
           }
-          if (output.headers.has("token")) {
-            this.tokenService.setToken(output.headers.get("token")[0]);
+          if (output.headers.has('token')) {
+            this.tokenService.setToken(output.headers.get('token')[0]);
           }
           subscriber.next(output.message);
           subscriber.complete();
@@ -115,13 +128,13 @@ export class ApiService {
 
   uploadFile(file: Blob, uploadToken: string) {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
     return this.http.post(`${this.host}/AutograderService/FileUpload`, formData, {
       reportProgress: true,
-      observe: "events",
+      observe: 'events',
       headers: {
-        "Upload-token": uploadToken,
-      }
+        'Upload-token': uploadToken,
+      },
     });
   }
 
@@ -138,7 +151,12 @@ export class ApiService {
     return this.unary(AutograderService.CreateManifest, request);
   }
 
-  createSubmission(assigmentId: number, manifestId: number, submitters: number[], nickname: string) {
+  createSubmission(
+    assigmentId: number,
+    manifestId: number,
+    submitters: number[],
+    nickname: string,
+  ) {
     const request = new CreateSubmissionRequest();
     request.setSubmittersList(submitters);
     request.setManifestId(manifestId);
@@ -150,12 +168,12 @@ export class ApiService {
   subscribeSubmission(submissionId: number) {
     const request = new SubscribeSubmissionRequest();
     request.setSubmissionId(submissionId);
-    return new Observable<SubscribeSubmissionResponse>(subscriber => {
+    return new Observable<SubscribeSubmissionResponse>((subscriber) => {
       return grpc.invoke(AutograderService.SubscribeSubmission, {
         host: this.host,
         onHeaders: (headers: grpc.Metadata) => {
-          if (headers.has("token")) {
-            this.tokenService.setToken(headers.get("token")[0]);
+          if (headers.has('token')) {
+            this.tokenService.setToken(headers.get('token')[0]);
           }
         },
         onMessage: (message: SubscribeSubmissionResponse) => {
@@ -212,7 +230,14 @@ export class ApiService {
     return this.unary(AutograderService.CreateCourse, request);
   }
 
-  createProgrammingAssignment(courseId: number, name: string, releaseDate: DateTime, dueDate: DateTime, description: string, dockerImage: string) {
+  createProgrammingAssignment(
+    courseId: number,
+    name: string,
+    releaseDate: DateTime,
+    dueDate: DateTime,
+    description: string,
+    dockerImage: string,
+  ) {
     const request = new CreateAssignmentRequest();
     const programmingConfig = new ProgrammingAssignmentConfig();
     request.setAssignmentType(AssignmentType.PROGRAMMING);

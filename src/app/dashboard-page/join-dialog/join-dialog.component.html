@@ -3,8 +3,13 @@
   <form class="course-join-form">
     <mat-form-field>
       <mat-label>加课码</mat-label>
-      <input [formControl]="invitationCode" matInput type="text">
-      <button (click)="invitationCode.setValue('')" *ngIf="invitationCode.value" mat-icon-button matSuffix>
+      <input [formControl]="invitationCode" matInput type="text" />
+      <button
+        (click)="invitationCode.setValue('')"
+        *ngIf="invitationCode.value"
+        mat-icon-button
+        matSuffix
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>

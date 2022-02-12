@@ -1,15 +1,15 @@
 <mat-form-field *ngIf="formField" class="role-form-field">
   <mat-label *ngIf="label">
-    {{label}}
+    {{ label }}
   </mat-label>
   <mat-select [value]="role">
     <mat-option *ngFor="let role of roles" [value]="role">
-      {{mapRoleToString(role)}}
+      {{ mapRoleToString(role) }}
     </mat-option>
   </mat-select>
 </mat-form-field>
 <mat-select *ngIf="!formField" [value]="role">
   <mat-option *ngFor="let role of roles" [value]="role">
-    {{mapRoleToString(role)}}
+    {{ mapRoleToString(role) }}
   </mat-option>
 </mat-select>

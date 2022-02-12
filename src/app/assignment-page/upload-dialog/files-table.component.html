@@ -1,19 +1,22 @@
 <table aria-label="" class="full-width-table" mat-table matSort>
   <ng-container matColumnDef="filename">
     <th *matHeaderCellDef mat-header-cell mat-sort-header>文件名</th>
-    <td *matCellDef="let row" mat-cell>{{row.filename}}</td>
+    <td *matCellDef="let row" mat-cell>{{ row.filename }}</td>
   </ng-container>
 
   <ng-container matColumnDef="filesize">
     <th *matHeaderCellDef mat-header-cell mat-sort-header>文件大小</th>
-    <td *matCellDef="let row" mat-cell>{{row.filesize | filesize}}</td>
+    <td *matCellDef="let row" mat-cell>{{ row.filesize | filesize }}</td>
   </ng-container>
 
   <ng-container matColumnDef="progress">
     <th *matHeaderCellDef mat-header-cell mat-sort-header>上传进度</th>
     <td *matCellDef="let row" mat-cell>
-      <mat-progress-bar *ngIf="row.uploading" [mode]="row.progressBarMode"
-                        [value]="row.uploadProgress"></mat-progress-bar>
+      <mat-progress-bar
+        *ngIf="row.uploading"
+        [mode]="row.progressBarMode"
+        [value]="row.uploadProgress"
+      ></mat-progress-bar>
       <mat-icon *ngIf="row.uploaded">done</mat-icon>
     </td>
   </ng-container>
@@ -28,6 +31,5 @@
   </ng-container>
 
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
 </table>
-

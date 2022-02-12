@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AddMemberDialogComponent} from './add-member-dialog.component';
+import { AddMemberDialogComponent } from './add-member-dialog.component';
 
 describe('AddMemberDialogComponent', () => {
   let component: AddMemberDialogComponent;
@@ -8,9 +8,8 @@ describe('AddMemberDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddMemberDialogComponent]
-    })
-      .compileComponents();
+      declarations: [AddMemberDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

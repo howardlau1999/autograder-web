@@ -1,26 +1,34 @@
-import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ApiService} from "../../api/api.service";
-import {HttpEventType} from "@angular/common/http";
-import {BehaviorSubject, from, mergeMap, of, retry, Subscription, zip} from "rxjs";
-import {map} from "rxjs/operators";
-import * as zipjs from "@zip.js/zip.js";
-import {BlobWriter} from "@zip.js/zip.js";
-import {UserService} from "../../service/user.service";
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { HttpEventType } from '@angular/common/http';
+import { BehaviorSubject, from, mergeMap, of, retry, Subscription, zip } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as zipjs from '@zip.js/zip.js';
+import { BlobWriter } from '@zip.js/zip.js';
+import { ApiService } from '../../api/api.service';
+import { UserService } from '../../service/user.service';
 
 export interface UploadDialogData {
-  assignmentId: number
+  assignmentId: number;
 }
 
 export class UploadEntry {
   sub: Subscription | null = null;
+
   filename = '';
+
   filesize: number = 0;
+
   uploadToken: string = '';
+
   uploading: boolean = false;
+
   uploaded: boolean = false;
+
   uploadProgress: number = 0;
+
   error: string | null = null;
+
   progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
 
   constructor(filename: string, filesize: number) {
@@ -45,38 +53,46 @@ export class UploadEntry {
 @Component({
   selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
-  styleUrls: ['./upload-dialog.component.css']
+  styleUrls: ['./upload-dialog.component.css'],
 })
 export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   assignmentId: number;
+
   manifestId: number | null = null;
+
   uploadEntries: { [filename: string]: UploadEntry } = {};
-  uploadEntries$: BehaviorSubject<{ [filename: string]: UploadEntry }> = new BehaviorSubject<{ [p: string]: UploadEntry }>({});
+
+  uploadEntries$: BehaviorSubject<{ [filename: string]: UploadEntry }> = new BehaviorSubject<{
+    [p: string]: UploadEntry;
+  }>({});
+
   total: number = 0;
+
   uploaded: number = 0;
 
-  constructor(public dialogRef: MatDialogRef<UploadDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: UploadDialogData,
-              private apiService: ApiService, private userService: UserService) {
+  constructor(
+    public dialogRef: MatDialogRef<UploadDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: UploadDialogData,
+    private apiService: ApiService,
+    private userService: UserService,
+  ) {
     this.assignmentId = data.assignmentId;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   onFileDelete(filename: string) {
     this.uploadEntries[filename].cancelUpload();
-    const sub$ = this.apiService.deleteFileInManifest(this.manifestId!, filename).subscribe(
-      resp => {
+    const sub$ = this.apiService
+      .deleteFileInManifest(this.manifestId!, filename)
+      .subscribe((resp) => {
         delete this.uploadEntries[filename];
         this.updateProgress();
         this.updateUploadEntries();
         sub$.unsubscribe();
-      }
-    );
+      });
   }
 
   onDrop(event: DragEvent) {
@@ -108,12 +124,17 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   createSubmission() {
-    return this.apiService.createSubmission(this.assignmentId, this.manifestId!, [this.userService.user.userId!], "Howard Lau");
+    return this.apiService.createSubmission(
+      this.assignmentId,
+      this.manifestId!,
+      [this.userService.user.userId!],
+      'Howard Lau',
+    );
   }
 
   onSubmitClicked(): void {
-    this.createSubmission().subscribe(resp => {
-      this.dialogRef.close(resp.getSubmissionId());
+    this.createSubmission().subscribe((resp) => {
+      this.dialogRef.close(resp?.getSubmissionId());
     });
   }
 
@@ -122,46 +143,74 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadFiles(files: File[]) {
-    (this.manifestId === null ? this.apiService.createManifest(this.assignmentId).pipe(map(resp => {
-      return this.manifestId = resp.getManifestId();
-    })) : of(this.manifestId)).pipe(mergeMap(manifestId => {
-      return from(files).pipe(mergeMap(file => {
-        if (file.type === 'application/x-zip-compressed') {
-          const blobReader = new zipjs.BlobReader(file);
-          const zipReader = new zipjs.ZipReader(blobReader, {useWebWorkers: true});
-          return from(zipReader.getEntries()).pipe(mergeMap(entries => {
-            const fileEntries = entries.filter(entry => !entry.directory && entry.getData !== undefined)
-            const uploadEntries = fileEntries.map(entry => new UploadEntry(entry.filename, entry.uncompressedSize));
-            uploadEntries.forEach(entry => this.uploadEntries[entry.filename] = entry);
-            this.updateUploadEntries();
-            this.updateProgress();
-            return from(fileEntries);
-          }), mergeMap(entry => {
-            return zip(of(entry.filename), of(manifestId), from(entry.getData!(new BlobWriter()) as Promise<Blob>));
-          }));
-        }
-        this.uploadEntries[file.name] = new UploadEntry(file.name, file.size);
-        this.updateUploadEntries();
-        this.updateProgress();
-        return zip(of(file.name), of(manifestId), of(file));
-      }))
-    })).subscribe(([filename, manifestId, blob]) => {
-      const entry = this.uploadEntries[filename];
-      entry.sub = this.apiService.initUpload(filename, manifestId).pipe(mergeMap(resp => {
-        const token = resp.getToken();
-        entry.progressBarMode = 'determinate';
-        entry.uploadToken = token;
-        return this.apiService.uploadFile(blob, token);
-      }), retry(5)).subscribe((event) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
-        }
-        if (event.type == HttpEventType.Response) {
-          entry.finishUpload();
-          this.updateProgress();
-        }
+    (this.manifestId === null
+      ? this.apiService.createManifest(this.assignmentId).pipe(
+          map((resp) => {
+            return (this.manifestId = resp?.getManifestId() || 0);
+          }),
+        )
+      : of(this.manifestId)
+    )
+      .pipe(
+        mergeMap((manifestId) => {
+          return from(files).pipe(
+            mergeMap((file) => {
+              if (file.type === 'application/x-zip-compressed') {
+                const blobReader = new zipjs.BlobReader(file);
+                const zipReader = new zipjs.ZipReader(blobReader, { useWebWorkers: true });
+                return from(zipReader.getEntries()).pipe(
+                  mergeMap((entries) => {
+                    const fileEntries = entries.filter(
+                      (entry) => !entry.directory && entry.getData !== undefined,
+                    );
+                    const uploadEntries = fileEntries.map(
+                      (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
+                    );
+                    uploadEntries.forEach((entry) => (this.uploadEntries[entry.filename] = entry));
+                    this.updateUploadEntries();
+                    this.updateProgress();
+                    return from(fileEntries);
+                  }),
+                  mergeMap((entry) => {
+                    return zip(
+                      of(entry.filename),
+                      of(manifestId),
+                      from(entry.getData!(new BlobWriter()) as Promise<Blob>),
+                    );
+                  }),
+                );
+              }
+              this.uploadEntries[file.name] = new UploadEntry(file.name, file.size);
+              this.updateUploadEntries();
+              this.updateProgress();
+              return zip(of(file.name), of(manifestId), of(file));
+            }),
+          );
+        }),
+      )
+      .subscribe(([filename, manifestId, blob]) => {
+        const entry = this.uploadEntries[filename];
+        entry.sub = this.apiService
+          .initUpload(filename, manifestId)
+          .pipe(
+            mergeMap((resp) => {
+              const token = resp?.getToken() || '';
+              entry.progressBarMode = 'determinate';
+              entry.uploadToken = token;
+              return this.apiService.uploadFile(blob, token);
+            }),
+            retry(5),
+          )
+          .subscribe((event) => {
+            if (event.type == HttpEventType.UploadProgress) {
+              entry.uploadProgress = Math.round(100 * (event.loaded / event.total!));
+            }
+            if (event.type == HttpEventType.Response) {
+              entry.finishUpload();
+              this.updateProgress();
+            }
+          });
       });
-    });
   }
 
   uploadFileEvent(event: any) {
@@ -184,14 +233,13 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cancelUpload() {
-    for (const filename in this.uploadEntries) {
+    const filenames = Object.keys(this.uploadEntries);
+    for (const filename of filenames) {
       this.uploadEntries[filename].cancelUpload();
     }
     this.uploadEntries = {};
     this.updateUploadEntries();
   }
 
-  ngAfterViewInit(): void {
-
-  }
+  ngAfterViewInit(): void {}
 }

@@ -1,13 +1,13 @@
-import {DataSource} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable} from 'rxjs';
-import {ApiService} from "../../api/api.service";
-import {Value} from "google-protobuf/google/protobuf/struct_pb";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map, switchMap } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { Value } from 'google-protobuf/google/protobuf/struct_pb';
+import { ApiService } from '../../api/api.service';
 
 export interface LeaderboardItem {
-  items: { [k: string]: { value: Value, desc: boolean } };
+  items: { [k: string]: { value: Value; desc: boolean } };
   rank: number;
   name: string;
 }
@@ -19,33 +19,49 @@ export interface LeaderboardItem {
  */
 export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
   data: LeaderboardItem[] = [];
+
   data$: Observable<LeaderboardItem[]>;
+
   columns$: Observable<string[]>;
+
   paginator: MatPaginator | undefined;
+
   sort: MatSort | undefined;
 
   constructor(apiService: ApiService, assignmentId$: Observable<number>) {
     super();
-    this.data$ = assignmentId$.pipe(switchMap(assignmentId => {
-      return apiService.getLeaderboard(assignmentId).pipe(map(resp => {
-        return this.data = resp.getEntriesList().map(entry => {
-          return entry.getItemsList().map(item => {
-            let obj: LeaderboardItem = {items: {}, rank: 0, name: entry.getNickname()};
-            obj.items[item.getName()] = {'value': item.getValue() || new Value(), 'desc': item.getOrder() === 1};
-            return obj;
-          }).reduce((accumulator, current) => {
-            for (const k of Object.keys(current.items)) {
-              accumulator.items[k] = current.items[k];
-            }
-            return accumulator;
-          });
-        });
-      }));
-    }));
-    this.columns$ = this.data$.pipe(map(items => {
-      if (items.length === 0) return [];
-      return [...Object.keys(items[0].items)];
-    }));
+    this.data$ = assignmentId$.pipe(
+      switchMap((assignmentId) => {
+        return apiService.getLeaderboard(assignmentId).pipe(
+          map((resp) => {
+            return (this.data = (resp?.getEntriesList() || []).map((entry) => {
+              return entry
+                .getItemsList()
+                .map((item) => {
+                  const obj: LeaderboardItem = { items: {}, rank: 0, name: entry.getNickname() };
+                  obj.items[item.getName()] = {
+                    value: item.getValue() || new Value(),
+                    desc: item.getOrder() === 1,
+                  };
+                  return obj;
+                })
+                .reduce((accumulator, current) => {
+                  for (const k of Object.keys(current.items)) {
+                    accumulator.items[k] = current.items[k];
+                  }
+                  return accumulator;
+                });
+            }));
+          }),
+        );
+      }),
+    );
+    this.columns$ = this.data$.pipe(
+      map((items) => {
+        if (items.length === 0) return [];
+        return [...Object.keys(items[0].items)];
+      }),
+    );
   }
 
   /**
@@ -57,21 +73,20 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+        map(() => {
           return this.getPagedData(this.getSortedData([...this.data]));
-        }));
-    } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+        }),
+      );
     }
+    throw Error('Please set the paginator and sort on the data source before connecting.');
   }
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -81,9 +96,8 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      return data;
     }
+    return data;
   }
 
   /**

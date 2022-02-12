@@ -1,9 +1,9 @@
-import {DataSource} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {map} from 'rxjs/operators';
-import {merge, Observable} from 'rxjs';
-import {UploadEntry} from "./upload-dialog.component";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { UploadEntry } from './upload-dialog.component';
 
 // TODO: Replace this with your own data model type
 export type FilesTableItem = UploadEntry;
@@ -15,20 +15,25 @@ export type FilesTableItem = UploadEntry;
  */
 export class FilesTableDataSource extends DataSource<FilesTableItem> {
   data$: Observable<FilesTableItem[]>;
+
   data: FilesTableItem[] = [];
+
   paginator: MatPaginator | undefined;
+
   sort: MatSort | undefined;
 
   constructor(observable: Observable<{ [filename: string]: UploadEntry }>) {
     super();
-    this.data$ = observable.pipe(map(entries => {
-      const items: FilesTableItem[] = [];
-      for (const fn in entries) {
-        const entry = entries[fn];
-        items.push(entry);
-      }
-      return this.data = items;
-    }));
+    this.data$ = observable.pipe(
+      map((entries) => {
+        const items: FilesTableItem[] = [];
+        for (const fn in entries) {
+          const entry = entries[fn];
+          items.push(entry);
+        }
+        return (this.data = items);
+      }),
+    );
   }
 
   /**
@@ -40,21 +45,20 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+        map(() => {
           return this.getPagedData(this.getSortedData([...this.data]));
-        }));
-    } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+        }),
+      );
     }
+    throw Error('Please set the paginator and sort on the data source before connecting.');
   }
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -64,9 +68,8 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
-    } else {
-      return data;
     }
+    return data;
   }
 
   /**

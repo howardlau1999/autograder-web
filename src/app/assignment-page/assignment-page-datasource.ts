@@ -1,11 +1,11 @@
-import {DataSource} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {map, switchMap} from 'rxjs/operators';
-import {merge, Observable, Subscription} from 'rxjs';
-import {GetSubmissionsInAssignmentResponse} from "../api/proto/api_pb";
-import {ApiService} from "../api/api.service";
-import {SubmissionStatus} from "../api/proto/model_pb";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map, switchMap } from 'rxjs/operators';
+import { merge, Observable, Subscription } from 'rxjs';
+import { GetSubmissionsInAssignmentResponse } from '../api/proto/api_pb';
+import { ApiService } from '../api/api.service';
+import { SubmissionStatus } from '../api/proto/model_pb';
 
 export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
 
@@ -16,31 +16,43 @@ export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
  */
 export class AssignmentPageDataSource extends DataSource<Item> {
   data$: Observable<Item[]>;
+
   subs: Subscription[] = [];
+
   count: number = 0;
+
   data: Item[] = [];
+
   paginator: MatPaginator | undefined;
+
   sort: MatSort | undefined;
 
   constructor(private apiService: ApiService, params$: Observable<number[]>) {
     super();
-    this.data$ = params$.pipe(switchMap(ids => {
-      this.subs.forEach(sub => sub.unsubscribe());
-      this.subs = [];
-      const [courseId, assignmentId] = ids;
-      return this.apiService.getSubmissionsInAssignment(courseId, assignmentId);
-    }), map(resp => {
-      this.data = resp.getSubmissionsList();
-      this.count = this.data.length;
-      this.subs = this.data.filter(submission => submission.getStatus() === SubmissionStatus.RUNNING).map(submission => {
-        return this.apiService.subscribeSubmission(submission.getSubmissionId()).subscribe(resp => {
-          submission.setStatus(resp.getStatus());
-          submission.setScore(resp.getScore());
-          submission.setMaxScore(resp.getMaxscore());
-        });
-      });
-      return this.data;
-    }));
+    this.data$ = params$.pipe(
+      switchMap((ids) => {
+        this.subs.forEach((sub) => sub.unsubscribe());
+        this.subs = [];
+        const [courseId, assignmentId] = ids;
+        return this.apiService.getSubmissionsInAssignment(courseId, assignmentId);
+      }),
+      map((resp) => {
+        this.data = resp?.getSubmissionsList() || [];
+        this.count = this.data.length;
+        this.subs = this.data
+          .filter((submission) => submission.getStatus() === SubmissionStatus.RUNNING)
+          .map((submission) => {
+            return this.apiService
+              .subscribeSubmission(submission.getSubmissionId())
+              .subscribe((resp) => {
+                submission.setStatus(resp.getStatus());
+                submission.setScore(resp.getScore());
+                submission.setMaxScore(resp.getMaxscore());
+              });
+          });
+        return this.data;
+      }),
+    );
   }
 
   /**
@@ -52,13 +64,13 @@ export class AssignmentPageDataSource extends DataSource<Item> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+        map(() => {
           return this.getPagedData(this.getSortedData(this.data));
-        }));
-    } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+        }),
+      );
     }
+    throw Error('Please set the paginator and sort on the data source before connecting.');
   }
 
   /**
@@ -66,7 +78,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
    * any open connections or free any held resources that were set up during connect.
    */
   disconnect(): void {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   /**
@@ -77,9 +89,8 @@ export class AssignmentPageDataSource extends DataSource<Item> {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.slice(startIndex, startIndex + this.paginator.pageSize);
-    } else {
-      return data;
     }
+    return data;
   }
 
   /**
