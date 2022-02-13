@@ -1,7 +1,7 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap } from 'rxjs/operators';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
@@ -46,7 +46,8 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
                   return obj;
                 })
                 .reduce((accumulator, current) => {
-                  for (const k of Object.keys(current.items)) {
+                  for (let i = 0; i < Object.keys(current.items).length; i++) {
+                    const k = Object.keys(current.items)[i];
                     accumulator.items[k] = current.items[k];
                   }
                   return accumulator;
@@ -61,6 +62,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
         if (items.length === 0) return [];
         return [...Object.keys(items[0].items)];
       }),
+      shareReplay(1),
     );
   }
 

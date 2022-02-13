@@ -286,6 +286,9 @@ export class LeaderboardEntry extends jspb.Message {
   setItemsList(value: Array<LeaderboardItem>): void;
   addItems(value?: LeaderboardItem, index?: number): LeaderboardItem;
 
+  getUserId(): number;
+  setUserId(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardEntry.AsObject;
   static toObject(includeInstance: boolean, msg: LeaderboardEntry): LeaderboardEntry.AsObject;
@@ -301,6 +304,7 @@ export namespace LeaderboardEntry {
     submissionId: number,
     nickname: string,
     itemsList: Array<LeaderboardItem.AsObject>,
+    userId: number,
   }
 }
 

@@ -10,18 +10,27 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>昵称</th>
         <td *matCellDef="let row" mat-cell>{{ row.name }}</td>
       </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="Accuracy">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Accuracy</th>
-        <td *matCellDef="let row" mat-cell>{{ row.items['Accuracy'].value.getNumberValue() }}</td>
+      <ng-container *ngFor="let column of columns$ | async" [matColumnDef]="column">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column }}</th>
+        <td *matCellDef="let row" mat-cell>
+          <span *ngIf="row.items[column].value.hasNumberValue()">
+            {{ row.items[column].value.getNumberValue() }}
+          </span>
+          <span *ngIf="row.items[column].value.hasStringValue()">
+            {{ row.items[column].value.getStringValue() }}
+          </span>
+        </td>
       </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+      <tr *matHeaderRowDef="displayedColumns.concat((columns$ | async) || [])" mat-header-row></tr>
+      <tr
+        *matRowDef="let row; columns: displayedColumns.concat((columns$ | async) || [])"
+        mat-row
+      ></tr>
     </table>
     <mat-paginator
       #paginator

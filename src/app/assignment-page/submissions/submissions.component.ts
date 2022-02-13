@@ -2,16 +2,23 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { mergeWith, Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, mergeMap, Observable, of, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { map } from 'rxjs/operators';
+import { map, repeatWhen } from 'rxjs/operators';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component';
-import { ApiService } from '../../api/api.service';
-import { Assignment } from '../../api/proto/model_pb';
-import { AssignmentPageDataSource, Item } from '../assignment-page-datasource';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
+import {
+  Assignment,
+  CourseRole,
+  SubmissionStatus,
+  SubmissionStatusMap,
+} from '../../api/proto/model_pb';
+import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
+import { SubmissionService } from '../../service/submission.service';
+import { AssignmentService } from '../../service/assignment.service';
+import { AssignmentEditDialogComponent } from './assignment-edit-dialog/assignment-edit-dialog.component';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-submissions',
@@ -30,54 +37,99 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  @ViewChild(MatTable) table!: MatTable<Item>;
+  @ViewChild(MatTable) table!: MatTable<SubmissionsItem>;
 
-  dataSource: AssignmentPageDataSource;
+  dataSource: SubmissionsTableDataSource;
 
   columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
 
   assignmentId: number = 0;
 
-  courseId: number = 0;
-
-  expandedSubmission: Item | null = null;
+  expandedSubmission: SubmissionsItem | null = null;
 
   uploadDialogSubscription: Subscription | null = null;
 
-  ids$: Subject<number[]> = new Subject<number[]>();
+  loading: boolean = true;
+
+  refresher$: Subject<null> = new Subject<null>();
 
   assignment$: Observable<Assignment | undefined>;
 
+  assignmentId$: Observable<number>;
+
+  submissions$: Observable<SubmissionsItem[]>;
+
+  canWriteCourse: boolean = false;
+
+  submissionsLoading: boolean = true;
+
+  submissionsRefresher$: Subject<null> = new Subject<null>();
+
+  isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.RUNNING;
+  }
+
+  isSubmissionFinished(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.FINISHED;
+  }
+
+  isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.FAILED;
+  }
+
   constructor(
-    private apiService: ApiService,
+    private notificationService: NotificationService,
+    private assignmentService: AssignmentService,
+    private submissionService: SubmissionService,
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
   ) {
-    this.dataSource = new AssignmentPageDataSource(
-      apiService,
-      this.route.parent!.paramMap.pipe(
-        map((params) => {
-          return [
-            Number.parseInt(params.get('courseId') || '0'),
-            Number.parseInt(params.get('assignmentId') || '0'),
-          ];
-        }),
-        mergeWith(this.ids$),
-        tap((ids) => {
-          const [courseId, assignmentId] = ids;
-          this.courseId = courseId;
-          this.assignmentId = assignmentId;
-        }),
-      ),
+    this.assignmentId$ = this.route.parent!.paramMap.pipe(
+      map((params) => Number.parseInt(params.get('assignmentId') || '0', 10)),
+      tap((assignmentId) => {
+        this.assignmentId = assignmentId;
+      }),
     );
-    this.assignment$ = this.route.parent!.paramMap.pipe(
-      switchMap((params) =>
-        this.apiService.getAssignment(Number.parseInt(params.get('assignmentId') || '0')),
+    this.assignment$ = this.assignmentId$.pipe(
+      switchMap((assignmentId) =>
+        of(assignmentId).pipe(
+          tap(() => {
+            this.loading = true;
+          }),
+          mergeMap(() => this.assignmentService.getAssignment(assignmentId)),
+          repeatWhen(() => this.refresher$),
+        ),
       ),
-      map((resp) => resp?.getAssignment()),
+      tap((resp) => {
+        this.loading = false;
+        this.canWriteCourse =
+          resp.getRole() === CourseRole.INSTRUCTOR || resp.getRole() === CourseRole.TA;
+      }),
+      map((resp) => resp.getAssignment()),
     );
+    this.submissions$ = this.assignmentId$.pipe(
+      switchMap((assignmentId) =>
+        of(assignmentId).pipe(
+          tap(() => {
+            this.submissionsLoading = true;
+          }),
+          mergeMap(() => {
+            return this.submissionService.getSubmissionsInAssignment(assignmentId);
+          }),
+          repeatWhen(() => this.submissionsRefresher$),
+        ),
+      ),
+      tap(() => {
+        this.submissionsLoading = false;
+      }),
+      map((resp) => resp.getSubmissionsList()),
+      catchError((error) => {
+        this.notificationService.showSnackBar(`加载提交记录出错 ${error}`);
+        return of([]);
+      }),
+    );
+    this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.submissions$);
   }
 
   ngAfterViewInit(): void {
@@ -100,15 +152,37 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
       this.uploadDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         this.uploadDialogSubscription?.unsubscribe();
         this.uploadDialogSubscription = null;
-        const config: MatSnackBarConfig = {
-          duration: 3000,
-        };
-        if (result !== null) {
-          this.ids$.next([this.courseId, this.assignmentId]);
-          this.snackBar.open('提交成功', '关闭', config);
+
+        if (result) {
+          this.submissionsRefresher$.next(null);
+          this.notificationService.showSnackBar('提交成功');
         } else {
-          this.snackBar.open('提交取消', '关闭', config);
+          this.notificationService.showSnackBar('提交取消');
         }
+      });
+    }
+  }
+
+  editAssignmentSubscription?: Subscription;
+
+  onEditAssignmentClicked(assignment: Assignment) {
+    const dialogRef = this.dialog.open(AssignmentEditDialogComponent, {
+      data: {
+        assignmentId: this.assignmentId,
+        assignment,
+      },
+    });
+    if (this.editAssignmentSubscription === undefined) {
+      this.editAssignmentSubscription = dialogRef.afterClosed().subscribe((success) => {
+        this.editAssignmentSubscription?.unsubscribe();
+        this.editAssignmentSubscription = undefined;
+
+        if (success) {
+          this.refresher$.next(null);
+          this.notificationService.showSnackBar('编辑作业成功');
+          return;
+        }
+        this.notificationService.showSnackBar('取消编辑');
       });
     }
   }

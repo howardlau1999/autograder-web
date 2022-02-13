@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SubmissionReport } from '../../api/proto/model_pb';
+import { SubmissionReport, SubmissionStatus, SubmissionStatusMap } from '../../api/proto/model_pb';
 import { ApiService } from '../../api/api.service';
 import { GetSubmissionReportResponse } from '../../api/proto/api_pb';
 
@@ -18,6 +18,10 @@ export class ReportComponent implements OnInit {
 
   @ViewChildren('testcase', { read: ElementRef }) renderedTestcases!: QueryList<ElementRef>;
 
+  isSubmissionFailed(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.FAILED;
+  }
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -25,13 +29,13 @@ export class ReportComponent implements OnInit {
   ) {
     this.report$ = this.route.parent?.paramMap.pipe(
       switchMap((params) => {
-        const submissionId = Number.parseInt(params.get('submissionId') || '0');
+        const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
         return this.apiService.getSubmissionReport(submissionId).pipe(
           catchError((err) => {
             this.error = err;
             if (err === 'RUNNING') {
               return this.apiService.subscribeSubmission(submissionId).pipe(
-                mergeMap((_) => {
+                mergeMap(() => {
                   this.error = null;
                   return this.apiService.getSubmissionReport(submissionId);
                 }),

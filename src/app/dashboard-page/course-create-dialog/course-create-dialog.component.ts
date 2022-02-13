@@ -29,8 +29,10 @@ export class CourseCreateDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onCreateClicked() {
+    this.creating = true;
     const { name, shortName, description } = this.courseForm.value;
     this.courseService.createCourse(name, shortName, description).subscribe((result) => {
+      this.creating = false;
       pipe(
         result,
         match(this.errorService.handleFormError(this.courseForm), (resp) => {

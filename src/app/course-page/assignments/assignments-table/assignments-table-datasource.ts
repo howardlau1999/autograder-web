@@ -3,8 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
-import { GetAssignmentsInCourseResponse } from '../../api/proto/api_pb';
-import { CourseService } from '../../service/course.service';
+import { GetAssignmentsInCourseResponse } from '../../../api/proto/api_pb';
 
 type Item = GetAssignmentsInCourseResponse.CourseAssignmentInfo;
 export type AssignmentsTableItem = Item;
@@ -19,12 +18,10 @@ function compare(a: string | number | Date, b: string | number | Date, isAsc: bo
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class AssignmentsPageDatasource extends DataSource<Item> {
+export class AssignmentsTableDatasource extends DataSource<Item> {
   assignments$: Observable<Item[]>;
 
   assignments: Item[] = [];
-
-  dataLength: number = 0;
 
   paginator: MatPaginator | undefined;
 
@@ -32,7 +29,11 @@ export class AssignmentsPageDatasource extends DataSource<Item> {
 
   constructor(assignments$: Observable<Item[]>) {
     super();
-    this.assignments$ = assignments$.pipe(tap((assignments) => (this.assignments = assignments)));
+    this.assignments$ = assignments$.pipe(
+      tap((assignments) => {
+        this.assignments = assignments;
+      }),
+    );
   }
 
   /**

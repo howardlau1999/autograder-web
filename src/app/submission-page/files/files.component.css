@@ -61,3 +61,7 @@
 .file-preview-container {
   margin-left: 10px;
 }
+
+.hljs-ln-code {
+  padding-left: 1em;
+}

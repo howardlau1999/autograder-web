@@ -1,6 +1,7 @@
 <div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  <table [class.hidden]="loading" aria-label="Elements" class="full-width-table" mat-table matSort>
+  <h3 *ngIf="!loading && !dataSource?.assignments?.length">暂无作业</h3>
+  <table [class.hidden]="loading || !dataSource?.assignments?.length" aria-label="Elements" class="full-width-table" mat-table matSort>
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
@@ -53,9 +54,9 @@
   </table>
 
   <mat-paginator
-    [class.hidden]="loading"
+    [class.hidden]="loading || !dataSource?.assignments?.length"
     #paginator
-    [length]="dataSource?.dataLength"
+    [length]="dataSource?.assignments?.length"
     [pageIndex]="0"
     [pageSizeOptions]="[5, 10, 20]"
     [pageSize]="10"

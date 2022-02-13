@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { repeatWhen, retryWhen, switchMap } from 'rxjs/operators';
+import { repeatWhen, switchMap } from 'rxjs/operators';
 import { catchError, map, Observable, of, Subject, Subscription } from 'rxjs';
 import { MembersDataSource, MembersItem } from './members-datasource';
 import { BatchAddMemberDialogComponent } from './batch-add-member-dialog/batch-add-member-dialog.component';
@@ -98,18 +98,20 @@ export class MembersComponent implements AfterViewInit {
     }
   }
 
-  onMemberRoleChanged(userId: number, role: keyof CourseRoleMap) {
+  onMemberRoleChanged(userId: number, role: CourseRoleMap[keyof CourseRoleMap]) {
     this.courseService
       .updateCourseMember(this.courseId, userId, role)
       .pipe(
+        map(() => {
+          this.notificationService.showSnackBar('成员权限更新成功');
+          return null;
+        }),
         catchError(() => {
           this.notificationService.showSnackBar('成员权限更新失败');
           return of(null);
         }),
       )
-      .subscribe(() => {
-        this.notificationService.showSnackBar('成员权限更新成功');
-      });
+      .subscribe(() => {});
   }
 
   onDeleteMemberClicked(member: MembersItem) {

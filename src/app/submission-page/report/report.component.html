@@ -1,9 +1,12 @@
 <h2>测试报告</h2>
 <div *ngIf="report$ | async as report; else errorMsg" class="report-container">
+  <p *ngIf="report.getInternalError()">
+    发生内部错误（错误码：{{report.getInternalError()}}）
+  </p>
   <mat-accordion class="testcase-accordion" multi>
     <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
-        <mat-panel-title> 测试输出 </mat-panel-title>
+        <mat-panel-title> 测试输出</mat-panel-title>
       </mat-expansion-panel-header>
       <code>
         <pre class="testcase-output">{{ report.getOutput() }}</pre>
@@ -17,7 +20,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-            >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+          >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
           </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -33,7 +36,7 @@
       mat-list-item
     >
       <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-        >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+      >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
       </span>
     </a>
   </mat-nav-list>
@@ -47,7 +50,7 @@
         <mat-progress-bar mode="buffer"></mat-progress-bar>
       </mat-card>
       <mat-card *ngSwitchDefault>
-        <mat-progress-bar></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card>
     </div>
   </div>

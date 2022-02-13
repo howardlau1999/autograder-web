@@ -23,6 +23,7 @@ import {
   GetLeaderboardRequest,
   GetSubmissionReportRequest,
   GetSubmissionsInAssignmentRequest,
+  HasLeaderboardRequest,
   InitDownloadRequest,
   InitUploadRequest,
   LoginRequest,
@@ -121,7 +122,7 @@ export class ApiService {
     return this.unary(AutograderService.GetAssignmentsInCourse, request);
   }
 
-  getSubmissionsInAssignment(courseId: number, assignmentId: number) {
+  getSubmissionsInAssignment(assignmentId: number) {
     const request = new GetSubmissionsInAssignmentRequest();
     request.setAssignmentId(assignmentId);
     return this.unary(AutograderService.GetSubmissionsInAssignment, request);
@@ -285,20 +286,24 @@ export class ApiService {
     return this.unary(AutograderService.RemoveCourseMembers, request);
   }
 
-  updateCourseMember(courseId: number, userId: number, role: keyof CourseRoleMap) {
+  updateCourseMember(courseId: number, userId: number, role: CourseRoleMap[keyof CourseRoleMap]) {
     const request = new UpdateCourseMemberRequest();
     request.setCourseId(courseId);
     const member = new CourseMember();
     member.setCourseId(courseId);
     member.setUserId(userId);
-    member.setRole(CourseRole[role]);
+    member.setRole(role);
     request.setMember(member);
     return this.unary(AutograderService.UpdateCourseMember, request);
   }
 
-  updateCourse(courseId: number, course: Course) {
+  updateCourse(courseId: number, name: string, shortName: string, description: string) {
     const request = new UpdateCourseRequest();
     request.setCourseId(courseId);
+    const course = new Course();
+    course.setName(name);
+    course.setShortName(shortName);
+    course.setDescription(description);
     request.setCourse(course);
     return this.unary(AutograderService.UpdateCourse, request);
   }
@@ -346,5 +351,11 @@ export class ApiService {
     const request = new CanWriteCourseRequest();
     request.setCourseId(courseId);
     return this.unary(AutograderService.CanWriteCourse, request);
+  }
+
+  hasLeaderboard(assignmentId: number) {
+    const request = new HasLeaderboardRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(AutograderService.HasLeaderboard, request);
   }
 }

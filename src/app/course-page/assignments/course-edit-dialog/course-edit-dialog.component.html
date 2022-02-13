@@ -1,6 +1,6 @@
-<h2>创建课程</h2>
+<h2>编辑课程</h2>
 <mat-dialog-content>
-  <form [formGroup]="courseForm" class="course-create-form">
+  <form [formGroup]="courseForm" class="course-edit-form">
     <mat-form-field>
       <mat-label>课程名称</mat-label>
       <input formControlName="name" matInput required />
@@ -21,8 +21,8 @@
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
   <button
-    (click)="onCreateClicked()"
-    [disabled]="courseForm.invalid || creating"
+    (click)="onConfirmClicked()"
+    [disabled]="courseForm.invalid || loading"
     color="primary"
     mat-raised-button
   >

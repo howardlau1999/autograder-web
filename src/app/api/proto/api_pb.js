@@ -7925,7 +7925,8 @@ proto.GetAssignmentResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.GetAssignmentResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    assignment: (f = msg.getAssignment()) && model_pb.Assignment.toObject(includeInstance, f)
+    assignment: (f = msg.getAssignment()) && model_pb.Assignment.toObject(includeInstance, f),
+    role: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -7967,6 +7968,10 @@ proto.GetAssignmentResponse.deserializeBinaryFromReader = function(msg, reader) 
       reader.readMessage(value,model_pb.Assignment.deserializeBinaryFromReader);
       msg.setAssignment(value);
       break;
+    case 2:
+      var value = /** @type {!proto.CourseRole} */ (reader.readEnum());
+      msg.setRole(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -8002,6 +8007,13 @@ proto.GetAssignmentResponse.serializeBinaryToWriter = function(message, writer) 
       1,
       f,
       model_pb.Assignment.serializeBinaryToWriter
+    );
+  }
+  f = message.getRole();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
     );
   }
 };
@@ -8041,6 +8053,24 @@ proto.GetAssignmentResponse.prototype.clearAssignment = function() {
  */
 proto.GetAssignmentResponse.prototype.hasAssignment = function() {
   return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional CourseRole role = 2;
+ * @return {!proto.CourseRole}
+ */
+proto.GetAssignmentResponse.prototype.getRole = function() {
+  return /** @type {!proto.CourseRole} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.CourseRole} value
+ * @return {!proto.GetAssignmentResponse} returns this
+ */
+proto.GetAssignmentResponse.prototype.setRole = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 

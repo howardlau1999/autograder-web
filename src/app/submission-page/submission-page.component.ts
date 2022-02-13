@@ -32,7 +32,7 @@ export class SubmissionPageComponent {
 
   constructor(private route: ActivatedRoute) {
     this.submissionId$ = this.route.paramMap.pipe(
-      switchMap((params) => of(Number.parseInt(params.get('submissionId') || '0'))),
+      switchMap((params) => of(Number.parseInt(params.get('submissionId') || '0', 10))),
     );
   }
 }

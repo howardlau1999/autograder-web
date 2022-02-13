@@ -1,0 +1,87 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DateTime } from 'luxon';
+import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { pipe } from 'fp-ts/function';
+import { match } from 'fp-ts/Either';
+import { AssignmentService } from '../../../service/assignment.service';
+import { ErrorService } from '../../../service/error.service';
+
+export interface AssignmentCreateDialogData {
+  courseId: number;
+}
+
+export const AssignmentDateValidator: ValidatorFn = (group): ValidationErrors => {
+  const releaseDateControl = group.get('releaseDate');
+  const dueDateControl = group.get('dueDate');
+  const releaseDate: DateTime = releaseDateControl?.value || DateTime.now();
+  const dueDate: DateTime = dueDateControl?.value || DateTime.now();
+  if (dueDate.toJSDate() < releaseDate.toJSDate()) {
+    dueDateControl?.setErrors({ before: true });
+    return { dueDate: true };
+  }
+  return {};
+};
+
+@Component({
+  selector: 'app-assignment-course-create-dialog',
+  templateUrl: './assignment-create-dialog.component.html',
+  styleUrls: ['./assignment-create-dialog.component.css'],
+})
+export class AssignmentCreateDialogComponent implements OnInit {
+  assignmentType: string = 'programming';
+
+  loading: boolean = false;
+
+  courseId: number;
+
+  programmingAssignmentForm = new FormGroup(
+    {
+      name: new FormControl('', [Validators.required]),
+      releaseDate: new FormControl(DateTime.now()),
+      dueDate: new FormControl(DateTime.now().plus({ days: 7 })),
+      dockerImage: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+    },
+    { validators: [AssignmentDateValidator] },
+  );
+
+  constructor(
+    private dialogRef: MatDialogRef<AssignmentCreateDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AssignmentCreateDialogData,
+    private assignmentService: AssignmentService,
+    private errorService: ErrorService,
+  ) {
+    this.courseId = data.courseId;
+  }
+
+  ngOnInit(): void {}
+
+  onConfirmClicked() {
+    const { name, releaseDate, dueDate, description, dockerImage } =
+      this.programmingAssignmentForm.value;
+    this.loading = true;
+    this.assignmentService
+      .createProgrammingAssignment(
+        this.courseId,
+        name,
+        releaseDate,
+        dueDate,
+        description,
+        dockerImage,
+      )
+      .subscribe((result) => {
+        this.loading = false;
+        pipe(
+          result,
+          match(this.errorService.handleFormError(this.programmingAssignmentForm), () => {
+            this.dialogRef.close(true);
+          }),
+        );
+      });
+  }
+
+  onCancelClicked(): void {
+    this.dialogRef.close();
+  }
+}

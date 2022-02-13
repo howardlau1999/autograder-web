@@ -6,6 +6,10 @@
   border: 2px dashed rgba(0, 0, 0, 0.25);
 }
 
+.counter {
+  margin-top: 1em;
+}
+
 .drop-area:hover {
   cursor: pointer;
 }

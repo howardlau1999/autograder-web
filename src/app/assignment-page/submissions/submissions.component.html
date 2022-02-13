@@ -1,26 +1,46 @@
 <div class="submissions-container">
   <h2>提交记录</h2>
   <mat-card class="assignment-info-card">
-    <div *ngIf="assignment$ | async as assignment; else progressBar">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <div [class.hidden]="loading" *ngIf="assignment$ | async as assignment">
+      <button
+        mat-icon-button
+        class="assignment-edit-button"
+        *ngIf="canWriteCourse"
+        (click)="onEditAssignmentClicked(assignment)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-card-title>
         {{ assignment.getName() }}
       </mat-card-title>
-      <mat-card-subtitle> #{{ assignmentId }} </mat-card-subtitle>
+      <mat-card-subtitle>
+        <p>#{{ assignmentId }}</p>
+        <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm' }}</p>
+      </mat-card-subtitle>
       <mat-card-content>
-        {{ assignment.getDescription() }}
+        <markdown [data]="assignment.getDescription()"></markdown>
       </mat-card-content>
     </div>
-    <ng-template #progressBar>
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </ng-template>
+
   </mat-card>
   <mat-card>
     <mat-card-content>
-      <button (click)="openSubmissionDialog()" color="primary" mat-raised-button>
-        <mat-icon>add</mat-icon>
-        上传提交
-      </button>
-      <table class="submission-history-table" mat-table matSort multiTemplateDataRows>
+      <div class="submission-operations">
+        <button (click)="openSubmissionDialog()" color="primary" mat-raised-button>
+          <mat-icon>add</mat-icon>
+          上传提交
+        </button>
+      </div>
+      <mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
+      <h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
+      <table
+        class="submission-history-table"
+        [class.hidden]="submissionsLoading || !dataSource?.data?.length"
+        mat-table
+        matSort
+        multiTemplateDataRows
+      >
         <ng-container matColumnDef="submissionId">
           <th *matHeaderCellDef i18n="submission-id" mat-header-cell>提交 ID</th>
           <td *matCellDef="let submission" mat-cell>{{ submission.getSubmissionId() }}</td>
@@ -34,15 +54,20 @@
         <ng-container matColumnDef="score">
           <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
           <td *matCellDef="let submission" mat-cell>
-            <span *ngIf="submission.getStatus() === 2">
-              {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
-            >
-            <mat-progress-bar
-              [mode]="submission.getStatus() === 4 ? 'buffer' : 'determinate'"
-              [value]="(submission.getScore() / submission.getMaxScore()) * 100"
-              class="score-bar"
-            >
-            </mat-progress-bar>
+            <div *ngIf="isSubmissionInternalError(submission.getStatus()); else normal">
+              内部错误
+            </div>
+            <ng-template #normal>
+              <span *ngIf="isSubmissionFinished(submission.getStatus())">
+                {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
+              >
+              <mat-progress-bar
+                [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
+                [value]="(submission.getScore() / submission.getMaxScore()) * 100"
+                class="score-bar"
+              >
+              </mat-progress-bar>
+            </ng-template>
           </td>
         </ng-container>
         <ng-container matColumnDef="status">
@@ -90,7 +115,8 @@
       </table>
     </mat-card-content>
     <mat-paginator
-      [length]="dataSource?.count"
+      [class.hidden]="submissionsLoading || !dataSource?.data?.length"
+      [length]="dataSource?.data?.length"
       [pageSizeOptions]="[5, 10]"
       [pageSize]="10"
       showFirstLastButtons

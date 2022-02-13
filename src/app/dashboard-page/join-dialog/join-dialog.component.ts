@@ -10,6 +10,8 @@ import { FormControl } from '@angular/forms';
 export class JoinDialogComponent implements OnInit {
   invitationCode = new FormControl('');
 
+  joining: boolean = false;
+
   constructor(private dialogRef: MatDialogRef<JoinDialogComponent>) {}
 
   ngOnInit(): void {}

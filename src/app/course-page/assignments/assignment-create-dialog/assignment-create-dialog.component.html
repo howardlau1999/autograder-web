@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <mat-stepper linear="true">
+  <mat-stepper linear="true" class="stepper-container">
     <mat-step #stepper>
       <ng-template matStepLabel>选择作业类型</ng-template>
       <form>
@@ -20,7 +20,15 @@
           <input formControlName="name" matInput name="name" required type="text" />
         </mat-form-field>
         <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
-        <app-datetime-picker formControlName="dueDate" label="截止时间"></app-datetime-picker>
+        <app-datetime-picker
+          [error]="
+            programmingAssignmentForm.get('dueDate')?.hasError('before')
+              ? '截止时间不能早于开始时间'
+              : ''
+          "
+          formControlName="dueDate"
+          label="截止时间"
+        ></app-datetime-picker>
         <mat-form-field>
           <mat-label>Docker 镜像</mat-label>
           <input formControlName="dockerImage" matInput name="dockerImage" required />
@@ -32,34 +40,8 @@
       </form>
       <button mat-button matStepperPrevious>上一步</button>
       <button
-        [disabled]="!programmingAssignmentForm.valid"
-        color="primary"
-        mat-raised-button
-        matStepperNext
-      >
-        下一步
-      </button>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>确认作业信息</ng-template>
-      <p>作业类型：{{ assignmentType }}</p>
-      <p>作业名称：{{ programmingAssignmentForm.value.name }}</p>
-      <p>
-        开始时间：{{
-          programmingAssignmentForm.value.releaseDate.toJSDate() | date: 'YYYY-MM-dd HH:mm'
-        }}
-      </p>
-      <p>
-        截止时间：{{
-          programmingAssignmentForm.value.dueDate.toJSDate() | date: 'YYYY-MM-dd HH:mm'
-        }}
-      </p>
-      <p>Docker 镜像：{{ programmingAssignmentForm.value.dockerImage }}</p>
-      <p>作业描述：{{ programmingAssignmentForm.value.description }}</p>
-      <button mat-button matStepperPrevious>上一步</button>
-      <button
         (click)="onConfirmClicked()"
-        [disabled]="!programmingAssignmentForm.valid"
+        [disabled]="!programmingAssignmentForm.valid || loading"
         color="primary"
         mat-raised-button
       >

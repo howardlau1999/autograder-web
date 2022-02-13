@@ -19,6 +19,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() label: string = '';
 
+  @Input() error: string = '';
+
   @Input() timestamp: DateTime = DateTime.now();
 
   @Output() timestampChange: EventEmitter<DateTime> = new EventEmitter<DateTime>();

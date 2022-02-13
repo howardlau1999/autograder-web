@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.stepper-container {
+  min-width: 500px;
+}
+
 .time-select {
   width: 2.5em;
 }

@@ -49,6 +49,7 @@
         <th *matHeaderCellDef mat-header-cell mat-sort-header>权限</th>
         <td *matCellDef="let row" mat-cell>
           <app-role-select
+            (roleChange)="onMemberRoleChanged(row.getUserId(), $event)"
             [disabled]="row.getUserId() === userId"
             [role]="row.getRole()"
           ></app-role-select>

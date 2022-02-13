@@ -4,7 +4,11 @@ import { Either, right } from 'fp-ts/Either';
 import { catchError, Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { ErrorService, FormError } from './error.service';
-import { AddCourseMembersRequest, CreateCourseResponse } from '../api/proto/api_pb';
+import {
+  AddCourseMembersRequest,
+  CreateCourseResponse,
+  UpdateCourseResponse,
+} from '../api/proto/api_pb';
 import { CourseRoleMap } from '../api/proto/model_pb';
 
 @Injectable({
@@ -28,15 +32,23 @@ export class CourseService {
     );
   }
 
+  updateCourse(
+    courseId: number,
+    name: string,
+    shortName: string,
+    description: string,
+  ): Observable<Either<FormError, UpdateCourseResponse>> {
+    return this.apiService.updateCourse(courseId, name, shortName, description).pipe(
+      map((resp) => right(resp)),
+      catchError(this.errorService.getFormError),
+    );
+  }
+
   getCourse(courseId: number) {
     return this.apiService.getCourse(courseId);
   }
 
-  getAssignmentsInCourse(courseId: number) {
-    return this.apiService.getAssignmentsInCourse(courseId);
-  }
-
-  updateCourseMember(courseId: number, userId: number, role: keyof CourseRoleMap) {
+  updateCourseMember(courseId: number, userId: number, role: CourseRoleMap[keyof CourseRoleMap]) {
     return this.apiService.updateCourseMember(courseId, userId, role);
   }
 

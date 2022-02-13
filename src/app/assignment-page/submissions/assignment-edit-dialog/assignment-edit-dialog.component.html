@@ -1,0 +1,32 @@
+<h2>编辑课程</h2>
+<mat-dialog-content>
+
+
+  <form [formGroup]="programmingAssignmentForm" class="config-form">
+    <mat-form-field>
+      <mat-label>作业名称</mat-label>
+      <input formControlName="name" matInput name="name" required type="text" />
+    </mat-form-field>
+    <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
+    <app-datetime-picker formControlName="dueDate" label="截止时间"></app-datetime-picker>
+    <mat-form-field>
+      <mat-label>Docker 镜像</mat-label>
+      <input formControlName="dockerImage" matInput name="dockerImage" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>作业描述</mat-label>
+      <textarea formControlName="description" matInput name="description"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="onCancelClicked()" mat-flat-button>取消</button>
+  <button
+    (click)="onConfirmClicked()"
+    [disabled]="programmingAssignmentForm.invalid || loading"
+    color="primary"
+    mat-raised-button
+  >
+    确定
+  </button>
+</mat-dialog-actions>

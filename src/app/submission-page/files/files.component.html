@@ -48,9 +48,7 @@
           </h3>
           <div [ngSwitch]="fileType" class="file-previewer">
             <div *ngSwitchCase="DownloadFileType.TEXT">
-              <pre>
-<code [highlight]="(fileURL | codeFromUrl | async) || ''" [languages]="[language]" [lineNumbers]="true"></code>
-            </pre>
+              <markdown [src]="fileURL"></markdown>
             </div>
             <div *ngSwitchCase="DownloadFileType.IMAGE">
               <img [src]="fileURL" />

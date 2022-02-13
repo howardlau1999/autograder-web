@@ -2379,7 +2379,8 @@ proto.LeaderboardEntry.toObject = function(includeInstance, msg) {
     submissionId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     nickname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     itemsList: jspb.Message.toObjectList(msg.getItemsList(),
-    proto.LeaderboardItem.toObject, includeInstance)
+    proto.LeaderboardItem.toObject, includeInstance),
+    userId: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2428,6 +2429,10 @@ proto.LeaderboardEntry.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.LeaderboardItem;
       reader.readMessage(value,proto.LeaderboardItem.deserializeBinaryFromReader);
       msg.addItems(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setUserId(value);
       break;
     default:
       reader.skipField();
@@ -2478,6 +2483,13 @@ proto.LeaderboardEntry.serializeBinaryToWriter = function(message, writer) {
       3,
       f,
       proto.LeaderboardItem.serializeBinaryToWriter
+    );
+  }
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeUint64(
+      4,
+      f
     );
   }
 };
@@ -2554,6 +2566,24 @@ proto.LeaderboardEntry.prototype.addItems = function(opt_value, opt_index) {
  */
 proto.LeaderboardEntry.prototype.clearItemsList = function() {
   return this.setItemsList([]);
+};
+
+
+/**
+ * optional uint64 user_id = 4;
+ * @return {number}
+ */
+proto.LeaderboardEntry.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.LeaderboardEntry} returns this
+ */
+proto.LeaderboardEntry.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 

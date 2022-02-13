@@ -907,6 +907,9 @@ export class GetAssignmentResponse extends jspb.Message {
   getAssignment(): model_pb.Assignment | undefined;
   setAssignment(value?: model_pb.Assignment): void;
 
+  getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
+  setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAssignmentResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetAssignmentResponse): GetAssignmentResponse.AsObject;
@@ -920,6 +923,7 @@ export class GetAssignmentResponse extends jspb.Message {
 export namespace GetAssignmentResponse {
   export type AsObject = {
     assignment?: model_pb.Assignment.AsObject,
+    role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
   }
 }
 

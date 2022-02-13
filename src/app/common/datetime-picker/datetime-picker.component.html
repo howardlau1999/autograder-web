@@ -11,6 +11,9 @@
     />
     <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #datePicker disabled="false"></mat-datepicker>
+    <mat-error *ngIf="error">
+      {{ error }}
+    </mat-error>
   </mat-form-field>
   &nbsp;
   <mat-form-field class="time-select">

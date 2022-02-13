@@ -5,7 +5,7 @@
   (drop)="onDrop($event)"
   class="drop-area"
 >
-  单击此处或拖放文件以上传
+  单击此处或拖放文件到此以上传（.zip 文件将自动解压缩）
 </div>
 <input
   #fileInput
@@ -16,7 +16,9 @@
   style="display: none"
   type="file"
 />
-{{ this.uploaded }} / {{ this.total }}
+<p class="counter">
+  已上传/出错/总计 {{ this.uploaded }} / {{ this.errored }} / {{ this.total }}
+</p>
 <mat-dialog-content style="max-width: 60vw; min-width: 40vw">
   <app-files-table
     (fileDelete)="onFileDelete($event)"
@@ -39,7 +41,7 @@
   <button (click)="onCancelClicked()" mat-button>取消</button>
   <button
     (click)="onSubmitClicked()"
-    [disabled]="!manifestId || !total || total !== uploaded"
+    [disabled]="loading || !manifestId || !total || total !== uploaded"
     color="primary"
     mat-raised-button
   >

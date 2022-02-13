@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { AssignmentService } from '../service/assignment.service';
 
 @Component({
   selector: 'app-assignment-page',
@@ -10,9 +12,15 @@ import { ActivatedRoute } from '@angular/router';
 export class AssignmentPageComponent implements OnInit {
   assignmentId$: Observable<number>;
 
-  constructor(private route: ActivatedRoute) {
+  hasLeaderboard$: Observable<boolean>;
+
+  constructor(private route: ActivatedRoute, private assignmentService: AssignmentService) {
     this.assignmentId$ = this.route.paramMap.pipe(
-      switchMap((params) => of(Number.parseInt(params.get('assignmentId') || '0'))),
+      map((params) => Number.parseInt(params.get('assignmentId') || '0', 10)),
+    );
+    this.hasLeaderboard$ = this.assignmentId$.pipe(
+      switchMap((assignmentId) => this.assignmentService.hasLeaderboard(assignmentId)),
+      map((resp) => resp.getHasLeaderboard()),
     );
   }
 

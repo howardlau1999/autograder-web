@@ -1,34 +1,35 @@
 <ng-template #progressBar>
-  <mat-card class="course-info-card">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </mat-card>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
 <div class="assignments-container">
   <h2>作业列表</h2>
-  <div *ngIf="course$ | async as course; else progressBar">
-    <mat-card class="course-info-card">
-      <div>
-        <mat-card-title>
-          {{ course.getName() }}
-        </mat-card-title>
-        <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
-        <mat-card-content>
-          {{ course.getDescription() }}
-        </mat-card-content>
-      </div>
-    </mat-card>
-    <mat-card class="assignment-table-card">
-      <div class="assignment-operations">
-        <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>
-          <mat-icon>add</mat-icon>
-          &nbsp;添加作业
-        </button>
-      </div>
-      <app-assignments-table
-        class="full-width-table"
-        [canWriteCourse]="canWriteCourse"
-        [courseId]="courseId$"
-      ></app-assignments-table>
-    </mat-card>
-  </div>
+  <mat-card class="course-info-card">
+    <div *ngIf="course$ | async as course; else progressBar">
+      <button (click)="onEditCourseClicked(course)" mat-icon-button matTooltip="编辑课程信息" class="course-edit-button"
+              *ngIf="canWriteCourse">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <mat-card-title>
+        {{ course.getName() }}
+      </mat-card-title>
+      <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
+      <mat-card-content>
+        {{ course.getDescription() }}
+      </mat-card-content>
+    </div>
+  </mat-card>
+  <mat-card class="assignment-table-card">
+    <div class="assignment-operations">
+      <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>
+        <mat-icon>add</mat-icon>
+        &nbsp;添加作业
+      </button>
+    </div>
+    <app-assignments-table
+      class="full-width-table"
+      [refresher$]="tableRefresher$"
+      [canWriteCourse]="canWriteCourse"
+      [courseId]="courseId$"
+    ></app-assignments-table>
+  </mat-card>
 </div>

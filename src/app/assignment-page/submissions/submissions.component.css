@@ -49,3 +49,21 @@ tr.submission-element-row:not(.submission-expanded-row):active {
 .submissions-container {
   padding: 20px;
 }
+
+.hidden {
+  display: none;
+}
+
+.assignment-edit-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.submission-operations {
+  margin-bottom: 1em;
+}

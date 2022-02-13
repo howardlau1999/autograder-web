@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Observable, switchMap, tap } from 'rxjs';
+import { map, repeatWhen } from 'rxjs/operators';
+import { Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Course, CourseRole } from '../../api/proto/model_pb';
-import { AssignmentCreateDialogComponent } from '../assignment-create-dialog/assignment-create-dialog.component';
+import { AssignmentCreateDialogComponent } from './assignment-create-dialog/assignment-create-dialog.component';
 import { CourseService } from '../../service/course.service';
+import { CourseEditDialogComponent } from './course-edit-dialog/course-edit-dialog.component';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-assignments',
@@ -21,7 +23,16 @@ export class AssignmentsComponent implements OnInit {
 
   canWriteCourse: boolean;
 
+  editCourseSubscription?: Subscription;
+
+  addAssignmentSubscription?: Subscription;
+
+  refresher$: Subject<null> = new Subject<null>();
+
+  tableRefresher$: Subject<null> = new Subject();
+
   constructor(
+    private notificationService: NotificationService,
     private courseService: CourseService,
     private router: Router,
     private route: ActivatedRoute,
@@ -35,7 +46,9 @@ export class AssignmentsComponent implements OnInit {
       }),
     );
     this.course$ = this.courseId$.pipe(
-      switchMap((courseId) => this.courseService.getCourse(courseId)),
+      switchMap((courseId) =>
+        this.courseService.getCourse(courseId).pipe(repeatWhen(() => this.refresher$)),
+      ),
       tap((resp) => {
         this.canWriteCourse = resp.getRole() === CourseRole.INSTRUCTOR;
       }),
@@ -49,11 +62,46 @@ export class AssignmentsComponent implements OnInit {
     this.router.navigate(['admin'], { relativeTo: this.route }).then();
   }
 
+  onEditCourseClicked(course: Course) {
+    const dialogRef = this.dialog.open(CourseEditDialogComponent, {
+      data: {
+        courseId: this.courseId,
+        name: course.getName(),
+        shortName: course.getShortName(),
+        description: course.getDescription(),
+      },
+    });
+    if (this.editCourseSubscription === undefined) {
+      this.editCourseSubscription = dialogRef.afterClosed().subscribe((success) => {
+        this.editCourseSubscription?.unsubscribe();
+        this.editCourseSubscription = undefined;
+        if (success) {
+          this.refresher$.next(null);
+          this.notificationService.showSnackBar('编辑课程信息成功');
+          return;
+        }
+        this.notificationService.showSnackBar('编辑已取消');
+      });
+    }
+  }
+
   onAddAssignmentClicked() {
-    this.dialog.open(AssignmentCreateDialogComponent, {
+    const dialogRef = this.dialog.open(AssignmentCreateDialogComponent, {
       data: {
         courseId: this.courseId,
       },
     });
+    if (this.addAssignmentSubscription === undefined) {
+      this.addAssignmentSubscription = dialogRef.afterClosed().subscribe((success) => {
+        this.addAssignmentSubscription?.unsubscribe();
+        this.addAssignmentSubscription = undefined;
+        if (success) {
+          this.tableRefresher$.next(null);
+          this.notificationService.showSnackBar('添加作业成功');
+          return;
+        }
+        this.notificationService.showSnackBar('取消添加');
+      });
+    }
   }
 }

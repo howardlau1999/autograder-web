@@ -20,7 +20,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -31,19 +31,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
-import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
-import { HighlightPlusModule } from 'ngx-highlightjs/plus';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { SubmissionPageComponent } from './submission-page/submission-page.component';
-import { UploadDialogComponent } from './assignment-page/upload-dialog/upload-dialog.component';
-import { FilesTableComponent } from './assignment-page/upload-dialog/files-table.component';
+import { UploadDialogComponent } from './assignment-page/submissions/upload-dialog/upload-dialog.component';
+import { FilesTableComponent } from './assignment-page/submissions/upload-dialog/files-table/files-table.component';
 import { LeaderboardComponent } from './assignment-page/leaderboard/leaderboard.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { ReportComponent } from './submission-page/report/report.component';
 import { FilesComponent } from './submission-page/files/files.component';
 import { CourseCreateDialogComponent } from './dashboard-page/course-create-dialog/course-create-dialog.component';
-import { AssignmentCreateDialogComponent } from './course-page/assignment-create-dialog/assignment-create-dialog.component';
+import { AssignmentCreateDialogComponent } from './course-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
 import { JoinDialogComponent } from './dashboard-page/join-dialog/join-dialog.component';
 import { MembersComponent } from './course-page/members/members.component';
 import { AssignmentsComponent } from './course-page/assignments/assignments.component';
@@ -51,7 +51,6 @@ import { SubmissionsComponent } from './assignment-page/submissions/submissions.
 import { FilesizePipe } from './filesize.pipe';
 import { AddMemberDialogComponent } from './course-page/members/add-member-dialog/add-member-dialog.component';
 import { BatchAddMemberDialogComponent } from './course-page/members/batch-add-member-dialog/batch-add-member-dialog.component';
-import { AssignmentsManagementComponent } from './course-page/assignments-management/assignments-management.component';
 import { DatetimePickerComponent } from './common/datetime-picker/datetime-picker.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AssignmentPageComponent } from './assignment-page/assignment-page.component';
@@ -61,8 +60,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { RemoveMemberDialogComponent } from './course-page/members/remove-member-dialog/remove-member-dialog.component';
 import { RoleSelectComponent } from './course-page/members/role-select/role-select.component';
 import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
-import { AssignmentEditDialogComponent } from './course-page/assignment-edit-dialog/assignment-edit-dialog.component';
-import { CourseEditDialogComponent } from './course-page/course-edit-dialog/course-edit-dialog.component';
+import { AssignmentEditDialogComponent } from './assignment-page/submissions/assignment-edit-dialog/assignment-edit-dialog.component';
+import { CourseEditDialogComponent } from './course-page/assignments/course-edit-dialog/course-edit-dialog.component';
 import { SignUpComponent } from './login-page/register/sign-up.component';
 import { HcaptchaModule } from './common/hcaptcha/hcaptcha.module';
 import { PaginatorIntl } from './service/paginator-intl.service';
@@ -91,7 +90,6 @@ import { AssignmentsTableComponent } from './course-page/assignments/assignments
     FilesizePipe,
     AddMemberDialogComponent,
     BatchAddMemberDialogComponent,
-    AssignmentsManagementComponent,
     DatetimePickerComponent,
     RemoveMemberDialogComponent,
     RoleSelectComponent,
@@ -100,13 +98,12 @@ import { AssignmentsTableComponent } from './course-page/assignments/assignments
     CourseEditDialogComponent,
     SignUpComponent,
     AssignmentsTableComponent,
+    CourseEditDialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    HighlightModule,
-    HighlightPlusModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -138,17 +135,15 @@ import { AssignmentsTableComponent } from './course-page/assignments/assignments
     MatLuxonDateModule,
     NgxExtendedPdfViewerModule,
     HcaptchaModule,
+    MatTooltipModule,
+    MarkdownModule.forRoot({
+      loader: HttpClient,
+    }),
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } },
     { provide: MatPaginatorIntl, useClass: PaginatorIntl },
     { provide: MAT_DATE_LOCALE, useValue: 'zh-CN' },
-    {
-      provide: HIGHLIGHT_OPTIONS,
-      useValue: {
-        fullLibraryLoader: () => import('highlight.js'),
-      },
-    },
   ],
   bootstrap: [AppComponent],
 })

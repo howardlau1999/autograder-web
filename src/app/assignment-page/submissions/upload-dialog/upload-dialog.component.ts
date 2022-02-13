@@ -5,9 +5,10 @@ import { BehaviorSubject, catchError, from, mergeMap, of, retry, zip } from 'rxj
 import { map } from 'rxjs/operators';
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
-import { ApiService } from '../../api/api.service';
-import { UserService } from '../../service/user.service';
+import { ApiService } from '../../../api/api.service';
+import { UserService } from '../../../service/user.service';
 import { UploadEntry } from './upload.entry';
+import { NotificationService } from '../../../service/notification.service';
 
 export interface UploadDialogData {
   assignmentId: number;
@@ -35,11 +36,14 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   errored: number = 0;
 
+  loading: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UploadDialogData,
     private apiService: ApiService,
     private userService: UserService,
+    private notificationService: NotificationService,
   ) {
     this.assignmentId = data.assignmentId;
   }
@@ -50,11 +54,16 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onFileDelete(filename: string) {
     this.uploadEntries[filename].cancelUpload();
-    const sub$ = this.apiService.deleteFileInManifest(this.manifestId!, filename).subscribe(() => {
-      delete this.uploadEntries[filename];
-      this.updateProgress();
-      this.updateUploadEntries();
-      sub$.unsubscribe();
+    const sub$ = this.apiService.deleteFileInManifest(this.manifestId!, filename).subscribe({
+      next: () => {
+        delete this.uploadEntries[filename];
+        this.updateProgress();
+        this.updateUploadEntries();
+        sub$.unsubscribe();
+      },
+      error: (error) => {
+        this.notificationService.showSnackBar(`删除文件 ${filename} 出错：${error}`);
+      },
     });
   }
 
@@ -83,7 +92,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onCancelClicked(): void {
     this.cancelUpload();
-    this.dialogRef.close(null);
+    this.dialogRef.close();
   }
 
   createSubmission() {
@@ -96,8 +105,16 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmitClicked(): void {
-    this.createSubmission().subscribe((resp) => {
-      this.dialogRef.close(resp?.getSubmissionId());
+    this.loading = true;
+    this.createSubmission().subscribe({
+      next: (resp) => {
+        this.loading = false;
+        this.dialogRef.close(resp?.getSubmissionId());
+      },
+      error: (error) => {
+        this.loading = false;
+        this.notificationService.showSnackBar(`创建提交失败 ${error}`);
+      },
     });
   }
 
@@ -131,6 +148,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                       (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
                     );
                     uploadEntries.forEach((entry) => {
+                      this.uploadEntries[entry.filename]?.cancelUpload();
                       this.uploadEntries[entry.filename] = entry;
                       return entry;
                     });
@@ -213,6 +231,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.total = total;
     this.uploaded = uploaded;
+    this.errored = errored;
   }
 
   updateUploadEntries() {

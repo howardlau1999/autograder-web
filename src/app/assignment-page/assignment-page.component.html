@@ -9,7 +9,7 @@
               <mat-icon>list</mat-icon>
               &nbsp;提交记录</a
             >
-            <a mat-list-item routerLink="leaderboard">
+            <a *ngIf="hasLeaderboard$ | async" mat-list-item routerLink="leaderboard">
               <mat-icon>leaderboard</mat-icon>
               &nbsp;排行榜</a
             >

@@ -1,56 +1,37 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap } from 'rxjs/operators';
-import { merge, Observable, Subscription } from 'rxjs';
-import { GetSubmissionsInAssignmentResponse } from '../api/proto/api_pb';
-import { ApiService } from '../api/api.service';
-import { SubmissionStatus } from '../api/proto/model_pb';
+import { map } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { UploadEntry } from '../upload.entry';
 
-export type Item = GetSubmissionsInAssignmentResponse.SubmissionInfo;
+// TODO: Replace this with your own data model type
+export type FilesTableItem = UploadEntry;
 
 /**
- * Data source for the CoursePage view. This class should
+ * Data source for the FilesTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class AssignmentPageDataSource extends DataSource<Item> {
-  data$: Observable<Item[]>;
+export class FilesTableDataSource extends DataSource<FilesTableItem> {
+  data$: Observable<FilesTableItem[]>;
 
-  subs: Subscription[] = [];
-
-  count: number = 0;
-
-  data: Item[] = [];
+  data: FilesTableItem[] = [];
 
   paginator: MatPaginator | undefined;
 
   sort: MatSort | undefined;
 
-  constructor(private apiService: ApiService, params$: Observable<number[]>) {
+  constructor(observable: Observable<{ [filename: string]: UploadEntry }>) {
     super();
-    this.data$ = params$.pipe(
-      switchMap((ids) => {
-        this.subs.forEach((sub) => sub.unsubscribe());
-        this.subs = [];
-        const [courseId, assignmentId] = ids;
-        return this.apiService.getSubmissionsInAssignment(courseId, assignmentId);
-      }),
-      map((resp) => {
-        this.data = resp?.getSubmissionsList() || [];
-        this.count = this.data.length;
-        this.subs = this.data
-          .filter((submission) => submission.getStatus() === SubmissionStatus.RUNNING)
-          .map((submission) => {
-            return this.apiService
-              .subscribeSubmission(submission.getSubmissionId())
-              .subscribe((resp) => {
-                submission.setStatus(resp.getStatus());
-                submission.setScore(resp.getScore());
-                submission.setMaxScore(resp.getMaxscore());
-              });
-          });
-        return this.data;
+    this.data$ = observable.pipe(
+      map((entries) => {
+        const items: FilesTableItem[] = [];
+        for (const fn in entries) {
+          const entry = entries[fn];
+          items.push(entry);
+        }
+        return (this.data = items);
       }),
     );
   }
@@ -60,13 +41,13 @@ export class AssignmentPageDataSource extends DataSource<Item> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<Item[]> {
+  connect(): Observable<FilesTableItem[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
         map(() => {
-          return this.getPagedData(this.getSortedData(this.data));
+          return this.getPagedData(this.getSortedData([...this.data]));
         }),
       );
     }
@@ -77,18 +58,16 @@ export class AssignmentPageDataSource extends DataSource<Item> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: Item[]): Item[] {
+  private getPagedData(data: FilesTableItem[]): FilesTableItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-      return data.slice(startIndex, startIndex + this.paginator.pageSize);
+      return data.splice(startIndex, this.paginator.pageSize);
     }
     return data;
   }
@@ -97,7 +76,7 @@ export class AssignmentPageDataSource extends DataSource<Item> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: Item[]): Item[] {
+  private getSortedData(data: FilesTableItem[]): FilesTableItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -105,6 +84,12 @@ export class AssignmentPageDataSource extends DataSource<Item> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
+        case 'filename':
+          return compare(a.filename, b.filename, isAsc);
+        case 'progress':
+          return compare(a.uploadProgress, b.uploadProgress, isAsc);
+        case 'filesize':
+          return compare(a.filesize, b.filesize, isAsc);
         default:
           return 0;
       }

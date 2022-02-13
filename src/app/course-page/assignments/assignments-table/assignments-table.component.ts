@@ -2,12 +2,12 @@ import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/cor
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, mergeMap, Observable, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { AssignmentsPageDatasource, AssignmentsTableItem } from '../assignments-page-datasource';
-import { CourseService } from '../../../service/course.service';
+import { map, repeatWhen, switchMap, tap } from 'rxjs/operators';
+import { AssignmentsTableDatasource, AssignmentsTableItem } from './assignments-table-datasource';
 import { NotificationService } from '../../../service/notification.service';
+import { AssignmentService } from '../../../service/assignment.service';
 
 @Component({
   selector: 'app-assignments-table',
@@ -29,12 +29,14 @@ export class AssignmentsTableComponent implements OnInit, AfterViewInit {
 
   assignments$: Observable<AssignmentsTableItem[]>;
 
-  dataSource?: AssignmentsPageDatasource;
+  dataSource?: AssignmentsTableDatasource;
 
   displayedColumns = ['id', 'name', 'submitted', 'releaseDate', 'dueDate'];
 
+  @Input() refresher$!: Observable<null>;
+
   constructor(
-    private courseService: CourseService,
+    private assignmentService: AssignmentService,
     private router: Router,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
@@ -44,10 +46,15 @@ export class AssignmentsTableComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.assignments$ = this.courseId.pipe(
-      tap(() => {
-        this.loading = true;
-      }),
-      switchMap((courseId) => this.courseService.getAssignmentsInCourse(courseId)),
+      switchMap((courseId) =>
+        of(courseId).pipe(
+          tap(() => {
+            this.loading = true;
+          }),
+          mergeMap(() => this.assignmentService.getAssignmentsInCourse(courseId)),
+          repeatWhen(() => this.refresher$),
+        ),
+      ),
       map((resp) => {
         this.loading = false;
         return resp.getAssignmentsList();
@@ -58,9 +65,9 @@ export class AssignmentsTableComponent implements OnInit, AfterViewInit {
         return of([]);
       }),
     );
-    this.dataSource = new AssignmentsPageDatasource(this.assignments$);
+    this.dataSource = new AssignmentsTableDatasource(this.assignments$);
     if (this.canWriteCourse) {
-      this.displayedColumns = [...this.displayedColumns, 'operations'];
+      this.displayedColumns = [...this.displayedColumns];
     }
   }
 

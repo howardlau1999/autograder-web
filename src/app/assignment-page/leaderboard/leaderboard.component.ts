@@ -23,7 +23,7 @@ export class LeaderboardComponent implements AfterViewInit {
   dataSource: LeaderboardDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['rank', 'name', 'Accuracy'];
+  displayedColumns = ['name'];
 
   columns$: Observable<string[]>;
 
@@ -32,7 +32,7 @@ export class LeaderboardComponent implements AfterViewInit {
       apiService,
       this.route.parent!.paramMap.pipe(
         map((params) => {
-          return Number.parseInt(params.get('assignmentId') || '0');
+          return Number.parseInt(params.get('assignmentId') || '0', 10);
         }),
       ),
     );
