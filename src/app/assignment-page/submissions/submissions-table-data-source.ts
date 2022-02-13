@@ -74,7 +74,9 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {}
+  disconnect(): void {
+    this.runningSubmissions.forEach((sub) => sub.unsubscribe());
+  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,

@@ -179,10 +179,16 @@ export class ApiService {
           }
         },
         onMessage: (message: SubscribeSubmissionResponse) => {
+          if (!environment.production) {
+            console.log(message);
+          }
           subscriber.next(message);
         },
-        onEnd: (code, message, trailers) => {
+        onEnd: (code, message) => {
           if (code !== grpc.Code.OK) {
+            if (!environment.production) {
+              console.log(code, message);
+            }
             subscriber.error(message);
             return;
           }

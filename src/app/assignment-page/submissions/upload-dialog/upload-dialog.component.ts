@@ -61,8 +61,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateUploadEntries();
         sub$.unsubscribe();
       },
-      error: (error) => {
-        this.notificationService.showSnackBar(`删除文件 ${filename} 出错：${error}`);
+      error: ({ message }) => {
+        this.notificationService.showSnackBar(`删除文件 ${filename} 出错：${message}`);
       },
     });
   }
@@ -111,9 +111,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
         this.dialogRef.close(resp?.getSubmissionId());
       },
-      error: (error) => {
+      error: ({ message }) => {
         this.loading = false;
-        this.notificationService.showSnackBar(`创建提交失败 ${error}`);
+        this.notificationService.showSnackBar(`创建提交失败 ${message}`);
       },
     });
   }

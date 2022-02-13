@@ -124,8 +124,8 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
         this.submissionsLoading = false;
       }),
       map((resp) => resp.getSubmissionsList()),
-      catchError((error) => {
-        this.notificationService.showSnackBar(`加载提交记录出错 ${error}`);
+      catchError(({ message }) => {
+        this.notificationService.showSnackBar(`加载提交记录出错 ${message}`);
         return of([]);
       }),
     );

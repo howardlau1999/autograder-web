@@ -1,8 +1,8 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
-import { merge, Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
 
@@ -22,7 +22,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
 
   data$: Observable<LeaderboardItem[]>;
 
-  columns$: Observable<string[]>;
+  columns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   paginator: MatPaginator | undefined;
 
@@ -34,7 +34,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
       switchMap((assignmentId) => {
         return apiService.getLeaderboard(assignmentId).pipe(
           map((resp) => {
-            return (this.data = (resp?.getEntriesList() || []).map((entry) => {
+            this.data = (resp?.getEntriesList() || []).map((entry) => {
               return entry
                 .getItemsList()
                 .map((item) => {
@@ -52,17 +52,15 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
                   }
                   return accumulator;
                 });
-            }));
+            });
+            return this.data;
           }),
         );
       }),
-    );
-    this.columns$ = this.data$.pipe(
-      map((items) => {
-        if (items.length === 0) return [];
-        return [...Object.keys(items[0].items)];
+      tap((items) => {
+        const keys = items.length > 0 ? Object.keys(items[0].items) : [];
+        this.columns$.next(keys);
       }),
-      shareReplay(1),
     );
   }
 

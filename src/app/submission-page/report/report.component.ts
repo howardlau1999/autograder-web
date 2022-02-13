@@ -31,9 +31,9 @@ export class ReportComponent implements OnInit {
       switchMap((params) => {
         const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
         return this.apiService.getSubmissionReport(submissionId).pipe(
-          catchError((err) => {
-            this.error = err;
-            if (err === 'RUNNING') {
+          catchError(({ message }) => {
+            this.error = message;
+            if (message === 'RUNNING') {
               return this.apiService.subscribeSubmission(submissionId).pipe(
                 mergeMap(() => {
                   this.error = null;
