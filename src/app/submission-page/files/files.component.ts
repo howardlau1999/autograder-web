@@ -95,10 +95,9 @@ export class FilesComponent implements OnInit, OnDestroy {
           this.fileType = null;
           return;
         }
-        const url = new URL(
-          `${this.serverHost}/AutograderService/FileDownload/${resp.getFilename()}`,
-        );
-        url.searchParams.set('token', resp.getToken());
+        const url = `${
+          this.serverHost
+        }/AutograderService/FileDownload/${resp.getFilename()}?token=${resp.getToken()}`;
         this.language = resp.getFilename().split('.').pop() || '';
         this.fileURL = url.toString();
         this.fileType = resp.getFileType();
