@@ -16,21 +16,28 @@
       </mat-card-title>
       <mat-card-subtitle>
         <p>#{{ assignmentId }}</p>
-        <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm' }}</p>
+        <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}</p>
       </mat-card-subtitle>
       <mat-card-content>
-        <markdown [data]="assignment.getDescription()"></markdown>
+        <markdown katex [data]="assignment.getDescription()"></markdown>
       </mat-card-content>
     </div>
-
   </mat-card>
   <mat-card>
     <mat-card-content>
       <div class="submission-operations">
-        <button (click)="openSubmissionDialog()" color="primary" mat-raised-button>
-          <mat-icon>add</mat-icon>
-          上传提交
-        </button>
+        <span [matTooltip]="canSubmit ? '上传文件并提交' : '不在可提交时间范围内'">
+          <button
+            *ngIf="!loading"
+            [disabled]="!canSubmit"
+            (click)="openSubmissionDialog()"
+            color="primary"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            上传提交
+          </button>
+        </span>
       </div>
       <mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
       <h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>

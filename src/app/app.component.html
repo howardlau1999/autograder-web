@@ -1,12 +1,17 @@
 <mat-toolbar color="primary" class="top-bar mat-elevation-z6">
   <mat-toolbar-row class="toolbar">
     <span>Autograder</span>
+    <a matTooltip="返回主页" routerLink="/courses" mat-icon-button *ngIf="loggedIn">
+      <mat-icon>home</mat-icon>
+    </a>
     <span class="toolbar-spacer"></span>
-    <button mat-icon-button *ngIf="loggedIn">
-      <mat-icon aria-hidden="false">settings</mat-icon>
-    </button>
-    <button mat-icon-button *ngIf="loggedIn">
-      <mat-icon (click)="logout()" aria-hidden="false">logout</mat-icon>
+    <a matTooltip="账户设置" routerLink="/account" mat-button *ngIf="loggedIn">
+      {{ username }}
+      &nbsp;
+      <mat-icon>account_circle</mat-icon>
+    </a>
+    <button (click)="logout()" matTooltip="退出登录" mat-icon-button *ngIf="loggedIn">
+      <mat-icon aria-hidden="false">logout</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -2,7 +2,17 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { catchError, mergeMap, Observable, of, Subject, Subscription, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  mergeMap,
+  Observable,
+  of,
+  Subject,
+  Subscription,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
@@ -61,9 +71,15 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
 
   canWriteCourse: boolean = false;
 
+  canSubmit: boolean = false;
+
   submissionsLoading: boolean = true;
 
   submissionsRefresher$: Subject<null> = new Subject<null>();
+
+  releaseTimerSubscription?: Subscription;
+
+  dueTimerSubscription?: Subscription;
 
   isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.RUNNING;
@@ -107,6 +123,33 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
           resp.getRole() === CourseRole.INSTRUCTOR || resp.getRole() === CourseRole.TA;
       }),
       map((resp) => resp.getAssignment()),
+      tap((assignment) => {
+        if (this.canWriteCourse) {
+          this.canSubmit = true;
+        } else {
+          this.releaseTimerSubscription?.unsubscribe();
+          this.dueTimerSubscription?.unsubscribe();
+          this.canSubmit = false;
+          const receiveTs = new Date();
+          const releaseDate = assignment?.getReleaseDate()?.toDate() || new Date();
+          const dueDate = assignment?.getDueDate()?.toDate() || new Date();
+          if (receiveTs > releaseDate) {
+            this.canSubmit = true;
+          } else {
+            this.releaseTimerSubscription = timer(releaseDate).subscribe(() => {
+              this.canSubmit = true;
+            });
+          }
+
+          if (receiveTs > dueDate) {
+            this.canSubmit = false;
+          } else {
+            this.dueTimerSubscription = timer(dueDate).subscribe(() => {
+              this.canSubmit = false;
+            });
+          }
+        }
+      }),
     );
     this.submissions$ = this.assignmentId$.pipe(
       switchMap((assignmentId) =>
@@ -188,4 +231,9 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.dueTimerSubscription?.unsubscribe();
+    this.releaseTimerSubscription?.unsubscribe();
+  }
 }

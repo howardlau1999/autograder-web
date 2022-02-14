@@ -12,9 +12,12 @@ export class AppComponent {
 
   loggedIn = false;
 
+  username?: string;
+
   constructor(private tokenService: TokenService, private router: Router) {
     this.tokenService.user$.subscribe((user) => {
       this.loggedIn = user !== null;
+      this.username = user?.getUsername();
     });
   }
 

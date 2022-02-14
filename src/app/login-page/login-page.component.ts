@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { UserService } from '../service/user.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login-page',
@@ -14,6 +15,8 @@ export class LoginPageComponent implements OnInit {
   loggingIn: boolean = false;
 
   errorMessage: string | null = null;
+
+  githubLoginURL = this.userService.githubLoginURL;
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),

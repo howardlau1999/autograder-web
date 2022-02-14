@@ -24,14 +24,14 @@
     <ng-container matColumnDef="releaseDate">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>开始时间</th>
       <td *matCellDef="let row" mat-cell>
-        {{ row.getReleaseDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
+        {{ row.getReleaseDate().toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="dueDate">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>截止时间</th>
       <td *matCellDef="let row" mat-cell>
-        {{ row.getDueDate().toDate() | date: 'YYYY-MM-dd HH:mm' }}
+        {{ row.getDueDate().toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}
       </td>
     </ng-container>
 

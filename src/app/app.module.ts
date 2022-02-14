@@ -66,6 +66,10 @@ import { SignUpComponent } from './login-page/register/sign-up.component';
 import { HcaptchaModule } from './common/hcaptcha/hcaptcha.module';
 import { PaginatorIntl } from './service/paginator-intl.service';
 import { AssignmentsTableComponent } from './course-page/assignments/assignments-table/assignments-table.component';
+import { GithubLoginComponent } from './login-page/github-login/github-login.component';
+import { AccountPageComponent } from './account-page/account-page.component';
+import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
+import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +103,10 @@ import { AssignmentsTableComponent } from './course-page/assignments/assignments
     SignUpComponent,
     AssignmentsTableComponent,
     CourseEditDialogComponent,
+    GithubLoginComponent,
+    AccountPageComponent,
+    GithubBindComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

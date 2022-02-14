@@ -14,9 +14,15 @@ import { SubmissionsComponent } from './assignment-page/submissions/submissions.
 import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
 import { SignUpComponent } from './login-page/register/sign-up.component';
 import { LoginGuard } from './login.guard';
+import { GithubLoginComponent } from './login-page/github-login/github-login.component';
+import { AccountPageComponent } from './account-page/account-page.component';
+import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
+  { path: 'account', component: AccountPageComponent },
+  { path: 'github', component: GithubLoginComponent },
+  { path: 'github/bind', component: GithubBindComponent },
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'sign-up', component: SignUpComponent },
   {

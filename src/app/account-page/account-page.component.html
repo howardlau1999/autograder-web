@@ -1,0 +1,84 @@
+<div class="account-page-container">
+  <mat-toolbar color="primary">账户设置</mat-toolbar>
+  <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
+    <mat-tab label="基本信息">
+      <div class="tab-content">
+        <mat-spinner class="spinner" *ngIf="infoLoading"></mat-spinner>
+        <div *ngIf="!infoLoading">
+          <form [formGroup]="basicInfoForm" class="basic-info-form">
+            <mat-form-field>
+              <mat-label>用户名</mat-label>
+              <input matInput formControlName="username" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>注册邮箱</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>昵称</mat-label>
+              <input matInput formControlName="nickname" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> 学号</mat-label>
+              <input matInput formControlName="studentId" />
+            </mat-form-field>
+          </form>
+          <div class="github-integration">
+            <a [href]="githubBindURL" *ngIf="!githubLogin" mat-raised-button class="full-width">
+              <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
+              绑定 GitHub 账号
+            </a>
+            <button
+              (click)="onUnbindClicked()"
+              [disabled]="unbinding"
+              matTooltip="点击解绑"
+              *ngIf="githubLogin"
+              mat-raised-button
+              class="full-width"
+            >
+              <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
+              已绑定 GitHub 账号 {{ githubLogin }}
+            </button>
+          </div>
+          <div class="buttons">
+            <span class="spacer"> </span>
+            <button
+              mat-raised-button
+              [disabled]="infoSaving"
+              (click)="onSaveClicked()"
+              color="primary"
+            >
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="密码修改">
+      <div class="tab-content">
+        <form [formGroup]="editPasswordForm" class="basic-info-form">
+          <mat-form-field>
+            <mat-label> 旧密码</mat-label>
+            <input type="password" matInput required formControlName="oldPassword" />
+            <mat-hint>如果没有设置密码，请先通过首页忘记密码功能设置</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> 新密码</mat-label>
+            <input autocomplete="new-password" type="password" matInput required formControlName="newPassword" />
+          </mat-form-field>
+        </form>
+        <div class="buttons">
+          <span class="spacer"></span>
+          <button
+            mat-raised-button
+            (click)="onChangePasswordClicked()"
+            [disabled]="editPasswordForm.invalid || passwordSaving"
+            color="primary"
+          >
+            保存
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

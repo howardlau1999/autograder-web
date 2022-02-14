@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>
+  {{title}}
+</h2>
+
+<div mat-dialog-content>
+  <p>{{message}}</p>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onDismiss()">取消</button>
+  <button mat-button color="warn" (click)="onConfirm()">确定</button>
+</mat-dialog-actions>

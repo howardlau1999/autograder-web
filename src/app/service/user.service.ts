@@ -11,6 +11,7 @@ import {
   SignUpResponse,
 } from '../api/proto/api_pb';
 import { ErrorService, FormError } from './error.service';
+import { environment } from '../../environments/environment';
 
 export interface User {
   username: string | null;
@@ -28,6 +29,15 @@ export class UserService {
   user$: BehaviorSubject<User> = new BehaviorSubject<User>({ userId: null, username: null });
 
   user: User = { userId: null, username: null };
+
+  githubLoginURL: string = `https://github.com/login/oauth/authorize?client_id=${
+    environment.githubClientId
+  }&scope=${encodeURIComponent('read:user user:email')}`;
+
+  githubBindURL: string = `${this.githubLoginURL}&redirect_uri=${encodeURIComponent(
+    // eslint-disable-next-line no-restricted-globals
+    `${location.protocol}//${location.host}/github/bind`,
+  )}`;
 
   get userId() {
     return this.user.userId;
@@ -112,5 +122,31 @@ export class UserService {
       map((resp) => right(resp)),
       catchError(this.errorService.getFormError),
     );
+  }
+
+  githubLogin(code: string) {
+    return this.apiService.githubLogin(code);
+  }
+
+  bindGithub(code: string) {
+    return this.apiService.bindGithub(code);
+  }
+
+  getUser() {
+    return this.apiService.getUser().pipe(map((resp) => resp.getUser()));
+  }
+
+  unbindGithub() {
+    return this.apiService.unbindGithub().pipe(map((resp) => resp.getSuccess()));
+  }
+
+  updateUserInfo(nickname: string, studentId: string) {
+    return this.apiService.updateUser(nickname, studentId).pipe(map((resp) => resp.getSuccess()));
+  }
+
+  updatePassword(oldPassword: string, newPassword: string) {
+    return this.apiService
+      .updatePassword(oldPassword, newPassword)
+      .pipe(map((resp) => resp.getSuccess()));
   }
 }

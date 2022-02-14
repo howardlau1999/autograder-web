@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { grpc } from '@improbable-eng/grpc-web';
-import { Either, of, right } from 'fp-ts/Either';
-import { AutograderService, ServiceError } from './proto/api_pb_service';
+import { AutograderService } from './proto/api_pb_service';
 import {
   AddCourseMembersRequest,
+  BindGithubRequest,
   CanWriteCourseRequest,
   CreateAssignmentRequest,
   CreateCourseRequest,
@@ -23,6 +23,8 @@ import {
   GetLeaderboardRequest,
   GetSubmissionReportRequest,
   GetSubmissionsInAssignmentRequest,
+  GetUserRequest,
+  GithubLoginRequest,
   HasLeaderboardRequest,
   InitDownloadRequest,
   InitUploadRequest,
@@ -34,25 +36,27 @@ import {
   SignUpRequest,
   SubscribeSubmissionRequest,
   SubscribeSubmissionResponse,
+  UnbindGithubRequest,
   UpdateAssignmentRequest,
   UpdateCourseMemberRequest,
   UpdateCourseRequest,
+  UpdatePasswordRequest,
+  UpdateUserRequest,
 } from './proto/api_pb';
 import {
   Assignment,
   AssignmentType,
   Course,
   CourseMember,
-  CourseRole,
   CourseRoleMap,
   ProgrammingAssignmentConfig,
 } from './proto/model_pb';
 import { environment } from '../../environments/environment';
 import { TokenService } from '../service/token.service';
+import { ErrorService } from '../service/error.service';
 import UnaryMethodDefinition = grpc.UnaryMethodDefinition;
 import ProtobufMessage = grpc.ProtobufMessage;
 import UnaryOutput = grpc.UnaryOutput;
-import { ErrorService } from '../service/error.service';
 
 export interface RPCError {
   status: grpc.Code;
@@ -89,6 +93,15 @@ export class ApiService {
           if (output.status !== grpc.Code.OK || output.message === null) {
             if (output.status === grpc.Code.Unknown) {
               this.errorService.handleUnknownError(output.statusMessage);
+            }
+            if (
+              output.status === grpc.Code.Unauthenticated &&
+              output.statusMessage === 'INVALID_TOKEN'
+            ) {
+              this.tokenService.logout();
+              this.errorService.handleInvalidToken();
+              subscriber.complete();
+              return;
             }
             subscriber.error({ status: output.status, message: output.statusMessage });
             return;
@@ -363,5 +376,41 @@ export class ApiService {
     const request = new HasLeaderboardRequest();
     request.setAssignmentId(assignmentId);
     return this.unary(AutograderService.HasLeaderboard, request);
+  }
+
+  githubLogin(code: string) {
+    const request = new GithubLoginRequest();
+    request.setCode(code);
+    return this.unary(AutograderService.GithubLogin, request);
+  }
+
+  bindGithub(code: string) {
+    const request = new BindGithubRequest();
+    request.setCode(code);
+    return this.unary(AutograderService.BindGithub, request);
+  }
+
+  unbindGithub() {
+    const request = new UnbindGithubRequest();
+    return this.unary(AutograderService.UnbindGithub, request);
+  }
+
+  getUser() {
+    const request = new GetUserRequest();
+    return this.unary(AutograderService.GetUser, request);
+  }
+
+  updateUser(nickname: string, studentId: string) {
+    const request = new UpdateUserRequest();
+    request.setNickname(nickname);
+    request.setStudentId(studentId);
+    return this.unary(AutograderService.UpdateUser, request);
+  }
+
+  updatePassword(oldPassword: string, newPassword: string) {
+    const request = new UpdatePasswordRequest();
+    request.setOldPassword(oldPassword);
+    request.setNewPassword(newPassword);
+    return this.unary(AutograderService.UpdatePassword, request);
   }
 }

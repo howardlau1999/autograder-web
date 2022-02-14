@@ -1,0 +1,42 @@
+.account-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.spinner {
+  margin: 0 auto;
+}
+
+.tab-content {
+  padding: 20px;
+  width: 350px;
+  margin: 0 auto;
+}
+
+.basic-info-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.github-integration {
+  width: 100%;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

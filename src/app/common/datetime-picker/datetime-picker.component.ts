@@ -37,6 +37,10 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     .fill(0)
     .map((_, i) => i);
 
+  seconds = Array(60)
+    .fill(0)
+    .map((_, i) => i);
+
   constructor() {}
 
   onChange = (_: DateTime) => {};
@@ -60,7 +64,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   onHourChange(event: MatSelectChange) {
     this.markAsTouched();
-    const newHour = Number.parseInt(event.value || '0');
+    const newHour = Number.parseInt(event.value || '0', 10);
     this.timestamp = this.timestamp.set({
       hour: newHour,
     });
@@ -70,9 +74,19 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   onMinuteChange(event: MatSelectChange) {
     this.markAsTouched();
-    const newMinute = Number.parseInt(event.value || '0');
+    const newMinute = Number.parseInt(event.value || '0', 10);
     this.timestamp = this.timestamp.set({
       minute: newMinute,
+    });
+    this.timestampChange.emit(this.timestamp);
+    this.onChange(this.timestamp);
+  }
+
+  onSecondChange(event: MatSelectChange) {
+    this.markAsTouched();
+    const newSecond = Number.parseInt(event.value || '0', 10);
+    this.timestamp = this.timestamp.set({
+      second: newSecond,
     });
     this.timestampChange.emit(this.timestamp);
     this.onChange(this.timestamp);

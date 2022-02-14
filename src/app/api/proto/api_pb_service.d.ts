@@ -265,6 +265,60 @@ type AutograderServiceCanWriteCourse = {
   readonly responseType: typeof api_pb.CanWriteCourseResponse;
 };
 
+type AutograderServiceGithubLogin = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GithubLoginRequest;
+  readonly responseType: typeof api_pb.GithubLoginResponse;
+};
+
+type AutograderServiceGetUser = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetUserRequest;
+  readonly responseType: typeof api_pb.GetUserResponse;
+};
+
+type AutograderServiceBindGithub = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.BindGithubRequest;
+  readonly responseType: typeof api_pb.BindGithubResponse;
+};
+
+type AutograderServiceUnbindGithub = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UnbindGithubRequest;
+  readonly responseType: typeof api_pb.UnbindGithubResponse;
+};
+
+type AutograderServiceUpdateUser = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UpdateUserRequest;
+  readonly responseType: typeof api_pb.UpdateUserResponse;
+};
+
+type AutograderServiceUpdatePassword = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.UpdatePasswordRequest;
+  readonly responseType: typeof api_pb.UpdatePasswordResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -296,6 +350,12 @@ export class AutograderService {
   static readonly RequestSignUpToken: AutograderServiceRequestSignUpToken;
   static readonly SignUp: AutograderServiceSignUp;
   static readonly CanWriteCourse: AutograderServiceCanWriteCourse;
+  static readonly GithubLogin: AutograderServiceGithubLogin;
+  static readonly GetUser: AutograderServiceGetUser;
+  static readonly BindGithub: AutograderServiceBindGithub;
+  static readonly UnbindGithub: AutograderServiceUnbindGithub;
+  static readonly UpdateUser: AutograderServiceUpdateUser;
+  static readonly UpdatePassword: AutograderServiceUpdatePassword;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -582,6 +642,60 @@ export class AutograderServiceClient {
   canWriteCourse(
     requestMessage: api_pb.CanWriteCourseRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.CanWriteCourseResponse|null) => void
+  ): UnaryResponse;
+  githubLogin(
+    requestMessage: api_pb.GithubLoginRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GithubLoginResponse|null) => void
+  ): UnaryResponse;
+  githubLogin(
+    requestMessage: api_pb.GithubLoginRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GithubLoginResponse|null) => void
+  ): UnaryResponse;
+  getUser(
+    requestMessage: api_pb.GetUserRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetUserResponse|null) => void
+  ): UnaryResponse;
+  getUser(
+    requestMessage: api_pb.GetUserRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetUserResponse|null) => void
+  ): UnaryResponse;
+  bindGithub(
+    requestMessage: api_pb.BindGithubRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.BindGithubResponse|null) => void
+  ): UnaryResponse;
+  bindGithub(
+    requestMessage: api_pb.BindGithubRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.BindGithubResponse|null) => void
+  ): UnaryResponse;
+  unbindGithub(
+    requestMessage: api_pb.UnbindGithubRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UnbindGithubResponse|null) => void
+  ): UnaryResponse;
+  unbindGithub(
+    requestMessage: api_pb.UnbindGithubRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UnbindGithubResponse|null) => void
+  ): UnaryResponse;
+  updateUser(
+    requestMessage: api_pb.UpdateUserRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateUserResponse|null) => void
+  ): UnaryResponse;
+  updateUser(
+    requestMessage: api_pb.UpdateUserRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdateUserResponse|null) => void
+  ): UnaryResponse;
+  updatePassword(
+    requestMessage: api_pb.UpdatePasswordRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdatePasswordResponse|null) => void
+  ): UnaryResponse;
+  updatePassword(
+    requestMessage: api_pb.UpdatePasswordRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.UpdatePasswordResponse|null) => void
   ): UnaryResponse;
 }
 

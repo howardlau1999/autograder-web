@@ -8,6 +8,6 @@ export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
   showSnackBar(message: string) {
-    this.snackBar.open(message, '关闭', { duration: 3000 });
+    this.snackBar.open(message, '关闭', { duration: 5000 });
   }
 }
