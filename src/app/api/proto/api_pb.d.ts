@@ -1352,6 +1352,9 @@ export class InitDownloadResponse extends jspb.Message {
   getFilename(): string;
   setFilename(value: string): void;
 
+  getFilesize(): number;
+  setFilesize(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitDownloadResponse.AsObject;
   static toObject(includeInstance: boolean, msg: InitDownloadResponse): InitDownloadResponse.AsObject;
@@ -1367,6 +1370,7 @@ export namespace InitDownloadResponse {
     token: string,
     fileType: DownloadFileTypeMap[keyof DownloadFileTypeMap],
     filename: string,
+    filesize: number,
   }
 }
 

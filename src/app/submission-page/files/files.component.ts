@@ -43,9 +43,11 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   selectedPath: string | null = null;
 
-  fileType: DownloadFileTypeMap[keyof DownloadFileTypeMap] | null = null;
+  fileType?: DownloadFileTypeMap[keyof DownloadFileTypeMap];
 
   fileURL: string = '';
+
+  filesize?: number = 0;
 
   language: string = '';
 
@@ -68,13 +70,13 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.filesSub = this.route.parent?.paramMap
       .pipe(
         switchMap((params) => {
-          const submissionId = Number.parseInt(params.get('submissionId') || '0');
+          const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
           this.submissionId = submissionId;
           this.path$.next(null);
           return this.apiService.getFilesInSubmission(submissionId);
         }),
         map((resp) => {
-          return resp?.getRootsList() || [];
+          return resp.getRootsList() || [];
         }),
       )
       .subscribe((nodes) => {
@@ -92,15 +94,19 @@ export class FilesComponent implements OnInit, OnDestroy {
       )
       .subscribe((resp) => {
         if (resp == null) {
-          this.fileType = null;
+          this.fileType = undefined;
+          this.filesize = undefined;
           return;
         }
         const url = `${
           this.serverHost
-        }/AutograderService/FileDownload/${resp.getFilename()}?token=${resp.getToken()}`;
+        }/AutograderService/FileDownload/${resp.getFilename()}?token=${encodeURIComponent(
+          resp.getToken(),
+        )}`;
         this.language = resp.getFilename().split('.').pop() || '';
         this.fileURL = url.toString();
         this.fileType = resp.getFileType();
+        this.filesize = resp.getFilesize();
       });
   }
 

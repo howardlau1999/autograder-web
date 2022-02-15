@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from './service/token.service';
+import { NotificationService } from './service/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,11 @@ export class AppComponent {
 
   username?: string;
 
-  constructor(private tokenService: TokenService, private router: Router) {
+  constructor(
+    private tokenService: TokenService,
+    private notificationService: NotificationService,
+    private router: Router,
+  ) {
     this.tokenService.user$.subscribe((user) => {
       this.loggedIn = user !== null;
       this.username = user?.getUsername();
@@ -23,6 +28,7 @@ export class AppComponent {
 
   logout() {
     this.tokenService.logout();
+    this.notificationService.showSnackBar('您已退出登录');
     this.router.navigate(['/']).then();
   }
 }

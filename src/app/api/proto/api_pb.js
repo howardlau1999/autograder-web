@@ -11208,7 +11208,8 @@ proto.InitDownloadResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     token: jspb.Message.getFieldWithDefault(msg, 1, ""),
     fileType: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    filename: jspb.Message.getFieldWithDefault(msg, 3, "")
+    filename: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    filesize: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -11257,6 +11258,10 @@ proto.InitDownloadResponse.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setFilename(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setFilesize(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -11304,6 +11309,13 @@ proto.InitDownloadResponse.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getFilesize();
+  if (f !== 0) {
+    writer.writeInt64(
+      4,
       f
     );
   }
@@ -11361,6 +11373,24 @@ proto.InitDownloadResponse.prototype.getFilename = function() {
  */
 proto.InitDownloadResponse.prototype.setFilename = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional int64 filesize = 4;
+ * @return {number}
+ */
+proto.InitDownloadResponse.prototype.getFilesize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.InitDownloadResponse} returns this
+ */
+proto.InitDownloadResponse.prototype.setFilesize = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 

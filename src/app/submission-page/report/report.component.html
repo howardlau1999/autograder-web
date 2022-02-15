@@ -1,8 +1,6 @@
 <h2>测试报告</h2>
 <div *ngIf="report$ | async as report; else errorMsg" class="report-container">
-  <p *ngIf="report.getInternalError()">
-    发生内部错误（错误码：{{report.getInternalError()}}）
-  </p>
+  <p *ngIf="report.getInternalError()">发生内部错误（错误码：{{ report.getInternalError() }}）</p>
   <mat-accordion class="testcase-accordion" multi>
     <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
@@ -27,6 +25,13 @@
       <code>
         <pre class="testcase-output">{{ testcase.getOutput() }}</pre>
       </code>
+      <mat-action-row *ngIf="testcase.getOutputPath()" class="attachment">
+        <button matTooltip="该测试含有输出附件" mat-flat-button>
+          <mat-icon>file_present</mat-icon>
+          {{ testcase.getOutputPath() }}
+          <mat-icon>download</mat-icon>
+        </button>
+      </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
   <mat-nav-list class="testcase-list">

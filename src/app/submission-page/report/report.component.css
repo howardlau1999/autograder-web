@@ -38,3 +38,8 @@
 .nav-header {
   margin: 0;
 }
+
+.attachment {
+  display: flex;
+  align-items: center;
+}
