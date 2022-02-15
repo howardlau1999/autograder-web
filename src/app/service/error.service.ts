@@ -34,7 +34,7 @@ export class ErrorService {
   getFormError(err: RPCError) {
     const { status, message } = err;
     const error: FormFieldError = status === grpc.Code.AlreadyExists ? 'duplicated' : 'invalid';
-    const field = toLowerCase(message).replace(/_([a-z])/g, (s) => s[1].toUpperCase());
+    const field = toLowerCase(message).replace(/(_[a-z])/g, (s) => s[1].toUpperCase());
     return of(
       left({
         field,
