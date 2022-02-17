@@ -30,14 +30,13 @@ export class UserService {
 
   user: User = { userId: null, username: null };
 
-  githubLoginURL: string = `https://github.com/login/oauth/authorize?client_id=${
-    environment.githubClientId
-  }&scope=${encodeURIComponent('read:user user:email')}`;
+  hcaptchaSiteKey: string;
 
-  githubBindURL: string = `${this.githubLoginURL}&redirect_uri=${encodeURIComponent(
-    // eslint-disable-next-line no-restricted-globals
-    `${location.protocol}//${location.host}/github/bind`,
-  )}`;
+  githubClientId: string;
+
+  githubLoginURL: string;
+
+  githubBindURL: string;
 
   get userId() {
     return this.user.userId;
@@ -52,6 +51,26 @@ export class UserService {
     private tokenService: TokenService,
     private errorService: ErrorService,
   ) {
+    this.hcaptchaSiteKey = environment.hcaptchaSiteKey;
+    this.githubClientId = environment.githubClientId;
+
+    const serverHcaptchaSiteKey = localStorage.getItem('server_hcaptcha_site_key');
+    if (serverHcaptchaSiteKey !== null) {
+      this.hcaptchaSiteKey = serverHcaptchaSiteKey;
+    }
+    const serverGithubClientId = localStorage.getItem('server_github_client_id');
+    if (serverGithubClientId !== null) {
+      this.githubClientId = serverGithubClientId;
+    }
+
+    this.githubLoginURL = `https://github.com/login/oauth/authorize?client_id=${
+      this.githubClientId
+    }&scope=${encodeURIComponent('read:user user:email')}`;
+
+    this.githubBindURL = `${this.githubLoginURL}&redirect_uri=${encodeURIComponent(
+      // eslint-disable-next-line no-restricted-globals
+      `${location.protocol}//${location.host}/github/bind`,
+    )}`;
     this.tokenService.user$.subscribe((user) => {
       if (user !== null) {
         this.updateUser(user.getUserId(), user.getUsername());

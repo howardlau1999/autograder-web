@@ -38,7 +38,6 @@ export class TokenService {
       const b = Uint8Array.from(atob(a), (c) => c.charCodeAt(0));
       this.user$.next(UserTokenPayload.deserializeBinary(b));
     } catch (e) {
-      console.error(e);
       this.user$.next(null);
     }
   }
@@ -47,13 +46,18 @@ export class TokenService {
     return this.token;
   }
 
-  setToken(token: string) {
-    localStorage.setItem(this.LOCAL_STORAGE_KEY, token);
-    this.token = token;
+  setToken(token: string | null) {
+    if (token === null) {
+      localStorage.removeItem(this.LOCAL_STORAGE_KEY);
+      this.token = '';
+    } else {
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, token);
+      this.token = token;
+    }
     this.decodeToken();
   }
 
   logout() {
-    this.setToken('');
+    this.setToken(null);
   }
 }

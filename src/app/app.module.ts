@@ -34,6 +34,7 @@ import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarkdownModule } from 'ngx-markdown';
+import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { SubmissionPageComponent } from './submission-page/submission-page.component';
 import { UploadDialogComponent } from './assignment-page/submissions/upload-dialog/upload-dialog.component';
@@ -63,7 +64,6 @@ import { PasswordResetComponent } from './login-page/password-reset/password-res
 import { AssignmentEditDialogComponent } from './assignment-page/submissions/assignment-edit-dialog/assignment-edit-dialog.component';
 import { CourseEditDialogComponent } from './course-page/assignments/course-edit-dialog/course-edit-dialog.component';
 import { SignUpComponent } from './login-page/register/sign-up.component';
-import { HcaptchaModule } from './common/hcaptcha/hcaptcha.module';
 import { PaginatorIntl } from './service/paginator-intl.service';
 import { AssignmentsTableComponent } from './course-page/assignments/assignments-table/assignments-table.component';
 import { GithubLoginComponent } from './login-page/github-login/github-login.component';
@@ -142,11 +142,11 @@ import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.c
     MatDatepickerModule,
     MatLuxonDateModule,
     NgxExtendedPdfViewerModule,
-    HcaptchaModule,
     MatTooltipModule,
     MarkdownModule.forRoot({
       loader: HttpClient,
     }),
+    NgHcaptchaModule.forRoot(),
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } },
