@@ -33,7 +33,9 @@ export class DashboardPageComponent {
     }),
   );
 
-  createDialogSubscription: Subscription | null = null;
+  createDialogSubscription?: Subscription;
+
+  joinDialogSubscription?: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -44,7 +46,19 @@ export class DashboardPageComponent {
   ) {}
 
   joinCourse() {
-    this.dialog.open(JoinDialogComponent);
+    const dialogRef = this.dialog.open(JoinDialogComponent);
+    if (this.joinDialogSubscription === undefined) {
+      this.joinDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.refresher$.next(null);
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.createDialogSubscription?.unsubscribe();
+    this.joinDialogSubscription?.unsubscribe();
   }
 
   canEditCourse(role: CourseRoleMap[keyof CourseRoleMap]) {
@@ -53,7 +67,7 @@ export class DashboardPageComponent {
 
   createCourse() {
     const dialogRef = this.dialog.open(CourseCreateDialogComponent);
-    if (this.createDialogSubscription === null) {
+    if (this.createDialogSubscription === undefined) {
       this.createDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         if (result !== null) {
           this.refresher$.next(null);

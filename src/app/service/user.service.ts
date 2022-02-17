@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 import { Either, left, right } from 'fp-ts/Either';
 import { map } from 'rxjs/operators';
-import { ApiService, RPCError } from '../api/api.service';
+import { ApiService } from '../api/api.service';
 import { TokenService } from './token.service';
 import {
   LoginResponse,
@@ -10,7 +10,7 @@ import {
   ResetPasswordResponse,
   SignUpResponse,
 } from '../api/proto/api_pb';
-import { ErrorService, FormError } from './error.service';
+import { ErrorService, FormError, RPCError } from './error.service';
 import { environment } from '../../environments/environment';
 
 export interface User {

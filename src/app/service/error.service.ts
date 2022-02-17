@@ -5,10 +5,14 @@ import { toLowerCase } from 'fp-ts/string';
 import { of } from 'rxjs';
 import { left } from 'fp-ts/Either';
 import { Router } from '@angular/router';
-import { RPCError } from '../api/api.service';
 import { NotificationService } from './notification.service';
 
 export type FormFieldError = 'invalid' | 'duplicated';
+
+export interface RPCError {
+  status: grpc.Code;
+  message: string;
+}
 
 export interface FormError {
   field: string;

@@ -45,7 +45,16 @@ export class MembersComponent implements AfterViewInit {
   removeMemberSub: Subscription | undefined;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['userId', 'username', 'nickname', 'email', 'role', 'operations'];
+  displayedColumns = [
+    'userId',
+    'username',
+    'nickname',
+    'studentId',
+    'githubId',
+    'email',
+    'role',
+    'operations',
+  ];
 
   constructor(
     private dialog: MatDialog,

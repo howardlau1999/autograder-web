@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
 import { Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Course, CourseRole } from '../../api/proto/model_pb';
 import { AssignmentCreateDialogComponent } from './assignment-create-dialog/assignment-create-dialog.component';
 import { CourseService } from '../../service/course.service';
@@ -14,7 +15,7 @@ import { NotificationService } from '../../service/notification.service';
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.css'],
 })
-export class AssignmentsComponent implements OnInit {
+export class AssignmentsComponent implements OnInit, OnDestroy {
   course$: Observable<Course | undefined>;
 
   courseId$: Observable<number>;
@@ -30,6 +31,10 @@ export class AssignmentsComponent implements OnInit {
   refresher$: Subject<null> = new Subject<null>();
 
   tableRefresher$: Subject<null> = new Subject();
+
+  allowsJoinSubscription?: Subscription;
+
+  generateJoinCodeSubscription?: Subscription;
 
   constructor(
     private notificationService: NotificationService,
@@ -83,6 +88,31 @@ export class AssignmentsComponent implements OnInit {
         this.notificationService.showSnackBar('编辑已取消');
       });
     }
+  }
+
+  onGenerateJoinCodeClicked() {
+    this.generateJoinCodeSubscription?.unsubscribe();
+    this.generateJoinCodeSubscription = this.courseService
+      .generateJoinCode(this.courseId)
+      .subscribe(() => {
+        this.notificationService.showSnackBar('已生成加课码');
+        this.refresher$.next(null);
+      });
+  }
+
+  ngOnDestroy() {
+    this.allowsJoinSubscription?.unsubscribe();
+    this.generateJoinCodeSubscription?.unsubscribe();
+  }
+
+  onAllowsJoinChanged(event: MatSlideToggleChange) {
+    this.allowsJoinSubscription?.unsubscribe();
+    this.allowsJoinSubscription = this.courseService
+      .changeAllowsJoinCourse(this.courseId, event.checked)
+      .subscribe(() => {
+        this.notificationService.showSnackBar(event.checked ? '已允许加入' : '已禁止加入');
+        this.refresher$.next(null);
+      });
   }
 
   onAddAssignmentClicked() {

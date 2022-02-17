@@ -24,6 +24,8 @@ export class PasswordResetComponent implements OnInit {
 
   counterSub: Subscription | undefined;
 
+  siteKey = this.userService.hcaptchaSiteKey;
+
   resetForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     code: new FormControl('', [Validators.required]),

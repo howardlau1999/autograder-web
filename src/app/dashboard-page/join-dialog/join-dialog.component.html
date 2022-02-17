@@ -17,5 +17,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
-  <button [disabled]="!invitationCode.value || joining" color="primary" mat-raised-button>加入</button>
+  <button (click)="onConfirmClicked()" [disabled]="!invitationCode.value || joining" color="primary" mat-raised-button>
+    加入
+  </button>
 </mat-dialog-actions>

@@ -24,6 +24,8 @@ export class SignUpComponent implements OnInit {
 
   counterSub: Subscription | undefined;
 
+  siteKey = this.userService.hcaptchaSiteKey;
+
   signUpForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,

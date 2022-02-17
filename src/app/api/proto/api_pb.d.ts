@@ -1439,6 +1439,12 @@ export namespace GetCourseMembersResponse {
     getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
     setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
 
+    getGithubId(): string;
+    setGithubId(value: string): void;
+
+    getStudentId(): string;
+    setStudentId(value: string): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): MemberInfo.AsObject;
     static toObject(includeInstance: boolean, msg: MemberInfo): MemberInfo.AsObject;
@@ -1456,6 +1462,8 @@ export namespace GetCourseMembersResponse {
       email: string,
       nickname: string,
       role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
+      githubId: string,
+      studentId: string,
     }
   }
 }
@@ -1630,10 +1638,14 @@ export class UpdateCourseRequest extends jspb.Message {
   getCourseId(): number;
   setCourseId(value: number): void;
 
-  hasCourse(): boolean;
-  clearCourse(): void;
-  getCourse(): model_pb.Course | undefined;
-  setCourse(value?: model_pb.Course): void;
+  getName(): string;
+  setName(value: string): void;
+
+  getShortName(): string;
+  setShortName(value: string): void;
+
+  getDescription(): string;
+  setDescription(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateCourseRequest.AsObject;
@@ -1648,7 +1660,9 @@ export class UpdateCourseRequest extends jspb.Message {
 export namespace UpdateCourseRequest {
   export type AsObject = {
     courseId: number,
-    course?: model_pb.Course.AsObject,
+    name: string,
+    shortName: string,
+    description: string,
   }
 }
 
@@ -2173,6 +2187,130 @@ export class UpdatePasswordResponse extends jspb.Message {
 export namespace UpdatePasswordResponse {
   export type AsObject = {
     success: boolean,
+  }
+}
+
+export class JoinCourseRequest extends jspb.Message {
+  getJoinCode(): string;
+  setJoinCode(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): JoinCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: JoinCourseRequest): JoinCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: JoinCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): JoinCourseRequest;
+  static deserializeBinaryFromReader(message: JoinCourseRequest, reader: jspb.BinaryReader): JoinCourseRequest;
+}
+
+export namespace JoinCourseRequest {
+  export type AsObject = {
+    joinCode: string,
+  }
+}
+
+export class JoinCourseResponse extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): JoinCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: JoinCourseResponse): JoinCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: JoinCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): JoinCourseResponse;
+  static deserializeBinaryFromReader(message: JoinCourseResponse, reader: jspb.BinaryReader): JoinCourseResponse;
+}
+
+export namespace JoinCourseResponse {
+  export type AsObject = {
+    courseId: number,
+  }
+}
+
+export class GenerateJoinCodeRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GenerateJoinCodeRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GenerateJoinCodeRequest): GenerateJoinCodeRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GenerateJoinCodeRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GenerateJoinCodeRequest;
+  static deserializeBinaryFromReader(message: GenerateJoinCodeRequest, reader: jspb.BinaryReader): GenerateJoinCodeRequest;
+}
+
+export namespace GenerateJoinCodeRequest {
+  export type AsObject = {
+    courseId: number,
+  }
+}
+
+export class GenerateJoinCodeResponse extends jspb.Message {
+  getJoinCode(): string;
+  setJoinCode(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GenerateJoinCodeResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GenerateJoinCodeResponse): GenerateJoinCodeResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GenerateJoinCodeResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GenerateJoinCodeResponse;
+  static deserializeBinaryFromReader(message: GenerateJoinCodeResponse, reader: jspb.BinaryReader): GenerateJoinCodeResponse;
+}
+
+export namespace GenerateJoinCodeResponse {
+  export type AsObject = {
+    joinCode: string,
+  }
+}
+
+export class ChangeAllowsJoinCourseRequest extends jspb.Message {
+  getCourseId(): number;
+  setCourseId(value: number): void;
+
+  getAllowsJoin(): boolean;
+  setAllowsJoin(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChangeAllowsJoinCourseRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ChangeAllowsJoinCourseRequest): ChangeAllowsJoinCourseRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChangeAllowsJoinCourseRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChangeAllowsJoinCourseRequest;
+  static deserializeBinaryFromReader(message: ChangeAllowsJoinCourseRequest, reader: jspb.BinaryReader): ChangeAllowsJoinCourseRequest;
+}
+
+export namespace ChangeAllowsJoinCourseRequest {
+  export type AsObject = {
+    courseId: number,
+    allowsJoin: boolean,
+  }
+}
+
+export class ChangeAllowsJoinCourseResponse extends jspb.Message {
+  getAllowsJoin(): boolean;
+  setAllowsJoin(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChangeAllowsJoinCourseResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ChangeAllowsJoinCourseResponse): ChangeAllowsJoinCourseResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChangeAllowsJoinCourseResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChangeAllowsJoinCourseResponse;
+  static deserializeBinaryFromReader(message: ChangeAllowsJoinCourseResponse, reader: jspb.BinaryReader): ChangeAllowsJoinCourseResponse;
+}
+
+export namespace ChangeAllowsJoinCourseResponse {
+  export type AsObject = {
+    allowsJoin: boolean,
   }
 }
 

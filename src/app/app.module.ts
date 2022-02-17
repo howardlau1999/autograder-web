@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +35,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { SubmissionPageComponent } from './submission-page/submission-page.component';
 import { UploadDialogComponent } from './assignment-page/submissions/upload-dialog/upload-dialog.component';
@@ -145,8 +146,10 @@ import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.c
     MatTooltipModule,
     MarkdownModule.forRoot({
       loader: HttpClient,
+      sanitize: SecurityContext.NONE,
     }),
     NgHcaptchaModule.forRoot(),
+    MatSlideToggleModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } },

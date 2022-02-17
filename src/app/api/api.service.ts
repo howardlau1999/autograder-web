@@ -9,11 +9,13 @@ import {
   AddCourseMembersRequest,
   BindGithubRequest,
   CanWriteCourseRequest,
+  ChangeAllowsJoinCourseRequest,
   CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
   CreateSubmissionRequest,
   DeleteFileInManifestRequest,
+  GenerateJoinCodeRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
   GetCourseListRequest,
@@ -28,6 +30,7 @@ import {
   HasLeaderboardRequest,
   InitDownloadRequest,
   InitUploadRequest,
+  JoinCourseRequest,
   LoginRequest,
   RemoveCourseMembersRequest,
   RequestPasswordResetRequest,
@@ -46,7 +49,6 @@ import {
 import {
   Assignment,
   AssignmentType,
-  Course,
   CourseMember,
   CourseRoleMap,
   ProgrammingAssignmentConfig,
@@ -57,11 +59,6 @@ import { ErrorService } from '../service/error.service';
 import UnaryMethodDefinition = grpc.UnaryMethodDefinition;
 import ProtobufMessage = grpc.ProtobufMessage;
 import UnaryOutput = grpc.UnaryOutput;
-
-export interface RPCError {
-  status: grpc.Code;
-  message: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -320,11 +317,9 @@ export class ApiService {
   updateCourse(courseId: number, name: string, shortName: string, description: string) {
     const request = new UpdateCourseRequest();
     request.setCourseId(courseId);
-    const course = new Course();
-    course.setName(name);
-    course.setShortName(shortName);
-    course.setDescription(description);
-    request.setCourse(course);
+    request.setName(name);
+    request.setShortName(shortName);
+    request.setDescription(description);
     return this.unary(AutograderService.UpdateCourse, request);
   }
 
@@ -413,5 +408,24 @@ export class ApiService {
     request.setOldPassword(oldPassword);
     request.setNewPassword(newPassword);
     return this.unary(AutograderService.UpdatePassword, request);
+  }
+
+  joinCourse(code: string) {
+    const request = new JoinCourseRequest();
+    request.setJoinCode(code);
+    return this.unary(AutograderService.JoinCourse, request);
+  }
+
+  generateJoinCode(courseId: number) {
+    const request = new GenerateJoinCodeRequest();
+    request.setCourseId(courseId);
+    return this.unary(AutograderService.GenerateJoinCode, request);
+  }
+
+  changeAllowsJoinCourse(courseId: number, allowsJoin: boolean) {
+    const request = new ChangeAllowsJoinCourseRequest();
+    request.setCourseId(courseId);
+    request.setAllowsJoin(allowsJoin);
+    return this.unary(AutograderService.ChangeAllowsJoinCourse, request);
   }
 }

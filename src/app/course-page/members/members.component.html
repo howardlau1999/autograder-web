@@ -40,9 +40,26 @@
         <td *matCellDef="let row" mat-cell>{{ row.getNickname() }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="studentId">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>学号</th>
+        <td *matCellDef="let row" mat-cell>{{ row.getStudentId() }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="githubId">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>GitHub ID</th>
+        <td *matCellDef="let row" mat-cell>
+          <a [href]="'https://github.com/' + row.getGithubId()" target="_blank">
+            {{ row.getGithubId() }}
+          </a>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="email">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
-        <td *matCellDef="let row" mat-cell>{{ row.getEmail() }}</td>
+        <td *matCellDef="let row" mat-cell>
+          <a [href]="'mailto:' + row.getEmail()" target="_blank">
+            {{ row.getEmail() }}</a>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="role">

@@ -1210,7 +1210,9 @@ proto.Course.toObject = function(includeInstance, msg) {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
     shortName: jspb.Message.getFieldWithDefault(msg, 2, ""),
     term: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    description: jspb.Message.getFieldWithDefault(msg, 4, "")
+    description: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    joinCode: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    allowsJoin: jspb.Message.getBooleanFieldWithDefault(msg, 6, false)
   };
 
   if (includeInstance) {
@@ -1262,6 +1264,14 @@ proto.Course.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setDescription(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setJoinCode(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAllowsJoin(value);
       break;
     default:
       reader.skipField();
@@ -1317,6 +1327,20 @@ proto.Course.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getJoinCode();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getAllowsJoin();
+  if (f) {
+    writer.writeBool(
+      6,
       f
     );
   }
@@ -1392,6 +1416,42 @@ proto.Course.prototype.getDescription = function() {
  */
 proto.Course.prototype.setDescription = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string join_code = 5;
+ * @return {string}
+ */
+proto.Course.prototype.getJoinCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.Course} returns this
+ */
+proto.Course.prototype.setJoinCode = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional bool allows_join = 6;
+ * @return {boolean}
+ */
+proto.Course.prototype.getAllowsJoin = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.Course} returns this
+ */
+proto.Course.prototype.setAllowsJoin = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 6, value);
 };
 
 

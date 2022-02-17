@@ -319,6 +319,33 @@ type AutograderServiceUpdatePassword = {
   readonly responseType: typeof api_pb.UpdatePasswordResponse;
 };
 
+type AutograderServiceJoinCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.JoinCourseRequest;
+  readonly responseType: typeof api_pb.JoinCourseResponse;
+};
+
+type AutograderServiceGenerateJoinCode = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GenerateJoinCodeRequest;
+  readonly responseType: typeof api_pb.GenerateJoinCodeResponse;
+};
+
+type AutograderServiceChangeAllowsJoinCourse = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.ChangeAllowsJoinCourseRequest;
+  readonly responseType: typeof api_pb.ChangeAllowsJoinCourseResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -356,6 +383,9 @@ export class AutograderService {
   static readonly UnbindGithub: AutograderServiceUnbindGithub;
   static readonly UpdateUser: AutograderServiceUpdateUser;
   static readonly UpdatePassword: AutograderServiceUpdatePassword;
+  static readonly JoinCourse: AutograderServiceJoinCourse;
+  static readonly GenerateJoinCode: AutograderServiceGenerateJoinCode;
+  static readonly ChangeAllowsJoinCourse: AutograderServiceChangeAllowsJoinCourse;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -696,6 +726,33 @@ export class AutograderServiceClient {
   updatePassword(
     requestMessage: api_pb.UpdatePasswordRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.UpdatePasswordResponse|null) => void
+  ): UnaryResponse;
+  joinCourse(
+    requestMessage: api_pb.JoinCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.JoinCourseResponse|null) => void
+  ): UnaryResponse;
+  joinCourse(
+    requestMessage: api_pb.JoinCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.JoinCourseResponse|null) => void
+  ): UnaryResponse;
+  generateJoinCode(
+    requestMessage: api_pb.GenerateJoinCodeRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GenerateJoinCodeResponse|null) => void
+  ): UnaryResponse;
+  generateJoinCode(
+    requestMessage: api_pb.GenerateJoinCodeRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GenerateJoinCodeResponse|null) => void
+  ): UnaryResponse;
+  changeAllowsJoinCourse(
+    requestMessage: api_pb.ChangeAllowsJoinCourseRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ChangeAllowsJoinCourseResponse|null) => void
+  ): UnaryResponse;
+  changeAllowsJoinCourse(
+    requestMessage: api_pb.ChangeAllowsJoinCourseRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ChangeAllowsJoinCourseResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -325,6 +325,33 @@ AutograderService.UpdatePassword = {
   responseType: api_pb.UpdatePasswordResponse
 };
 
+AutograderService.JoinCourse = {
+  methodName: "JoinCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.JoinCourseRequest,
+  responseType: api_pb.JoinCourseResponse
+};
+
+AutograderService.GenerateJoinCode = {
+  methodName: "GenerateJoinCode",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GenerateJoinCodeRequest,
+  responseType: api_pb.GenerateJoinCodeResponse
+};
+
+AutograderService.ChangeAllowsJoinCourse = {
+  methodName: "ChangeAllowsJoinCourse",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.ChangeAllowsJoinCourseRequest,
+  responseType: api_pb.ChangeAllowsJoinCourseResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1399,6 +1426,99 @@ AutograderServiceClient.prototype.updatePassword = function updatePassword(reque
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.UpdatePassword, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.joinCourse = function joinCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.JoinCourse, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.generateJoinCode = function generateJoinCode(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GenerateJoinCode, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.changeAllowsJoinCourse = function changeAllowsJoinCourse(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.ChangeAllowsJoinCourse, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

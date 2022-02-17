@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Either, right } from 'fp-ts/Either';
-import { catchError, Observable } from 'rxjs';
+import { Either, left, right } from 'fp-ts/Either';
+import { catchError, Observable, of } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { ErrorService, FormError } from './error.service';
 import {
@@ -10,6 +10,11 @@ import {
   UpdateCourseResponse,
 } from '../api/proto/api_pb';
 import { CourseRoleMap } from '../api/proto/model_pb';
+
+export enum JoinCourseError {
+  InvalidJoinCode,
+  Unknown,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -62,5 +67,27 @@ export class CourseService {
 
   getCourseMembers(courseId: number) {
     return this.apiService.getCourseMembers(courseId);
+  }
+
+  changeAllowsJoinCourse(courseId: number, allowsJoin: boolean) {
+    return this.apiService.changeAllowsJoinCourse(courseId, allowsJoin);
+  }
+
+  generateJoinCode(courseId: number) {
+    return this.apiService.generateJoinCode(courseId);
+  }
+
+  joinCourse(code: string): Observable<Either<JoinCourseError, number>> {
+    return this.apiService.joinCourse(code).pipe(
+      map((resp) => {
+        return right(resp.getCourseId());
+      }),
+      catchError(({ message }) => {
+        if (message === 'INVALID_JOIN_CODE' || message === 'INVALID_COURSE_ID') {
+          return of(left(JoinCourseError.InvalidJoinCode));
+        }
+        return of(left(JoinCourseError.Unknown));
+      }),
+    );
   }
 }

@@ -116,6 +116,12 @@ export class Course extends jspb.Message {
   getDescription(): string;
   setDescription(value: string): void;
 
+  getJoinCode(): string;
+  setJoinCode(value: string): void;
+
+  getAllowsJoin(): boolean;
+  setAllowsJoin(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Course.AsObject;
   static toObject(includeInstance: boolean, msg: Course): Course.AsObject;
@@ -132,6 +138,8 @@ export namespace Course {
     shortName: string,
     term: string,
     description: string,
+    joinCode: string,
+    allowsJoin: boolean,
   }
 }
 

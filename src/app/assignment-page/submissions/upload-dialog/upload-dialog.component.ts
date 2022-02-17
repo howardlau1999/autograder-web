@@ -148,7 +148,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             concatMap((file) => {
               if (file.type === 'application/x-zip-compressed') {
                 const blobReader = new zipjs.BlobReader(file);
-                const zipReader = new zipjs.ZipReader(blobReader, { useWebWorkers: true });
+                const zipReader = new zipjs.ZipReader(blobReader, {
+                  useWebWorkers: true,
+                  filenameEncoding: 'gbk',
+                });
                 return from(zipReader.getEntries()).pipe(
                   mergeMap((entries) => {
                     const fileEntries = entries.filter(
