@@ -2,11 +2,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { of, Subject, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription, switchMap, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../api/api.service';
-import { DownloadFileType, DownloadFileTypeMap, FileTreeNode } from '../../api/proto/api_pb';
+import {
+  DownloadFileType,
+  DownloadFileTypeMap,
+  FileTreeNode,
+  InitDownloadResponse,
+} from '../../api/proto/api_pb';
 import { environment } from '../../../environments/environment';
+import { SubmissionService } from '../../service/submission.service';
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;
@@ -37,17 +43,15 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   filesSub: Subscription | undefined;
 
-  downloadSub: Subscription;
+  initDownloadSub?: Subscription;
 
-  path$: Subject<string | null> = new Subject<string | null>();
+  path$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-  selectedPath: string | null = null;
+  downloadPath$: Observable<string>;
 
   fileType?: DownloadFileTypeMap[keyof DownloadFileTypeMap];
 
-  fileURL: string = '';
-
-  filesize?: number = 0;
+  initDownload$: Observable<InitDownloadResponse | null>;
 
   language: string = '';
 
@@ -57,7 +61,11 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   serverHost = environment.serverHost;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {
+  constructor(
+    private apiService: ApiService,
+    private submissionService: SubmissionService,
+    private route: ActivatedRoute,
+  ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -82,39 +90,39 @@ export class FilesComponent implements OnInit, OnDestroy {
       .subscribe((nodes) => {
         this.dataSource.data = nodes;
       });
-    this.downloadSub = this.path$
-      .pipe(
-        switchMap((path) => {
-          if (path === null) {
-            return of(null);
-          }
-          this.selectedPath = path;
-          return this.apiService.initDownload(this.submissionId, path);
-        }),
-      )
-      .subscribe((resp) => {
-        if (resp == null) {
-          this.fileType = undefined;
-          this.filesize = undefined;
-          return;
+    this.initDownload$ = this.path$.pipe(
+      switchMap((path) => {
+        if (path === null) {
+          return of(null);
         }
-        const url = `${
-          this.serverHost
-        }/AutograderService/FileDownload/${resp.getFilename()}?token=${encodeURIComponent(
-          resp.getToken(),
-        )}`;
-        this.language = resp.getFilename().split('.').pop() || '';
-        this.fileURL = url.toString();
-        this.fileType = resp.getFileType();
-        this.filesize = resp.getFilesize();
-      });
+        return this.apiService.initDownload(this.submissionId, path);
+      }),
+    );
+    this.downloadPath$ = this.initDownload$.pipe(
+      map((resp) => {
+        if (resp === null) return '';
+
+        return this.getDownloadURL(resp.getFilename(), resp.getToken());
+      }),
+    );
+  }
+
+  getDownloadURL(filename: string, token: string) {
+    return this.submissionService.getDownloadURL(filename, token);
+  }
+
+  onDownloadClicked() {
+    this.initDownloadSub?.unsubscribe();
+    this.initDownloadSub = this.downloadPath$.pipe(take(1)).subscribe((url) => {
+      window.open(url, '_blank');
+    });
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.filesSub?.unsubscribe();
-    this.downloadSub.unsubscribe();
+    this.initDownloadSub?.unsubscribe();
   }
 
   /** Transform the data to something the tree can read. */

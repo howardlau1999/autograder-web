@@ -81,6 +81,8 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
 
   dueTimerSubscription?: Subscription;
 
+  downloadSubmissionSubscription?: Subscription;
+
   isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.RUNNING;
   }
@@ -185,6 +187,20 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
     this.router.navigate([submissionId], { relativeTo: this.route }).then();
   }
 
+  downloadSubmission(event: MouseEvent, submissionId: number): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.downloadSubmissionSubscription?.unsubscribe();
+    this.downloadSubmissionSubscription = this.submissionService
+      .downloadSubmission(submissionId)
+      .subscribe((resp) => {
+        window.open(
+          this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
+          '_blank',
+        );
+      });
+  }
+
   openSubmissionDialog(): void {
     const dialogRef = this.dialog.open(UploadDialogComponent, {
       data: {
@@ -235,5 +251,7 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
   ngOnDestroy(): void {
     this.dueTimerSubscription?.unsubscribe();
     this.releaseTimerSubscription?.unsubscribe();
+    this.editAssignmentSubscription?.unsubscribe();
+    this.downloadSubmissionSubscription?.unsubscribe();
   }
 }

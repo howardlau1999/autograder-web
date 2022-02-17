@@ -271,10 +271,11 @@ export class ApiService {
     return this.unary(AutograderService.CreateAssignment, request);
   }
 
-  initDownload(submissionId: number, filename: string) {
+  initDownload(submissionId: number, filename: string, isDirectory: boolean = false) {
     const request = new InitDownloadRequest();
     request.setFilename(filename);
     request.setSubmissionId(submissionId);
+    request.setIsDirectory(isDirectory);
     return this.unary(AutograderService.InitDownload, request);
   }
 

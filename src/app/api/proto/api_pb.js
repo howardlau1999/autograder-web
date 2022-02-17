@@ -7299,7 +7299,8 @@ proto.DownloadTokenPayload.prototype.toObject = function(opt_includeInstance) {
 proto.DownloadTokenPayload.toObject = function(includeInstance, msg) {
   var f, obj = {
     realPath: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    filename: jspb.Message.getFieldWithDefault(msg, 2, "")
+    filename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    isDirectory: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
   };
 
   if (includeInstance) {
@@ -7344,6 +7345,10 @@ proto.DownloadTokenPayload.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setFilename(value);
       break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDirectory(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -7387,6 +7392,13 @@ proto.DownloadTokenPayload.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getIsDirectory();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -7423,6 +7435,24 @@ proto.DownloadTokenPayload.prototype.getFilename = function() {
  */
 proto.DownloadTokenPayload.prototype.setFilename = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool is_directory = 3;
+ * @return {boolean}
+ */
+proto.DownloadTokenPayload.prototype.getIsDirectory = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.DownloadTokenPayload} returns this
+ */
+proto.DownloadTokenPayload.prototype.setIsDirectory = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 
@@ -11047,7 +11077,8 @@ proto.InitDownloadRequest.prototype.toObject = function(opt_includeInstance) {
 proto.InitDownloadRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     submissionId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    filename: jspb.Message.getFieldWithDefault(msg, 2, "")
+    filename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    isDirectory: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
   };
 
   if (includeInstance) {
@@ -11092,6 +11123,10 @@ proto.InitDownloadRequest.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setFilename(value);
       break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDirectory(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -11135,6 +11170,13 @@ proto.InitDownloadRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getIsDirectory();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -11171,6 +11213,24 @@ proto.InitDownloadRequest.prototype.getFilename = function() {
  */
 proto.InitDownloadRequest.prototype.setFilename = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool is_directory = 3;
+ * @return {boolean}
+ */
+proto.InitDownloadRequest.prototype.getIsDirectory = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.InitDownloadRequest} returns this
+ */
+proto.InitDownloadRequest.prototype.setIsDirectory = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 

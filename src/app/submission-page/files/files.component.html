@@ -39,35 +39,36 @@
         </div>
       </div>
       <div class="file-preview-container">
-        <div *ngIf="fileType !== undefined; else selectFile">
+        <div *ngIf="(path$ | async) as path; else selectFile">
           <h3>
-            {{ selectedPath }} &nbsp;
-            <a [href]="fileURL" download mat-raised-button target="_blank">
-              <mat-icon>download</mat-icon>&nbsp;下载</a
+            {{ path$ | async }} &nbsp;
+            <button mat-raised-button (click)="onDownloadClicked()">
+              <mat-icon>download</mat-icon>&nbsp;下载</button
             >
           </h3>
-          <div [ngSwitch]="fileType" class="file-previewer">
+          <div *ngIf="initDownload$ | async as fileInfo">
+          <div [ngSwitch]="fileInfo.getFileType()" class="file-previewer">
             <div *ngSwitchCase="DownloadFileType.TEXT">
-              <div *ngIf="filesize !== undefined && (filesize > 100 * 1024 || filesize < 0); else markdownPreviewer">
-                文件过大，无法预览，请直接下载。
-              </div>
+                <div *ngIf="(fileInfo.getFilesize() > 100 * 1024 || fileInfo.getFilesize() <= 0); else markdownPreviewer">
+                  文件过大或大小未知，无法预览，请直接下载。
+                </div>
               <ng-template #markdownPreviewer>
-                <markdown katex [src]="fileURL"></markdown>
+                <markdown katex [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"></markdown>
               </ng-template>
             </div>
             <div *ngSwitchCase="DownloadFileType.IMAGE">
-              <img [src]="fileURL" alt="Image Preview" />
+              <img [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())" alt="Image Preview" />
             </div>
             <div *ngSwitchCase="DownloadFileType.PDF">
               <ngx-extended-pdf-viewer
-                [src]="fileURL"
+                [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
                 [useBrowserLocale]="true"
               ></ngx-extended-pdf-viewer>
             </div>
             <div *ngSwitchDefault>该文件类型无法预览，请直接下载。</div>
           </div>
         </div>
-      </div>
+      </div></div>
       <ng-template #selectFile> 请选择文件预览。</ng-template>
     </div>
   </div>

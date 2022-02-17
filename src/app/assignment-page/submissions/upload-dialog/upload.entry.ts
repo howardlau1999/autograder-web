@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 
 export class UploadEntry {
-  sub: Subscription | null = null;
+  subscription?: Subscription;
 
   filename = '';
 
@@ -28,11 +28,11 @@ export class UploadEntry {
   finishUpload() {
     this.uploaded = true;
     this.uploading = false;
-    this.sub?.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   cancelUpload() {
-    this.sub?.unsubscribe();
+    this.subscription?.unsubscribe();
     this.uploading = false;
     this.uploaded = false;
   }

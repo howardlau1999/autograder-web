@@ -1,7 +1,17 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpEventType } from '@angular/common/http';
-import { BehaviorSubject, catchError, from, mergeMap, of, retry, zip } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  concatMap,
+  delay,
+  from,
+  mergeMap,
+  of,
+  retry,
+  zip,
+} from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
@@ -156,26 +166,26 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateProgress();
                     return from(fileEntries);
                   }),
-                  mergeMap((entry) => {
+                  concatMap((entry) => {
                     return zip(
                       of(entry.filename),
                       of(manifestId),
                       from(entry.getData!(new BlobWriter()) as Promise<Blob>),
-                    );
+                    ).pipe(delay(50));
                   }),
                 );
               }
               this.uploadEntries[file.name] = new UploadEntry(file.name, file.size);
               this.updateUploadEntries();
               this.updateProgress();
-              return zip(of(file.name), of(manifestId), of(file));
+              return zip(of(file.name), of(manifestId), of(file)).pipe(delay(50));
             }),
           );
         }),
       )
       .subscribe(([filename, manifestId, blob]) => {
         const entry = this.uploadEntries[filename];
-        entry.sub = this.apiService
+        entry.subscription = this.apiService
           .initUpload(filename, manifestId)
           .pipe(
             mergeMap((resp) => {

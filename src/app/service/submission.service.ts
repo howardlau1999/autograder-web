@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,5 +14,15 @@ export class SubmissionService {
 
   subscribeSubmission(submissionId: number) {
     return this.apiService.subscribeSubmission(submissionId);
+  }
+
+  downloadSubmission(submissionId: number) {
+    return this.apiService.initDownload(submissionId, '', true);
+  }
+
+  getDownloadURL(filename: string, token: string) {
+    return `${
+      environment.serverHost
+    }/AutograderService/FileDownload/${filename}?token=${encodeURIComponent(token)}`;
   }
 }

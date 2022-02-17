@@ -774,6 +774,9 @@ export class DownloadTokenPayload extends jspb.Message {
   getFilename(): string;
   setFilename(value: string): void;
 
+  getIsDirectory(): boolean;
+  setIsDirectory(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DownloadTokenPayload.AsObject;
   static toObject(includeInstance: boolean, msg: DownloadTokenPayload): DownloadTokenPayload.AsObject;
@@ -788,6 +791,7 @@ export namespace DownloadTokenPayload {
   export type AsObject = {
     realPath: string,
     filename: string,
+    isDirectory: boolean,
   }
 }
 
@@ -1325,6 +1329,9 @@ export class InitDownloadRequest extends jspb.Message {
   getFilename(): string;
   setFilename(value: string): void;
 
+  getIsDirectory(): boolean;
+  setIsDirectory(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitDownloadRequest.AsObject;
   static toObject(includeInstance: boolean, msg: InitDownloadRequest): InitDownloadRequest.AsObject;
@@ -1339,6 +1346,7 @@ export namespace InitDownloadRequest {
   export type AsObject = {
     submissionId: number,
     filename: string,
+    isDirectory: boolean,
   }
 }
 

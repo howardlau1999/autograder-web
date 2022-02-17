@@ -91,7 +91,7 @@
             >
               <mat-icon>description</mat-icon>
             </button>
-            <button i18n="download" mat-icon-button>
+            <button i18n="download" (click)="downloadSubmission($event, submission.getSubmissionId())" mat-icon-button>
               <mat-icon>download</mat-icon>
             </button>
           </td>
