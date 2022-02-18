@@ -17,6 +17,8 @@ import { LoginGuard } from './login.guard';
 import { GithubLoginComponent } from './login-page/github-login/github-login.component';
 import { AccountPageComponent } from './account-page/account-page.component';
 import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
+import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
+import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -24,6 +26,7 @@ const routes: Routes = [
   { path: 'github', component: GithubLoginComponent },
   { path: 'github/bind', component: GithubBindComponent },
   { path: 'password-reset', component: PasswordResetComponent },
+  { path: 'vcd', component: VcdViewerPageComponent },
   { path: 'sign-up', component: SignUpComponent },
   {
     path: 'courses',

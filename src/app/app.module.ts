@@ -71,6 +71,8 @@ import { GithubLoginComponent } from './login-page/github-login/github-login.com
 import { AccountPageComponent } from './account-page/account-page.component';
 import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
 import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.component';
+import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
+import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +110,8 @@ import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.c
     AccountPageComponent,
     GithubBindComponent,
     ConfirmDialogComponent,
+    VcdViewerComponent,
+    VcdViewerPageComponent,
   ],
   imports: [
     BrowserModule,
