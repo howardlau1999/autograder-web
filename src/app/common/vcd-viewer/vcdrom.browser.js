@@ -40625,7 +40625,7 @@ const domContainer = require('@wavedrom/doppler/lib/dom-container.js');
 const parseTimescale = require('vcd-stream/lib/parse-time-scale.js');
 
 const numberOrString = (val) => {
-  if (val < 2n ** 52n) {
+  if (val < BigInt(2) ** BigInt(52)) {
     return Number(val);
   }
   return `0x${val.toString(16)}`;
@@ -40689,7 +40689,7 @@ function vcdPipeDeso(descriptionObject, vcdParser, done) {
     } else {
       chango[id].kind = 'vec';
       const point = [time53, numberOrString(value)];
-      if (mask !== 0n) {
+      if (mask !== BigInt(0)) {
         point.push(numberOrString(mask));
       }
       chango[id].wave.push(point);
@@ -40720,7 +40720,7 @@ const getHandler = (element, vcdParser) => {
     onChunk: (chunk) => {
       const chunkLength = chunk.length;
       total += chunkLength;
-      element.innerHTML = `<div class="wd-progress">${total.toLocaleString()}</div>`;
+      element.innerHTML = `<div class="wd-progress">${total.toLocaleString()} bytes loaded</div>`;
 
       vcdParser.write(chunk);
     },
