@@ -8,9 +8,8 @@ describe('GithubLoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GithubLoginComponent ]
-    })
-    .compileComponents();
+      declarations: [GithubLoginComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

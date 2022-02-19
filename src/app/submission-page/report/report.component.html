@@ -18,7 +18,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-          >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+            >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
           </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -41,7 +41,7 @@
       mat-list-item
     >
       <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-      >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+        >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
       </span>
     </a>
   </mat-nav-list>

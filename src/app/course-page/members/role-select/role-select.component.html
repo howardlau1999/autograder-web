@@ -8,7 +8,12 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" *ngIf="!formField" [value]="role">
+<mat-select
+  (selectionChange)="onRoleChange($event)"
+  [disabled]="disabled"
+  *ngIf="!formField"
+  [value]="role"
+>
   <mat-option *ngFor="let role of roles" [value]="role">
     {{ mapRoleToString(role) }}
   </mat-option>

@@ -20,7 +20,7 @@
     <mat-select (selectionChange)="onHourChange($event)" [value]="timestamp.hour" placeholder="时">
       <mat-option *ngFor="let hour of hours" [value]="hour">{{
         hour.toString().padStart(2, '0')
-        }}</mat-option>
+      }}</mat-option>
     </mat-select>
   </mat-form-field>
   &nbsp;:&nbsp;
@@ -32,7 +32,7 @@
     >
       <mat-option *ngFor="let minute of minutes" [value]="minute">{{
         minute.toString().padStart(2, '0')
-        }}</mat-option>
+      }}</mat-option>
     </mat-select>
   </mat-form-field>
   &nbsp;:&nbsp;
@@ -44,7 +44,7 @@
     >
       <mat-option *ngFor="let second of seconds" [value]="second">{{
         second.toString().padStart(2, '0')
-        }}</mat-option>
+      }}</mat-option>
     </mat-select>
   </mat-form-field>
 </form>

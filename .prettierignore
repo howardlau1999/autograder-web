@@ -1,2 +1,3 @@
 src/app/api/proto
+src/app/common/vcd-viewer/vcdrom.browser.js
 /.angular/cache

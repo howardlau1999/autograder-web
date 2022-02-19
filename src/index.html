@@ -15,11 +15,11 @@
     <link href="https://fonts.loli.net/icon?family=Material+Icons" rel="stylesheet" />
     <script>
       if ('{{.ServerProvided}}' === 'true') {
-        window.localStorage.setItem("server_hcaptcha_client_id", '{{.HcaptchaSiteKey}}');
-        window.localStorage.setItem("server_github_client_id", '{{.GithubClientId}}');
+        window.localStorage.setItem('server_hcaptcha_client_id', '{{.HcaptchaSiteKey}}');
+        window.localStorage.setItem('server_github_client_id', '{{.GithubClientId}}');
       } else {
-        window.localStorage.removeItem("server_hcaptcha_client_id");
-        window.localStorage.removeItem("server_github_client_id");
+        window.localStorage.removeItem('server_hcaptcha_client_id');
+        window.localStorage.removeItem('server_github_client_id');
       }
     </script>
   </head>

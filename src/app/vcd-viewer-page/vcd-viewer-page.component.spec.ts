@@ -8,9 +8,8 @@ describe('VcdViewerPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VcdViewerPageComponent ]
-    })
-    .compileComponents();
+      declarations: [VcdViewerPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

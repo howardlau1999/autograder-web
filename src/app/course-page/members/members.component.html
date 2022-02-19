@@ -57,8 +57,7 @@
       <ng-container matColumnDef="email">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
         <td *matCellDef="let row" mat-cell>
-          <a [href]="'mailto:' + row.getEmail()" target="_blank">
-            {{ row.getEmail() }}</a>
+          <a [href]="'mailto:' + row.getEmail()" target="_blank"> {{ row.getEmail() }}</a>
         </td>
       </ng-container>
 

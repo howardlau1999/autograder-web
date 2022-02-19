@@ -41,11 +41,7 @@
   <ng-container matColumnDef="operations">
     <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
     <td *matCellDef="let submission" mat-cell>
-      <button
-        (click)="onRowClicked(submission.getSubmissionId())"
-        i18n="view"
-        mat-icon-button
-      >
+      <button (click)="onRowClicked(submission.getSubmissionId())" i18n="view" mat-icon-button>
         <mat-icon>description</mat-icon>
       </button>
       <button
