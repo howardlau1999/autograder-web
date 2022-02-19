@@ -352,6 +352,24 @@ AutograderService.ChangeAllowsJoinCourse = {
   responseType: api_pb.ChangeAllowsJoinCourseResponse
 };
 
+AutograderService.InspectAllSubmissionsInAssignment = {
+  methodName: "InspectAllSubmissionsInAssignment",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.InspectAllSubmissionsInAssignmentRequest,
+  responseType: api_pb.InspectAllSubmissionsInAssignmentResponse
+};
+
+AutograderService.InspectUserSubmissionHistory = {
+  methodName: "InspectUserSubmissionHistory",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.InspectUserSubmissionHistoryRequest,
+  responseType: api_pb.InspectUserSubmissionHistoryResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1519,6 +1537,68 @@ AutograderServiceClient.prototype.changeAllowsJoinCourse = function changeAllows
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.ChangeAllowsJoinCourse, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.inspectAllSubmissionsInAssignment = function inspectAllSubmissionsInAssignment(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.InspectAllSubmissionsInAssignment, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.inspectUserSubmissionHistory = function inspectUserSubmissionHistory(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.InspectUserSubmissionHistory, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

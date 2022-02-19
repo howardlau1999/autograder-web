@@ -1,0 +1,74 @@
+<mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
+<h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
+<table
+  class="submission-history-table"
+  [class.hidden]="submissionsLoading || !dataSource?.data?.length"
+  mat-table
+  matSort
+  multiTemplateDataRows
+>
+  <ng-container matColumnDef="submissionId">
+    <th *matHeaderCellDef i18n="submission-id" mat-header-cell>提交 ID</th>
+    <td *matCellDef="let submission" mat-cell>{{ submission.getSubmissionId() }}</td>
+  </ng-container>
+  <ng-container matColumnDef="submittedAt">
+    <th *matHeaderCellDef i18n="submitted-at" mat-header-cell>提交时间</th>
+    <td *matCellDef="let submission" mat-cell>
+      {{ submission.getSubmittedAt().toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="score">
+    <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
+    <td *matCellDef="let submission" mat-cell>
+      <div *ngIf="isSubmissionInternalError(submission.getStatus()); else normal">内部错误</div>
+      <ng-template #normal>
+        <span *ngIf="isSubmissionFinished(submission.getStatus())">
+          {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
+        >
+        <mat-progress-bar
+          [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
+          [value]="(submission.getScore() / submission.getMaxScore()) * 100"
+          class="score-bar"
+        >
+        </mat-progress-bar>
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th *matHeaderCellDef i18n="status" mat-header-cell>状态</th>
+    <td *matCellDef="let submission" mat-cell>{{ submission.getStatus() }}</td>
+  </ng-container>
+  <ng-container matColumnDef="operations">
+    <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
+    <td *matCellDef="let submission" mat-cell>
+      <button
+        (click)="onRowClicked(submission.getSubmissionId())"
+        i18n="view"
+        mat-icon-button
+      >
+        <mat-icon>description</mat-icon>
+      </button>
+      <button
+        i18n="download"
+        (click)="downloadSubmission($event, submission.getSubmissionId())"
+        mat-icon-button
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+  <tr
+    (click)="onRowClicked(submission.getSubmissionId())"
+    *matRowDef="let submission; columns: columnsToDisplay"
+    class="submission-element-row"
+    mat-row
+  ></tr>
+</table>
+<mat-paginator
+  [class.hidden]="submissionsLoading || !dataSource?.data?.length"
+  [length]="dataSource?.data?.length"
+  [pageSizeOptions]="[5, 10]"
+  [pageSize]="10"
+  showFirstLastButtons
+></mat-paginator>

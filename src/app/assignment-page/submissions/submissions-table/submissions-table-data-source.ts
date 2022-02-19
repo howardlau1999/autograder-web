@@ -3,17 +3,16 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, tap } from 'rxjs/operators';
 import { merge, Observable, Subscription } from 'rxjs';
-import { DateTime } from 'luxon';
-import { GetSubmissionsInAssignmentResponse } from '../../api/proto/api_pb';
-import { SubmissionStatus } from '../../api/proto/model_pb';
-import { SubmissionService } from '../../service/submission.service';
+import { SubmissionInfo } from '../../../api/proto/api_pb';
+import { SubmissionStatus } from '../../../api/proto/model_pb';
+import { SubmissionService } from '../../../service/submission.service';
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
 function compare(a: string | number | Date, b: string | number | Date, isAsc: boolean): number {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
-export type SubmissionsItem = GetSubmissionsInAssignmentResponse.SubmissionInfo;
+export type SubmissionsItem = SubmissionInfo;
 
 /**
  * Data source for the CoursePage view. This class should

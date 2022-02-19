@@ -346,6 +346,24 @@ type AutograderServiceChangeAllowsJoinCourse = {
   readonly responseType: typeof api_pb.ChangeAllowsJoinCourseResponse;
 };
 
+type AutograderServiceInspectAllSubmissionsInAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.InspectAllSubmissionsInAssignmentRequest;
+  readonly responseType: typeof api_pb.InspectAllSubmissionsInAssignmentResponse;
+};
+
+type AutograderServiceInspectUserSubmissionHistory = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.InspectUserSubmissionHistoryRequest;
+  readonly responseType: typeof api_pb.InspectUserSubmissionHistoryResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -386,6 +404,8 @@ export class AutograderService {
   static readonly JoinCourse: AutograderServiceJoinCourse;
   static readonly GenerateJoinCode: AutograderServiceGenerateJoinCode;
   static readonly ChangeAllowsJoinCourse: AutograderServiceChangeAllowsJoinCourse;
+  static readonly InspectAllSubmissionsInAssignment: AutograderServiceInspectAllSubmissionsInAssignment;
+  static readonly InspectUserSubmissionHistory: AutograderServiceInspectUserSubmissionHistory;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -753,6 +773,24 @@ export class AutograderServiceClient {
   changeAllowsJoinCourse(
     requestMessage: api_pb.ChangeAllowsJoinCourseRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.ChangeAllowsJoinCourseResponse|null) => void
+  ): UnaryResponse;
+  inspectAllSubmissionsInAssignment(
+    requestMessage: api_pb.InspectAllSubmissionsInAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InspectAllSubmissionsInAssignmentResponse|null) => void
+  ): UnaryResponse;
+  inspectAllSubmissionsInAssignment(
+    requestMessage: api_pb.InspectAllSubmissionsInAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InspectAllSubmissionsInAssignmentResponse|null) => void
+  ): UnaryResponse;
+  inspectUserSubmissionHistory(
+    requestMessage: api_pb.InspectUserSubmissionHistoryRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InspectUserSubmissionHistoryResponse|null) => void
+  ): UnaryResponse;
+  inspectUserSubmissionHistory(
+    requestMessage: api_pb.InspectUserSubmissionHistoryRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.InspectUserSubmissionHistoryResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -19,6 +19,7 @@ import { AccountPageComponent } from './account-page/account-page.component';
 import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
 import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
 import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
+import { InspectionComponent } from './assignment-page/inspection/inspection.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -64,6 +65,14 @@ const routes: Routes = [
       {
         path: 'leaderboard',
         component: LeaderboardComponent,
+      },
+      {
+        path: 'inspection',
+        component: InspectionComponent,
+      },
+      {
+        path: 'inspection/:userId',
+        component: InspectionComponent,
       },
       {
         path: '',

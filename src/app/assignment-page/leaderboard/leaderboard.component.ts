@@ -23,7 +23,7 @@ export class LeaderboardComponent implements AfterViewInit {
   dataSource: LeaderboardDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['name'];
+  displayedColumns = ['rank', 'name'];
 
   columns$: Observable<string[]>;
 

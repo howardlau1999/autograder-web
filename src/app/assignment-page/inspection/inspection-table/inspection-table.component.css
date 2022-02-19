@@ -1,0 +1,19 @@
+.full-width-table {
+  width: 100%;
+}
+
+tr.submission-element-row:hover {
+  cursor: pointer;
+}
+
+tr.submission-element-row:not(.submission-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.submission-element-row:not(.submission-expanded-row):active {
+  background: #efefef;
+}
+
+tr.submission-element-row.selected {
+  background: #efefef;
+}

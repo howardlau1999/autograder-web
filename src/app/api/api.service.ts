@@ -30,6 +30,8 @@ import {
   HasLeaderboardRequest,
   InitDownloadRequest,
   InitUploadRequest,
+  InspectAllSubmissionsInAssignmentRequest,
+  InspectUserSubmissionHistoryRequest,
   JoinCourseRequest,
   LoginRequest,
   RemoveCourseMembersRequest,
@@ -427,5 +429,18 @@ export class ApiService {
     request.setCourseId(courseId);
     request.setAllowsJoin(allowsJoin);
     return this.unary(AutograderService.ChangeAllowsJoinCourse, request);
+  }
+
+  inspectAllSubmissionsInAssignment(assignmentId: number) {
+    const request = new InspectAllSubmissionsInAssignmentRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(AutograderService.InspectAllSubmissionsInAssignment, request);
+  }
+
+  inspectUserSubmissionHistory(userId: number, assignmentId: number) {
+    const request = new InspectUserSubmissionHistoryRequest();
+    request.setUserId(userId);
+    request.setAssignmentId(assignmentId);
+    return this.unary(AutograderService.InspectUserSubmissionHistory, request);
   }
 }

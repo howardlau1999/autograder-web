@@ -4,8 +4,8 @@
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
       <!-- Id Column -->
       <ng-container matColumnDef="rank">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Rank</th>
-        <td *matCellDef="let row" mat-cell>{{ row.rank }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>排序</th>
+        <td *matCellDef="let row; index as i" mat-cell>{{ i + 1 }}</td>
       </ng-container>
 
       <!-- Name Column -->
@@ -28,7 +28,7 @@
 
       <tr *matHeaderRowDef="displayedColumns.concat((columns$ | async) || [])" mat-header-row></tr>
       <tr
-        *matRowDef="let row; columns: displayedColumns.concat((columns$ | async) || [])"
+        *matRowDef="let row; index as i; columns: displayedColumns.concat((columns$ | async) || [])"
         mat-row
       ></tr>
     </table>

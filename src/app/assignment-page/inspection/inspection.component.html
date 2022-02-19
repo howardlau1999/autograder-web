@@ -1,0 +1,22 @@
+<div class="submissions-container">
+  <h2>查阅提交</h2>
+  <mat-card class="inspection-table-card">
+    <mat-card-content>
+      <app-inspection-table
+        (userChange)="onUserChange($event)"
+        [selectedUserId]="userId$ | async"
+        [assignmentId]="assignmentId$ | async"
+      ></app-inspection-table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="inspection-table-card">
+    <mat-card-content>
+      <app-submissions-table
+        (submissionChange)="onSubmissionChange($event)"
+        [userId]="(userId$ | async) || undefined"
+        [assignmentId]="(assignmentId$ | async) || 0"
+        [submissionsRefresher$]="submissionsRefresher$"
+      ></app-submissions-table>
+    </mat-card-content>
+  </mat-card>
+</div>

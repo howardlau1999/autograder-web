@@ -73,6 +73,9 @@ import { GithubBindComponent } from './account-page/github-bind/github-bind.comp
 import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.component';
 import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
 import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
+import { InspectionComponent } from './assignment-page/inspection/inspection.component';
+import { SubmissionsTableComponent } from './assignment-page/submissions/submissions-table/submissions-table.component';
+import { InspectionTableComponent } from './assignment-page/inspection/inspection-table/inspection-table.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +115,9 @@ import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.compon
     ConfirmDialogComponent,
     VcdViewerComponent,
     VcdViewerPageComponent,
+    InspectionComponent,
+    SubmissionsTableComponent,
+    InspectionTableComponent,
   ],
   imports: [
     BrowserModule,

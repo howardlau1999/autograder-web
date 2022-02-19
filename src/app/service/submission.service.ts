@@ -12,6 +12,14 @@ export class SubmissionService {
     return this.apiService.getSubmissionsInAssignment(assignmentId);
   }
 
+  inspectUserSubmissionHistory(userId: number, assignmentId: number) {
+    return this.apiService.inspectUserSubmissionHistory(userId, assignmentId);
+  }
+
+  inspectAllSubmissionsInAssignment(assignmentId: number) {
+    return this.apiService.inspectAllSubmissionsInAssignment(assignmentId);
+  }
+
   subscribeSubmission(submissionId: number) {
     return this.apiService.subscribeSubmission(submissionId);
   }

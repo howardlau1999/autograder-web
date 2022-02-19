@@ -1,0 +1,10 @@
+
+.inspection-table-card {
+  flex: 1 1 auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.submissions-container {
+  padding: 20px;
+}

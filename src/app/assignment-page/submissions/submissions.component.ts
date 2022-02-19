@@ -24,7 +24,10 @@ import {
   SubmissionStatus,
   SubmissionStatusMap,
 } from '../../api/proto/model_pb';
-import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
+import {
+  SubmissionsItem,
+  SubmissionsTableDataSource,
+} from './submissions-table/submissions-table-data-source';
 import { SubmissionService } from '../../service/submission.service';
 import { AssignmentService } from '../../service/assignment.service';
 import { AssignmentEditDialogComponent } from './assignment-edit-dialog/assignment-edit-dialog.component';
@@ -42,17 +45,7 @@ import { NotificationService } from '../../service/notification.service';
     ]),
   ],
 })
-export class SubmissionsComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  @ViewChild(MatSort) sort!: MatSort;
-
-  @ViewChild(MatTable) table!: MatTable<SubmissionsItem>;
-
-  dataSource: SubmissionsTableDataSource;
-
-  columnsToDisplay = ['submissionId', 'submittedAt', 'score', 'operations'];
-
+export class SubmissionsComponent implements OnInit {
   assignmentId: number = 0;
 
   expandedSubmission: SubmissionsItem | null = null;
@@ -67,33 +60,15 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
 
   assignmentId$: Observable<number>;
 
-  submissions$: Observable<SubmissionsItem[]>;
-
   canWriteCourse: boolean = false;
 
   canSubmit: boolean = false;
-
-  submissionsLoading: boolean = true;
 
   submissionsRefresher$: Subject<null> = new Subject<null>();
 
   releaseTimerSubscription?: Subscription;
 
   dueTimerSubscription?: Subscription;
-
-  downloadSubmissionSubscription?: Subscription;
-
-  isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.RUNNING;
-  }
-
-  isSubmissionFinished(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.FINISHED;
-  }
-
-  isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.FAILED;
-  }
 
   constructor(
     private notificationService: NotificationService,
@@ -153,52 +128,6 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
         }
       }),
     );
-    this.submissions$ = this.assignmentId$.pipe(
-      switchMap((assignmentId) =>
-        of(assignmentId).pipe(
-          tap(() => {
-            this.submissionsLoading = true;
-          }),
-          mergeMap(() => {
-            return this.submissionService.getSubmissionsInAssignment(assignmentId);
-          }),
-          repeatWhen(() => this.submissionsRefresher$),
-        ),
-      ),
-      tap(() => {
-        this.submissionsLoading = false;
-      }),
-      map((resp) => resp.getSubmissionsList()),
-      catchError(({ message }) => {
-        this.notificationService.showSnackBar(`加载提交记录出错 ${message}`);
-        return of([]);
-      }),
-    );
-    this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.submissions$);
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
-  }
-
-  viewSubmissionReport(submissionId: number): void {
-    this.router.navigate([submissionId], { relativeTo: this.route }).then();
-  }
-
-  downloadSubmission(event: MouseEvent, submissionId: number): void {
-    event.stopPropagation();
-    event.preventDefault();
-    this.downloadSubmissionSubscription?.unsubscribe();
-    this.downloadSubmissionSubscription = this.submissionService
-      .downloadSubmission(submissionId)
-      .subscribe((resp) => {
-        window.open(
-          this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
-          '_blank',
-        );
-      });
   }
 
   openSubmissionDialog(): void {
@@ -252,6 +181,9 @@ export class SubmissionsComponent implements OnInit, AfterViewInit {
     this.dueTimerSubscription?.unsubscribe();
     this.releaseTimerSubscription?.unsubscribe();
     this.editAssignmentSubscription?.unsubscribe();
-    this.downloadSubmissionSubscription?.unsubscribe();
+  }
+
+  onSubmissionChanged(submissionId: number) {
+    this.router.navigate([submissionId], { relativeTo: this.route });
   }
 }
