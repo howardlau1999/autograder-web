@@ -7,7 +7,7 @@ import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
 
 export interface LeaderboardItem {
-  items: { [k: string]: { value: Value; desc: boolean; order: number } };
+  items: { [k: string]: { value: Value; desc: boolean; order: number; suffix: string } };
   rank: number;
   submissionId: number;
   submittedAt: Date;
@@ -57,6 +57,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
                     value: item.getValue() || new Value(),
                     desc: item.getIsDesc(),
                     order: item.getOrder(),
+                    suffix: item.getSuffix(),
                   };
                   return obj;
                 })

@@ -11,7 +11,8 @@
             item.getValue()?.hasNumberValue()
               ? item.getValue()?.getNumberValue()
               : item.getValue()?.getStringValue()
-          }}
+          }} &nbsp;
+          {{ item.getSuffix() }}
         </mat-list-item>
       </mat-list>
       <mat-action-row class="attachment">

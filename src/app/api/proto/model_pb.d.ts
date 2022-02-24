@@ -266,6 +266,9 @@ export class LeaderboardItem extends jspb.Message {
   getOrder(): number;
   setOrder(value: number): void;
 
+  getSuffix(): string;
+  setSuffix(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardItem.AsObject;
   static toObject(includeInstance: boolean, msg: LeaderboardItem): LeaderboardItem.AsObject;
@@ -282,6 +285,7 @@ export namespace LeaderboardItem {
     value?: google_protobuf_struct_pb.Value.AsObject,
     isDesc: boolean,
     order: number,
+    suffix: string,
   }
 }
 

@@ -2263,7 +2263,8 @@ proto.LeaderboardItem.toObject = function(includeInstance, msg) {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
     value: (f = msg.getValue()) && google_protobuf_struct_pb.Value.toObject(includeInstance, f),
     isDesc: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
-    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    suffix: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -2316,6 +2317,10 @@ proto.LeaderboardItem.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setOrder(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSuffix(value);
       break;
     default:
       reader.skipField();
@@ -2372,6 +2377,13 @@ proto.LeaderboardItem.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeInt64(
       4,
+      f
+    );
+  }
+  f = message.getSuffix();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -2466,6 +2478,24 @@ proto.LeaderboardItem.prototype.getOrder = function() {
  */
 proto.LeaderboardItem.prototype.setOrder = function(value) {
   return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional string suffix = 5;
+ * @return {string}
+ */
+proto.LeaderboardItem.prototype.getSuffix = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.LeaderboardItem} returns this
+ */
+proto.LeaderboardItem.prototype.setSuffix = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
