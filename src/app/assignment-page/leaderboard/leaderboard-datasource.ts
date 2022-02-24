@@ -1,15 +1,18 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
 
 export interface LeaderboardItem {
-  items: { [k: string]: { value: Value; desc: boolean } };
+  items: { [k: string]: { value: Value; desc: boolean; order: number } };
   rank: number;
+  submissionId: number;
+  submittedAt: Date;
   name: string;
+  isSelf: boolean;
 }
 
 /**
@@ -28,38 +31,72 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
 
   sort: MatSort | undefined;
 
-  constructor(apiService: ApiService, assignmentId$: Observable<number>) {
+  constructor(apiService: ApiService, assignmentId$: Observable<number>, userId: number) {
     super();
     this.data$ = assignmentId$.pipe(
       switchMap((assignmentId) => {
         return apiService.getLeaderboard(assignmentId).pipe(
           map((resp) => {
+            const sortItems: {
+              [k: string]: { isDesc: boolean; order: number };
+            } = {};
             this.data = (resp?.getEntriesList() || []).map((entry) => {
               return entry
                 .getItemsList()
                 .map((item) => {
-                  const obj: LeaderboardItem = { items: {}, rank: 0, name: entry.getNickname() };
+                  const obj: LeaderboardItem = {
+                    items: {},
+                    rank: 0,
+                    name: entry.getNickname(),
+                    isSelf: entry.getUserId() === userId,
+                    submittedAt: entry.getSubmittedAt()?.toDate() || new Date(),
+                    submissionId: entry.getSubmissionId(),
+                  };
+                  sortItems[item.getName()] = { isDesc: item.getIsDesc(), order: item.getOrder() };
                   obj.items[item.getName()] = {
                     value: item.getValue() || new Value(),
-                    desc: item.getOrder() === 1,
+                    desc: item.getIsDesc(),
+                    order: item.getOrder(),
                   };
                   return obj;
                 })
                 .reduce((accumulator, current) => {
-                  for (let i = 0; i < Object.keys(current.items).length; i++) {
-                    const k = Object.keys(current.items)[i];
+                  Object.keys(current.items).forEach((k) => {
                     accumulator.items[k] = current.items[k];
-                  }
+                  });
                   return accumulator;
                 });
             });
+            if (this.data.length > 0) {
+              const keys = Object.keys(sortItems).sort((a, b) => {
+                const aOrder = sortItems[a].order;
+                const bOrder = sortItems[b].order;
+                if (aOrder > bOrder) return 1;
+                if (aOrder < bOrder) return -1;
+                return 0;
+              });
+              this.data = this.data
+                .sort((a, b) => {
+                  for (let i = 0; i < keys.length; i += 1) {
+                    const key = keys[i];
+                    const isDesc = a.items[key].desc ? -1 : 1;
+                    if (a.items[key].value > b.items[key].value) return 1 * isDesc;
+                    if (a.items[key].value < b.items[key].value) return -1 * isDesc;
+                  }
+                  if (a.submittedAt > b.submittedAt) return 1;
+                  if (a.submittedAt < b.submittedAt) return -1;
+                  return 0;
+                })
+                .map((item, index) => {
+                  const rankedItem = item;
+                  rankedItem.rank = index + 1;
+                  return rankedItem;
+                });
+            }
+            this.columns$.next(Object.keys(sortItems));
             return this.data;
           }),
         );
-      }),
-      tap((items) => {
-        const keys = items.length > 0 ? Object.keys(items[0].items) : [];
-        this.columns$.next(keys);
       }),
     );
   }
@@ -113,19 +150,32 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
       const isDesc = this.sort?.direction === 'desc';
       const key = this.sort?.active;
       if (key === undefined) return 0;
+      if (key === 'rank') {
+        return compareNative(a.rank, b.rank, isDesc);
+      }
+      if (key === 'submittedAt') {
+        return compareNative(a.submittedAt, b.submittedAt, isDesc);
+      }
       return compare(a.items[key].value, b.items[key].value, isDesc);
     });
   }
 }
 
+function compareNative(a: number | Date, b: number | Date, isDesc: boolean): number {
+  let result: number = 0;
+  if (a > b) result = 1;
+  else result = -1;
+  return result * (isDesc ? -1 : 1);
+}
+
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
 function compare(a: Value, b: Value, isDesc: boolean): number {
-  let compare: number = 0;
+  let result: number = 0;
   if (a.hasNumberValue() && b.hasNumberValue()) {
-    compare = a.getNumberValue() < b.getNumberValue() ? -1 : 1;
+    result = a.getNumberValue() < b.getNumberValue() ? -1 : 1;
   }
   if (a.hasStringValue() && b.hasStringValue()) {
-    compare = a.getStringValue() < b.getStringValue() ? -1 : 1;
+    result = a.getStringValue() < b.getStringValue() ? -1 : 1;
   }
-  return compare * (isDesc ? -1 : 1);
+  return result * (isDesc ? -1 : 1);
 }

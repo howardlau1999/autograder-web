@@ -4,13 +4,13 @@
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
       <!-- Id Column -->
       <ng-container matColumnDef="rank">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>排序</th>
-        <td *matCellDef="let row; index as i" mat-cell>{{ i + 1 }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>名次</th>
+        <td *matCellDef="let row; index as i" mat-cell>{{ row.rank }}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>昵称</th>
+        <th *matHeaderCellDef mat-header-cell>昵称</th>
         <td *matCellDef="let row" mat-cell>{{ row.name }}</td>
       </ng-container>
 
@@ -26,8 +26,19 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="submittedAt">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>提交时间</th>
+        <td *matCellDef="let row" mat-cell>{{ row.submittedAt | date: 'YYYY-MM-dd HH:mm:ss' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="submissionId">
+        <th *matHeaderCellDef mat-header-cell>提交 ID</th>
+        <td *matCellDef="let row" mat-cell>{{ row.submissionId }}</td>
+      </ng-container>
+
       <tr *matHeaderRowDef="displayedColumns.concat((columns$ | async) || [])" mat-header-row></tr>
       <tr
+        [class.is-self]="row.isSelf"
         *matRowDef="let row; index as i; columns: displayedColumns.concat((columns$ | async) || [])"
         mat-row
       ></tr>

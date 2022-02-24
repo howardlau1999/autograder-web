@@ -364,6 +364,15 @@ type AutograderServiceInspectUserSubmissionHistory = {
   readonly responseType: typeof api_pb.InspectUserSubmissionHistoryResponse;
 };
 
+type AutograderServiceActivateSubmission = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.ActivateSubmissionRequest;
+  readonly responseType: typeof api_pb.ActivateSubmissionResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -406,6 +415,7 @@ export class AutograderService {
   static readonly ChangeAllowsJoinCourse: AutograderServiceChangeAllowsJoinCourse;
   static readonly InspectAllSubmissionsInAssignment: AutograderServiceInspectAllSubmissionsInAssignment;
   static readonly InspectUserSubmissionHistory: AutograderServiceInspectUserSubmissionHistory;
+  static readonly ActivateSubmission: AutograderServiceActivateSubmission;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -791,6 +801,15 @@ export class AutograderServiceClient {
   inspectUserSubmissionHistory(
     requestMessage: api_pb.InspectUserSubmissionHistoryRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.InspectUserSubmissionHistoryResponse|null) => void
+  ): UnaryResponse;
+  activateSubmission(
+    requestMessage: api_pb.ActivateSubmissionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ActivateSubmissionResponse|null) => void
+  ): UnaryResponse;
+  activateSubmission(
+    requestMessage: api_pb.ActivateSubmissionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ActivateSubmissionResponse|null) => void
   ): UnaryResponse;
 }
 

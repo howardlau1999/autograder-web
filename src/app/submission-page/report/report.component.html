@@ -2,6 +2,29 @@
 <div *ngIf="report$ | async as report; else errorMsg" class="report-container">
   <p *ngIf="report.getInternalError()">发生内部错误（错误码：{{ report.getInternalError() }}）</p>
   <mat-accordion class="testcase-accordion" multi>
+    <mat-expansion-panel *ngIf="report.getLeaderboardList()?.length">
+      <mat-expansion-panel-header> 排行榜分数</mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let item of report.getLeaderboardList()">
+          {{ item.getName() }}
+          {{
+            item.getValue()?.hasNumberValue()
+              ? item.getValue()?.getNumberValue()
+              : item.getValue()?.getStringValue()
+          }}
+        </mat-list-item>
+      </mat-list>
+      <mat-action-row class="attachment">
+        <button
+          (click)="activateSubmission()"
+          matTooltip="使用该分数参与排行榜排行"
+          color="accent"
+          mat-flat-button
+        >
+          提交排行
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
     <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
         <mat-panel-title> 测试输出</mat-panel-title>

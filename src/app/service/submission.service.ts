@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
+import { catchError, Observable, of } from 'rxjs';
+import { Either, left, right } from 'fp-ts/Either';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +35,14 @@ export class SubmissionService {
     return `${
       environment.serverHost
     }/AutograderService/FileDownload/${filename}?token=${encodeURIComponent(token)}`;
+  }
+
+  activateSubmission(submissionId: number): Observable<Either<string, boolean>> {
+    return this.apiService.activateSubmission(submissionId).pipe(
+      map((resp) => right(resp.getActivated())),
+      catchError(({ message }) => {
+        return of(left(message));
+      }),
+    );
   }
 }

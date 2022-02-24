@@ -33,7 +33,6 @@ goog.exportSymbol('proto.CourseMember', null, global);
 goog.exportSymbol('proto.CourseRole', null, global);
 goog.exportSymbol('proto.LeaderboardEntry', null, global);
 goog.exportSymbol('proto.LeaderboardItem', null, global);
-goog.exportSymbol('proto.LeaderboardItem.Order', null, global);
 goog.exportSymbol('proto.Manifest', null, global);
 goog.exportSymbol('proto.ManifestMetadata', null, global);
 goog.exportSymbol('proto.Mergeable', null, global);
@@ -2263,7 +2262,8 @@ proto.LeaderboardItem.toObject = function(includeInstance, msg) {
   var f, obj = {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
     value: (f = msg.getValue()) && google_protobuf_struct_pb.Value.toObject(includeInstance, f),
-    order: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    isDesc: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2310,7 +2310,11 @@ proto.LeaderboardItem.deserializeBinaryFromReader = function(msg, reader) {
       msg.setValue(value);
       break;
     case 3:
-      var value = /** @type {!proto.LeaderboardItem.Order} */ (reader.readEnum());
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDesc(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setOrder(value);
       break;
     default:
@@ -2357,23 +2361,22 @@ proto.LeaderboardItem.serializeBinaryToWriter = function(message, writer) {
       google_protobuf_struct_pb.Value.serializeBinaryToWriter
     );
   }
-  f = message.getOrder();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getIsDesc();
+  if (f) {
+    writer.writeBool(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeInt64(
+      4,
       f
     );
   }
 };
 
-
-/**
- * @enum {number}
- */
-proto.LeaderboardItem.Order = {
-  ASC: 0,
-  DESC: 1
-};
 
 /**
  * optional string name = 1;
@@ -2431,20 +2434,38 @@ proto.LeaderboardItem.prototype.hasValue = function() {
 
 
 /**
- * optional Order order = 3;
- * @return {!proto.LeaderboardItem.Order}
+ * optional bool is_desc = 3;
+ * @return {boolean}
  */
-proto.LeaderboardItem.prototype.getOrder = function() {
-  return /** @type {!proto.LeaderboardItem.Order} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.LeaderboardItem.prototype.getIsDesc = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
 };
 
 
 /**
- * @param {!proto.LeaderboardItem.Order} value
+ * @param {boolean} value
+ * @return {!proto.LeaderboardItem} returns this
+ */
+proto.LeaderboardItem.prototype.setIsDesc = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional int64 order = 4;
+ * @return {number}
+ */
+proto.LeaderboardItem.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
  * @return {!proto.LeaderboardItem} returns this
  */
 proto.LeaderboardItem.prototype.setOrder = function(value) {
-  return jspb.Message.setProto3EnumField(this, 3, value);
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
@@ -2491,7 +2512,8 @@ proto.LeaderboardEntry.toObject = function(includeInstance, msg) {
     nickname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     itemsList: jspb.Message.toObjectList(msg.getItemsList(),
     proto.LeaderboardItem.toObject, includeInstance),
-    userId: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    userId: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    submittedAt: (f = msg.getSubmittedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2544,6 +2566,11 @@ proto.LeaderboardEntry.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setUserId(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setSubmittedAt(value);
       break;
     default:
       reader.skipField();
@@ -2601,6 +2628,14 @@ proto.LeaderboardEntry.serializeBinaryToWriter = function(message, writer) {
     writer.writeUint64(
       4,
       f
+    );
+  }
+  f = message.getSubmittedAt();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -2695,6 +2730,43 @@ proto.LeaderboardEntry.prototype.getUserId = function() {
  */
 proto.LeaderboardEntry.prototype.setUserId = function(value) {
   return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp submitted_at = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.LeaderboardEntry.prototype.getSubmittedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.LeaderboardEntry} returns this
+*/
+proto.LeaderboardEntry.prototype.setSubmittedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.LeaderboardEntry} returns this
+ */
+proto.LeaderboardEntry.prototype.clearSubmittedAt = function() {
+  return this.setSubmittedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.LeaderboardEntry.prototype.hasSubmittedAt = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 

@@ -260,8 +260,11 @@ export class LeaderboardItem extends jspb.Message {
   getValue(): google_protobuf_struct_pb.Value | undefined;
   setValue(value?: google_protobuf_struct_pb.Value): void;
 
-  getOrder(): LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap];
-  setOrder(value: LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap]): void;
+  getIsDesc(): boolean;
+  setIsDesc(value: boolean): void;
+
+  getOrder(): number;
+  setOrder(value: number): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardItem.AsObject;
@@ -277,15 +280,9 @@ export namespace LeaderboardItem {
   export type AsObject = {
     name: string,
     value?: google_protobuf_struct_pb.Value.AsObject,
-    order: LeaderboardItem.OrderMap[keyof LeaderboardItem.OrderMap],
+    isDesc: boolean,
+    order: number,
   }
-
-  export interface OrderMap {
-    ASC: 0;
-    DESC: 1;
-  }
-
-  export const Order: OrderMap;
 }
 
 export class LeaderboardEntry extends jspb.Message {
@@ -303,6 +300,11 @@ export class LeaderboardEntry extends jspb.Message {
   getUserId(): number;
   setUserId(value: number): void;
 
+  hasSubmittedAt(): boolean;
+  clearSubmittedAt(): void;
+  getSubmittedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setSubmittedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardEntry.AsObject;
   static toObject(includeInstance: boolean, msg: LeaderboardEntry): LeaderboardEntry.AsObject;
@@ -319,6 +321,7 @@ export namespace LeaderboardEntry {
     nickname: string,
     itemsList: Array<LeaderboardItem.AsObject>,
     userId: number,
+    submittedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 }
 

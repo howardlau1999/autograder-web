@@ -703,6 +703,46 @@ export namespace CreateSubmissionResponse {
   }
 }
 
+export class ActivateSubmissionRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ActivateSubmissionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ActivateSubmissionRequest): ActivateSubmissionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ActivateSubmissionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ActivateSubmissionRequest;
+  static deserializeBinaryFromReader(message: ActivateSubmissionRequest, reader: jspb.BinaryReader): ActivateSubmissionRequest;
+}
+
+export namespace ActivateSubmissionRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class ActivateSubmissionResponse extends jspb.Message {
+  getActivated(): boolean;
+  setActivated(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ActivateSubmissionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ActivateSubmissionResponse): ActivateSubmissionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ActivateSubmissionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ActivateSubmissionResponse;
+  static deserializeBinaryFromReader(message: ActivateSubmissionResponse, reader: jspb.BinaryReader): ActivateSubmissionResponse;
+}
+
+export namespace ActivateSubmissionResponse {
+  export type AsObject = {
+    activated: boolean,
+  }
+}
+
 export class UploadTokenPayload extends jspb.Message {
   getUserId(): number;
   setUserId(value: number): void;

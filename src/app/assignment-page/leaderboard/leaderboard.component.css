@@ -10,3 +10,7 @@
 .leaderboard-container {
   padding: 20px;
 }
+
+.is-self {
+  font-weight: bold;
+}

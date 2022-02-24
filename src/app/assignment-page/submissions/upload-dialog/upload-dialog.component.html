@@ -17,7 +17,7 @@
   type="file"
 />
 <p class="counter">已上传/出错/总计 {{ this.uploaded }} / {{ this.errored }} / {{ this.total }}</p>
-<mat-dialog-content style="max-width: 60vw; min-width: 40vw; max-height: 50vh">
+<mat-dialog-content style="max-width: 60vw; min-width: 40vw; max-height: 40vh">
   <app-files-table
     (fileDelete)="onFileDelete($event)"
     [paginator]="paginator"

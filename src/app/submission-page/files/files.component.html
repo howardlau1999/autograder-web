@@ -59,7 +59,6 @@
                 </div>
                 <ng-template #markdownPreviewer>
                   <markdown
-                    katex
                     [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
                   ></markdown>
                 </ng-template>

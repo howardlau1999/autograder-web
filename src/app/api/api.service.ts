@@ -6,6 +6,7 @@ import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { grpc } from '@improbable-eng/grpc-web';
 import { AutograderService } from './proto/api_pb_service';
 import {
+  ActivateSubmissionRequest,
   AddCourseMembersRequest,
   BindGithubRequest,
   CanWriteCourseRequest,
@@ -442,5 +443,11 @@ export class ApiService {
     request.setUserId(userId);
     request.setAssignmentId(assignmentId);
     return this.unary(AutograderService.InspectUserSubmissionHistory, request);
+  }
+
+  activateSubmission(submissionId: number) {
+    const request = new ActivateSubmissionRequest();
+    request.setSubmissionId(submissionId);
+    return this.unary(AutograderService.ActivateSubmission, request);
   }
 }
