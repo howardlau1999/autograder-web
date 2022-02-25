@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-vcd-viewer-page',
@@ -6,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vcd-viewer-page.component.css'],
 })
 export class VcdViewerPageComponent implements OnInit {
-  constructor() {}
+  url$: Observable<string>;
+
+  constructor(private route: ActivatedRoute) {
+    this.url$ = this.route.queryParams.pipe(
+      map((params) => {
+        return params['url'];
+      }),
+    );
+  }
 
   ngOnInit(): void {}
 }

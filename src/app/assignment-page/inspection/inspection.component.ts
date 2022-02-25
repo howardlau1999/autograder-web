@@ -1,21 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, Subscription, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { AssignmentService } from '../../service/assignment.service';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-inspection',
   templateUrl: './inspection.component.html',
   styleUrls: ['./inspection.component.css'],
 })
-export class InspectionComponent implements OnInit {
+export class InspectionComponent implements OnInit, OnDestroy {
   assignmentId$: Observable<number>;
 
   userId$: Observable<undefined | number>;
 
   submissionsRefresher$: Subject<null> = new Subject<null>();
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  regradeAssignmentSubscription?: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private assignmentService: AssignmentService,
+    private notificationService: NotificationService,
+  ) {
     this.assignmentId$ = this.route.parent!.paramMap.pipe(
       map((params) => {
         return Number.parseInt(params.get('assignmentId') || '0', 10);
@@ -40,5 +49,22 @@ export class InspectionComponent implements OnInit {
   onSubmissionChange(submissionId: number) {
     const commands: any[] = ['submissions', submissionId];
     this.router.navigate(commands, { relativeTo: this.route.parent });
+  }
+
+  ngOnDestroy() {
+    this.regradeAssignmentSubscription?.unsubscribe();
+  }
+
+  regradeAssignment() {
+    this.regradeAssignmentSubscription?.unsubscribe();
+    this.regradeAssignmentSubscription = this.assignmentId$
+      .pipe(
+        switchMap((assignmentId) => {
+          return this.assignmentService.regradeAssignment(assignmentId);
+        }),
+      )
+      .subscribe(() => {
+        this.notificationService.showSnackBar('提交重评成功');
+      });
   }
 }

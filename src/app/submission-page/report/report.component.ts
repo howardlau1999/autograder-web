@@ -24,6 +24,10 @@ export class ReportComponent implements OnInit {
 
   error: string | null = null;
 
+  submissionId: number = 0;
+
+  downloadSubscription?: Subscription;
+
   @ViewChildren('testcase', { read: ElementRef }) renderedTestcases!: QueryList<ElementRef>;
 
   isSubmissionFailed(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
@@ -67,6 +71,7 @@ export class ReportComponent implements OnInit {
     this.report$ = this.route.parent?.paramMap.pipe(
       switchMap((params) => {
         const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
+        this.submissionId = submissionId;
         return this.apiService.getSubmissionReport(submissionId).pipe(
           catchError(({ message }) => {
             this.error = message;
@@ -89,6 +94,29 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  onDownloadOutputFileClicked(filename: string) {
+    this.downloadSubscription?.unsubscribe();
+    this.downloadSubscription = this.submissionService
+      .downloadOutputFile(this.submissionId, filename)
+      .subscribe((resp) => {
+        window.open(this.submissionService.getDownloadURL(filename, resp.getToken()), '_blank');
+      });
+  }
+
+  onViewVCDClicked(filename: string) {
+    this.downloadSubscription?.unsubscribe();
+    this.downloadSubscription = this.submissionService
+      .downloadOutputFile(this.submissionId, filename)
+      .subscribe((resp) => {
+        window.open(
+          `/vcd?url=${encodeURIComponent(
+            this.submissionService.getDownloadURL(filename, resp.getToken()),
+          )}`,
+          '_blank',
+        );
+      });
+  }
 
   scrollTo(index: number) {
     this.renderedTestcases.toArray()[index].nativeElement.scrollIntoView();

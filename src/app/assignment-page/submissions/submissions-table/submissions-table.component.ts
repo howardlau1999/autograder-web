@@ -12,6 +12,7 @@ import {
   BehaviorSubject,
   catchError,
   mergeMap,
+  mergeWith,
   Observable,
   of,
   Subject,
@@ -57,7 +58,11 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   downloadSubmissionSubscription?: Subscription;
 
+  regradeSubmissionSubscription?: Subscription;
+
   @Output() submissionChange = new EventEmitter<number>();
+
+  @Input() showRegrade?: boolean;
 
   @Input() set assignmentId(value: number) {
     this.assignmentId$.next(value);
@@ -76,12 +81,12 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   @Input() submissionsRefresher$!: Observable<null>;
 
+  internalSubmissionRefresher$: Subject<null> = new Subject<null>();
+
   constructor(
     private notificationService: NotificationService,
     private assignmentService: AssignmentService,
     private submissionService: SubmissionService,
-    private router: Router,
-    private route: ActivatedRoute,
   ) {
     this.submissions$ = this.connect();
     this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.submissions$);
@@ -99,7 +104,9 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
               ? this.submissionService.inspectUserSubmissionHistory(this.userId_, assignmentId)
               : this.submissionService.getSubmissionsInAssignment(assignmentId);
           }),
-          repeatWhen(() => this.submissionsRefresher$),
+          repeatWhen(() =>
+            this.submissionsRefresher$.pipe(mergeWith(this.internalSubmissionRefresher$)),
+          ),
         ),
       ),
       tap(() => {
@@ -121,6 +128,19 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.downloadSubmissionSubscription?.unsubscribe();
+    this.regradeSubmissionSubscription?.unsubscribe();
+  }
+
+  regradeSubmission(event: MouseEvent, submissionId: number): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.regradeSubmissionSubscription?.unsubscribe();
+    this.regradeSubmissionSubscription = this.submissionService
+      .regradeSubmission(submissionId)
+      .subscribe(() => {
+        this.internalSubmissionRefresher$.next(null);
+        this.notificationService.showSnackBar('提交重评成功');
+      });
   }
 
   downloadSubmission(event: MouseEvent, submissionId: number): void {

@@ -1372,6 +1372,9 @@ export class InitDownloadRequest extends jspb.Message {
   getIsDirectory(): boolean;
   setIsDirectory(value: boolean): void;
 
+  getIsOutput(): boolean;
+  setIsOutput(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitDownloadRequest.AsObject;
   static toObject(includeInstance: boolean, msg: InitDownloadRequest): InitDownloadRequest.AsObject;
@@ -1387,6 +1390,7 @@ export namespace InitDownloadRequest {
     submissionId: number,
     filename: string,
     isDirectory: boolean,
+    isOutput: boolean,
   }
 }
 
@@ -2475,6 +2479,78 @@ export class InspectUserSubmissionHistoryResponse extends jspb.Message {
 export namespace InspectUserSubmissionHistoryResponse {
   export type AsObject = {
     submissionsList: Array<SubmissionInfo.AsObject>,
+  }
+}
+
+export class RegradeSubmissionRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RegradeSubmissionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RegradeSubmissionRequest): RegradeSubmissionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RegradeSubmissionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RegradeSubmissionRequest;
+  static deserializeBinaryFromReader(message: RegradeSubmissionRequest, reader: jspb.BinaryReader): RegradeSubmissionRequest;
+}
+
+export namespace RegradeSubmissionRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class RegradeSubmissionResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RegradeSubmissionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RegradeSubmissionResponse): RegradeSubmissionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RegradeSubmissionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RegradeSubmissionResponse;
+  static deserializeBinaryFromReader(message: RegradeSubmissionResponse, reader: jspb.BinaryReader): RegradeSubmissionResponse;
+}
+
+export namespace RegradeSubmissionResponse {
+  export type AsObject = {
+  }
+}
+
+export class RegradeAssignmentRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RegradeAssignmentRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RegradeAssignmentRequest): RegradeAssignmentRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RegradeAssignmentRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RegradeAssignmentRequest;
+  static deserializeBinaryFromReader(message: RegradeAssignmentRequest, reader: jspb.BinaryReader): RegradeAssignmentRequest;
+}
+
+export namespace RegradeAssignmentRequest {
+  export type AsObject = {
+    assignmentId: number,
+  }
+}
+
+export class RegradeAssignmentResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RegradeAssignmentResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RegradeAssignmentResponse): RegradeAssignmentResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RegradeAssignmentResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RegradeAssignmentResponse;
+  static deserializeBinaryFromReader(message: RegradeAssignmentResponse, reader: jspb.BinaryReader): RegradeAssignmentResponse;
+}
+
+export namespace RegradeAssignmentResponse {
+  export type AsObject = {
   }
 }
 

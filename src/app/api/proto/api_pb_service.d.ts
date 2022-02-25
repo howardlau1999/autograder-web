@@ -373,6 +373,24 @@ type AutograderServiceActivateSubmission = {
   readonly responseType: typeof api_pb.ActivateSubmissionResponse;
 };
 
+type AutograderServiceRegradeSubmission = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RegradeSubmissionRequest;
+  readonly responseType: typeof api_pb.RegradeSubmissionResponse;
+};
+
+type AutograderServiceRegradeAssignment = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RegradeAssignmentRequest;
+  readonly responseType: typeof api_pb.RegradeAssignmentResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -416,6 +434,8 @@ export class AutograderService {
   static readonly InspectAllSubmissionsInAssignment: AutograderServiceInspectAllSubmissionsInAssignment;
   static readonly InspectUserSubmissionHistory: AutograderServiceInspectUserSubmissionHistory;
   static readonly ActivateSubmission: AutograderServiceActivateSubmission;
+  static readonly RegradeSubmission: AutograderServiceRegradeSubmission;
+  static readonly RegradeAssignment: AutograderServiceRegradeAssignment;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -810,6 +830,24 @@ export class AutograderServiceClient {
   activateSubmission(
     requestMessage: api_pb.ActivateSubmissionRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.ActivateSubmissionResponse|null) => void
+  ): UnaryResponse;
+  regradeSubmission(
+    requestMessage: api_pb.RegradeSubmissionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RegradeSubmissionResponse|null) => void
+  ): UnaryResponse;
+  regradeSubmission(
+    requestMessage: api_pb.RegradeSubmissionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RegradeSubmissionResponse|null) => void
+  ): UnaryResponse;
+  regradeAssignment(
+    requestMessage: api_pb.RegradeAssignmentRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RegradeAssignmentResponse|null) => void
+  ): UnaryResponse;
+  regradeAssignment(
+    requestMessage: api_pb.RegradeAssignmentRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RegradeAssignmentResponse|null) => void
   ): UnaryResponse;
 }
 

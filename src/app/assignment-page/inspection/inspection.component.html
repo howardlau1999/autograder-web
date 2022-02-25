@@ -1,5 +1,8 @@
 <div class="submissions-container">
   <h2>查阅提交</h2>
+  <button mat-raised-button (click)="regradeAssignment()">
+    <mat-icon>cached</mat-icon> 重评所有提交
+  </button>
   <mat-card class="inspection-table-card">
     <mat-card-content>
       <app-inspection-table
@@ -12,6 +15,7 @@
   <mat-card class="inspection-table-card">
     <mat-card-content>
       <app-submissions-table
+        [showRegrade]="true"
         (submissionChange)="onSubmissionChange($event)"
         [userId]="(userId$ | async) || undefined"
         [assignmentId]="(assignmentId$ | async) || 0"

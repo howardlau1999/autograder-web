@@ -41,15 +41,26 @@
   <ng-container matColumnDef="operations">
     <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
     <td *matCellDef="let submission" mat-cell>
-      <button (click)="onRowClicked(submission.getSubmissionId())" i18n="view" mat-icon-button>
+      <button (click)="onRowClicked(submission.getSubmissionId())" matTooltip="查看报告" i18n="view" mat-icon-button>
         <mat-icon>description</mat-icon>
       </button>
       <button
         i18n="download"
         (click)="downloadSubmission($event, submission.getSubmissionId())"
         mat-icon-button
+        matTooltip="下载提交"
       >
         <mat-icon>download</mat-icon>
+      </button>
+      <button
+        *ngIf="showRegrade"
+        i18n="retry"
+        matTooltip="重评提交"
+        (click)="regradeSubmission($event, submission.getSubmissionId())"
+        mat-icon-button
+        [disabled]="isSubmissionRunning(submission.getStatus())"
+      >
+        <mat-icon>cached</mat-icon>
       </button>
     </td>
   </ng-container>

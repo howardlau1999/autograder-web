@@ -35,6 +35,8 @@ import {
   InspectUserSubmissionHistoryRequest,
   JoinCourseRequest,
   LoginRequest,
+  RegradeAssignmentRequest,
+  RegradeSubmissionRequest,
   RemoveCourseMembersRequest,
   RequestPasswordResetRequest,
   RequestSignUpTokenRequest,
@@ -186,6 +188,7 @@ export class ApiService {
     return new Observable<SubscribeSubmissionResponse>((subscriber) => {
       return grpc.invoke(AutograderService.SubscribeSubmission, {
         host: this.host,
+        transport: grpc.WebsocketTransport(),
         onHeaders: (headers: grpc.Metadata) => {
           if (headers.has('token')) {
             this.tokenService.setToken(headers.get('token')[0]);
@@ -271,11 +274,17 @@ export class ApiService {
     return this.unary(AutograderService.CreateAssignment, request);
   }
 
-  initDownload(submissionId: number, filename: string, isDirectory: boolean = false) {
+  initDownload(
+    submissionId: number,
+    filename: string,
+    isDirectory: boolean = false,
+    isOutput: boolean = false,
+  ) {
     const request = new InitDownloadRequest();
     request.setFilename(filename);
     request.setSubmissionId(submissionId);
     request.setIsDirectory(isDirectory);
+    request.setIsOutput(isOutput);
     return this.unary(AutograderService.InitDownload, request);
   }
 
@@ -449,5 +458,17 @@ export class ApiService {
     const request = new ActivateSubmissionRequest();
     request.setSubmissionId(submissionId);
     return this.unary(AutograderService.ActivateSubmission, request);
+  }
+
+  regradeSubmission(submissionId: number) {
+    const request = new RegradeSubmissionRequest();
+    request.setSubmissionId(submissionId);
+    return this.unary(AutograderService.RegradeSubmission, request);
+  }
+
+  regradeAssignment(assignmentId: number) {
+    const request = new RegradeAssignmentRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(AutograderService.RegradeAssignment, request);
   }
 }

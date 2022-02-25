@@ -11,7 +11,8 @@
             item.getValue()?.hasNumberValue()
               ? item.getValue()?.getNumberValue()
               : item.getValue()?.getStringValue()
-          }} &nbsp;
+          }}
+          &nbsp;
           {{ item.getSuffix() }}
         </mat-list-item>
       </mat-list>
@@ -50,10 +51,22 @@
         <pre class="testcase-output">{{ testcase.getOutput() }}</pre>
       </code>
       <mat-action-row *ngIf="testcase.getOutputPath()" class="attachment">
-        <button matTooltip="该测试含有输出附件" mat-flat-button>
-          <mat-icon>file_present</mat-icon>
-          {{ testcase.getOutputPath() }}
+        <mat-icon>file_present</mat-icon>
+        {{ testcase.getOutputPath() }}
+        <button
+          mat-icon-button
+          matTooltip="下载输出附件"
+          (click)="onDownloadOutputFileClicked(testcase.getOutputPath())"
+        >
           <mat-icon>download</mat-icon>
+        </button>
+        <button
+          matTooltip="在线预览波形图"
+          *ngIf="testcase.getOutputPath().endsWith('.vcd')"
+          (click)="onViewVCDClicked(testcase.getOutputPath())"
+          mat-icon-button
+        >
+          <mat-icon>water</mat-icon>
         </button>
       </mat-action-row>
     </mat-expansion-panel>

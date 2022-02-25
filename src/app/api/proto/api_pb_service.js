@@ -379,6 +379,24 @@ AutograderService.ActivateSubmission = {
   responseType: api_pb.ActivateSubmissionResponse
 };
 
+AutograderService.RegradeSubmission = {
+  methodName: "RegradeSubmission",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.RegradeSubmissionRequest,
+  responseType: api_pb.RegradeSubmissionResponse
+};
+
+AutograderService.RegradeAssignment = {
+  methodName: "RegradeAssignment",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.RegradeAssignmentRequest,
+  responseType: api_pb.RegradeAssignmentResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1639,6 +1657,68 @@ AutograderServiceClient.prototype.activateSubmission = function activateSubmissi
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.ActivateSubmission, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.regradeSubmission = function regradeSubmission(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.RegradeSubmission, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.regradeAssignment = function regradeAssignment(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.RegradeAssignment, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

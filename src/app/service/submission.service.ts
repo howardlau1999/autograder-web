@@ -31,6 +31,14 @@ export class SubmissionService {
     return this.apiService.initDownload(submissionId, '', true);
   }
 
+  regradeSubmission(submissionId: number) {
+    return this.apiService.regradeSubmission(submissionId);
+  }
+
+  downloadOutputFile(submissionId: number, filename: string) {
+    return this.apiService.initDownload(submissionId, filename, false, true);
+  }
+
   getDownloadURL(filename: string, token: string) {
     return `${
       environment.serverHost

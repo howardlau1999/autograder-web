@@ -36,6 +36,10 @@ export class AssignmentService {
     );
   }
 
+  regradeAssignment(assignmentId: number) {
+    return this.apiService.regradeAssignment(assignmentId);
+  }
+
   createProgrammingAssignment(
     courseId: number,
     name: string,
