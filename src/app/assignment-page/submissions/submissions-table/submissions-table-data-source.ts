@@ -28,23 +28,38 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
 
   sort: MatSort | undefined;
 
-  runningSubmissions: Subscription[] = [];
+  runningSubmissions: { [id: string]: Subscription } = {};
 
   constructor(submissionService: SubmissionService, data$: Observable<SubmissionsItem[]>) {
     super();
     this.data$ = data$.pipe(
       tap((data) => {
         this.data = data;
-        this.runningSubmissions.forEach((sub) => sub.unsubscribe());
-        this.runningSubmissions = data
-          .filter((submission) => submission.getStatus() === SubmissionStatus.RUNNING)
-          .map((submission) => {
-            return submissionService
-              .subscribeSubmission(submission.getSubmissionId())
+        Object.keys(this.runningSubmissions).forEach((id) => {
+          this.runningSubmissions[id].unsubscribe();
+        });
+        this.runningSubmissions = {};
+        data
+          .filter(
+            (submission) =>
+              submission.getStatus() === SubmissionStatus.RUNNING ||
+              submission.getStatus() === SubmissionStatus.QUEUED,
+          )
+          .forEach((submission) => {
+            const submissionId = submission.getSubmissionId();
+            this.runningSubmissions[submissionId] = submissionService
+              .subscribeSubmission(submissionId)
               .subscribe((resp) => {
                 submission.setStatus(resp.getStatus());
                 submission.setScore(resp.getScore());
                 submission.setMaxScore(resp.getMaxscore());
+                if (
+                  submission.getStatus() === SubmissionStatus.FINISHED ||
+                  submission.getStatus() === SubmissionStatus.FAILED
+                ) {
+                  this.runningSubmissions[submissionId].unsubscribe();
+                  delete this.runningSubmissions[submissionId];
+                }
               });
           });
       }),
@@ -74,7 +89,7 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
    * any open connections or free any held resources that were set up during connect.
    */
   disconnect(): void {
-    this.runningSubmissions.forEach((sub) => sub.unsubscribe());
+    Object.keys(this.runningSubmissions).forEach((id) => this.runningSubmissions[id].unsubscribe());
   }
 
   /**

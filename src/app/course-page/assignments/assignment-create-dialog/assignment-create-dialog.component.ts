@@ -41,6 +41,13 @@ export class AssignmentCreateDialogComponent implements OnInit {
       releaseDate: new FormControl(DateTime.now()),
       dueDate: new FormControl(DateTime.now().plus({ days: 7 })),
       dockerImage: new FormControl('', [Validators.required]),
+      cpu: new FormControl(1, [Validators.required, Validators.min(0.5), Validators.max(8)]),
+      memory: new FormControl(4096, [
+        Validators.required,
+        Validators.min(128),
+        Validators.max(8192),
+      ]),
+      timeout: new FormControl(600, [Validators.required, Validators.min(1), Validators.max(6000)]),
       description: new FormControl('', [Validators.required]),
     },
     { validators: [AssignmentDateValidator] },
@@ -58,7 +65,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onConfirmClicked() {
-    const { name, releaseDate, dueDate, description, dockerImage } =
+    const { name, releaseDate, dueDate, description, dockerImage, cpu, memory } =
       this.programmingAssignmentForm.value;
     this.loading = true;
     this.assignmentService
@@ -69,6 +76,8 @@ export class AssignmentCreateDialogComponent implements OnInit {
         dueDate,
         description,
         dockerImage,
+        cpu,
+        memory,
       )
       .subscribe((result) => {
         this.loading = false;

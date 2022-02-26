@@ -1670,7 +1670,10 @@ proto.ProgrammingAssignmentConfig.prototype.toObject = function(opt_includeInsta
 proto.ProgrammingAssignmentConfig.toObject = function(includeInstance, msg) {
   var f, obj = {
     image: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    fullScore: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    fullScore: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    cpu: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    memory: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    timeout: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -1715,6 +1718,18 @@ proto.ProgrammingAssignmentConfig.deserializeBinaryFromReader = function(msg, re
       var value = /** @type {number} */ (reader.readUint64());
       msg.setFullScore(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setCpu(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setMemory(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setTimeout(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1758,6 +1773,27 @@ proto.ProgrammingAssignmentConfig.serializeBinaryToWriter = function(message, wr
       f
     );
   }
+  f = message.getCpu();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      3,
+      f
+    );
+  }
+  f = message.getMemory();
+  if (f !== 0) {
+    writer.writeInt64(
+      4,
+      f
+    );
+  }
+  f = message.getTimeout();
+  if (f !== 0) {
+    writer.writeInt64(
+      5,
+      f
+    );
+  }
 };
 
 
@@ -1794,6 +1830,60 @@ proto.ProgrammingAssignmentConfig.prototype.getFullScore = function() {
  */
 proto.ProgrammingAssignmentConfig.prototype.setFullScore = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional float cpu = 3;
+ * @return {number}
+ */
+proto.ProgrammingAssignmentConfig.prototype.getCpu = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProgrammingAssignmentConfig} returns this
+ */
+proto.ProgrammingAssignmentConfig.prototype.setCpu = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional int64 memory = 4;
+ * @return {number}
+ */
+proto.ProgrammingAssignmentConfig.prototype.getMemory = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProgrammingAssignmentConfig} returns this
+ */
+proto.ProgrammingAssignmentConfig.prototype.setMemory = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional int64 timeout = 5;
+ * @return {number}
+ */
+proto.ProgrammingAssignmentConfig.prototype.getTimeout = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProgrammingAssignmentConfig} returns this
+ */
+proto.ProgrammingAssignmentConfig.prototype.setTimeout = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 

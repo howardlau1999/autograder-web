@@ -33,6 +33,20 @@ export class AssignmentEditDialogComponent implements OnInit {
     dockerImage: new FormControl(this.data.assignment.getProgrammingConfig()?.getImage(), [
       Validators.required,
     ]),
+    cpu: new FormControl(this.data.assignment.getProgrammingConfig()?.getCpu(), [
+      Validators.required,
+      Validators.min(0.5),
+      Validators.max(8),
+    ]),
+    memory: new FormControl(
+      Math.round((this.data.assignment.getProgrammingConfig()?.getMemory() || 0) / 1024 / 1024),
+      [Validators.required, Validators.min(128), Validators.max(8192)],
+    ),
+    timeout: new FormControl(this.data.assignment.getProgrammingConfig()?.getTimeout(), [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(6000),
+    ]),
     description: new FormControl(this.data.assignment.getDescription(), [Validators.required]),
   });
 
@@ -51,7 +65,7 @@ export class AssignmentEditDialogComponent implements OnInit {
 
   onConfirmClicked() {
     this.loading = true;
-    const { name, releaseDate, dueDate, description, dockerImage } =
+    const { name, releaseDate, dueDate, description, dockerImage, cpu, memory, timeout } =
       this.programmingAssignmentForm.value;
     const assignment = this.data.assignment.clone();
     assignment.setName(name);
@@ -59,6 +73,9 @@ export class AssignmentEditDialogComponent implements OnInit {
     assignment.setDueDate(Timestamp.fromDate(dueDate.toJSDate()));
     assignment.setDescription(description);
     assignment.getProgrammingConfig()?.setImage(dockerImage);
+    assignment.getProgrammingConfig()?.setCpu(cpu);
+    assignment.getProgrammingConfig()?.setMemory(memory * 1024 * 1024);
+    assignment.getProgrammingConfig()?.setTimeout(timeout);
     this.assignmentService
       .updateAssignment(this.data.assignmentId, assignment)
       .subscribe((result) => {

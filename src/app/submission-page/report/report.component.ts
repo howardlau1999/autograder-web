@@ -1,6 +1,15 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, mergeMap, Observable, of, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  mergeMap,
+  Observable,
+  of,
+  retryWhen,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -72,21 +81,25 @@ export class ReportComponent implements OnInit {
       switchMap((params) => {
         const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
         this.submissionId = submissionId;
-        return this.apiService.getSubmissionReport(submissionId).pipe(
-          catchError(({ message }) => {
-            this.error = message;
-            if (message === 'RUNNING') {
-              return this.apiService.subscribeSubmission(submissionId).pipe(
-                mergeMap(() => {
-                  this.error = null;
-                  return this.apiService.getSubmissionReport(submissionId);
-                }),
-              );
-            }
-            return of(new GetSubmissionReportResponse());
+        return this.submissionService.getSubmissionReport(submissionId).pipe(
+          retryWhen((error$) => {
+            return error$.pipe(
+              switchMap((error) => {
+                const { message } = error;
+                this.error = message;
+                if (message === 'RUNNING' || message === 'QUEUED') {
+                  return this.submissionService.subscribeSubmission(submissionId);
+                }
+                throw error;
+              }),
+            );
           }),
           map((resp) => {
-            return resp?.getReport();
+            return resp.getReport();
+          }),
+          catchError(({ message }) => {
+            this.notificationService.showSnackBar(`无法获取报告 ${message}`);
+            return of(undefined);
           }),
         );
       }),

@@ -190,6 +190,9 @@ export class ApiService {
       return grpc.invoke(AutograderService.SubscribeSubmission, {
         host: this.host,
         transport: grpc.WebsocketTransport(),
+        metadata: new grpc.Metadata({
+          authorization: `bearer ${this.tokenService.getToken()}`,
+        }),
         onHeaders: (headers: grpc.Metadata) => {
           if (headers.has('token')) {
             this.tokenService.setToken(headers.get('token')[0]);
@@ -208,6 +211,9 @@ export class ApiService {
             }
             subscriber.error(message);
             return;
+          }
+          if (!environment.production) {
+            console.log(`SubscribeSubmission ${submissionId} ended`);
           }
           subscriber.complete();
         },
@@ -261,6 +267,8 @@ export class ApiService {
     dueDate: DateTime,
     description: string,
     dockerImage: string,
+    cpu: number,
+    memory: number,
   ) {
     const request = new CreateAssignmentRequest();
     const programmingConfig = new ProgrammingAssignmentConfig();
@@ -271,6 +279,8 @@ export class ApiService {
     request.setReleaseDate(Timestamp.fromDate(releaseDate.toJSDate()));
     request.setDueDate(Timestamp.fromDate(dueDate.toJSDate()));
     programmingConfig.setImage(dockerImage);
+    programmingConfig.setCpu(cpu);
+    programmingConfig.setMemory(memory);
     request.setProgrammingConfig(programmingConfig);
     return this.unary(AutograderService.CreateAssignment, request);
   }

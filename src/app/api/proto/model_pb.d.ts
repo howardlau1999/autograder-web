@@ -174,6 +174,15 @@ export class ProgrammingAssignmentConfig extends jspb.Message {
   getFullScore(): number;
   setFullScore(value: number): void;
 
+  getCpu(): number;
+  setCpu(value: number): void;
+
+  getMemory(): number;
+  setMemory(value: number): void;
+
+  getTimeout(): number;
+  setTimeout(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProgrammingAssignmentConfig.AsObject;
   static toObject(includeInstance: boolean, msg: ProgrammingAssignmentConfig): ProgrammingAssignmentConfig.AsObject;
@@ -188,6 +197,9 @@ export namespace ProgrammingAssignmentConfig {
   export type AsObject = {
     image: string,
     fullScore: number,
+    cpu: number,
+    memory: number,
+    timeout: number,
   }
 }
 

@@ -31,6 +31,10 @@ export class SubmissionService {
     return this.apiService.initDownload(submissionId, '', true);
   }
 
+  getSubmissionReport(submissionId: number) {
+    return this.apiService.getSubmissionReport(submissionId);
+  }
+
   regradeSubmission(submissionId: number) {
     return this.apiService.regradeSubmission(submissionId);
   }

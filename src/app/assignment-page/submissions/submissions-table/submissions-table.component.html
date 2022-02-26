@@ -25,6 +25,8 @@
         <span *ngIf="isSubmissionFinished(submission.getStatus())">
           {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
         >
+        <span *ngIf="isSubmissionQueued(submission.getStatus())">排队中</span>
+        <span *ngIf="isSubmissionRunning(submission.getStatus())">运行中</span>
         <mat-progress-bar
           [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
           [value]="(submission.getScore() / submission.getMaxScore()) * 100"
@@ -41,7 +43,12 @@
   <ng-container matColumnDef="operations">
     <th *matHeaderCellDef i18n="operations" mat-header-cell>操作</th>
     <td *matCellDef="let submission" mat-cell>
-      <button (click)="onRowClicked(submission.getSubmissionId())" matTooltip="查看报告" i18n="view" mat-icon-button>
+      <button
+        (click)="onRowClicked(submission.getSubmissionId())"
+        matTooltip="查看报告"
+        i18n="view"
+        mat-icon-button
+      >
         <mat-icon>description</mat-icon>
       </button>
       <button

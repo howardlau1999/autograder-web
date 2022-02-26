@@ -34,6 +34,21 @@
           <input formControlName="dockerImage" matInput name="dockerImage" required />
         </mat-form-field>
         <mat-form-field>
+          <mat-label>CPU</mat-label>
+          <input formControlName="cpu" matInput type="number" name="cpu" required>
+          <mat-hint>设置运行最多可使用的 CPU 核心数（最小 0.5，最大 8）</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>内存</mat-label>
+          <input formControlName="memory" matInput type="number" name="memory" required>
+          <mat-hint>设置运行最多可使用的内存，单位 MB（最小 128，最大 8192）</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>超时</mat-label>
+          <input formControlName="timeout" matInput type="number" name="timeout" required>
+          <mat-hint>设置最多可运行的时间，单位秒（最小 1，最大 6000）</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
           <mat-label>作业描述</mat-label>
           <textarea formControlName="description" matInput name="description"></textarea>
         </mat-form-field>

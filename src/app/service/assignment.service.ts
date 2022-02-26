@@ -51,9 +51,20 @@ export class AssignmentService {
     dueDate: DateTime,
     description: string,
     dockerImage: string,
+    cpu: number,
+    memory: number,
   ): Observable<Either<FormError, CreateAssignmentResponse>> {
     return this.apiService
-      .createProgrammingAssignment(courseId, name, releaseDate, dueDate, description, dockerImage)
+      .createProgrammingAssignment(
+        courseId,
+        name,
+        releaseDate,
+        dueDate,
+        description,
+        dockerImage,
+        cpu,
+        memory * 1024 * 1024,
+      )
       .pipe(
         map((resp) => right(resp)),
         catchError(this.errorService.getFormError),

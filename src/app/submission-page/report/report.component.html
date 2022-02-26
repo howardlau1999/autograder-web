@@ -86,6 +86,10 @@
 <ng-template #errorMsg>
   <div [ngSwitch]="error" class="report-container">
     <div style="width: 100%">
+      <mat-card *ngSwitchCase="'QUEUED'">
+        <mat-card-title>测试排队中…</mat-card-title>
+        <p></p>
+      </mat-card>
       <mat-card *ngSwitchCase="'RUNNING'">
         <mat-card-title>测试运行中…</mat-card-title>
         <p></p>

@@ -157,6 +157,10 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
       });
   }
 
+  isSubmissionQueued(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.QUEUED;
+  }
+
   isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.RUNNING;
   }
