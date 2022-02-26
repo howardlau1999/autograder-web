@@ -3,14 +3,14 @@
   <mat-card class="assignment-info-card">
     <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     <div [class.hidden]="loading" *ngIf="assignment$ | async as assignment">
-      <button
-        mat-icon-button
-        class="assignment-edit-button"
-        *ngIf="canWriteCourse"
-        (click)="onEditAssignmentClicked(assignment)"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
+      <div *ngIf="canWriteCourse" class="assignment-edit-button">
+        <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
+          >匿名排行
+        </mat-slide-toggle>
+        <button mat-icon-button (click)="onEditAssignmentClicked(assignment)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
       <mat-card-title>
         {{ assignment.getName() }}
       </mat-card-title>

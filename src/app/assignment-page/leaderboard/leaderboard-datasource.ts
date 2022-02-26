@@ -5,13 +5,16 @@ import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
+import { CourseRole } from '../../api/proto/model_pb';
 
 export interface LeaderboardItem {
   items: { [k: string]: { value: Value; desc: boolean; order: number; suffix: string } };
   rank: number;
   submissionId: number;
   submittedAt: Date;
-  name: string;
+  nickname: string;
+  username: string;
+  studentId: string;
   isSelf: boolean;
 }
 
@@ -26,6 +29,14 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
   data$: Observable<LeaderboardItem[]>;
 
   columns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
+  userColumns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
+  columns: string[] = [];
+
+  userColumns: string[] = [];
+
+  exportEnabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   paginator: MatPaginator | undefined;
 
@@ -47,7 +58,9 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
                   const obj: LeaderboardItem = {
                     items: {},
                     rank: 0,
-                    name: entry.getNickname(),
+                    nickname: entry.getNickname(),
+                    username: entry.getUsername(),
+                    studentId: entry.getStudentId(),
                     isSelf: entry.getUserId() === userId,
                     submittedAt: entry.getSubmittedAt()?.toDate() || new Date(),
                     submissionId: entry.getSubmissionId(),
@@ -93,8 +106,14 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
                   rankedItem.rank = index + 1;
                   return rankedItem;
                 });
+              this.exportEnabled$.next(resp.getFull());
+              this.columns$.next((this.columns = keys));
+              this.userColumns$.next(
+                (this.userColumns = (!resp.getAnonymous() || resp.getFull() ? ['nickname'] : [])
+                  .concat(resp.getFull() ? ['username', 'studentId'] : [])
+                  .concat(['submittedAt'])),
+              );
             }
-            this.columns$.next(Object.keys(sortItems));
             return this.data;
           }),
         );
@@ -159,6 +178,21 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
       }
       return compare(a.items[key].value, b.items[key].value, isDesc);
     });
+  }
+
+  exportData() {
+    const data = this.data.map((item) => {
+      return [item.rank.toString(), item.username, item.nickname, item.studentId].concat(
+        this.columns.map((key) => {
+          const { value } = item.items[key];
+          return value.hasNumberValue()
+            ? value.getNumberValue().toString()
+            : value.getStringValue();
+        }),
+      );
+    });
+    const fields = ['rank', 'username', 'nickname', 'studentId'].concat(this.columns);
+    return { data, fields };
   }
 }
 

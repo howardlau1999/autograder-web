@@ -40,6 +40,10 @@ export class AssignmentService {
     return this.apiService.regradeAssignment(assignmentId);
   }
 
+  changeLeaderboardAnonymous(assignmentId: number, anonymous: boolean) {
+    return this.apiService.changeLeaderboardAnonymous(assignmentId, anonymous);
+  }
+
   createProgrammingAssignment(
     courseId: number,
     name: string,

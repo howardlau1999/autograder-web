@@ -958,6 +958,9 @@ export class GetAssignmentResponse extends jspb.Message {
   getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
   setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
 
+  getAnonymous(): boolean;
+  setAnonymous(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAssignmentResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetAssignmentResponse): GetAssignmentResponse.AsObject;
@@ -972,6 +975,7 @@ export namespace GetAssignmentResponse {
   export type AsObject = {
     assignment?: model_pb.Assignment.AsObject,
     role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
+    anonymous: boolean,
   }
 }
 
@@ -1130,6 +1134,15 @@ export class GetLeaderboardResponse extends jspb.Message {
   setEntriesList(value: Array<model_pb.LeaderboardEntry>): void;
   addEntries(value?: model_pb.LeaderboardEntry, index?: number): model_pb.LeaderboardEntry;
 
+  getAnonymous(): boolean;
+  setAnonymous(value: boolean): void;
+
+  getFull(): boolean;
+  setFull(value: boolean): void;
+
+  getRole(): model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap];
+  setRole(value: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetLeaderboardResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetLeaderboardResponse): GetLeaderboardResponse.AsObject;
@@ -1143,6 +1156,9 @@ export class GetLeaderboardResponse extends jspb.Message {
 export namespace GetLeaderboardResponse {
   export type AsObject = {
     entriesList: Array<model_pb.LeaderboardEntry.AsObject>,
+    anonymous: boolean,
+    full: boolean,
+    role: model_pb.CourseRoleMap[keyof model_pb.CourseRoleMap],
   }
 }
 
@@ -2551,6 +2567,50 @@ export class RegradeAssignmentResponse extends jspb.Message {
 
 export namespace RegradeAssignmentResponse {
   export type AsObject = {
+  }
+}
+
+export class ChangeLeaderboardAnonymousRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  getAnonymous(): boolean;
+  setAnonymous(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChangeLeaderboardAnonymousRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ChangeLeaderboardAnonymousRequest): ChangeLeaderboardAnonymousRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChangeLeaderboardAnonymousRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChangeLeaderboardAnonymousRequest;
+  static deserializeBinaryFromReader(message: ChangeLeaderboardAnonymousRequest, reader: jspb.BinaryReader): ChangeLeaderboardAnonymousRequest;
+}
+
+export namespace ChangeLeaderboardAnonymousRequest {
+  export type AsObject = {
+    assignmentId: number,
+    anonymous: boolean,
+  }
+}
+
+export class ChangeLeaderboardAnonymousResponse extends jspb.Message {
+  getAnonymous(): boolean;
+  setAnonymous(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChangeLeaderboardAnonymousResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ChangeLeaderboardAnonymousResponse): ChangeLeaderboardAnonymousResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ChangeLeaderboardAnonymousResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChangeLeaderboardAnonymousResponse;
+  static deserializeBinaryFromReader(message: ChangeLeaderboardAnonymousResponse, reader: jspb.BinaryReader): ChangeLeaderboardAnonymousResponse;
+}
+
+export namespace ChangeLeaderboardAnonymousResponse {
+  export type AsObject = {
+    anonymous: boolean,
   }
 }
 

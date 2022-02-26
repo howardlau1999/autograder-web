@@ -11,6 +11,7 @@ import {
   BindGithubRequest,
   CanWriteCourseRequest,
   ChangeAllowsJoinCourseRequest,
+  ChangeLeaderboardAnonymousRequest,
   CreateAssignmentRequest,
   CreateCourseRequest,
   CreateManifestRequest,
@@ -470,5 +471,12 @@ export class ApiService {
     const request = new RegradeAssignmentRequest();
     request.setAssignmentId(assignmentId);
     return this.unary(AutograderService.RegradeAssignment, request);
+  }
+
+  changeLeaderboardAnonymous(assignmentId: number, anonymous: boolean) {
+    const request = new ChangeLeaderboardAnonymousRequest();
+    request.setAssignmentId(assignmentId);
+    request.setAnonymous(anonymous);
+    return this.unary(AutograderService.ChangeLeaderboardAnonymous, request);
   }
 }

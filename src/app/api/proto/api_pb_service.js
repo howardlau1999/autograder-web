@@ -397,6 +397,15 @@ AutograderService.RegradeAssignment = {
   responseType: api_pb.RegradeAssignmentResponse
 };
 
+AutograderService.ChangeLeaderboardAnonymous = {
+  methodName: "ChangeLeaderboardAnonymous",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.ChangeLeaderboardAnonymousRequest,
+  responseType: api_pb.ChangeLeaderboardAnonymousResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1719,6 +1728,37 @@ AutograderServiceClient.prototype.regradeAssignment = function regradeAssignment
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.RegradeAssignment, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.changeLeaderboardAnonymous = function changeLeaderboardAnonymous(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.ChangeLeaderboardAnonymous, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

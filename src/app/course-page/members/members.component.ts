@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { repeatWhen, switchMap } from 'rxjs/operators';
 import { catchError, map, Observable, of, Subject, Subscription } from 'rxjs';
+import { DateTime } from 'luxon';
 import { MembersDataSource, MembersItem } from './members-datasource';
 import { BatchAddMemberDialogComponent } from './batch-add-member-dialog/batch-add-member-dialog.component';
 import { AddMemberDialogComponent } from './add-member-dialog/add-member-dialog.component';
@@ -15,6 +16,7 @@ import { UserService } from '../../service/user.service';
 import { CourseRoleMap } from '../../api/proto/model_pb';
 import { CourseService } from '../../service/course.service';
 import { NotificationService } from '../../service/notification.service';
+import { exportCSV } from '../../common/csv-exporter/csv.exporter';
 
 @Component({
   selector: 'app-members',
@@ -91,6 +93,13 @@ export class MembersComponent implements AfterViewInit {
 
   onBatchAddMemberClicked() {
     this.dialog.open(BatchAddMemberDialogComponent);
+  }
+
+  onExportClicked() {
+    exportCSV(
+      this.dataSource.exportData(),
+      `members-${this.courseId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}.csv`,
+    );
   }
 
   onAddMemberClicked() {

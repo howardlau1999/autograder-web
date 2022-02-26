@@ -4,8 +4,11 @@
     <button (click)="onAddMemberClicked()" mat-raised-button>
       <mat-icon>person_add</mat-icon>&nbsp;添加成员
     </button>
-    <button (click)="onBatchAddMemberClicked()" mat-flat-button>
+    <button *ngIf="false" (click)="onBatchAddMemberClicked()" mat-flat-button>
       <mat-icon>group_add</mat-icon>&nbsp;批量添加
+    </button>
+    <button mat-flat-button (click)="onExportClicked()">
+      <mat-icon>download</mat-icon>&nbsp;导出成员名单
     </button>
     <div class="spacer"></div>
     <form>

@@ -1,10 +1,9 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { merge, Observable, tap } from 'rxjs';
 import { GetCourseMembersResponse } from '../../api/proto/api_pb';
-import { ApiService } from '../../api/api.service';
 
 export type MembersItem = GetCourseMembersResponse.MemberInfo;
 
@@ -29,6 +28,22 @@ export class MembersDataSource extends DataSource<MembersItem> {
         this.data = data;
       }),
     );
+  }
+
+  exportData() {
+    const fields = ['userId', 'username', 'nickname', 'studentId', 'githubId', 'email', 'role'];
+    const data = this.data.map((item) => {
+      return [
+        item.getUserId(),
+        item.getUsername(),
+        item.getNickname(),
+        item.getStudentId(),
+        item.getGithubId(),
+        item.getEmail(),
+        item.getRole(),
+      ];
+    });
+    return { fields, data };
   }
 
   /**

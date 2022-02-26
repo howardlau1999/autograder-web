@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 import {
   Assignment,
@@ -45,7 +46,7 @@ import { NotificationService } from '../../service/notification.service';
     ]),
   ],
 })
-export class SubmissionsComponent implements OnInit {
+export class SubmissionsComponent implements OnInit, OnDestroy {
   assignmentId: number = 0;
 
   expandedSubmission: SubmissionsItem | null = null;
@@ -69,6 +70,10 @@ export class SubmissionsComponent implements OnInit {
   releaseTimerSubscription?: Subscription;
 
   dueTimerSubscription?: Subscription;
+
+  changeAnonymousSubscription?: Subscription;
+
+  anonymous = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -96,6 +101,7 @@ export class SubmissionsComponent implements OnInit {
       ),
       tap((resp) => {
         this.loading = false;
+        this.anonymous = resp.getAnonymous();
         this.canWriteCourse =
           resp.getRole() === CourseRole.INSTRUCTOR || resp.getRole() === CourseRole.TA;
       }),
@@ -181,9 +187,20 @@ export class SubmissionsComponent implements OnInit {
     this.dueTimerSubscription?.unsubscribe();
     this.releaseTimerSubscription?.unsubscribe();
     this.editAssignmentSubscription?.unsubscribe();
+    this.changeAnonymousSubscription?.unsubscribe();
   }
 
   onSubmissionChanged(submissionId: number) {
-    this.router.navigate([submissionId], { relativeTo: this.route });
+    this.router.navigate([submissionId], { relativeTo: this.route }).then();
+  }
+
+  onAnonymousChanged(event: MatSlideToggleChange) {
+    this.changeAnonymousSubscription?.unsubscribe();
+    this.changeAnonymousSubscription = this.assignmentService
+      .changeLeaderboardAnonymous(this.assignmentId, event.checked)
+      .subscribe(() => {
+        this.notificationService.showSnackBar(event.checked ? '已启用匿名排行' : '已禁用匿名排行');
+        this.refresher$.next(null);
+      });
   }
 }

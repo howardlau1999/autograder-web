@@ -309,6 +309,15 @@ export class LeaderboardEntry extends jspb.Message {
   getSubmittedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setSubmittedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
+  getStudentId(): string;
+  setStudentId(value: string): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  getEmail(): string;
+  setEmail(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LeaderboardEntry.AsObject;
   static toObject(includeInstance: boolean, msg: LeaderboardEntry): LeaderboardEntry.AsObject;
@@ -326,6 +335,9 @@ export namespace LeaderboardEntry {
     itemsList: Array<LeaderboardItem.AsObject>,
     userId: number,
     submittedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    studentId: string,
+    username: string,
+    email: string,
   }
 }
 
@@ -744,6 +756,45 @@ export namespace VerificationCodeMetadata {
     issuedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     expiredAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
+}
+
+export class ExportStatusMetadata extends jspb.Message {
+  getProgress(): number;
+  setProgress(value: number): void;
+
+  getTotal(): number;
+  setTotal(value: number): void;
+
+  hasCreatedAt(): boolean;
+  clearCreatedAt(): void;
+  getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExportStatusMetadata.AsObject;
+  static toObject(includeInstance: boolean, msg: ExportStatusMetadata): ExportStatusMetadata.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ExportStatusMetadata, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExportStatusMetadata;
+  static deserializeBinaryFromReader(message: ExportStatusMetadata, reader: jspb.BinaryReader): ExportStatusMetadata;
+}
+
+export namespace ExportStatusMetadata {
+  export type AsObject = {
+    progress: number,
+    total: number,
+    createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+  }
+
+  export interface StatusMap {
+    EXPORTING: 0;
+    EXPORTED: 1;
+    FAILED: 2;
+    CANCELLED: 3;
+  }
+
+  export const Status: StatusMap;
 }
 
 export interface SubmissionStatusMap {

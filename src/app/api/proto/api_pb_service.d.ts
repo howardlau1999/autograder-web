@@ -391,6 +391,15 @@ type AutograderServiceRegradeAssignment = {
   readonly responseType: typeof api_pb.RegradeAssignmentResponse;
 };
 
+type AutograderServiceChangeLeaderboardAnonymous = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.ChangeLeaderboardAnonymousRequest;
+  readonly responseType: typeof api_pb.ChangeLeaderboardAnonymousResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -436,6 +445,7 @@ export class AutograderService {
   static readonly ActivateSubmission: AutograderServiceActivateSubmission;
   static readonly RegradeSubmission: AutograderServiceRegradeSubmission;
   static readonly RegradeAssignment: AutograderServiceRegradeAssignment;
+  static readonly ChangeLeaderboardAnonymous: AutograderServiceChangeLeaderboardAnonymous;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -848,6 +858,15 @@ export class AutograderServiceClient {
   regradeAssignment(
     requestMessage: api_pb.RegradeAssignmentRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.RegradeAssignmentResponse|null) => void
+  ): UnaryResponse;
+  changeLeaderboardAnonymous(
+    requestMessage: api_pb.ChangeLeaderboardAnonymousRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ChangeLeaderboardAnonymousResponse|null) => void
+  ): UnaryResponse;
+  changeLeaderboardAnonymous(
+    requestMessage: api_pb.ChangeLeaderboardAnonymousRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.ChangeLeaderboardAnonymousResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -1,5 +1,9 @@
 <div class="leaderboard-container">
   <h2>排行榜</h2>
+  <button *ngIf="exportEnabled$ | async" (click)="onExportClicked()" mat-raised-button>
+    <mat-icon>download</mat-icon>
+    导出排行榜
+  </button>
   <div class="leaderboard-tab-container mat-elevation-z1">
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
       <!-- Id Column -->
@@ -9,9 +13,9 @@
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="name">
+      <ng-container matColumnDef="nickname">
         <th *matHeaderCellDef mat-header-cell>昵称</th>
-        <td *matCellDef="let row" mat-cell>{{ row.name }}</td>
+        <td *matCellDef="let row" mat-cell>{{ row.nickname }}</td>
       </ng-container>
 
       <ng-container *ngFor="let column of columns$ | async" [matColumnDef]="column">
@@ -32,15 +36,31 @@
         <td *matCellDef="let row" mat-cell>{{ row.submittedAt | date: 'YYYY-MM-dd HH:mm:ss' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="submissionId">
-        <th *matHeaderCellDef mat-header-cell>提交 ID</th>
-        <td *matCellDef="let row" mat-cell>{{ row.submissionId }}</td>
+      <ng-container matColumnDef="studentId">
+        <th *matHeaderCellDef mat-header-cell>学号</th>
+        <td *matCellDef="let row" mat-cell>{{ row.studentId }}</td>
       </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns.concat((columns$ | async) || [])" mat-header-row></tr>
+      <ng-container matColumnDef="username">
+        <th *matHeaderCellDef mat-header-cell>用户名</th>
+        <td *matCellDef="let row" mat-cell>{{ row.username }}</td>
+      </ng-container>
+
+      <tr
+        *matHeaderRowDef="
+          displayedColumns.concat((userColumns$ | async) || []).concat((columns$ | async) || [])
+        "
+        mat-header-row
+      ></tr>
       <tr
         [class.is-self]="row.isSelf"
-        *matRowDef="let row; index as i; columns: displayedColumns.concat((columns$ | async) || [])"
+        *matRowDef="
+          let row;
+          index as i;
+          columns: displayedColumns
+            .concat((userColumns$ | async) || [])
+            .concat((columns$ | async) || [])
+        "
         mat-row
       ></tr>
     </table>
