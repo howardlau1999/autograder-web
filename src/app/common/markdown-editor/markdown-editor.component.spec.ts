@@ -8,9 +8,8 @@ describe('MarkdownEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MarkdownEditorComponent ]
-    })
-    .compileComponents();
+      declarations: [MarkdownEditorComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
