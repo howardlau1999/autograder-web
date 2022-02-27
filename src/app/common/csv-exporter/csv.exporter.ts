@@ -1,5 +1,4 @@
 import { unparse } from 'papaparse';
-import { DateTime } from 'luxon';
 
 export function exportCSV(data: any, filename: string) {
   const csv = unparse(data);

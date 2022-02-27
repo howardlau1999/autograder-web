@@ -1,37 +1,15 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import {
-  catchError,
-  mergeMap,
-  Observable,
-  of,
-  Subject,
-  Subscription,
-  switchMap,
-  tap,
-  timer,
-} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { mergeMap, Observable, of, Subject, Subscription, switchMap, tap, timer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
-import {
-  Assignment,
-  CourseRole,
-  SubmissionStatus,
-  SubmissionStatusMap,
-} from '../../api/proto/model_pb';
-import {
-  SubmissionsItem,
-  SubmissionsTableDataSource,
-} from './submissions-table/submissions-table-data-source';
+import { Assignment, CourseRole } from '../../api/proto/model_pb';
+import { SubmissionsItem } from './submissions-table/submissions-table-data-source';
 import { SubmissionService } from '../../service/submission.service';
 import { AssignmentService } from '../../service/assignment.service';
-import { AssignmentEditDialogComponent } from './assignment-edit-dialog/assignment-edit-dialog.component';
 import { NotificationService } from '../../service/notification.service';
 
 @Component({

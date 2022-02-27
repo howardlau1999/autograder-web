@@ -5,7 +5,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { ApiService } from '../../api/api.service';
-import { CourseRole } from '../../api/proto/model_pb';
 
 export interface LeaderboardItem {
   items: { [k: string]: { value: Value; desc: boolean; order: number; suffix: string } };

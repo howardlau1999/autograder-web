@@ -7,7 +7,6 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Course, CourseRole } from '../../api/proto/model_pb';
 import { AssignmentCreateDialogComponent } from './assignment-create-dialog/assignment-create-dialog.component';
 import { CourseService } from '../../service/course.service';
-import { CourseEditDialogComponent } from './course-edit-dialog/course-edit-dialog.component';
 import { NotificationService } from '../../service/notification.service';
 
 @Component({

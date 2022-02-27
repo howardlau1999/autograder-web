@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';

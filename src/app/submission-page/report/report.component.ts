@@ -1,21 +1,11 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  mergeMap,
-  Observable,
-  of,
-  retryWhen,
-  Subscription,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, Observable, of, retryWhen, Subscription, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { SubmissionReport, SubmissionStatus, SubmissionStatusMap } from '../../api/proto/model_pb';
 import { ApiService } from '../../api/api.service';
-import { GetSubmissionReportResponse } from '../../api/proto/api_pb';
 import { SubmissionService } from '../../service/submission.service';
 import { NotificationService } from '../../service/notification.service';
 
