@@ -11,11 +11,8 @@
       <input formControlName="shortName" matInput required />
       <mat-error *ngIf="courseForm.get('shortName')?.invalid"> 请输入课程代码 </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>课程描述</mat-label>
-      <textarea formControlName="description" matInput required></textarea>
-      <mat-error *ngIf="courseForm.get('description')?.invalid"> 请输入课程描述 </mat-error>
-    </mat-form-field>
+    <div style="margin-top: 10px"></div>
+    <app-markdown-editor formControlName="description"></app-markdown-editor>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

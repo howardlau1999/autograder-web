@@ -369,6 +369,12 @@ export namespace SubmissionInfo {
     getUsername(): string;
     setUsername(value: string): void;
 
+    getNickname(): string;
+    setNickname(value: string): void;
+
+    getStudentId(): string;
+    setStudentId(value: string): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Submitter.AsObject;
     static toObject(includeInstance: boolean, msg: Submitter): Submitter.AsObject;
@@ -383,6 +389,8 @@ export namespace SubmissionInfo {
     export type AsObject = {
       userId: number,
       username: string,
+      nickname: string,
+      studentId: string,
     }
   }
 }
@@ -2611,6 +2619,98 @@ export class ChangeLeaderboardAnonymousResponse extends jspb.Message {
 export namespace ChangeLeaderboardAnonymousResponse {
   export type AsObject = {
     anonymous: boolean,
+  }
+}
+
+export class ExportAssignmentGradesRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExportAssignmentGradesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ExportAssignmentGradesRequest): ExportAssignmentGradesRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ExportAssignmentGradesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExportAssignmentGradesRequest;
+  static deserializeBinaryFromReader(message: ExportAssignmentGradesRequest, reader: jspb.BinaryReader): ExportAssignmentGradesRequest;
+}
+
+export namespace ExportAssignmentGradesRequest {
+  export type AsObject = {
+    assignmentId: number,
+  }
+}
+
+export class ExportAssignmentGradesResponse extends jspb.Message {
+  clearEntriesList(): void;
+  getEntriesList(): Array<ExportAssignmentGradesResponse.Entry>;
+  setEntriesList(value: Array<ExportAssignmentGradesResponse.Entry>): void;
+  addEntries(value?: ExportAssignmentGradesResponse.Entry, index?: number): ExportAssignmentGradesResponse.Entry;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExportAssignmentGradesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ExportAssignmentGradesResponse): ExportAssignmentGradesResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ExportAssignmentGradesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExportAssignmentGradesResponse;
+  static deserializeBinaryFromReader(message: ExportAssignmentGradesResponse, reader: jspb.BinaryReader): ExportAssignmentGradesResponse;
+}
+
+export namespace ExportAssignmentGradesResponse {
+  export type AsObject = {
+    entriesList: Array<ExportAssignmentGradesResponse.Entry.AsObject>,
+  }
+
+  export class Entry extends jspb.Message {
+    getUserId(): number;
+    setUserId(value: number): void;
+
+    getUsername(): string;
+    setUsername(value: string): void;
+
+    getStudentId(): string;
+    setStudentId(value: string): void;
+
+    getNickname(): string;
+    setNickname(value: string): void;
+
+    clearSubmittersList(): void;
+    getSubmittersList(): Array<SubmissionInfo.Submitter>;
+    setSubmittersList(value: Array<SubmissionInfo.Submitter>): void;
+    addSubmitters(value?: SubmissionInfo.Submitter, index?: number): SubmissionInfo.Submitter;
+
+    getScore(): number;
+    setScore(value: number): void;
+
+    getMaxScore(): number;
+    setMaxScore(value: number): void;
+
+    getSubmissionCount(): number;
+    setSubmissionCount(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): Entry.AsObject;
+    static toObject(includeInstance: boolean, msg: Entry): Entry.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: Entry, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Entry;
+    static deserializeBinaryFromReader(message: Entry, reader: jspb.BinaryReader): Entry;
+  }
+
+  export namespace Entry {
+    export type AsObject = {
+      userId: number,
+      username: string,
+      studentId: string,
+      nickname: string,
+      submittersList: Array<SubmissionInfo.Submitter.AsObject>,
+      score: number,
+      maxScore: number,
+      submissionCount: number,
+    }
   }
 }
 

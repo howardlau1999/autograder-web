@@ -20,6 +20,7 @@ import { GithubBindComponent } from './account-page/github-bind/github-bind.comp
 import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
 import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
 import { InspectionComponent } from './assignment-page/inspection/inspection.component';
+import { MarkdownEditorComponent } from './common/markdown-editor/markdown-editor.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'github/bind', component: GithubBindComponent },
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'vcd', component: VcdViewerPageComponent },
+  { path: 'markdown', component: MarkdownEditorComponent },
   { path: 'sign-up', component: SignUpComponent },
   {
     path: 'courses',

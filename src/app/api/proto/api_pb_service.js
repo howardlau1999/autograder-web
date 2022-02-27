@@ -406,6 +406,15 @@ AutograderService.ChangeLeaderboardAnonymous = {
   responseType: api_pb.ChangeLeaderboardAnonymousResponse
 };
 
+AutograderService.ExportAssignmentGrades = {
+  methodName: "ExportAssignmentGrades",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.ExportAssignmentGradesRequest,
+  responseType: api_pb.ExportAssignmentGradesResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1759,6 +1768,37 @@ AutograderServiceClient.prototype.changeLeaderboardAnonymous = function changeLe
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.ChangeLeaderboardAnonymous, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.exportAssignmentGrades = function exportAssignmentGrades(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.ExportAssignmentGrades, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

@@ -48,11 +48,10 @@
           <input formControlName="timeout" matInput type="number" name="timeout" required>
           <mat-hint>设置最多可运行的时间，单位秒（最小 1，最大 6000）</mat-hint>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>作业描述</mat-label>
-          <textarea formControlName="description" matInput name="description"></textarea>
-        </mat-form-field>
+        <div style="margin-top: 10px"></div>
+        <app-markdown-editor formControlName="description"></app-markdown-editor>
       </form>
+      <div style="margin-top: 10px"></div>
       <button mat-button matStepperPrevious>上一步</button>
       <button
         (click)="onConfirmClicked()"

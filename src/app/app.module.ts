@@ -76,6 +76,7 @@ import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.compon
 import { InspectionComponent } from './assignment-page/inspection/inspection.component';
 import { SubmissionsTableComponent } from './assignment-page/submissions/submissions-table/submissions-table.component';
 import { InspectionTableComponent } from './assignment-page/inspection/inspection-table/inspection-table.component';
+import { MarkdownEditorComponent } from './common/markdown-editor/markdown-editor.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +119,7 @@ import { InspectionTableComponent } from './assignment-page/inspection/inspectio
     InspectionComponent,
     SubmissionsTableComponent,
     InspectionTableComponent,
+    MarkdownEditorComponent,
   ],
   imports: [
     BrowserModule,
