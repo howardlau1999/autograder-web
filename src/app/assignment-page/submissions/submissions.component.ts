@@ -75,6 +75,8 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
 
   anonymous = false;
 
+  editMode = false;
+
   constructor(
     private notificationService: NotificationService,
     private assignmentService: AssignmentService,
@@ -159,26 +161,8 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
 
   editAssignmentSubscription?: Subscription;
 
-  onEditAssignmentClicked(assignment: Assignment) {
-    const dialogRef = this.dialog.open(AssignmentEditDialogComponent, {
-      data: {
-        assignmentId: this.assignmentId,
-        assignment,
-      },
-    });
-    if (this.editAssignmentSubscription === undefined) {
-      this.editAssignmentSubscription = dialogRef.afterClosed().subscribe((success) => {
-        this.editAssignmentSubscription?.unsubscribe();
-        this.editAssignmentSubscription = undefined;
-
-        if (success) {
-          this.refresher$.next(null);
-          this.notificationService.showSnackBar('编辑作业成功');
-          return;
-        }
-        this.notificationService.showSnackBar('取消编辑');
-      });
-    }
+  onEditAssignmentClicked() {
+    this.editMode = true;
   }
 
   ngOnInit(): void {}
@@ -188,6 +172,15 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
     this.releaseTimerSubscription?.unsubscribe();
     this.editAssignmentSubscription?.unsubscribe();
     this.changeAnonymousSubscription?.unsubscribe();
+  }
+
+  onAssignmentEditConfirmed() {
+    this.editMode = false;
+    this.refresher$.next(null);
+  }
+
+  onAssignmentEditCancelled() {
+    this.editMode = false;
   }
 
   onSubmissionChanged(submissionId: number) {

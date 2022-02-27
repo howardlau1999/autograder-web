@@ -36,6 +36,8 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   generateJoinCodeSubscription?: Subscription;
 
+  editMode = false;
+
   constructor(
     private notificationService: NotificationService,
     private courseService: CourseService,
@@ -67,27 +69,17 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     this.router.navigate(['admin'], { relativeTo: this.route }).then();
   }
 
-  onEditCourseClicked(course: Course) {
-    const dialogRef = this.dialog.open(CourseEditDialogComponent, {
-      data: {
-        courseId: this.courseId,
-        name: course.getName(),
-        shortName: course.getShortName(),
-        description: course.getDescription(),
-      },
-    });
-    if (this.editCourseSubscription === undefined) {
-      this.editCourseSubscription = dialogRef.afterClosed().subscribe((success) => {
-        this.editCourseSubscription?.unsubscribe();
-        this.editCourseSubscription = undefined;
-        if (success) {
-          this.refresher$.next(null);
-          this.notificationService.showSnackBar('编辑课程信息成功');
-          return;
-        }
-        this.notificationService.showSnackBar('编辑已取消');
-      });
-    }
+  onEditCourseClicked() {
+    this.editMode = true;
+  }
+
+  onEditCourseCancelled() {
+    this.editMode = false;
+  }
+
+  onEditCourseConfirmed() {
+    this.editMode = false;
+    this.refresher$.next(null);
   }
 
   onGenerateJoinCodeClicked() {

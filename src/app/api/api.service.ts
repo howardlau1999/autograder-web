@@ -17,6 +17,7 @@ import {
   CreateManifestRequest,
   CreateSubmissionRequest,
   DeleteFileInManifestRequest,
+  ExportAssignmentGradesRequest,
   GenerateJoinCodeRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
@@ -488,5 +489,11 @@ export class ApiService {
     request.setAssignmentId(assignmentId);
     request.setAnonymous(anonymous);
     return this.unary(AutograderService.ChangeLeaderboardAnonymous, request);
+  }
+
+  exportAssignmentGrades(assignmentId: number) {
+    const request = new ExportAssignmentGradesRequest();
+    request.setAssignmentId(assignmentId);
+    return this.unary(AutograderService.ExportAssignmentGrades, request);
   }
 }

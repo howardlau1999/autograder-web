@@ -5,28 +5,46 @@
   <h2>作业列表</h2>
   <mat-card class="course-info-card">
     <div *ngIf="course$ | async as course; else progressBar">
-      <div *ngIf="canWriteCourse" class="course-edit-button">
-        <span *ngIf="course.getAllowsJoin()">
-          加课码：
-          <span *ngIf="course.getJoinCode(); else generateButton">{{ course.getJoinCode() }}</span>
-          <ng-template #generateButton>
-            <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>点击生成</button>
-          </ng-template>
-        </span>
-        <mat-slide-toggle [checked]="course.getAllowsJoin()" (change)="onAllowsJoinChanged($event)"
-          >允许加入
-        </mat-slide-toggle>
-        <button (click)="onEditCourseClicked(course)" mat-icon-button matTooltip="编辑课程信息">
-          <mat-icon>edit</mat-icon>
-        </button>
+      <div *ngIf="editMode">
+        <app-course-edit-dialog
+          [courseId]="courseId"
+          [name]="course.getName()"
+          [shortName]="course.getShortName()"
+          [description]="course.getDescription()"
+          (cancelled)="onEditCourseCancelled()"
+          (confirmed)="onEditCourseConfirmed()"
+        ></app-course-edit-dialog>
       </div>
-      <mat-card-title>
-        {{ course.getName() }}
-      </mat-card-title>
-      <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
-      <mat-card-content>
-        <markdown katex [data]="course.getDescription()"></markdown>
-      </mat-card-content>
+      <div *ngIf="!editMode">
+        <div *ngIf="canWriteCourse" class="course-edit-button">
+          <span *ngIf="course.getAllowsJoin()">
+            加课码：
+            <span *ngIf="course.getJoinCode(); else generateButton">{{
+              course.getJoinCode()
+            }}</span>
+            <ng-template #generateButton>
+              <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>点击生成</button>
+            </ng-template>
+          </span>
+          <mat-slide-toggle
+            [checked]="course.getAllowsJoin()"
+            (change)="onAllowsJoinChanged($event)"
+            >允许加入
+          </mat-slide-toggle>
+          <button (click)="onEditCourseClicked()" mat-icon-button matTooltip="编辑课程信息">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-card-title>
+          {{ course.getName() }}
+        </mat-card-title>
+        <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
+        <mat-card-content>
+          <div class="description">
+            <markdown katex [data]="course.getDescription()"></markdown>
+          </div>
+        </mat-card-content>
+      </div>
     </div>
   </mat-card>
   <mat-card class="assignment-table-card">

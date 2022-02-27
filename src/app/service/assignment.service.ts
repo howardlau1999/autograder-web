@@ -44,6 +44,10 @@ export class AssignmentService {
     return this.apiService.changeLeaderboardAnonymous(assignmentId, anonymous);
   }
 
+  exportAssignmentGrades(assignmentId: number) {
+    return this.apiService.exportAssignmentGrades(assignmentId);
+  }
+
   createProgrammingAssignment(
     courseId: number,
     name: string,

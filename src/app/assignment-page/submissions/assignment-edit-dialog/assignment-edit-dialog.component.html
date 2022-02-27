@@ -1,37 +1,34 @@
-<h2>编辑作业</h2>
-<mat-dialog-content>
-  <form [formGroup]="programmingAssignmentForm" class="config-form">
-    <mat-form-field>
-      <mat-label>作业名称</mat-label>
-      <input formControlName="name" matInput name="name" required type="text" />
-    </mat-form-field>
-    <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
-    <app-datetime-picker formControlName="dueDate" label="截止时间"></app-datetime-picker>
-    <mat-form-field>
-      <mat-label>Docker 镜像</mat-label>
-      <input formControlName="dockerImage" matInput name="dockerImage" required />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>CPU</mat-label>
-      <input formControlName="cpu" matInput type="number" name="cpu" required />
-      <mat-hint>设置运行最多可使用的 CPU 核心数（最小 0.5，最大 8）</mat-hint>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>内存</mat-label>
-      <input formControlName="memory" matInput type="number" name="memory" required />
-      <mat-hint>设置运行最多可使用的内存，单位 MB（最小 128，最大 8192）</mat-hint>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>超时</mat-label>
-      <input formControlName="timeout" matInput type="number" name="timeout" required />
-      <mat-hint>设置最多可运行的时间，单位秒（最小 1，最大 6000）</mat-hint>
-    </mat-form-field>
-    <div style="margin-top: 10px">
-      <app-markdown-editor formControlName="description"></app-markdown-editor>
-    </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
+<form [formGroup]="programmingAssignmentForm" class="config-form">
+  <mat-form-field>
+    <mat-label>作业名称</mat-label>
+    <input formControlName="name" matInput name="name" required type="text" />
+  </mat-form-field>
+  <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
+  <app-datetime-picker formControlName="dueDate" label="截止时间"></app-datetime-picker>
+  <mat-form-field>
+    <mat-label>Docker 镜像</mat-label>
+    <input formControlName="dockerImage" matInput name="dockerImage" required />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>CPU</mat-label>
+    <input formControlName="cpu" matInput type="number" name="cpu" required />
+    <mat-hint>设置运行最多可使用的 CPU 核心数（最小 0.5，最大 8）</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>内存</mat-label>
+    <input formControlName="memory" matInput type="number" name="memory" required />
+    <mat-hint>设置运行最多可使用的内存，单位 MB（最小 128，最大 8192）</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>超时</mat-label>
+    <input formControlName="timeout" matInput type="number" name="timeout" required />
+    <mat-hint>设置最多可运行的时间，单位秒（最小 1，最大 6000）</mat-hint>
+  </mat-form-field>
+  <div style="margin-top: 10px">
+    <app-markdown-editor formControlName="description"></app-markdown-editor>
+  </div>
+</form>
+<div class="buttons">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
   <button
     (click)="onConfirmClicked()"
@@ -41,4 +38,4 @@
   >
     确定
   </button>
-</mat-dialog-actions>
+</div>

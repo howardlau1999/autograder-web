@@ -1,7 +1,12 @@
 <div class="submissions-container">
   <h2>查阅提交</h2>
-  <button mat-raised-button (click)="regradeAssignment()">
-    <mat-icon>cached</mat-icon> 重评所有提交
+  <button mat-raised-button (click)="exportAssignmentGrades()">
+    <mat-icon>download</mat-icon>
+    导出所有成绩
+  </button>
+  <button mat-flat-button (click)="regradeAssignment()">
+    <mat-icon>cached</mat-icon>
+    重评所有提交
   </button>
   <mat-card class="inspection-table-card">
     <mat-card-content>

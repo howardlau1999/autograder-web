@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { CourseService } from '../../../service/course.service';
@@ -21,36 +20,45 @@ export interface CourseEditDialogData {
 export class CourseEditDialogComponent implements OnInit {
   loading: boolean = false;
 
-  courseForm = new FormGroup({
-    name: new FormControl(this.data.name, [Validators.required]),
-    shortName: new FormControl(this.data.shortName, [Validators.required]),
-    description: new FormControl(this.data.description, [Validators.required]),
-  });
+  @Input() courseId!: number;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: CourseEditDialogData,
-    private dialogRef: MatDialogRef<CourseEditDialogComponent>,
-    private courseService: CourseService,
-    private errorService: ErrorService,
-  ) {}
+  @Input() name!: string;
 
-  ngOnInit(): void {}
+  @Input() shortName!: string;
+
+  @Input() description!: string;
+
+  @Output() cancelled: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output() confirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  courseForm!: FormGroup;
+
+  constructor(private courseService: CourseService, private errorService: ErrorService) {}
+
+  ngOnInit(): void {
+    this.courseForm = new FormGroup({
+      name: new FormControl(this.name, [Validators.required]),
+      shortName: new FormControl(this.shortName, [Validators.required]),
+      description: new FormControl(this.description, [Validators.required]),
+    });
+  }
 
   onCancelClicked() {
-    this.dialogRef.close();
+    this.cancelled.emit(true);
   }
 
   onConfirmClicked() {
     this.loading = true;
     const { name, shortName, description } = this.courseForm.value;
     this.courseService
-      .updateCourse(this.data.courseId, name, shortName, description)
+      .updateCourse(this.courseId, name, shortName, description)
       .subscribe((result) => {
         this.loading = false;
         pipe(
           result,
           match(this.errorService.handleFormError(this.courseForm), () => {
-            this.dialogRef.close(true);
+            this.confirmed.emit(true);
           }),
         );
       });

@@ -16,6 +16,8 @@
   position: absolute;
   top: 5px;
   right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .hidden {
@@ -24,4 +26,8 @@
 
 .submission-operations {
   margin-bottom: 1em;
+}
+
+.description {
+  max-width: 80em;
 }

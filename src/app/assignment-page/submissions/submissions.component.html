@@ -3,24 +3,37 @@
   <mat-card class="assignment-info-card">
     <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     <div [class.hidden]="loading" *ngIf="assignment$ | async as assignment">
-      <div *ngIf="canWriteCourse" class="assignment-edit-button">
-        <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
-          >匿名排行
-        </mat-slide-toggle>
-        <button mat-icon-button (click)="onEditAssignmentClicked(assignment)">
-          <mat-icon>edit</mat-icon>
-        </button>
+      <div *ngIf="editMode">
+        <app-assignment-edit-dialog
+          (confirmed)="onAssignmentEditConfirmed()"
+          (cancelled)="onAssignmentEditCancelled()"
+          [assignmentId]="assignmentId"
+          [assignment]="assignment"
+        >
+        </app-assignment-edit-dialog>
       </div>
-      <mat-card-title>
-        {{ assignment.getName() }}
-      </mat-card-title>
-      <mat-card-subtitle>
-        <p>#{{ assignmentId }}</p>
-        <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}</p>
-      </mat-card-subtitle>
-      <mat-card-content>
-        <markdown katex [data]="assignment.getDescription()"></markdown>
-      </mat-card-content>
+      <div *ngIf="!editMode">
+        <div *ngIf="canWriteCourse" class="assignment-edit-button">
+          <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
+            >匿名排行
+          </mat-slide-toggle>
+          <button mat-icon-button (click)="onEditAssignmentClicked()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-card-title>
+          {{ assignment.getName() }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <p>#{{ assignmentId }}</p>
+          <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}</p>
+        </mat-card-subtitle>
+        <mat-card-content>
+          <div class="description">
+            <markdown katex [data]="assignment.getDescription()"></markdown>
+          </div>
+        </mat-card-content>
+      </div>
     </div>
   </mat-card>
   <mat-card>

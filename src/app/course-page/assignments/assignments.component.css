@@ -26,3 +26,7 @@
 .assignment-operations {
   margin-bottom: 10px;
 }
+
+.description {
+  max-width: 80em;
+}

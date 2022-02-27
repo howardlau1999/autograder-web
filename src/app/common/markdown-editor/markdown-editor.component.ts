@@ -113,6 +113,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
       el: this.editorEl.nativeElement,
       previewStyle: 'vertical',
       initialValue: this.markdown,
+      height: 'auto',
       plugins: [
         [codeSyntaxHighlight, { highlighter: Prism }],
         // @ts-ignore

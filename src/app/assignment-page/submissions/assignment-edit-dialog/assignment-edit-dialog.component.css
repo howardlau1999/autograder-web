@@ -6,3 +6,12 @@
 .time-select {
   width: 2.5em;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.buttons {
+  margin-top: 10px;
+  display: flex;
+}

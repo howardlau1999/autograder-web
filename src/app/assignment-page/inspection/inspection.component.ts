@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription, switchMap } from 'rxjs';
+import { Observable, of, Subject, Subscription, switchMap, zipWith } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
+import { exportCSV } from '../../common/csv-exporter/csv.exporter';
 
 @Component({
   selector: 'app-inspection',
@@ -18,6 +20,8 @@ export class InspectionComponent implements OnInit, OnDestroy {
   submissionsRefresher$: Subject<null> = new Subject<null>();
 
   regradeAssignmentSubscription?: Subscription;
+
+  exportAssignmentGradesSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,6 +57,44 @@ export class InspectionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.regradeAssignmentSubscription?.unsubscribe();
+    this.exportAssignmentGradesSubscription?.unsubscribe();
+  }
+
+  exportAssignmentGrades() {
+    this.exportAssignmentGradesSubscription?.unsubscribe();
+    this.exportAssignmentGradesSubscription = this.assignmentId$
+      .pipe(
+        switchMap((assignmentId) => {
+          return this.assignmentService
+            .exportAssignmentGrades(assignmentId)
+            .pipe(zipWith(of(assignmentId)));
+        }),
+      )
+      .subscribe(([resp, assignmentId]) => {
+        const entries = resp.getEntriesList();
+        const fields = [
+          'userId',
+          'username',
+          'nickname',
+          'studentId',
+          'score',
+          'maxScore',
+          'submissionCount',
+        ];
+        const data = entries.map((entry) => [
+          entry.getUserId(),
+          entry.getUsername(),
+          entry.getNickname(),
+          entry.getStudentId(),
+          entry.getScore(),
+          entry.getMaxScore(),
+          entry.getSubmissionCount(),
+        ]);
+        exportCSV(
+          { fields, data },
+          `grades-${assignmentId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}`,
+        );
+      });
   }
 
   regradeAssignment() {

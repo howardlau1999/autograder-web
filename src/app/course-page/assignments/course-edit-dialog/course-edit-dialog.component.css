@@ -1,5 +1,8 @@
 .course-edit-form {
   display: flex;
   flex-direction: column;
-  width: 30vw;
+}
+
+.buttons {
+  margin-top: 10px;
 }

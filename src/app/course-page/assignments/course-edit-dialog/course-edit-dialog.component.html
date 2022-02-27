@@ -1,21 +1,18 @@
-<h2>编辑课程</h2>
-<mat-dialog-content>
-  <form [formGroup]="courseForm" class="course-edit-form">
-    <mat-form-field>
-      <mat-label>课程名称</mat-label>
-      <input formControlName="name" matInput required />
-      <mat-error *ngIf="courseForm.get('name')?.invalid"> 请输入课程名称 </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>课程号</mat-label>
-      <input formControlName="shortName" matInput required />
-      <mat-error *ngIf="courseForm.get('shortName')?.invalid"> 请输入课程代码 </mat-error>
-    </mat-form-field>
-    <div style="margin-top: 10px"></div>
-    <app-markdown-editor formControlName="description"></app-markdown-editor>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
+<form [formGroup]="courseForm" class="course-edit-form">
+  <mat-form-field>
+    <mat-label>课程名称</mat-label>
+    <input formControlName="name" matInput required />
+    <mat-error *ngIf="courseForm.get('name')?.invalid"> 请输入课程名称</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>课程号</mat-label>
+    <input formControlName="shortName" matInput required />
+    <mat-error *ngIf="courseForm.get('shortName')?.invalid"> 请输入课程代码</mat-error>
+  </mat-form-field>
+  <div style="margin-top: 10px"></div>
+  <app-markdown-editor formControlName="description"></app-markdown-editor>
+</form>
+<div class="buttons">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
   <button
     (click)="onConfirmClicked()"
@@ -25,4 +22,4 @@
   >
     确定
   </button>
-</mat-dialog-actions>
+</div>
