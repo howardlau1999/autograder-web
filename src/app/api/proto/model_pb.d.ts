@@ -31,6 +31,9 @@ export class User extends jspb.Message {
   getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
+  getIsAdmin(): boolean;
+  setIsAdmin(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): User.AsObject;
   static toObject(includeInstance: boolean, msg: User): User.AsObject;
@@ -50,6 +53,7 @@ export namespace User {
     nickname: string,
     studentId: string,
     createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    isAdmin: boolean,
   }
 }
 
@@ -183,6 +187,11 @@ export class ProgrammingAssignmentConfig extends jspb.Message {
   getTimeout(): number;
   setTimeout(value: number): void;
 
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProgrammingAssignmentConfig.AsObject;
   static toObject(includeInstance: boolean, msg: ProgrammingAssignmentConfig): ProgrammingAssignmentConfig.AsObject;
@@ -200,6 +209,35 @@ export namespace ProgrammingAssignmentConfig {
     cpu: number,
     memory: number,
     timeout: number,
+    tagsList: Array<string>,
+  }
+}
+
+export class SubmissionLimitConfig extends jspb.Message {
+  getTotal(): number;
+  setTotal(value: number): void;
+
+  getFrequency(): number;
+  setFrequency(value: number): void;
+
+  getPeriod(): number;
+  setPeriod(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubmissionLimitConfig.AsObject;
+  static toObject(includeInstance: boolean, msg: SubmissionLimitConfig): SubmissionLimitConfig.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SubmissionLimitConfig, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubmissionLimitConfig;
+  static deserializeBinaryFromReader(message: SubmissionLimitConfig, reader: jspb.BinaryReader): SubmissionLimitConfig;
+}
+
+export namespace SubmissionLimitConfig {
+  export type AsObject = {
+    total: number,
+    frequency: number,
+    period: number,
   }
 }
 
@@ -239,6 +277,11 @@ export class Assignment extends jspb.Message {
   getPublished(): boolean;
   setPublished(value: boolean): void;
 
+  hasSubmissionLimit(): boolean;
+  clearSubmissionLimit(): void;
+  getSubmissionLimit(): SubmissionLimitConfig | undefined;
+  setSubmissionLimit(value?: SubmissionLimitConfig): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Assignment.AsObject;
   static toObject(includeInstance: boolean, msg: Assignment): Assignment.AsObject;
@@ -260,6 +303,7 @@ export namespace Assignment {
     description: string,
     programmingConfig?: ProgrammingAssignmentConfig.AsObject,
     published: boolean,
+    submissionLimit?: SubmissionLimitConfig.AsObject,
   }
 }
 
@@ -804,6 +848,74 @@ export namespace ExportStatusMetadata {
     EXPORTED: 1;
     FAILED: 2;
     CANCELLED: 3;
+  }
+
+  export const Status: StatusMap;
+}
+
+export class GraderInfo extends jspb.Message {
+  getHostname(): string;
+  setHostname(value: string): void;
+
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
+  getConcurrency(): number;
+  setConcurrency(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GraderInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: GraderInfo): GraderInfo.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GraderInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GraderInfo;
+  static deserializeBinaryFromReader(message: GraderInfo, reader: jspb.BinaryReader): GraderInfo;
+}
+
+export namespace GraderInfo {
+  export type AsObject = {
+    hostname: string,
+    tagsList: Array<string>,
+    concurrency: number,
+  }
+}
+
+export class GraderStatusMetadata extends jspb.Message {
+  hasInfo(): boolean;
+  clearInfo(): void;
+  getInfo(): GraderInfo | undefined;
+  setInfo(value?: GraderInfo): void;
+
+  getIp(): string;
+  setIp(value: string): void;
+
+  getStatus(): GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap];
+  setStatus(value: GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GraderStatusMetadata.AsObject;
+  static toObject(includeInstance: boolean, msg: GraderStatusMetadata): GraderStatusMetadata.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GraderStatusMetadata, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GraderStatusMetadata;
+  static deserializeBinaryFromReader(message: GraderStatusMetadata, reader: jspb.BinaryReader): GraderStatusMetadata;
+}
+
+export namespace GraderStatusMetadata {
+  export type AsObject = {
+    info?: GraderInfo.AsObject,
+    ip: string,
+    status: GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap],
+  }
+
+  export interface StatusMap {
+    OFFLINE: 0;
+    ONLINE: 1;
+    UNKNOWN: 2;
   }
 
   export const Status: StatusMap;

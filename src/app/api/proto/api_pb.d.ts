@@ -797,6 +797,9 @@ export class UserTokenPayload extends jspb.Message {
   getNickname(): string;
   setNickname(value: string): void;
 
+  getIsAdmin(): boolean;
+  setIsAdmin(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserTokenPayload.AsObject;
   static toObject(includeInstance: boolean, msg: UserTokenPayload): UserTokenPayload.AsObject;
@@ -812,6 +815,7 @@ export namespace UserTokenPayload {
     userId: number,
     username: string,
     nickname: string,
+    isAdmin: boolean,
   }
 }
 
@@ -2676,11 +2680,6 @@ export namespace ExportAssignmentGradesResponse {
     getNickname(): string;
     setNickname(value: string): void;
 
-    clearSubmittersList(): void;
-    getSubmittersList(): Array<SubmissionInfo.Submitter>;
-    setSubmittersList(value: Array<SubmissionInfo.Submitter>): void;
-    addSubmitters(value?: SubmissionInfo.Submitter, index?: number): SubmissionInfo.Submitter;
-
     getScore(): number;
     setScore(value: number): void;
 
@@ -2706,10 +2705,113 @@ export namespace ExportAssignmentGradesResponse {
       username: string,
       studentId: string,
       nickname: string,
-      submittersList: Array<SubmissionInfo.Submitter.AsObject>,
       score: number,
       maxScore: number,
       submissionCount: number,
+    }
+  }
+}
+
+export class RemoveGraderRequest extends jspb.Message {
+  getGraderId(): number;
+  setGraderId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RemoveGraderRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RemoveGraderRequest): RemoveGraderRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RemoveGraderRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RemoveGraderRequest;
+  static deserializeBinaryFromReader(message: RemoveGraderRequest, reader: jspb.BinaryReader): RemoveGraderRequest;
+}
+
+export namespace RemoveGraderRequest {
+  export type AsObject = {
+    graderId: number,
+  }
+}
+
+export class RemoveGraderResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RemoveGraderResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RemoveGraderResponse): RemoveGraderResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RemoveGraderResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RemoveGraderResponse;
+  static deserializeBinaryFromReader(message: RemoveGraderResponse, reader: jspb.BinaryReader): RemoveGraderResponse;
+}
+
+export namespace RemoveGraderResponse {
+  export type AsObject = {
+    success: boolean,
+  }
+}
+
+export class GetAllGradersRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllGradersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllGradersRequest): GetAllGradersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllGradersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllGradersRequest;
+  static deserializeBinaryFromReader(message: GetAllGradersRequest, reader: jspb.BinaryReader): GetAllGradersRequest;
+}
+
+export namespace GetAllGradersRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetAllGradersResponse extends jspb.Message {
+  clearGradersList(): void;
+  getGradersList(): Array<GetAllGradersResponse.Grader>;
+  setGradersList(value: Array<GetAllGradersResponse.Grader>): void;
+  addGraders(value?: GetAllGradersResponse.Grader, index?: number): GetAllGradersResponse.Grader;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllGradersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllGradersResponse): GetAllGradersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllGradersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllGradersResponse;
+  static deserializeBinaryFromReader(message: GetAllGradersResponse, reader: jspb.BinaryReader): GetAllGradersResponse;
+}
+
+export namespace GetAllGradersResponse {
+  export type AsObject = {
+    gradersList: Array<GetAllGradersResponse.Grader.AsObject>,
+  }
+
+  export class Grader extends jspb.Message {
+    getGraderId(): number;
+    setGraderId(value: number): void;
+
+    hasMetadata(): boolean;
+    clearMetadata(): void;
+    getMetadata(): model_pb.GraderStatusMetadata | undefined;
+    setMetadata(value?: model_pb.GraderStatusMetadata): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): Grader.AsObject;
+    static toObject(includeInstance: boolean, msg: Grader): Grader.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: Grader, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Grader;
+    static deserializeBinaryFromReader(message: Grader, reader: jspb.BinaryReader): Grader;
+  }
+
+  export namespace Grader {
+    export type AsObject = {
+      graderId: number,
+      metadata?: model_pb.GraderStatusMetadata.AsObject,
     }
   }
 }

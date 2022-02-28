@@ -409,6 +409,24 @@ type AutograderServiceExportAssignmentGrades = {
   readonly responseType: typeof api_pb.ExportAssignmentGradesResponse;
 };
 
+type AutograderServiceRemoveGrader = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.RemoveGraderRequest;
+  readonly responseType: typeof api_pb.RemoveGraderResponse;
+};
+
+type AutograderServiceGetAllGraders = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetAllGradersRequest;
+  readonly responseType: typeof api_pb.GetAllGradersResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -456,6 +474,8 @@ export class AutograderService {
   static readonly RegradeAssignment: AutograderServiceRegradeAssignment;
   static readonly ChangeLeaderboardAnonymous: AutograderServiceChangeLeaderboardAnonymous;
   static readonly ExportAssignmentGrades: AutograderServiceExportAssignmentGrades;
+  static readonly RemoveGrader: AutograderServiceRemoveGrader;
+  static readonly GetAllGraders: AutograderServiceGetAllGraders;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -886,6 +906,24 @@ export class AutograderServiceClient {
   exportAssignmentGrades(
     requestMessage: api_pb.ExportAssignmentGradesRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.ExportAssignmentGradesResponse|null) => void
+  ): UnaryResponse;
+  removeGrader(
+    requestMessage: api_pb.RemoveGraderRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveGraderResponse|null) => void
+  ): UnaryResponse;
+  removeGrader(
+    requestMessage: api_pb.RemoveGraderRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.RemoveGraderResponse|null) => void
+  ): UnaryResponse;
+  getAllGraders(
+    requestMessage: api_pb.GetAllGradersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllGradersResponse|null) => void
+  ): UnaryResponse;
+  getAllGraders(
+    requestMessage: api_pb.GetAllGradersRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllGradersResponse|null) => void
   ): UnaryResponse;
 }
 
