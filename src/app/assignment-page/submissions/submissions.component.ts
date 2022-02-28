@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { KatexOptions } from 'ngx-markdown-latex';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 import { Assignment, CourseRole } from '../../api/proto/model_pb';
 import { SubmissionsItem } from './submissions-table/submissions-table-data-source';
@@ -174,4 +175,13 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
         this.refresher$.next(null);
       });
   }
+
+  options: KatexOptions = {
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+    ],
+    throwOnError: false,
+    errorColor: '#cc0000',
+  };
 }

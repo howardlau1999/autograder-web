@@ -21,37 +21,10 @@ import 'prismjs/components/prism-cpp';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-scala';
 import 'prismjs/components/prism-clojure';
-import katex from 'katex';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { KatexOptions } from 'ngx-markdown-latex';
 
-function renderMath(str: string, display: boolean = false) {
-  try {
-    return katex.renderToString(str, {
-      throwOnError: true,
-      displayMode: display,
-    });
-  } catch (e) {
-    return `<code>${e}</code>`;
-  }
-}
-
-function latexPlugin() {
-  const toHTMLRenderers = {
-    latex(node: any) {
-      const html = renderMath(node.literal, true);
-      return [
-        { type: 'openTag', tagName: 'div', outerNewLine: true },
-        { type: 'html', content: html },
-        { type: 'closeTag', tagName: 'div', outerNewLine: true },
-      ];
-    },
-  };
-  return { toHTMLRenderers };
-}
-
-function getInlineMath(content: string) {
-  return content.replace(/\$(.+)\$/gu, (_, latex: string) => renderMath(latex));
-}
+declare function renderMathInElement(elem: Element, options?: KatexOptions): void;
 
 @Component({
   selector: 'app-markdown-editor',
@@ -106,6 +79,21 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
     this.markdownChange.emit(this.markdown);
   }
 
+  options: KatexOptions = {
+    throwOnError: false,
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+    ],
+  };
+
+  renderMath(html: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    renderMathInElement(div, this.options);
+    return div.innerHTML;
+  }
+
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
@@ -114,19 +102,18 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
       previewStyle: 'vertical',
       initialValue: this.markdown,
       height: 'auto',
-      plugins: [
-        [codeSyntaxHighlight, { highlighter: Prism }],
-        // @ts-ignore
-        latexPlugin,
-      ],
+      plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
+      events: {
+        load: (editor) => {
+          renderMathInElement(editor.getEditorElements().mdPreview, this.options);
+        },
+      },
       customHTMLRenderer: {
-        text(node) {
-          return [
-            {
-              type: 'html',
-              content: getInlineMath(node.literal || ''),
-            },
-          ];
+        softbreak: (_, { options }) => {
+          return {
+            type: 'html',
+            content: options.softbreak,
+          };
         },
       },
     });
@@ -135,6 +122,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
       this.markAsTouched();
       this.markdown = this.editor.getMarkdown();
       this.markdownChange.emit(this.markdown);
+      renderMathInElement(this.editor.getEditorElements().mdPreview, this.options);
       this.onChange(this.markdown);
     });
   }

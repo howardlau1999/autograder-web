@@ -52,6 +52,7 @@
             "scripts": [
               "src/app/common/vcd-viewer/vcdrom.browser.js",
               "node_modules/katex/dist/katex.min.js",
+              "node_modules/katex/dist/contrib/auto-render.js",
               "node_modules/marked/marked.min.js",
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",

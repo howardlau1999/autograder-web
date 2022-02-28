@@ -30,7 +30,7 @@
         </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
-            <markdown katex [data]="assignment.getDescription()"></markdown>
+            <markdown katex [katexOptions]="options" [data]="assignment.getDescription()"></markdown>
           </div>
         </mat-card-content>
       </div>

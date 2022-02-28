@@ -33,7 +33,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MarkdownModule } from 'ngx-markdown';
+import { KatexOptions, MarkdownModule } from 'ngx-markdown-latex';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CoursePageComponent } from './course-page/course-page.component';
