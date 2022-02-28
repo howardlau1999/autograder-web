@@ -4,6 +4,7 @@ import { map, repeatWhen } from 'rxjs/operators';
 import { Observable, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { KatexOptions } from 'ngx-markdown-latex';
 import { Course, CourseRole } from '../../api/proto/model_pb';
 import { AssignmentCreateDialogComponent } from './assignment-create-dialog/assignment-create-dialog.component';
 import { CourseService } from '../../service/course.service';
@@ -125,4 +126,12 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  options: KatexOptions = {
+    throwOnError: false,
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+    ],
+  };
 }
