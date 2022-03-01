@@ -77,7 +77,7 @@ export class ReportComponent implements OnInit {
               switchMap((error) => {
                 const { message } = error;
                 this.error = message;
-                if (message === 'RUNNING' || message === 'QUEUED') {
+                if (message === 'RUNNING' || message === 'QUEUED' || message === 'CANCELLING') {
                   return this.submissionService.subscribeSubmission(submissionId);
                 }
                 throw error;
@@ -88,7 +88,9 @@ export class ReportComponent implements OnInit {
             return resp.getReport();
           }),
           catchError(({ message }) => {
-            this.notificationService.showSnackBar(`无法获取报告 ${message}`);
+            if (message !== 'CANCELLED' && message !== 'CANCELLING') {
+              this.notificationService.showSnackBar(`无法获取报告 ${message}`);
+            }
             return of(undefined);
           }),
         );

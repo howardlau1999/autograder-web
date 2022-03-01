@@ -895,6 +895,11 @@ export class GraderStatusMetadata extends jspb.Message {
   getStatus(): GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap];
   setStatus(value: GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap]): void;
 
+  hasLastHeartbeat(): boolean;
+  clearLastHeartbeat(): void;
+  getLastHeartbeat(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setLastHeartbeat(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GraderStatusMetadata.AsObject;
   static toObject(includeInstance: boolean, msg: GraderStatusMetadata): GraderStatusMetadata.AsObject;
@@ -910,6 +915,7 @@ export namespace GraderStatusMetadata {
     info?: GraderInfo.AsObject,
     ip: string,
     status: GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap],
+    lastHeartbeat?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 
   export interface StatusMap {

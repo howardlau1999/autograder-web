@@ -6850,7 +6850,8 @@ proto.GraderStatusMetadata.toObject = function(includeInstance, msg) {
   var f, obj = {
     info: (f = msg.getInfo()) && proto.GraderInfo.toObject(includeInstance, f),
     ip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    status: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    lastHeartbeat: (f = msg.getLastHeartbeat()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -6899,6 +6900,11 @@ proto.GraderStatusMetadata.deserializeBinaryFromReader = function(msg, reader) {
     case 3:
       var value = /** @type {!proto.GraderStatusMetadata.Status} */ (reader.readEnum());
       msg.setStatus(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setLastHeartbeat(value);
       break;
     default:
       reader.skipField();
@@ -6949,6 +6955,14 @@ proto.GraderStatusMetadata.serializeBinaryToWriter = function(message, writer) {
     writer.writeEnum(
       3,
       f
+    );
+  }
+  f = message.getLastHeartbeat();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -7033,6 +7047,43 @@ proto.GraderStatusMetadata.prototype.getStatus = function() {
  */
 proto.GraderStatusMetadata.prototype.setStatus = function(value) {
   return jspb.Message.setProto3EnumField(this, 3, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp last_heartbeat = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.GraderStatusMetadata.prototype.getLastHeartbeat = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.GraderStatusMetadata} returns this
+*/
+proto.GraderStatusMetadata.prototype.setLastHeartbeat = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.GraderStatusMetadata} returns this
+ */
+proto.GraderStatusMetadata.prototype.clearLastHeartbeat = function() {
+  return this.setLastHeartbeat(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.GraderStatusMetadata.prototype.hasLastHeartbeat = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 

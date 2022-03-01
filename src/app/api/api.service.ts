@@ -9,6 +9,7 @@ import {
   ActivateSubmissionRequest,
   AddCourseMembersRequest,
   BindGithubRequest,
+  CancelSubmissionRequest,
   CanWriteCourseRequest,
   ChangeAllowsJoinCourseRequest,
   ChangeLeaderboardAnonymousRequest,
@@ -19,6 +20,7 @@ import {
   DeleteFileInManifestRequest,
   ExportAssignmentGradesRequest,
   GenerateJoinCodeRequest,
+  GetAllGradersRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
   GetCourseListRequest,
@@ -495,5 +497,16 @@ export class ApiService {
     const request = new ExportAssignmentGradesRequest();
     request.setAssignmentId(assignmentId);
     return this.unary(AutograderService.ExportAssignmentGrades, request);
+  }
+
+  getAllGraders() {
+    const request = new GetAllGradersRequest();
+    return this.unary(AutograderService.GetAllGraders, request);
+  }
+
+  cancelSubmission(submissionId: number) {
+    const request = new CancelSubmissionRequest();
+    request.setSubmissionId(submissionId);
+    return this.unary(AutograderService.CancelSubmission, request);
   }
 }

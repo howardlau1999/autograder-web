@@ -22,12 +22,18 @@
     <td *matCellDef="let submission" mat-cell>
       <div *ngIf="isSubmissionInternalError(submission.getStatus()); else normal">内部错误</div>
       <ng-template #normal>
+        <span *ngIf="isSubmissionCancelling(submission.getStatus())">取消中</span>
+        <span *ngIf="isSubmissionCancelled(submission.getStatus())">已取消</span>
         <span *ngIf="isSubmissionFinished(submission.getStatus())">
           {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
         >
         <span *ngIf="isSubmissionQueued(submission.getStatus())">排队中</span>
         <span *ngIf="isSubmissionRunning(submission.getStatus())">运行中</span>
         <mat-progress-bar
+          *ngIf="
+            isSubmissionQueued(submission.getStatus()) ||
+            isSubmissionRunning(submission.getStatus())
+          "
           [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
           [value]="(submission.getScore() / submission.getMaxScore()) * 100"
           class="score-bar"
@@ -68,6 +74,17 @@
         [disabled]="isSubmissionRunning(submission.getStatus())"
       >
         <mat-icon>cached</mat-icon>
+      </button>
+      <button
+        *ngIf="
+          isSubmissionRunning(submission.getStatus()) || isSubmissionQueued(submission.getStatus())
+        "
+        i18n="cancel"
+        matTooltip="取消评测"
+        (click)="cancelSubmission($event, submission.getSubmissionId())"
+        mat-icon-button
+      >
+        <mat-icon>cancel</mat-icon>
       </button>
     </td>
   </ng-container>

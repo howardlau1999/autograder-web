@@ -59,6 +59,8 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   regradeSubmissionSubscription?: Subscription;
 
+  cancelSubmissionSubscription?: Subscription;
+
   @Output() submissionChange = new EventEmitter<number>();
 
   @Input() showRegrade?: boolean;
@@ -130,6 +132,18 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     this.regradeSubmissionSubscription?.unsubscribe();
   }
 
+  cancelSubmission(event: MouseEvent, submissionId: number): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.cancelSubmissionSubscription?.unsubscribe();
+    this.cancelSubmissionSubscription = this.submissionService
+      .cancelSubmission(submissionId)
+      .subscribe(() => {
+        this.internalSubmissionRefresher$.next(null);
+        this.notificationService.showSnackBar('提交取消成功');
+      });
+  }
+
   regradeSubmission(event: MouseEvent, submissionId: number): void {
     event.stopPropagation();
     event.preventDefault();
@@ -166,6 +180,14 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   isSubmissionFinished(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.FINISHED;
+  }
+
+  isSubmissionCancelling(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.CANCELLING;
+  }
+
+  isSubmissionCancelled(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.CANCELLED;
   }
 
   isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {

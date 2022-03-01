@@ -1,0 +1,61 @@
+<div class="mat-elevation-z1" style="margin: 10px">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>评测机 ID</th>
+      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>主机名</th>
+      <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="concurrency">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>评测任务</th>
+      <td mat-cell *matCellDef="let row" [matTooltip]="row.submissions.join('\n')">
+        {{ row.submissions.length }} / {{ row.concurrency }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tags">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>标签</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of row.tags"> {{ tag }}</mat-chip>
+        </mat-chip-list>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ip">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>IP 地址</th>
+      <td mat-cell *matCellDef="let row">{{ row.ip }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>状态</th>
+      <td mat-cell *matCellDef="let row">
+        <span [className]="getStatusClassname(row.status)">{{ getStatusName(row.status) }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastHeartbeat">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>最后心跳</th>
+      <td mat-cell *matCellDef="let row">{{ row.lastHeartbeat | date: 'YYYY-MM-dd HH:mm:ss' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    #paginator
+    [length]="dataSource?.data?.length"
+    [pageIndex]="0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

@@ -433,6 +433,15 @@ AutograderService.GetAllGraders = {
   responseType: api_pb.GetAllGradersResponse
 };
 
+AutograderService.CancelSubmission = {
+  methodName: "CancelSubmission",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.CancelSubmissionRequest,
+  responseType: api_pb.CancelSubmissionResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1879,6 +1888,37 @@ AutograderServiceClient.prototype.getAllGraders = function getAllGraders(request
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetAllGraders, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.cancelSubmission = function cancelSubmission(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.CancelSubmission, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

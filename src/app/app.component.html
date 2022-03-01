@@ -4,6 +4,9 @@
     <a matTooltip="返回主页" routerLink="/courses" mat-icon-button *ngIf="loggedIn">
       <mat-icon>home</mat-icon>
     </a>
+    <a matTooltip="系统管理" routerLink="/admin" mat-icon-button *ngIf="loggedIn">
+      <mat-icon>settings</mat-icon>
+    </a>
     <span class="toolbar-spacer"></span>
     <a matTooltip="账户设置" routerLink="/account" mat-button *ngIf="loggedIn">
       {{ username }}

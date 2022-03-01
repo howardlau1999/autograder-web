@@ -57,4 +57,8 @@ export class SubmissionService {
       }),
     );
   }
+
+  cancelSubmission(submissionId: number) {
+    return this.apiService.cancelSubmission(submissionId);
+  }
 }

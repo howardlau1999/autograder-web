@@ -17,10 +17,10 @@ import { LoginGuard } from './login.guard';
 import { GithubLoginComponent } from './login-page/github-login/github-login.component';
 import { AccountPageComponent } from './account-page/account-page.component';
 import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
-import { VcdViewerComponent } from './common/vcd-viewer/vcd-viewer.component';
 import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.component';
 import { InspectionComponent } from './assignment-page/inspection/inspection.component';
-import { MarkdownEditorComponent } from './common/markdown-editor/markdown-editor.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { GradersComponent } from './admin-page/graders/graders.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -29,7 +29,14 @@ const routes: Routes = [
   { path: 'github/bind', component: GithubBindComponent },
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'vcd', component: VcdViewerPageComponent },
-  { path: 'markdown', component: MarkdownEditorComponent },
+  {
+    path: 'admin',
+    component: AdminPageComponent,
+    children: [
+      { path: 'graders', component: GradersComponent },
+      { path: '', redirectTo: 'graders', pathMatch: 'full' },
+    ],
+  },
   { path: 'sign-up', component: SignUpComponent },
   {
     path: 'courses',

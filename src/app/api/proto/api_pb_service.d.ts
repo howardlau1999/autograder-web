@@ -427,6 +427,15 @@ type AutograderServiceGetAllGraders = {
   readonly responseType: typeof api_pb.GetAllGradersResponse;
 };
 
+type AutograderServiceCancelSubmission = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.CancelSubmissionRequest;
+  readonly responseType: typeof api_pb.CancelSubmissionResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -476,6 +485,7 @@ export class AutograderService {
   static readonly ExportAssignmentGrades: AutograderServiceExportAssignmentGrades;
   static readonly RemoveGrader: AutograderServiceRemoveGrader;
   static readonly GetAllGraders: AutograderServiceGetAllGraders;
+  static readonly CancelSubmission: AutograderServiceCancelSubmission;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -924,6 +934,15 @@ export class AutograderServiceClient {
   getAllGraders(
     requestMessage: api_pb.GetAllGradersRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetAllGradersResponse|null) => void
+  ): UnaryResponse;
+  cancelSubmission(
+    requestMessage: api_pb.CancelSubmissionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CancelSubmissionResponse|null) => void
+  ): UnaryResponse;
+  cancelSubmission(
+    requestMessage: api_pb.CancelSubmissionRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.CancelSubmissionResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -86,6 +86,14 @@
 <ng-template #errorMsg>
   <div [ngSwitch]="error" class="report-container">
     <div style="width: 100%">
+      <mat-card *ngSwitchCase="'CANCELLED'">
+        <mat-card-title>测试已取消</mat-card-title>
+        <p></p>
+      </mat-card>
+      <mat-card *ngSwitchCase="'CANCELLING'">
+        <mat-card-title>测试取消中</mat-card-title>
+        <p></p>
+      </mat-card>
       <mat-card *ngSwitchCase="'QUEUED'">
         <mat-card-title>测试排队中…</mat-card-title>
         <p></p>

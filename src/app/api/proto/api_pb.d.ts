@@ -2798,6 +2798,11 @@ export namespace GetAllGradersResponse {
     getMetadata(): model_pb.GraderStatusMetadata | undefined;
     setMetadata(value?: model_pb.GraderStatusMetadata): void;
 
+    clearSubmissionsList(): void;
+    getSubmissionsList(): Array<number>;
+    setSubmissionsList(value: Array<number>): void;
+    addSubmissions(value: number, index?: number): number;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Grader.AsObject;
     static toObject(includeInstance: boolean, msg: Grader): Grader.AsObject;
@@ -2812,7 +2817,44 @@ export namespace GetAllGradersResponse {
     export type AsObject = {
       graderId: number,
       metadata?: model_pb.GraderStatusMetadata.AsObject,
+      submissionsList: Array<number>,
     }
+  }
+}
+
+export class CancelSubmissionRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CancelSubmissionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CancelSubmissionRequest): CancelSubmissionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CancelSubmissionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CancelSubmissionRequest;
+  static deserializeBinaryFromReader(message: CancelSubmissionRequest, reader: jspb.BinaryReader): CancelSubmissionRequest;
+}
+
+export namespace CancelSubmissionRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class CancelSubmissionResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CancelSubmissionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CancelSubmissionResponse): CancelSubmissionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CancelSubmissionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CancelSubmissionResponse;
+  static deserializeBinaryFromReader(message: CancelSubmissionResponse, reader: jspb.BinaryReader): CancelSubmissionResponse;
+}
+
+export namespace CancelSubmissionResponse {
+  export type AsObject = {
   }
 }
 

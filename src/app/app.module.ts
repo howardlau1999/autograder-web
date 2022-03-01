@@ -36,6 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { KatexOptions, MarkdownModule } from 'ngx-markdown-latex';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { SubmissionPageComponent } from './submission-page/submission-page.component';
 import { UploadDialogComponent } from './assignment-page/submissions/upload-dialog/upload-dialog.component';
@@ -77,6 +78,9 @@ import { InspectionComponent } from './assignment-page/inspection/inspection.com
 import { SubmissionsTableComponent } from './assignment-page/submissions/submissions-table/submissions-table.component';
 import { InspectionTableComponent } from './assignment-page/inspection/inspection-table/inspection-table.component';
 import { MarkdownEditorComponent } from './common/markdown-editor/markdown-editor.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { GradersComponent } from './admin-page/graders/graders.component';
+import { GradersTableComponent } from './admin-page/graders/graders-table/graders-table.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +124,9 @@ import { MarkdownEditorComponent } from './common/markdown-editor/markdown-edito
     SubmissionsTableComponent,
     InspectionTableComponent,
     MarkdownEditorComponent,
+    AdminPageComponent,
+    GradersComponent,
+    GradersTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -162,6 +169,7 @@ import { MarkdownEditorComponent } from './common/markdown-editor/markdown-edito
     }),
     NgHcaptchaModule.forRoot(),
     MatSlideToggleModule,
+    MatChipsModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } },
