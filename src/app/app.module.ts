@@ -81,6 +81,7 @@ import { MarkdownEditorComponent } from './common/markdown-editor/markdown-edito
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { GradersComponent } from './admin-page/graders/graders.component';
 import { GradersTableComponent } from './admin-page/graders/graders-table/graders-table.component';
+import { AssignmentFormComponent } from './assignment-page/assignment-form/assignment-form.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { GradersTableComponent } from './admin-page/graders/graders-table/grader
     AdminPageComponent,
     GradersComponent,
     GradersTableComponent,
+    AssignmentFormComponent,
   ],
   imports: [
     BrowserModule,

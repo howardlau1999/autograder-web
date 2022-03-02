@@ -270,8 +270,10 @@ export class ApiService {
     dueDate: DateTime,
     description: string,
     dockerImage: string,
+    tags: string[],
     cpu: number,
     memory: number,
+    timeout: number,
   ) {
     const request = new CreateAssignmentRequest();
     const programmingConfig = new ProgrammingAssignmentConfig();
@@ -284,6 +286,8 @@ export class ApiService {
     programmingConfig.setImage(dockerImage);
     programmingConfig.setCpu(cpu);
     programmingConfig.setMemory(memory);
+    programmingConfig.setTagsList(tags);
+    programmingConfig.setTimeout(timeout);
     request.setProgrammingConfig(programmingConfig);
     return this.unary(AutograderService.CreateAssignment, request);
   }

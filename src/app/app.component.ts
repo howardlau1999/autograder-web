@@ -15,6 +15,8 @@ export class AppComponent {
 
   username?: string;
 
+  isAdmin = false;
+
   constructor(
     private tokenService: TokenService,
     private notificationService: NotificationService,
@@ -22,6 +24,7 @@ export class AppComponent {
   ) {
     this.tokenService.user$.subscribe((user) => {
       this.loggedIn = user !== null;
+      this.isAdmin = user?.getIsAdmin() || false;
       this.username = user?.getUsername();
     });
   }

@@ -2,7 +2,6 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
 <div class="assignments-container">
-  <h2>作业列表</h2>
   <mat-card class="course-info-card">
     <div *ngIf="course$ | async as course; else progressBar">
       <div *ngIf="editMode">
@@ -47,6 +46,7 @@
       </div>
     </div>
   </mat-card>
+  <h2>作业列表</h2>
   <mat-card class="assignment-table-card">
     <div class="assignment-operations">
       <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>

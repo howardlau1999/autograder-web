@@ -16,6 +16,7 @@ import { environment } from '../../environments/environment';
 export interface User {
   username: string | null;
   userId: number | null;
+  isAdmin: boolean;
 }
 
 export interface LoginError {
@@ -26,9 +27,13 @@ export interface LoginError {
   providedIn: 'root',
 })
 export class UserService {
-  user$: BehaviorSubject<User> = new BehaviorSubject<User>({ userId: null, username: null });
+  user$: BehaviorSubject<User> = new BehaviorSubject<User>({
+    userId: null,
+    username: null,
+    isAdmin: false,
+  });
 
-  user: User = { userId: null, username: null };
+  user: User = { userId: null, username: null, isAdmin: false };
 
   hcaptchaSiteKey: string;
 
@@ -44,6 +49,10 @@ export class UserService {
 
   get username() {
     return this.user.username;
+  }
+
+  get isAdmin() {
+    return this.user.isAdmin;
   }
 
   constructor(
@@ -73,7 +82,7 @@ export class UserService {
     )}`;
     this.tokenService.user$.subscribe((user) => {
       if (user !== null) {
-        this.updateUser(user.getUserId(), user.getUsername());
+        this.updateUser(user.getUserId(), user.getUsername(), user.getIsAdmin());
         return;
       }
       this.updateUser(null, null);
@@ -84,9 +93,10 @@ export class UserService {
     return this.user.userId !== null;
   }
 
-  updateUser(userId: number | null, username: string | null) {
+  updateUser(userId: number | null, username: string | null, isAdmin: boolean = false) {
     this.user.userId = userId;
     this.user.username = username;
+    this.user.isAdmin = isAdmin;
     this.user$.next(this.user);
   }
 

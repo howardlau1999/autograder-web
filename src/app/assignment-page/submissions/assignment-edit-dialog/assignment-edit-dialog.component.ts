@@ -32,11 +32,14 @@ export class AssignmentEditDialogComponent implements OnInit {
 
   programmingAssignmentForm!: FormGroup;
 
+  tags: string[] = [];
+
   updateSubscription?: Subscription;
 
   constructor(private assignmentService: AssignmentService, private errorService: ErrorService) {}
 
   ngOnInit(): void {
+    this.tags = this.assignment.getProgrammingConfig()?.getTagsList() || [];
     this.programmingAssignmentForm = new FormGroup({
       name: new FormControl(this.assignment.getName(), [Validators.required]),
       releaseDate: new FormControl(
@@ -79,6 +82,7 @@ export class AssignmentEditDialogComponent implements OnInit {
     assignment.setReleaseDate(Timestamp.fromDate(releaseDate.toJSDate()));
     assignment.setDueDate(Timestamp.fromDate(dueDate.toJSDate()));
     assignment.setDescription(description);
+    assignment.getProgrammingConfig()?.setTagsList(this.tags);
     assignment.getProgrammingConfig()?.setImage(dockerImage);
     assignment.getProgrammingConfig()?.setCpu(cpu);
     assignment.getProgrammingConfig()?.setMemory(memory * 1024 * 1024);

@@ -25,14 +25,15 @@
         <span *ngIf="isSubmissionCancelling(submission.getStatus())">取消中</span>
         <span *ngIf="isSubmissionCancelled(submission.getStatus())">已取消</span>
         <span *ngIf="isSubmissionFinished(submission.getStatus())">
-          {{ submission.getScore() }} /{{ submission.getMaxScore() }}</span
+          {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span
         >
         <span *ngIf="isSubmissionQueued(submission.getStatus())">排队中</span>
         <span *ngIf="isSubmissionRunning(submission.getStatus())">运行中</span>
         <mat-progress-bar
           *ngIf="
             isSubmissionQueued(submission.getStatus()) ||
-            isSubmissionRunning(submission.getStatus())
+            isSubmissionRunning(submission.getStatus()) ||
+            isSubmissionFinished(submission.getStatus())
           "
           [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
           [value]="(submission.getScore() / submission.getMaxScore()) * 100"

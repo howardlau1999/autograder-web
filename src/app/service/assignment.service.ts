@@ -55,8 +55,10 @@ export class AssignmentService {
     dueDate: DateTime,
     description: string,
     dockerImage: string,
+    tags: string[],
     cpu: number,
     memory: number,
+    timeout: number,
   ): Observable<Either<FormError, CreateAssignmentResponse>> {
     return this.apiService
       .createProgrammingAssignment(
@@ -66,8 +68,10 @@ export class AssignmentService {
         dueDate,
         description,
         dockerImage,
+        tags,
         cpu,
         memory * 1024 * 1024,
+        timeout,
       )
       .pipe(
         map((resp) => right(resp)),

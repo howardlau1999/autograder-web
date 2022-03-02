@@ -35,6 +35,8 @@ export class AssignmentCreateDialogComponent implements OnInit {
 
   courseId: number;
 
+  tags: string[] = [];
+
   programmingAssignmentForm = new FormGroup(
     {
       name: new FormControl('', [Validators.required]),
@@ -65,7 +67,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onConfirmClicked() {
-    const { name, releaseDate, dueDate, description, dockerImage, cpu, memory } =
+    const { name, releaseDate, dueDate, description, dockerImage, cpu, memory, timeout } =
       this.programmingAssignmentForm.value;
     this.loading = true;
     this.assignmentService
@@ -76,8 +78,10 @@ export class AssignmentCreateDialogComponent implements OnInit {
         dueDate,
         description,
         dockerImage,
+        this.tags,
         cpu,
         memory,
+        timeout,
       )
       .subscribe((result) => {
         this.loading = false;

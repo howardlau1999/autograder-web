@@ -1,5 +1,4 @@
 <div class="submissions-container">
-  <h2>提交记录</h2>
   <mat-card class="assignment-info-card">
     <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     <div [class.hidden]="loading" *ngIf="assignment$ | async as assignment">
@@ -36,6 +35,7 @@
       </div>
     </div>
   </mat-card>
+  <h2>提交记录</h2>
   <mat-card>
     <mat-card-content>
       <div class="submission-operations">
