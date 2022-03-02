@@ -17,11 +17,20 @@ export class InspectionTableDataSource extends DataSource<InspectionTableItem> {
 
   sort: MatSort | undefined;
 
-  constructor(inspection$: Observable<InspectionTableItem[]>) {
+  search$: Observable<string>;
+
+  search: string = '';
+
+  constructor(inspection$: Observable<InspectionTableItem[]>, search$: Observable<string>) {
     super();
     this.data$ = inspection$.pipe(
       tap((data) => {
         this.data = data;
+      }),
+    );
+    this.search$ = search$.pipe(
+      tap((value) => {
+        this.search = value;
       }),
     );
   }
@@ -35,9 +44,11 @@ export class InspectionTableDataSource extends DataSource<InspectionTableItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+      return merge(this.data$, this.paginator.page, this.sort.sortChange, this.search$).pipe(
         map(() => {
-          return this.getPagedData(this.getSortedData([...this.data]));
+          return this.getPagedData(
+            this.getSortedData(this.filterData([...this.data], this.search)),
+          );
         }),
       );
     }
@@ -49,6 +60,18 @@ export class InspectionTableDataSource extends DataSource<InspectionTableItem> {
    * any open connections or free any held resources that were set up during connect.
    */
   disconnect(): void {}
+
+  private filterData(data: InspectionTableItem[], search: string) {
+    if (!search) return data;
+    return data.filter((item) => {
+      return (
+        item.getUserId().toString() === search ||
+        item.getNickname().includes(search) ||
+        item.getUsername().includes(search) ||
+        item.getStudentId().includes(search)
+      );
+    });
+  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,

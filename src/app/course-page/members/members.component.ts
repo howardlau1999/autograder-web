@@ -1,12 +1,13 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { repeatWhen, switchMap } from 'rxjs/operators';
-import { catchError, map, Observable, of, Subject, Subscription } from 'rxjs';
+import { catchError, debounceTime, map, Observable, of, Subject, Subscription } from 'rxjs';
 import { DateTime } from 'luxon';
+import { FormControl } from '@angular/forms';
 import { MembersDataSource, MembersItem } from './members-datasource';
 import { BatchAddMemberDialogComponent } from './batch-add-member-dialog/batch-add-member-dialog.component';
 import { AddMemberDialogComponent } from './add-member-dialog/add-member-dialog.component';
@@ -23,14 +24,14 @@ import { exportCSV } from '../../common/csv-exporter/csv.exporter';
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.css'],
 })
-export class MembersComponent implements AfterViewInit {
+export class MembersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @ViewChild(MatSort) sort!: MatSort;
 
   @ViewChild(MatTable) table!: MatTable<MembersItem>;
 
-  dataSource: MembersDataSource;
+  dataSource!: MembersDataSource;
 
   search: string = '';
 
@@ -40,7 +41,11 @@ export class MembersComponent implements AfterViewInit {
 
   refresher$: Subject<null> = new Subject<null>();
 
-  members$: Observable<MembersItem[]>;
+  members$!: Observable<MembersItem[]>;
+
+  searchFormControl = new FormControl('');
+
+  search$!: Observable<string>;
 
   addMemberSub: Subscription | undefined;
 
@@ -65,7 +70,9 @@ export class MembersComponent implements AfterViewInit {
     private courseService: CourseService,
     private apiService: ApiService,
     private notificationService: NotificationService,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.userId = this.userService.userId;
     this.members$ = this.route.parent!.paramMap.pipe(
       switchMap((params) => {
@@ -82,7 +89,8 @@ export class MembersComponent implements AfterViewInit {
         return of([]);
       }),
     );
-    this.dataSource = new MembersDataSource(this.members$);
+    this.search$ = this.searchFormControl.valueChanges.pipe(debounceTime(100));
+    this.dataSource = new MembersDataSource(this.members$, this.search$);
   }
 
   ngAfterViewInit(): void {

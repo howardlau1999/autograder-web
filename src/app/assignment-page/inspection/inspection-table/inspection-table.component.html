@@ -10,6 +10,14 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>用户名</th>
     <td mat-cell *matCellDef="let row">{{ row.getUsername() }}</td>
   </ng-container>
+  <ng-container matColumnDef="nickname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>昵称</th>
+    <td mat-cell *matCellDef="let row">{{ row.getNickname() }}</td>
+  </ng-container>
+  <ng-container matColumnDef="studentId">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>学号</th>
+    <td mat-cell *matCellDef="let row">{{ row.getStudentId() }}</td>
+  </ng-container>
 
   <ng-container matColumnDef="submissionCount">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>提交次数</th>

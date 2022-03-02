@@ -1,19 +1,39 @@
 <div class="submissions-container">
   <h2>查阅提交</h2>
-  <button mat-raised-button (click)="exportAssignmentGrades()">
-    <mat-icon>download</mat-icon>
-    导出所有成绩
-  </button>
-  <button mat-flat-button (click)="regradeAssignment()">
-    <mat-icon>cached</mat-icon>
-    重评所有提交
-  </button>
+  <div class="operation-bar">
+    <button mat-raised-button (click)="exportAssignmentGrades()">
+      <mat-icon>download</mat-icon>
+      导出所有成绩
+    </button>
+    <button mat-flat-button (click)="regradeAssignment()">
+      <mat-icon>cached</mat-icon>
+      重评所有提交
+    </button
+    >
+    <span class="spacer"> </span>
+    <form>
+      <mat-form-field>
+        <mat-label>搜索</mat-label>
+        <input [formControl]="searchValueFormControl" matInput />
+        <button
+          (click)="searchValueFormControl.setValue('')"
+          *ngIf="searchValueFormControl.value"
+          mat-icon-button
+          matSuffix
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-icon>search</mat-icon>
+    </form>
+  </div>
   <mat-card class="inspection-table-card">
     <mat-card-content>
       <app-inspection-table
         (userChange)="onUserChange($event)"
         [selectedUserId]="userId$ | async"
         [assignmentId]="assignmentId$ | async"
+        [search$]="search$"
       ></app-inspection-table>
     </mat-card-content>
   </mat-card>

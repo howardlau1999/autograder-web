@@ -14,8 +14,8 @@
     <form>
       <mat-form-field>
         <mat-label>搜索</mat-label>
-        <input [(ngModel)]="search" matInput name="search" />
-        <button (click)="search = ''" *ngIf="search" mat-icon-button matSuffix>
+        <input [formControl]="searchFormControl" matInput name="search" />
+        <button (click)="searchFormControl.setValue('')" *ngIf="searchFormControl.value" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>

@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -12,7 +20,7 @@ import { SubmissionService } from '../../../service/submission.service';
   templateUrl: './inspection-table.component.html',
   styleUrls: ['./inspection-table.component.css'],
 })
-export class InspectionTableComponent implements AfterViewInit {
+export class InspectionTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,17 +35,21 @@ export class InspectionTableComponent implements AfterViewInit {
     }
   }
 
-  dataSource: InspectionTableDataSource;
+  dataSource!: InspectionTableDataSource;
 
-  displayedColumns = ['userId', 'username', 'submissionCount'];
+  displayedColumns = ['userId', 'username', 'nickname', 'studentId', 'submissionCount'];
 
-  inspections$: Observable<InspectionTableItem[]>;
+  inspections$!: Observable<InspectionTableItem[]>;
 
   assignmentId$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   @Input() selectedUserId: number | undefined | null = null;
 
-  constructor(private submissionService: SubmissionService) {
+  @Input() search$!: Observable<string>;
+
+  constructor(private submissionService: SubmissionService) {}
+
+  ngOnInit(): void {
     this.inspections$ = this.assignmentId$.pipe(
       switchMap((assignmentId) => {
         return this.submissionService.inspectAllSubmissionsInAssignment(assignmentId);
@@ -49,7 +61,7 @@ export class InspectionTableComponent implements AfterViewInit {
         return of([]);
       }),
     );
-    this.dataSource = new InspectionTableDataSource(this.inspections$);
+    this.dataSource = new InspectionTableDataSource(this.inspections$, this.search$);
   }
 
   ngAfterViewInit(): void {

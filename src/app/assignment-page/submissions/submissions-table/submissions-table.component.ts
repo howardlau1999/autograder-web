@@ -23,11 +23,13 @@ import { map, repeatWhen } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { SubmissionService } from '../../../service/submission.service';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';
 import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
 import { SubmissionStatus, SubmissionStatusMap } from '../../../api/proto/model_pb';
+import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-submissions-table',
@@ -61,6 +63,8 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   cancelSubmissionSubscription?: Subscription;
 
+  cancelConfirmSubscription?: Subscription;
+
   @Output() submissionChange = new EventEmitter<number>();
 
   @Input() showRegrade?: boolean;
@@ -88,6 +92,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
     private assignmentService: AssignmentService,
     private submissionService: SubmissionService,
+    private matDialog: MatDialog,
   ) {
     this.submissions$ = this.connect();
     this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.submissions$);
@@ -130,18 +135,38 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.downloadSubmissionSubscription?.unsubscribe();
     this.regradeSubmissionSubscription?.unsubscribe();
+    this.cancelConfirmSubscription?.unsubscribe();
+    this.cancelSubmissionSubscription?.unsubscribe();
   }
 
   cancelSubmission(event: MouseEvent, submissionId: number): void {
     event.stopPropagation();
     event.preventDefault();
-    this.cancelSubmissionSubscription?.unsubscribe();
-    this.cancelSubmissionSubscription = this.submissionService
-      .cancelSubmission(submissionId)
-      .subscribe(() => {
-        this.internalSubmissionRefresher$.next(null);
-        this.notificationService.showSnackBar('提交取消成功');
-      });
+    const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
+      data: {
+        title: '确认停止评测？',
+        message: '停止后如需重评要联系助教或老师',
+      },
+    });
+    this.cancelConfirmSubscription?.unsubscribe();
+    this.cancelConfirmSubscription = dialogRef.afterClosed().subscribe((confirmed) => {
+      this.cancelConfirmSubscription?.unsubscribe();
+      this.cancelConfirmSubscription = undefined;
+      if (!confirmed) return;
+      this.cancelSubmissionSubscription?.unsubscribe();
+      this.cancelSubmissionSubscription = this.submissionService
+        .cancelSubmission(submissionId)
+        .pipe(
+          catchError(() => {
+            this.internalSubmissionRefresher$.next(null);
+            return of(null);
+          }),
+        )
+        .subscribe(() => {
+          this.internalSubmissionRefresher$.next(null);
+          this.notificationService.showSnackBar('提交取消成功');
+        });
+    });
   }
 
   regradeSubmission(event: MouseEvent, submissionId: number): void {

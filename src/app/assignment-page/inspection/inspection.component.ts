@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, Subject, Subscription, switchMap, zipWith } from 'rxjs';
+import { debounceTime, Observable, of, Subject, Subscription, switchMap, zipWith } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
 import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
 import { exportCSV } from '../../common/csv-exporter/csv.exporter';
+import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-inspection',
@@ -23,11 +26,20 @@ export class InspectionComponent implements OnInit, OnDestroy {
 
   exportAssignmentGradesSubscription?: Subscription;
 
+  regradeConfirmSubscription?: Subscription;
+
+  search: string = '';
+
+  search$: Observable<string>;
+
+  searchValueFormControl = new FormControl('');
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private assignmentService: AssignmentService,
     private notificationService: NotificationService,
+    private matDialog: MatDialog,
   ) {
     this.assignmentId$ = this.route.parent!.paramMap.pipe(
       map((params) => {
@@ -41,18 +53,19 @@ export class InspectionComponent implements OnInit, OnDestroy {
         return Number.parseInt(userIdString, 10);
       }),
     );
+    this.search$ = this.searchValueFormControl.valueChanges.pipe(debounceTime(100));
   }
 
   ngOnInit(): void {}
 
   onUserChange(userId: number) {
     const commands: any[] = ['inspection', userId];
-    this.router.navigate(commands, { relativeTo: this.route.parent });
+    this.router.navigate(commands, { relativeTo: this.route.parent }).then();
   }
 
   onSubmissionChange(submissionId: number) {
     const commands: any[] = ['submissions', submissionId];
-    this.router.navigate(commands, { relativeTo: this.route.parent });
+    this.router.navigate(commands, { relativeTo: this.route.parent }).then();
   }
 
   ngOnDestroy() {
@@ -98,15 +111,28 @@ export class InspectionComponent implements OnInit, OnDestroy {
   }
 
   regradeAssignment() {
-    this.regradeAssignmentSubscription?.unsubscribe();
-    this.regradeAssignmentSubscription = this.assignmentId$
-      .pipe(
-        switchMap((assignmentId) => {
-          return this.assignmentService.regradeAssignment(assignmentId);
-        }),
-      )
-      .subscribe(() => {
-        this.notificationService.showSnackBar('提交重评成功');
-      });
+    this.regradeConfirmSubscription?.unsubscribe();
+    const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
+      data: {
+        title: '确认重评所有提交？',
+        message: '请注意该操作可能会对评测机带来较大影响',
+      },
+    });
+    this.regradeConfirmSubscription = dialogRef.afterClosed().subscribe((confirmed) => {
+      this.regradeConfirmSubscription?.unsubscribe();
+      this.regradeConfirmSubscription = undefined;
+      if (!confirmed) return;
+      this.regradeAssignmentSubscription?.unsubscribe();
+      this.regradeAssignmentSubscription = this.assignmentId$
+        .pipe(
+          switchMap((assignmentId) => {
+            return this.assignmentService.regradeAssignment(assignmentId);
+          }),
+        )
+        .subscribe(() => {
+          this.notificationService.showSnackBar('提交重评成功');
+          this.submissionsRefresher$.next(null);
+        });
+    });
   }
 }
