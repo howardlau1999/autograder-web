@@ -1,9 +1,19 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, retryWhen, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  Observable,
+  of,
+  retryWhen,
+  skip,
+  skipWhile,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { meetSemilattice } from 'fp-ts';
 import { SubmissionReport, SubmissionStatus, SubmissionStatusMap } from '../../api/proto/model_pb';
 import { ApiService } from '../../api/api.service';
 import { SubmissionService } from '../../service/submission.service';
@@ -78,7 +88,20 @@ export class ReportComponent implements OnInit {
                 const { message } = error;
                 this.error = message;
                 if (message === 'RUNNING' || message === 'QUEUED' || message === 'CANCELLING') {
-                  return this.submissionService.subscribeSubmission(submissionId);
+                  return this.submissionService.subscribeSubmission(submissionId).pipe(
+                    skipWhile((resp) => {
+                      switch (message) {
+                        case 'RUNNING':
+                          return resp.getStatus() === SubmissionStatus.RUNNING;
+                        case 'QUEUED':
+                          return resp.getStatus() === SubmissionStatus.QUEUED;
+                        case 'CANCELLING':
+                          return resp.getStatus() === SubmissionStatus.CANCELLING;
+                        default:
+                          return false;
+                      }
+                    }),
+                  );
                 }
                 throw error;
               }),
@@ -88,7 +111,7 @@ export class ReportComponent implements OnInit {
             return resp.getReport();
           }),
           catchError(({ message }) => {
-            if (message !== 'CANCELLED' && message !== 'CANCELLING') {
+            if (message && message !== 'CANCELLED' && message !== 'CANCELLING') {
               this.notificationService.showSnackBar(`无法获取报告 ${message}`);
             }
             return of(undefined);
@@ -104,8 +127,14 @@ export class ReportComponent implements OnInit {
     this.downloadSubscription?.unsubscribe();
     this.downloadSubscription = this.submissionService
       .downloadOutputFile(this.submissionId, filename)
-      .subscribe((resp) => {
-        window.open(this.submissionService.getDownloadURL(filename, resp.getToken()), '_blank');
+      .subscribe({
+        next: (resp) => {
+          window.open(this.submissionService.getDownloadURL(filename, resp.getToken()), '_blank');
+        },
+
+        error: ({ message }) => {
+          this.notificationService.showSnackBar(`无法下载 ${message}`);
+        },
       });
   }
 
@@ -113,13 +142,18 @@ export class ReportComponent implements OnInit {
     this.downloadSubscription?.unsubscribe();
     this.downloadSubscription = this.submissionService
       .downloadOutputFile(this.submissionId, filename)
-      .subscribe((resp) => {
-        window.open(
-          `/vcd?url=${encodeURIComponent(
-            this.submissionService.getDownloadURL(filename, resp.getToken()),
-          )}`,
-          '_blank',
-        );
+      .subscribe({
+        next: (resp) => {
+          window.open(
+            `/vcd?url=${encodeURIComponent(
+              this.submissionService.getDownloadURL(filename, resp.getToken()),
+            )}`,
+            '_blank',
+          );
+        },
+        error: ({ message }) => {
+          this.notificationService.showSnackBar(`无法下载 ${message}`);
+        },
       });
   }
 

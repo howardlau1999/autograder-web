@@ -4,12 +4,13 @@ import { Either, left, right } from 'fp-ts/Either';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ApiService } from '../api/api.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubmissionService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private notificationService: NotificationService) {}
 
   getSubmissionsInAssignment(assignmentId: number) {
     return this.apiService.getSubmissionsInAssignment(assignmentId);

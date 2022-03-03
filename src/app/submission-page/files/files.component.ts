@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../api/api.service';
 import {
@@ -13,6 +13,7 @@ import {
 } from '../../api/proto/api_pb';
 import { environment } from '../../../environments/environment';
 import { SubmissionService } from '../../service/submission.service';
+import { NotificationService } from '../../service/notification.service';
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;
@@ -65,6 +66,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     private submissionService: SubmissionService,
     private route: ActivatedRoute,
+    private notificationService: NotificationService,
   ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -96,6 +98,10 @@ export class FilesComponent implements OnInit, OnDestroy {
           return of(null);
         }
         return this.apiService.initDownload(this.submissionId, path);
+      }),
+      catchError(({ message }) => {
+        this.notificationService.showSnackBar(`无法下载 ${message}`);
+        return of(null);
       }),
     );
     this.downloadPath$ = this.initDownload$.pipe(

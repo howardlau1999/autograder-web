@@ -10,6 +10,7 @@ import { NotificationService } from '../service/notification.service';
 import { GetCourseListResponse } from '../api/proto/api_pb';
 import { CourseRole, CourseRoleMap } from '../api/proto/model_pb';
 import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -37,13 +38,18 @@ export class DashboardPageComponent {
 
   joinDialogSubscription?: Subscription;
 
+  showCreateCourse = false;
+
   constructor(
     private dialog: MatDialog,
     private dashboardService: DashboardService,
     private router: Router,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
-  ) {}
+    private userService: UserService,
+  ) {
+    this.showCreateCourse = userService.isAdmin;
+  }
 
   joinCourse() {
     const dialogRef = this.dialog.open(JoinDialogComponent);
