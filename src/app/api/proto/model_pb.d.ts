@@ -927,6 +927,30 @@ export namespace GraderStatusMetadata {
   export const Status: StatusMap;
 }
 
+export class PendingRank extends jspb.Message {
+  getRank(): number;
+  setRank(value: number): void;
+
+  getTotal(): number;
+  setTotal(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PendingRank.AsObject;
+  static toObject(includeInstance: boolean, msg: PendingRank): PendingRank.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PendingRank, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PendingRank;
+  static deserializeBinaryFromReader(message: PendingRank, reader: jspb.BinaryReader): PendingRank;
+}
+
+export namespace PendingRank {
+  export type AsObject = {
+    rank: number,
+    total: number,
+  }
+}
+
 export interface SubmissionStatusMap {
   QUEUED: 0;
   ABORTED: 1;

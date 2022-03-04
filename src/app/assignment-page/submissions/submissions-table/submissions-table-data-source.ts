@@ -43,6 +43,7 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
           .filter(
             (submission) =>
               submission.getStatus() === SubmissionStatus.RUNNING ||
+              submission.getStatus() === SubmissionStatus.CANCELLING ||
               submission.getStatus() === SubmissionStatus.QUEUED,
           )
           .forEach((submission) => {
@@ -50,12 +51,16 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
             this.runningSubmissions[submissionId] = submissionService
               .subscribeSubmission(submissionId)
               .subscribe((resp) => {
+                if (resp.getPendingRank()) {
+                  submission.setPendingRank(resp.getPendingRank());
+                }
                 submission.setStatus(resp.getStatus());
                 submission.setScore(resp.getScore());
                 submission.setMaxScore(resp.getMaxscore());
                 if (
                   submission.getStatus() === SubmissionStatus.FINISHED ||
-                  submission.getStatus() === SubmissionStatus.FAILED
+                  submission.getStatus() === SubmissionStatus.FAILED ||
+                  submission.getStatus() === SubmissionStatus.CANCELLED
                 ) {
                   this.runningSubmissions[submissionId].unsubscribe();
                   delete this.runningSubmissions[submissionId];

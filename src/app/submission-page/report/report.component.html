@@ -39,6 +39,8 @@
       #testcase
       *ngFor="let testcase of report.getTestsList(); index as i"
       class="testcase-panel"
+      [hideToggle]="!testcase.getOutput()"
+      [disabled]="!testcase.getOutput()"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -95,7 +97,12 @@
         <p></p>
       </mat-card>
       <mat-card *ngSwitchCase="'QUEUED'">
-        <mat-card-title>测试排队中…</mat-card-title>
+        <mat-card-title>
+          测试排队中…
+          <span *ngIf="pendingRank"
+            >( {{ pendingRank.getRank() }} / {{ pendingRank.getTotal() }} )</span
+          >
+        </mat-card-title>
         <p></p>
       </mat-card>
       <mat-card *ngSwitchCase="'RUNNING'">

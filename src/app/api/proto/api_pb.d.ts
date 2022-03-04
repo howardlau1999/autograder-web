@@ -342,6 +342,11 @@ export class SubmissionInfo extends jspb.Message {
   getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
   setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
 
+  hasPendingRank(): boolean;
+  clearPendingRank(): void;
+  getPendingRank(): model_pb.PendingRank | undefined;
+  setPendingRank(value?: model_pb.PendingRank): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubmissionInfo.AsObject;
   static toObject(includeInstance: boolean, msg: SubmissionInfo): SubmissionInfo.AsObject;
@@ -360,6 +365,7 @@ export namespace SubmissionInfo {
     score: number,
     maxScore: number,
     status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
+    pendingRank?: model_pb.PendingRank.AsObject,
   }
 
   export class Submitter extends jspb.Message {
@@ -829,6 +835,9 @@ export class DownloadTokenPayload extends jspb.Message {
   getIsDirectory(): boolean;
   setIsDirectory(value: boolean): void;
 
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DownloadTokenPayload.AsObject;
   static toObject(includeInstance: boolean, msg: DownloadTokenPayload): DownloadTokenPayload.AsObject;
@@ -844,6 +853,7 @@ export namespace DownloadTokenPayload {
     realPath: string,
     filename: string,
     isDirectory: boolean,
+    submissionId: number,
   }
 }
 
@@ -923,6 +933,11 @@ export class SubscribeSubmissionResponse extends jspb.Message {
   getStatus(): model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap];
   setStatus(value: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap]): void;
 
+  hasPendingRank(): boolean;
+  clearPendingRank(): void;
+  getPendingRank(): model_pb.PendingRank | undefined;
+  setPendingRank(value?: model_pb.PendingRank): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SubscribeSubmissionResponse.AsObject;
   static toObject(includeInstance: boolean, msg: SubscribeSubmissionResponse): SubscribeSubmissionResponse.AsObject;
@@ -938,6 +953,7 @@ export namespace SubscribeSubmissionResponse {
     score: number,
     maxscore: number,
     status: model_pb.SubmissionStatusMap[keyof model_pb.SubmissionStatusMap],
+    pendingRank?: model_pb.PendingRank.AsObject,
   }
 }
 
@@ -2854,6 +2870,170 @@ export class CancelSubmissionResponse extends jspb.Message {
 }
 
 export namespace CancelSubmissionResponse {
+  export type AsObject = {
+  }
+}
+
+export class SearchUserRequest extends jspb.Message {
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  getNickname(): string;
+  setNickname(value: string): void;
+
+  getEmail(): string;
+  setEmail(value: string): void;
+
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  getStudentId(): string;
+  setStudentId(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchUserRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchUserRequest): SearchUserRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SearchUserRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchUserRequest;
+  static deserializeBinaryFromReader(message: SearchUserRequest, reader: jspb.BinaryReader): SearchUserRequest;
+}
+
+export namespace SearchUserRequest {
+  export type AsObject = {
+    username: string,
+    nickname: string,
+    email: string,
+    userId: number,
+    studentId: string,
+  }
+}
+
+export class SearchUserResponse extends jspb.Message {
+  clearUsersList(): void;
+  getUsersList(): Array<model_pb.User>;
+  setUsersList(value: Array<model_pb.User>): void;
+  addUsers(value?: model_pb.User, index?: number): model_pb.User;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchUserResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchUserResponse): SearchUserResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SearchUserResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchUserResponse;
+  static deserializeBinaryFromReader(message: SearchUserResponse, reader: jspb.BinaryReader): SearchUserResponse;
+}
+
+export namespace SearchUserResponse {
+  export type AsObject = {
+    usersList: Array<model_pb.User.AsObject>,
+  }
+}
+
+export class SetAdminRequest extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SetAdminRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SetAdminRequest): SetAdminRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SetAdminRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SetAdminRequest;
+  static deserializeBinaryFromReader(message: SetAdminRequest, reader: jspb.BinaryReader): SetAdminRequest;
+}
+
+export namespace SetAdminRequest {
+  export type AsObject = {
+    userId: number,
+  }
+}
+
+export class SetAdminResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SetAdminResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SetAdminResponse): SetAdminResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SetAdminResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SetAdminResponse;
+  static deserializeBinaryFromReader(message: SetAdminResponse, reader: jspb.BinaryReader): SetAdminResponse;
+}
+
+export namespace SetAdminResponse {
+  export type AsObject = {
+  }
+}
+
+export class GetAllUsersRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest;
+  static deserializeBinaryFromReader(message: GetAllUsersRequest, reader: jspb.BinaryReader): GetAllUsersRequest;
+}
+
+export namespace GetAllUsersRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetAllUsersResponse extends jspb.Message {
+  clearUsersList(): void;
+  getUsersList(): Array<model_pb.User>;
+  setUsersList(value: Array<model_pb.User>): void;
+  addUsers(value?: model_pb.User, index?: number): model_pb.User;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersResponse;
+  static deserializeBinaryFromReader(message: GetAllUsersResponse, reader: jspb.BinaryReader): GetAllUsersResponse;
+}
+
+export namespace GetAllUsersResponse {
+  export type AsObject = {
+    usersList: Array<model_pb.User.AsObject>,
+  }
+}
+
+export class GetGradeQueueRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetGradeQueueRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetGradeQueueRequest): GetGradeQueueRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetGradeQueueRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetGradeQueueRequest;
+  static deserializeBinaryFromReader(message: GetGradeQueueRequest, reader: jspb.BinaryReader): GetGradeQueueRequest;
+}
+
+export namespace GetGradeQueueRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetGradeQueueResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetGradeQueueResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetGradeQueueResponse): GetGradeQueueResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetGradeQueueResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetGradeQueueResponse;
+  static deserializeBinaryFromReader(message: GetGradeQueueResponse, reader: jspb.BinaryReader): GetGradeQueueResponse;
+}
+
+export namespace GetGradeQueueResponse {
   export type AsObject = {
   }
 }

@@ -27,7 +27,13 @@
         <span *ngIf="isSubmissionFinished(submission.getStatus())">
           {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span
         >
-        <span *ngIf="isSubmissionQueued(submission.getStatus())">排队中</span>
+        <span *ngIf="isSubmissionQueued(submission.getStatus())"
+          >排队中
+          <span *ngIf="submission.getPendingRank()">
+            ( {{ submission.getPendingRank().getRank() }} /
+            {{ submission.getPendingRank().getTotal() }} )
+          </span>
+        </span>
         <span *ngIf="isSubmissionRunning(submission.getStatus())">运行中</span>
         <mat-progress-bar
           *ngIf="

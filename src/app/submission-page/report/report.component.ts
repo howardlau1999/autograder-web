@@ -1,20 +1,15 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  Observable,
-  of,
-  retryWhen,
-  skip,
-  skipWhile,
-  Subscription,
-  switchMap,
-} from 'rxjs';
+import { catchError, last, Observable, of, retryWhen, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { meetSemilattice } from 'fp-ts';
-import { SubmissionReport, SubmissionStatus, SubmissionStatusMap } from '../../api/proto/model_pb';
+import {
+  PendingRank,
+  SubmissionReport,
+  SubmissionStatus,
+  SubmissionStatusMap,
+} from '../../api/proto/model_pb';
 import { ApiService } from '../../api/api.service';
 import { SubmissionService } from '../../service/submission.service';
 import { NotificationService } from '../../service/notification.service';
@@ -32,6 +27,8 @@ export class ReportComponent implements OnInit {
   activateSubscription?: Subscription;
 
   error: string | null = null;
+
+  pendingRank?: PendingRank;
 
   submissionId: number = 0;
 
@@ -82,39 +79,44 @@ export class ReportComponent implements OnInit {
         const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
         this.submissionId = submissionId;
         return this.submissionService.getSubmissionReport(submissionId).pipe(
-          retryWhen((error$) => {
-            return error$.pipe(
-              switchMap((error) => {
-                const { message } = error;
-                this.error = message;
-                if (message === 'RUNNING' || message === 'QUEUED' || message === 'CANCELLING') {
-                  return this.submissionService.subscribeSubmission(submissionId).pipe(
-                    skipWhile((resp) => {
-                      switch (message) {
-                        case 'RUNNING':
-                          return resp.getStatus() === SubmissionStatus.RUNNING;
-                        case 'QUEUED':
-                          return resp.getStatus() === SubmissionStatus.QUEUED;
-                        case 'CANCELLING':
-                          return resp.getStatus() === SubmissionStatus.CANCELLING;
-                        default:
-                          return false;
-                      }
-                    }),
-                  );
+          catchError((error) => {
+            const { message } = error;
+            this.error = message;
+            if (message !== 'RUNNING' && message !== 'QUEUED' && message !== 'CANCELLING')
+              throw error;
+
+            return this.submissionService.subscribeSubmission(submissionId).pipe(
+              tap((resp) => {
+                if (resp.getPendingRank()) {
+                  this.pendingRank = resp.getPendingRank();
                 }
-                throw error;
+                switch (resp.getStatus()) {
+                  case SubmissionStatus.RUNNING:
+                    this.error = 'RUNNING';
+                    break;
+                  case SubmissionStatus.CANCELLING:
+                    this.error = 'CANCELLING';
+                    break;
+                  case SubmissionStatus.QUEUED:
+                    this.error = 'QUEUED';
+                    break;
+                  default:
+                }
+              }),
+              last((resp) => {
+                return (
+                  resp.getStatus() === SubmissionStatus.FINISHED ||
+                  resp.getStatus() === SubmissionStatus.CANCELLED ||
+                  resp.getStatus() === SubmissionStatus.FAILED
+                );
+              }),
+              switchMap(() => {
+                return this.submissionService.getSubmissionReport(submissionId);
               }),
             );
           }),
           map((resp) => {
             return resp.getReport();
-          }),
-          catchError(({ message }) => {
-            if (message && message !== 'CANCELLED' && message !== 'CANCELLING') {
-              this.notificationService.showSnackBar(`无法获取报告 ${message}`);
-            }
-            return of(undefined);
           }),
         );
       }),

@@ -436,6 +436,42 @@ type AutograderServiceCancelSubmission = {
   readonly responseType: typeof api_pb.CancelSubmissionResponse;
 };
 
+type AutograderServiceSearchUser = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.SearchUserRequest;
+  readonly responseType: typeof api_pb.SearchUserResponse;
+};
+
+type AutograderServiceSetAdmin = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.SetAdminRequest;
+  readonly responseType: typeof api_pb.SetAdminResponse;
+};
+
+type AutograderServiceGetAllUsers = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetAllUsersRequest;
+  readonly responseType: typeof api_pb.GetAllUsersResponse;
+};
+
+type AutograderServiceGetGradeQueue = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetGradeQueueRequest;
+  readonly responseType: typeof api_pb.GetGradeQueueResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -486,6 +522,10 @@ export class AutograderService {
   static readonly RemoveGrader: AutograderServiceRemoveGrader;
   static readonly GetAllGraders: AutograderServiceGetAllGraders;
   static readonly CancelSubmission: AutograderServiceCancelSubmission;
+  static readonly SearchUser: AutograderServiceSearchUser;
+  static readonly SetAdmin: AutograderServiceSetAdmin;
+  static readonly GetAllUsers: AutograderServiceGetAllUsers;
+  static readonly GetGradeQueue: AutograderServiceGetGradeQueue;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -943,6 +983,42 @@ export class AutograderServiceClient {
   cancelSubmission(
     requestMessage: api_pb.CancelSubmissionRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.CancelSubmissionResponse|null) => void
+  ): UnaryResponse;
+  searchUser(
+    requestMessage: api_pb.SearchUserRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SearchUserResponse|null) => void
+  ): UnaryResponse;
+  searchUser(
+    requestMessage: api_pb.SearchUserRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SearchUserResponse|null) => void
+  ): UnaryResponse;
+  setAdmin(
+    requestMessage: api_pb.SetAdminRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SetAdminResponse|null) => void
+  ): UnaryResponse;
+  setAdmin(
+    requestMessage: api_pb.SetAdminRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.SetAdminResponse|null) => void
+  ): UnaryResponse;
+  getAllUsers(
+    requestMessage: api_pb.GetAllUsersRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllUsersResponse|null) => void
+  ): UnaryResponse;
+  getAllUsers(
+    requestMessage: api_pb.GetAllUsersRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllUsersResponse|null) => void
+  ): UnaryResponse;
+  getGradeQueue(
+    requestMessage: api_pb.GetGradeQueueRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetGradeQueueResponse|null) => void
+  ): UnaryResponse;
+  getGradeQueue(
+    requestMessage: api_pb.GetGradeQueueRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetGradeQueueResponse|null) => void
   ): UnaryResponse;
 }
 

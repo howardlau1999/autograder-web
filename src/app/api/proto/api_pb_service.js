@@ -442,6 +442,42 @@ AutograderService.CancelSubmission = {
   responseType: api_pb.CancelSubmissionResponse
 };
 
+AutograderService.SearchUser = {
+  methodName: "SearchUser",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.SearchUserRequest,
+  responseType: api_pb.SearchUserResponse
+};
+
+AutograderService.SetAdmin = {
+  methodName: "SetAdmin",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.SetAdminRequest,
+  responseType: api_pb.SetAdminResponse
+};
+
+AutograderService.GetAllUsers = {
+  methodName: "GetAllUsers",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetAllUsersRequest,
+  responseType: api_pb.GetAllUsersResponse
+};
+
+AutograderService.GetGradeQueue = {
+  methodName: "GetGradeQueue",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.GetGradeQueueRequest,
+  responseType: api_pb.GetGradeQueueResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -1919,6 +1955,130 @@ AutograderServiceClient.prototype.cancelSubmission = function cancelSubmission(r
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.CancelSubmission, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.searchUser = function searchUser(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.SearchUser, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.setAdmin = function setAdmin(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.SetAdmin, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getAllUsers = function getAllUsers(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetAllUsers, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.getGradeQueue = function getGradeQueue(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.GetGradeQueue, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
