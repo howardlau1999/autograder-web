@@ -7,7 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { KatexOptions } from 'ngx-markdown-latex';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
-import { Assignment, CourseRole } from '../../api/proto/model_pb';
+import { Assignment, CourseRole, SubmissionLimitConfig } from '../../api/proto/model_pb';
 import { SubmissionsItem } from './submissions-table/submissions-table-data-source';
 import { SubmissionService } from '../../service/submission.service';
 import { AssignmentService } from '../../service/assignment.service';
@@ -56,6 +56,8 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
 
   editMode = false;
 
+  submissionLimit?: SubmissionLimitConfig;
+
   constructor(
     private notificationService: NotificationService,
     private assignmentService: AssignmentService,
@@ -88,8 +90,10 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
       }),
       map((resp) => resp.getAssignment()),
       tap((assignment) => {
+        this.submissionLimit = assignment?.getSubmissionLimit();
         if (this.canWriteCourse) {
           this.canSubmit = true;
+          this.submissionLimit = undefined;
         } else {
           this.releaseTimerSubscription?.unsubscribe();
           this.dueTimerSubscription?.unsubscribe();

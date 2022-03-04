@@ -1,4 +1,8 @@
-<app-assignment-form [(tags)]="tags" [formGroup]="programmingAssignmentForm"></app-assignment-form>
+<app-assignment-form
+  [(tags)]="tags"
+  [submissionLimitConfig]="submissionLimitConfig"
+  [formGroup]="programmingAssignmentForm"
+></app-assignment-form>
 <div class="buttons">
   <button (click)="onCancelClicked()" mat-flat-button>取消</button>
   <button

@@ -1,5 +1,29 @@
 <mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
 <h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
+<div *ngIf="showSubmit" class="submission-operations">
+  <span
+    [matTooltip]="
+      canSubmit
+        ? !limitReached
+          ? !frequencyReached
+            ? '上传文件并提交'
+            : '已达到提交频率限制'
+          : '已达到提交次数限制'
+        : '不在可提交时间范围内'
+    "
+  >
+    <button
+      *ngIf="!submissionsLoading"
+      [disabled]="!canSubmit || limitReached || frequencyReached"
+      (click)="onSubmitClicked()"
+      color="primary"
+      mat-raised-button
+    >
+      <mat-icon>add</mat-icon>
+      上传提交
+    </button>
+  </span>
+</div>
 <table
   class="submission-history-table"
   [class.hidden]="submissionsLoading || !dataSource?.data?.length"

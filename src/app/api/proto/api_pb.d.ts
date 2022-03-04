@@ -1317,6 +1317,11 @@ export class CreateAssignmentRequest extends jspb.Message {
   getProgrammingConfig(): model_pb.ProgrammingAssignmentConfig | undefined;
   setProgrammingConfig(value?: model_pb.ProgrammingAssignmentConfig): void;
 
+  hasSubmissionLimit(): boolean;
+  clearSubmissionLimit(): void;
+  getSubmissionLimit(): model_pb.SubmissionLimitConfig | undefined;
+  setSubmissionLimit(value?: model_pb.SubmissionLimitConfig): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateAssignmentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateAssignmentRequest): CreateAssignmentRequest.AsObject;
@@ -1337,6 +1342,7 @@ export namespace CreateAssignmentRequest {
     lateDueDate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     description: string,
     programmingConfig?: model_pb.ProgrammingAssignmentConfig.AsObject,
+    submissionLimit?: model_pb.SubmissionLimitConfig.AsObject,
   }
 }
 
@@ -3034,6 +3040,46 @@ export class GetGradeQueueResponse extends jspb.Message {
 }
 
 export namespace GetGradeQueueResponse {
+  export type AsObject = {
+  }
+}
+
+export class DeleteLeaderboardRequest extends jspb.Message {
+  getAssignmentId(): number;
+  setAssignmentId(value: number): void;
+
+  getUserId(): number;
+  setUserId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteLeaderboardRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteLeaderboardRequest): DeleteLeaderboardRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteLeaderboardRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteLeaderboardRequest;
+  static deserializeBinaryFromReader(message: DeleteLeaderboardRequest, reader: jspb.BinaryReader): DeleteLeaderboardRequest;
+}
+
+export namespace DeleteLeaderboardRequest {
+  export type AsObject = {
+    assignmentId: number,
+    userId: number,
+  }
+}
+
+export class DeleteLeaderboardResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteLeaderboardResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteLeaderboardResponse): DeleteLeaderboardResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteLeaderboardResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteLeaderboardResponse;
+  static deserializeBinaryFromReader(message: DeleteLeaderboardResponse, reader: jspb.BinaryReader): DeleteLeaderboardResponse;
+}
+
+export namespace DeleteLeaderboardResponse {
   export type AsObject = {
   }
 }

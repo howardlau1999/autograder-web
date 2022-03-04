@@ -23,6 +23,12 @@ export class AssignmentFormComponent implements OnInit {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
+  @Input() submissionLimitConfig = new FormGroup({
+    total: new FormControl(0),
+    frequency: new FormControl(0),
+    period: new FormControl(0),
+  });
+
   @Input() formGroup = new FormGroup(
     {
       name: new FormControl('', [Validators.required]),

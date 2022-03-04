@@ -18,6 +18,7 @@ import {
   CreateManifestRequest,
   CreateSubmissionRequest,
   DeleteFileInManifestRequest,
+  DeleteLeaderboardRequest,
   ExportAssignmentGradesRequest,
   GenerateJoinCodeRequest,
   GetAllGradersRequest,
@@ -61,6 +62,7 @@ import {
   CourseMember,
   CourseRoleMap,
   ProgrammingAssignmentConfig,
+  SubmissionLimitConfig,
 } from './proto/model_pb';
 import { environment } from '../../environments/environment';
 import { TokenService } from '../service/token.service';
@@ -274,6 +276,7 @@ export class ApiService {
     cpu: number,
     memory: number,
     timeout: number,
+    submissionLimit: SubmissionLimitConfig,
   ) {
     const request = new CreateAssignmentRequest();
     const programmingConfig = new ProgrammingAssignmentConfig();
@@ -289,6 +292,7 @@ export class ApiService {
     programmingConfig.setTagsList(tags);
     programmingConfig.setTimeout(timeout);
     request.setProgrammingConfig(programmingConfig);
+    request.setSubmissionLimit(submissionLimit);
     return this.unary(AutograderService.CreateAssignment, request);
   }
 
@@ -512,5 +516,12 @@ export class ApiService {
     const request = new CancelSubmissionRequest();
     request.setSubmissionId(submissionId);
     return this.unary(AutograderService.CancelSubmission, request);
+  }
+
+  deleteLeaderboard(assignmentId: number, userId: number) {
+    const request = new DeleteLeaderboardRequest();
+    request.setAssignmentId(assignmentId);
+    request.setUserId(userId);
+    return this.unary(AutograderService.DeleteLeaderboard, request);
   }
 }

@@ -18,17 +18,23 @@ import {
   Subscription,
   switchMap,
   tap,
+  timer,
 } from 'rxjs';
 import { map, repeatWhen } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { DateTime } from 'luxon';
 import { SubmissionService } from '../../../service/submission.service';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';
 import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
-import { SubmissionStatus, SubmissionStatusMap } from '../../../api/proto/model_pb';
+import {
+  SubmissionLimitConfig,
+  SubmissionStatus,
+  SubmissionStatusMap,
+} from '../../../api/proto/model_pb';
 import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -67,7 +73,21 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   @Output() submissionChange = new EventEmitter<number>();
 
+  @Output() submitClick = new EventEmitter<boolean>();
+
   @Input() showRegrade?: boolean;
+
+  @Input() showSubmit: boolean = false;
+
+  @Input() submissionLimit?: SubmissionLimitConfig;
+
+  @Input() canSubmit: boolean = false;
+
+  limitReached: boolean = false;
+
+  frequencyReached: boolean = false;
+
+  frequencySubscription?: Subscription;
 
   @Input() set assignmentId(value: number) {
     this.assignmentId$.next(value);
@@ -119,6 +139,38 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
         this.submissionsLoading = false;
       }),
       map((resp) => resp.getSubmissionsList()),
+      tap((submissions) => {
+        if (this.submissionLimit === undefined) return;
+        this.limitReached =
+          this.submissionLimit.getTotal() > 0 &&
+          submissions.length >= this.submissionLimit.getTotal();
+        if (this.submissionLimit.getPeriod() > 0 && this.submissionLimit.getFrequency() > 0) {
+          const windowSubmissions = submissions.filter((submission) => {
+            const diffMinutes = DateTime.now().diff(
+              DateTime.fromJSDate(submission.getSubmittedAt()?.toDate() || new Date()),
+              'minutes',
+            ).minutes;
+            return diffMinutes <= this.submissionLimit!.getPeriod();
+          });
+          const windowCount = windowSubmissions.length;
+          this.frequencyReached = windowCount >= this.submissionLimit.getFrequency();
+          if (this.frequencyReached) {
+            const oldestDiffMilliseconds = windowSubmissions.reduce((milliseconds, submission) => {
+              const diffMilliseconds = DateTime.now().diff(
+                DateTime.fromJSDate(submission.getSubmittedAt()?.toDate() || new Date()),
+                'milliseconds',
+              ).milliseconds;
+              return milliseconds > diffMilliseconds ? milliseconds : diffMilliseconds;
+            }, 0);
+            this.frequencySubscription?.unsubscribe();
+            this.frequencySubscription = timer(
+              this.submissionLimit.getPeriod() * 60 * 1000 - oldestDiffMilliseconds,
+            ).subscribe(() => {
+              this.frequencyReached = false;
+            });
+          }
+        }
+      }),
       catchError(({ message }) => {
         this.notificationService.showSnackBar(`加载提交记录出错 ${message}`);
         return of([]);
@@ -137,6 +189,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     this.regradeSubmissionSubscription?.unsubscribe();
     this.cancelConfirmSubscription?.unsubscribe();
     this.cancelSubmissionSubscription?.unsubscribe();
+    this.frequencySubscription?.unsubscribe();
   }
 
   cancelSubmission(event: MouseEvent, submissionId: number): void {
@@ -145,7 +198,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
       data: {
         title: '确认停止评测？',
-        message: '停止后如需重评要联系助教或老师',
+        message: '停止后如需重评要联系助教或老师。',
       },
     });
     this.cancelConfirmSubscription?.unsubscribe();
@@ -221,5 +274,9 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   onRowClicked(submissionId: number) {
     this.submissionChange.emit(submissionId);
+  }
+
+  onSubmitClicked() {
+    this.submitClick.next(true);
   }
 }

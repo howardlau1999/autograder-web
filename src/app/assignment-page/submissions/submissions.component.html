@@ -14,7 +14,7 @@
       <div *ngIf="!editMode">
         <div *ngIf="canWriteCourse" class="assignment-edit-button">
           <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
-            >匿名排行
+          >匿名排行
           </mat-slide-toggle>
           <button mat-icon-button (click)="onEditAssignmentClicked()">
             <mat-icon>edit</mat-icon>
@@ -26,6 +26,13 @@
         <mat-card-subtitle>
           <p>#{{ assignmentId }}</p>
           <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}</p>
+          <p *ngIf="assignment.getSubmissionLimit()?.getTotal()">
+            提交次数限制：{{ assignment.getSubmissionLimit()?.getTotal() }} 次
+          </p>
+          <p *ngIf="assignment.getSubmissionLimit()?.getFrequency() && assignment.getSubmissionLimit()?.getPeriod()">
+            提交频率限制：每 {{ assignment.getSubmissionLimit()?.getPeriod() }}
+            分钟 {{ assignment.getSubmissionLimit()?.getFrequency() }} 次
+          </p>
         </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
@@ -38,24 +45,14 @@
   <h2>提交记录</h2>
   <mat-card>
     <mat-card-content>
-      <div class="submission-operations">
-        <span [matTooltip]="canSubmit ? '上传文件并提交' : '不在可提交时间范围内'">
-          <button
-            *ngIf="!loading"
-            [disabled]="!canSubmit"
-            (click)="openSubmissionDialog()"
-            color="primary"
-            mat-raised-button
-          >
-            <mat-icon>add</mat-icon>
-            上传提交
-          </button>
-        </span>
-      </div>
       <app-submissions-table
+        [showSubmit]="true"
+        [canSubmit]="canSubmit"
+        (submitClick)="openSubmissionDialog()"
         (submissionChange)="onSubmissionChanged($event)"
         [assignmentId]="assignmentId"
         [submissionsRefresher$]="submissionsRefresher$"
+        [submissionLimit]="submissionLimit"
       ></app-submissions-table>
     </mat-card-content>
   </mat-card>

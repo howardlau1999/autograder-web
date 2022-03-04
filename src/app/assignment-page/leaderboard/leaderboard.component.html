@@ -1,12 +1,17 @@
 <div class="leaderboard-container">
   <h2>排行榜</h2>
-  <button *ngIf="exportEnabled$ | async" (click)="onExportClicked()" mat-raised-button>
-    <mat-icon>download</mat-icon>
-    导出排行榜
-  </button>
+  <div>
+    <button *ngIf="exportEnabled$ | async" (click)="onExportClicked()" mat-raised-button>
+      <mat-icon>download</mat-icon>
+      导出排行榜
+    </button>
+    <button *ngIf="exportEnabled$ | async" mat-flat-button>
+      <mat-icon>cloud_download</mat-icon>
+      导出排行榜提交
+    </button>
+  </div>
   <div class="leaderboard-tab-container mat-elevation-z1">
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
-      <!-- Id Column -->
       <ng-container matColumnDef="rank">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>名次</th>
         <td *matCellDef="let row; index as i" mat-cell>{{ row.rank }}</td>

@@ -14,7 +14,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>设置作业信息</ng-template>
-      <app-assignment-form [(tags)]="tags" [formGroup]="programmingAssignmentForm"></app-assignment-form>
+      <app-assignment-form
+        [(tags)]="tags"
+        [submissionLimitConfig]="submissionLimitForm"
+        [formGroup]="programmingAssignmentForm"
+      ></app-assignment-form>
       <div style="margin-top: 10px"></div>
       <button mat-button matStepperPrevious>上一步</button>
       <button

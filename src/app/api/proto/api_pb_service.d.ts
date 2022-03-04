@@ -472,6 +472,15 @@ type AutograderServiceGetGradeQueue = {
   readonly responseType: typeof api_pb.GetGradeQueueResponse;
 };
 
+type AutograderServiceDeleteLeaderboard = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.DeleteLeaderboardRequest;
+  readonly responseType: typeof api_pb.DeleteLeaderboardResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -526,6 +535,7 @@ export class AutograderService {
   static readonly SetAdmin: AutograderServiceSetAdmin;
   static readonly GetAllUsers: AutograderServiceGetAllUsers;
   static readonly GetGradeQueue: AutograderServiceGetGradeQueue;
+  static readonly DeleteLeaderboard: AutograderServiceDeleteLeaderboard;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -1019,6 +1029,15 @@ export class AutograderServiceClient {
   getGradeQueue(
     requestMessage: api_pb.GetGradeQueueRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.GetGradeQueueResponse|null) => void
+  ): UnaryResponse;
+  deleteLeaderboard(
+    requestMessage: api_pb.DeleteLeaderboardRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteLeaderboardResponse|null) => void
+  ): UnaryResponse;
+  deleteLeaderboard(
+    requestMessage: api_pb.DeleteLeaderboardRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.DeleteLeaderboardResponse|null) => void
   ): UnaryResponse;
 }
 

@@ -39,3 +39,7 @@ tr.submission-element-row:not(.submission-expanded-row):active {
 .hidden {
   display: none;
 }
+
+.submission-operations {
+  margin-bottom: 1em;
+}

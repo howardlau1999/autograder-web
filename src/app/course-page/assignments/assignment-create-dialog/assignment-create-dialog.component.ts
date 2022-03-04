@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { AssignmentService } from '../../../service/assignment.service';
 import { ErrorService } from '../../../service/error.service';
+import { SubmissionLimitConfig } from '../../../api/proto/model_pb';
 
 export interface AssignmentCreateDialogData {
   courseId: number;
@@ -36,6 +37,12 @@ export class AssignmentCreateDialogComponent implements OnInit {
   courseId: number;
 
   tags: string[] = [];
+
+  submissionLimitForm = new FormGroup({
+    total: new FormControl(0),
+    frequency: new FormControl(),
+    period: new FormControl(),
+  });
 
   programmingAssignmentForm = new FormGroup(
     {
@@ -69,6 +76,11 @@ export class AssignmentCreateDialogComponent implements OnInit {
   onConfirmClicked() {
     const { name, releaseDate, dueDate, description, dockerImage, cpu, memory, timeout } =
       this.programmingAssignmentForm.value;
+    const { total, period, frequency } = this.submissionLimitForm.value;
+    const submissionLimit = new SubmissionLimitConfig();
+    submissionLimit.setPeriod(period);
+    submissionLimit.setFrequency(frequency);
+    submissionLimit.setTotal(total);
     this.loading = true;
     this.assignmentService
       .createProgrammingAssignment(
@@ -82,6 +94,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
         cpu,
         memory,
         timeout,
+        submissionLimit,
       )
       .subscribe((result) => {
         this.loading = false;

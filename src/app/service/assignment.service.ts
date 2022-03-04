@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { Either, right } from 'fp-ts/Either';
 import { catchError, Observable } from 'rxjs';
 import { DateTime } from 'luxon';
-import { Assignment } from '../api/proto/model_pb';
+import { Assignment, SubmissionLimitConfig } from '../api/proto/model_pb';
 import { ApiService } from '../api/api.service';
 import { ErrorService, FormError } from './error.service';
 import { CreateAssignmentResponse, UpdateAssignmentResponse } from '../api/proto/api_pb';
@@ -59,6 +59,7 @@ export class AssignmentService {
     cpu: number,
     memory: number,
     timeout: number,
+    submissionLimit: SubmissionLimitConfig,
   ): Observable<Either<FormError, CreateAssignmentResponse>> {
     return this.apiService
       .createProgrammingAssignment(
@@ -72,6 +73,7 @@ export class AssignmentService {
         cpu,
         memory * 1024 * 1024,
         timeout,
+        submissionLimit,
       )
       .pipe(
         map((resp) => right(resp)),

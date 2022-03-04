@@ -181,7 +181,14 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
 
   exportData() {
     const data = this.data.map((item) => {
-      return [item.rank.toString(), item.username, item.nickname, item.studentId].concat(
+      return [
+        item.rank.toString(),
+        item.username,
+        item.nickname,
+        item.studentId,
+        item.submissionId,
+        item.submittedAt,
+      ].concat(
         this.columns.map((key) => {
           const { value } = item.items[key];
           return value.hasNumberValue()
@@ -190,7 +197,14 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
         }),
       );
     });
-    const fields = ['rank', 'username', 'nickname', 'studentId'].concat(this.columns);
+    const fields = [
+      'rank',
+      'username',
+      'nickname',
+      'studentId',
+      'submissionId',
+      'submittedAt',
+    ].concat(this.columns);
     return { data, fields };
   }
 }

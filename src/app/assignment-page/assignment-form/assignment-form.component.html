@@ -5,17 +5,39 @@
   </mat-form-field>
   <app-datetime-picker formControlName="releaseDate" label="开始时间"></app-datetime-picker>
   <app-datetime-picker
-    [error]="
-            formGroup.get('dueDate')?.hasError('before')
-              ? '截止时间不能早于开始时间'
-              : ''
-          "
+    [error]="formGroup.get('dueDate')?.hasError('before') ? '截止时间不能早于开始时间' : ''"
     formControlName="dueDate"
     label="截止时间"
   ></app-datetime-picker>
+  <form [formGroup]="submissionLimitConfig">
+    <p>
+      <mat-form-field>
+        <mat-label>提交次数限制</mat-label>
+        <input matInput formControlName="total" name="total" type="number" />
+        <mat-hint>0 为不限制</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <mat-form-field style="width: 6em">
+      <mat-hint>提交频率限制</mat-hint>
+      <span matPrefix>每</span>
+      <input matInput formControlName="period" name="period" type="number" />
+      <span matSuffix>分钟</span>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field style="width: 4em">
+      <input matInput formControlName="frequency" name="frequency" type="number" />
+      <span matSuffix>次</span>
+    </mat-form-field>
+  </form>
   <mat-form-field>
     <mat-label>Docker 镜像</mat-label>
     <input formControlName="dockerImage" matInput name="dockerImage" required />
+    <mat-hint
+      ><a href="https://autograder-docs.howardlau.me/docker-image-specification/" target="_blank"
+        >Docker 镜像构建指引</a
+      ></mat-hint
+    >
   </mat-form-field>
   <mat-form-field>
     <mat-label>运行标签</mat-label>
@@ -32,7 +54,7 @@
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       [matChipInputAddOnBlur]="addOnBlur"
       (matChipInputTokenEnd)="addTag($event)"
-    >
+    />
     <mat-hint>指定运行标签，例如 docker、arm64 等，所有标签都匹配的评测机才会运行</mat-hint>
   </mat-form-field>
   <mat-form-field>

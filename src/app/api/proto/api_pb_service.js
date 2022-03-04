@@ -478,6 +478,15 @@ AutograderService.GetGradeQueue = {
   responseType: api_pb.GetGradeQueueResponse
 };
 
+AutograderService.DeleteLeaderboard = {
+  methodName: "DeleteLeaderboard",
+  service: AutograderService,
+  requestStream: false,
+  responseStream: false,
+  requestType: api_pb.DeleteLeaderboardRequest,
+  responseType: api_pb.DeleteLeaderboardResponse
+};
+
 exports.AutograderService = AutograderService;
 
 function AutograderServiceClient(serviceHost, options) {
@@ -2079,6 +2088,37 @@ AutograderServiceClient.prototype.getGradeQueue = function getGradeQueue(request
     callback = arguments[1];
   }
   var client = grpc.unary(AutograderService.GetGradeQueue, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AutograderServiceClient.prototype.deleteLeaderboard = function deleteLeaderboard(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(AutograderService.DeleteLeaderboard, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

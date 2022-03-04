@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { pipe } from 'fp-ts/function';
@@ -6,7 +6,7 @@ import { match } from 'fp-ts/Either';
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { Subscription } from 'rxjs';
 import { AssignmentService } from '../../../service/assignment.service';
-import { Assignment } from '../../../api/proto/model_pb';
+import { Assignment, SubmissionLimitConfig } from '../../../api/proto/model_pb';
 import { ErrorService } from '../../../service/error.service';
 
 export interface AssignmentEditDialogData {
@@ -19,7 +19,7 @@ export interface AssignmentEditDialogData {
   templateUrl: './assignment-edit-dialog.component.html',
   styleUrls: ['./assignment-edit-dialog.component.css'],
 })
-export class AssignmentEditDialogComponent implements OnInit {
+export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
   loading: boolean = false;
 
   @Input() assignment!: Assignment;
@@ -32,6 +32,8 @@ export class AssignmentEditDialogComponent implements OnInit {
 
   programmingAssignmentForm!: FormGroup;
 
+  submissionLimitConfig!: FormGroup;
+
   tags: string[] = [];
 
   updateSubscription?: Subscription;
@@ -40,6 +42,11 @@ export class AssignmentEditDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.tags = this.assignment.getProgrammingConfig()?.getTagsList() || [];
+    this.submissionLimitConfig = new FormGroup({
+      total: new FormControl(this.assignment.getSubmissionLimit()?.getTotal() || 0),
+      frequency: new FormControl(this.assignment.getSubmissionLimit()?.getFrequency() || 0),
+      period: new FormControl(this.assignment.getSubmissionLimit()?.getPeriod() || 0),
+    });
     this.programmingAssignmentForm = new FormGroup({
       name: new FormControl(this.assignment.getName(), [Validators.required]),
       releaseDate: new FormControl(
@@ -77,6 +84,8 @@ export class AssignmentEditDialogComponent implements OnInit {
     this.loading = true;
     const { name, releaseDate, dueDate, description, dockerImage, cpu, memory, timeout } =
       this.programmingAssignmentForm.value;
+    const { total, period, frequency } = this.submissionLimitConfig.value;
+    const submissionLimit = this.assignment.getSubmissionLimit() || new SubmissionLimitConfig();
     const assignment = this.assignment.clone();
     assignment.setName(name);
     assignment.setReleaseDate(Timestamp.fromDate(releaseDate.toJSDate()));
@@ -87,6 +96,10 @@ export class AssignmentEditDialogComponent implements OnInit {
     assignment.getProgrammingConfig()?.setCpu(cpu);
     assignment.getProgrammingConfig()?.setMemory(memory * 1024 * 1024);
     assignment.getProgrammingConfig()?.setTimeout(timeout);
+    submissionLimit.setTotal(total);
+    submissionLimit.setFrequency(frequency);
+    submissionLimit.setPeriod(period);
+    assignment.setSubmissionLimit(submissionLimit);
     this.updateSubscription?.unsubscribe();
     this.updateSubscription = this.assignmentService
       .updateAssignment(this.assignmentId, assignment)

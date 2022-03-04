@@ -10,6 +10,7 @@ import {
   mergeMap,
   of,
   retry,
+  Subscription,
   zip,
 } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -48,6 +49,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loading: boolean = false;
 
+  submitSubscription?: Subscription;
+
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UploadDialogData,
@@ -60,7 +63,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.submitSubscription?.unsubscribe();
+  }
 
   onFileDelete(filename: string) {
     this.uploadEntries[filename].cancelUpload();
@@ -116,14 +121,27 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSubmitClicked(): void {
     this.loading = true;
-    this.createSubmission().subscribe({
+    this.submitSubscription?.unsubscribe();
+    this.submitSubscription = this.createSubmission().subscribe({
       next: (resp) => {
         this.loading = false;
         this.dialogRef.close(resp?.getSubmissionId());
       },
       error: ({ message }) => {
         this.loading = false;
-        this.notificationService.showSnackBar(`创建提交失败 ${message}`);
+        switch (message) {
+          case 'SUBMISSION_LIMIT':
+            this.notificationService.showSnackBar(`已达到提交次数限制`);
+            break;
+          case 'SUBMISSION_FREQUENCY':
+            this.notificationService.showSnackBar(`已达到提交频率限制`);
+            break;
+          case 'MANIFEST_FILES':
+            this.notificationService.showSnackBar(`提交超时，请重新上传`);
+            break;
+          default:
+            this.notificationService.showSnackBar(`创建提交失败 ${message}`);
+        }
       },
     });
   }
