@@ -12,21 +12,6 @@
     <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
       <mat-card-title>
         {{ card.getName() }}
-        <button
-          *ngIf="false"
-          [matMenuTriggerFor]="menu"
-          aria-label="Toggle menu"
-          class="more-button"
-          mat-icon-button
-        >
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu" xPosition="after">
-          <button mat-menu-item>
-            <mat-icon>edit</mat-icon>
-            编辑课程
-          </button>
-        </mat-menu>
       </mat-card-title>
       <mat-card-content class="dashboard-card-content">
         <div>{{ card.getShortName() }}</div>
