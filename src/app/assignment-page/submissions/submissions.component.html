@@ -14,7 +14,7 @@
       <div *ngIf="!editMode">
         <div *ngIf="canWriteCourse" class="assignment-edit-button">
           <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
-          >匿名排行
+            >匿名排行
           </mat-slide-toggle>
           <button mat-icon-button (click)="onEditAssignmentClicked()">
             <mat-icon>edit</mat-icon>
@@ -29,14 +29,23 @@
           <p *ngIf="assignment.getSubmissionLimit()?.getTotal()">
             提交次数限制：{{ assignment.getSubmissionLimit()?.getTotal() }} 次
           </p>
-          <p *ngIf="assignment.getSubmissionLimit()?.getFrequency() && assignment.getSubmissionLimit()?.getPeriod()">
-            提交频率限制：每 {{ assignment.getSubmissionLimit()?.getPeriod() }}
-            分钟 {{ assignment.getSubmissionLimit()?.getFrequency() }} 次
+          <p
+            *ngIf="
+              assignment.getSubmissionLimit()?.getFrequency() &&
+              assignment.getSubmissionLimit()?.getPeriod()
+            "
+          >
+            提交频率限制：每 {{ assignment.getSubmissionLimit()?.getPeriod() }} 分钟
+            {{ assignment.getSubmissionLimit()?.getFrequency() }} 次
           </p>
         </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
-            <markdown katex [katexOptions]="options" [data]="assignment.getDescription()"></markdown>
+            <markdown
+              katex
+              [katexOptions]="options"
+              [data]="assignment.getDescription()"
+            ></markdown>
           </div>
         </mat-card-content>
       </div>
