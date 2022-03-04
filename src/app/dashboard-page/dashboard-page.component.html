@@ -2,7 +2,7 @@
   <mat-toolbar color="primary">课程列表</mat-toolbar>
   <div class="buttons">
     <button (click)="joinCourse()" color="primary" mat-raised-button>加入课程</button>
-    <button (click)="createCourse()" mat-flat-button>
+    <button *ngIf="showCreateCourse" (click)="createCourse()" mat-flat-button>
       <mat-icon>add</mat-icon>
       创建课程
     </button>
