@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'github', component: GithubLoginComponent },
   { path: 'github/bind', component: GithubBindComponent },
   { path: 'password-reset', component: PasswordResetComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({
