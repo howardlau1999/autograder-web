@@ -1,14 +1,53 @@
 <div class="leaderboard-container">
   <h2>排行榜</h2>
-  <div>
-    <button *ngIf="exportEnabled$ | async" (click)="onExportClicked()" mat-raised-button>
+  <div *ngIf="exportEnabled" style="display: flex; align-items: center">
+    <button (click)="onExportClicked()" mat-raised-button>
       <mat-icon>download</mat-icon>
       导出排行榜
     </button>
-    <button *ngIf="exportEnabled$ | async" mat-flat-button>
+    &nbsp;
+    <button
+      [disabled]="exportingSubmissions > 0"
+      (click)="onExportSubmissionsClicked()"
+      mat-flat-button
+    >
       <mat-icon>cloud_download</mat-icon>
       导出排行榜提交
     </button>
+    &nbsp;
+    <div *ngIf="exportingSubmissions" style="display: flex; flex-direction: column; width: 8em">
+      导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
+      <mat-progress-bar
+        mode="determinate"
+        [value]="(exportedSubmissions / exportingSubmissions) * 100"
+      ></mat-progress-bar>
+    </div>
+    <button
+      *ngIf="exportingSubmissions"
+      (click)="onCancelExportClicked()"
+      mat-flat-button
+    >
+      <mat-icon>cancel</mat-icon>
+      取消导出
+    </button>
+    <span style="flex: 1 1 auto;"></span>
+    <form>
+      <mat-form-field>
+        <mat-label>搜索</mat-label>
+        <input [formControl]="searchFormControl" matInput name="search" />
+        <button
+          (click)="searchFormControl.setValue('')"
+          *ngIf="searchFormControl.value"
+          mat-icon-button
+          matSuffix
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
   </div>
   <div class="leaderboard-tab-container mat-elevation-z1">
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
@@ -23,7 +62,7 @@
         <td *matCellDef="let row" mat-cell>{{ row.nickname }}</td>
       </ng-container>
 
-      <ng-container *ngFor="let column of columns$ | async" [matColumnDef]="column">
+      <ng-container *ngFor="let column of columns" [matColumnDef]="column">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column }}</th>
         <td *matCellDef="let row" mat-cell>
           <span *ngIf="row.items[column].value.hasNumberValue()">
@@ -51,9 +90,32 @@
         <td *matCellDef="let row" mat-cell>{{ row.username }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="operations">
+        <th *matHeaderCellDef mat-header-cell>操作</th>
+        <td *matCellDef="let row" mat-cell>
+          <button
+            (click)="onDeleteLeaderboardClicked(row.userId)"
+            mat-icon-button
+            matTooltip="撤销成绩"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
+          <button
+            (click)="onDownloadSubmissionClicked(row.submissionId)"
+            mat-icon-button
+            matTooltip="下载提交"
+          >
+            <mat-icon>download</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
       <tr
         *matHeaderRowDef="
-          displayedColumns.concat((userColumns$ | async) || []).concat((columns$ | async) || [])
+          displayedColumns
+            .concat(userColumns || [])
+            .concat(columns || [])
+            .concat(exportEnabled ? ['operations'] : [])
         "
         mat-header-row
       ></tr>
@@ -63,8 +125,9 @@
           let row;
           index as i;
           columns: displayedColumns
-            .concat((userColumns$ | async) || [])
-            .concat((columns$ | async) || [])
+            .concat(userColumns || [])
+            .concat(columns || [])
+            .concat(exportEnabled ? ['operations'] : [])
         "
         mat-row
       ></tr>

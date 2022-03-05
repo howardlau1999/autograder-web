@@ -21,6 +21,7 @@ import { VcdViewerPageComponent } from './vcd-viewer-page/vcd-viewer-page.compon
 import { InspectionComponent } from './assignment-page/inspection/inspection.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { GradersComponent } from './admin-page/graders/graders.component';
+import { AdminGuard } from './admin.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -32,6 +33,8 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminPageComponent,
+    canActivate: [AdminGuard],
+    canActivateChild: [AdminGuard],
     children: [
       { path: 'graders', component: GradersComponent },
       { path: '', redirectTo: 'graders', pathMatch: 'full' },

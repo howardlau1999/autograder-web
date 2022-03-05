@@ -97,33 +97,35 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.editor = new Editor({
-      el: this.editorEl.nativeElement,
-      previewStyle: 'vertical',
-      initialValue: this.markdown,
-      height: 'auto',
-      plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
-      events: {
-        load: (editor) => {
-          renderMathInElement(editor.getEditorElements().mdPreview, this.options);
+    setTimeout(() => {
+      this.editor = new Editor({
+        el: this.editorEl.nativeElement,
+        previewStyle: 'vertical',
+        initialValue: this.markdown,
+        height: 'auto',
+        plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
+        events: {
+          load: (editor) => {
+            renderMathInElement(editor.getEditorElements().mdPreview, this.options);
+          },
         },
-      },
-      customHTMLRenderer: {
-        softbreak: (_, { options }) => {
-          return {
-            type: 'html',
-            content: options.softbreak,
-          };
+        customHTMLRenderer: {
+          softbreak: (_, { options }) => {
+            return {
+              type: 'html',
+              content: options.softbreak,
+            };
+          },
         },
-      },
-    });
-    this.editor.off('change');
-    this.editor.on('change', () => {
-      this.markAsTouched();
-      this.markdown = this.editor.getMarkdown();
-      this.markdownChange.emit(this.markdown);
-      renderMathInElement(this.editor.getEditorElements().mdPreview, this.options);
-      this.onChange(this.markdown);
+      });
+      this.editor.off('change');
+      this.editor.on('change', () => {
+        this.markAsTouched();
+        this.markdown = this.editor.getMarkdown();
+        this.markdownChange.emit(this.markdown);
+        renderMathInElement(this.editor.getEditorElements().mdPreview, this.options);
+        this.onChange(this.markdown);
+      });
     });
   }
 }

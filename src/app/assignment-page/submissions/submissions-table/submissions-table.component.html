@@ -1,5 +1,4 @@
 <mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
-<h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
 <div *ngIf="showSubmit" class="submission-operations">
   <span
     [matTooltip]="
@@ -24,6 +23,7 @@
     </button>
   </span>
 </div>
+<h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
 <table
   class="submission-history-table"
   [class.hidden]="submissionsLoading || !dataSource?.data?.length"

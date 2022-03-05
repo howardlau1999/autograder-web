@@ -1,10 +1,9 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
-import { ApiService } from '../../api/api.service';
 
 export interface LeaderboardItem {
   items: { [k: string]: { value: Value; desc: boolean; order: number; suffix: string } };
@@ -15,6 +14,7 @@ export interface LeaderboardItem {
   username: string;
   studentId: string;
   isSelf: boolean;
+  userId: number;
 }
 
 /**
@@ -27,95 +27,15 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
 
   data$: Observable<LeaderboardItem[]>;
 
-  columns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-
-  userColumns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-
-  columns: string[] = [];
-
-  userColumns: string[] = [];
-
-  exportEnabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   paginator: MatPaginator | undefined;
 
   sort: MatSort | undefined;
 
-  constructor(apiService: ApiService, assignmentId$: Observable<number>, userId: number) {
+  constructor(data$: Observable<LeaderboardItem[]>) {
     super();
-    this.data$ = assignmentId$.pipe(
-      switchMap((assignmentId) => {
-        return apiService.getLeaderboard(assignmentId).pipe(
-          map((resp) => {
-            const sortItems: {
-              [k: string]: { isDesc: boolean; order: number };
-            } = {};
-            this.data = (resp?.getEntriesList() || []).map((entry) => {
-              return entry
-                .getItemsList()
-                .map((item) => {
-                  const obj: LeaderboardItem = {
-                    items: {},
-                    rank: 0,
-                    nickname: entry.getNickname(),
-                    username: entry.getUsername(),
-                    studentId: entry.getStudentId(),
-                    isSelf: entry.getUserId() === userId,
-                    submittedAt: entry.getSubmittedAt()?.toDate() || new Date(),
-                    submissionId: entry.getSubmissionId(),
-                  };
-                  sortItems[item.getName()] = { isDesc: item.getIsDesc(), order: item.getOrder() };
-                  obj.items[item.getName()] = {
-                    value: item.getValue() || new Value(),
-                    desc: item.getIsDesc(),
-                    order: item.getOrder(),
-                    suffix: item.getSuffix(),
-                  };
-                  return obj;
-                })
-                .reduce((accumulator, current) => {
-                  Object.keys(current.items).forEach((k) => {
-                    accumulator.items[k] = current.items[k];
-                  });
-                  return accumulator;
-                });
-            });
-            if (this.data.length > 0) {
-              const keys = Object.keys(sortItems).sort((a, b) => {
-                const aOrder = sortItems[a].order;
-                const bOrder = sortItems[b].order;
-                if (aOrder > bOrder) return 1;
-                if (aOrder < bOrder) return -1;
-                return 0;
-              });
-              this.data = this.data
-                .sort((a, b) => {
-                  for (let i = 0; i < keys.length; i += 1) {
-                    const key = keys[i];
-                    const isDesc = a.items[key].desc ? -1 : 1;
-                    if (a.items[key].value > b.items[key].value) return 1 * isDesc;
-                    if (a.items[key].value < b.items[key].value) return -1 * isDesc;
-                  }
-                  if (a.submittedAt > b.submittedAt) return 1;
-                  if (a.submittedAt < b.submittedAt) return -1;
-                  return 0;
-                })
-                .map((item, index) => {
-                  const rankedItem = item;
-                  rankedItem.rank = index + 1;
-                  return rankedItem;
-                });
-              this.exportEnabled$.next(resp.getFull());
-              this.columns$.next((this.columns = keys));
-              this.userColumns$.next(
-                (this.userColumns = (!resp.getAnonymous() || resp.getFull() ? ['nickname'] : [])
-                  .concat(resp.getFull() ? ['username', 'studentId'] : [])
-                  .concat(['submittedAt'])),
-              );
-            }
-            return this.data;
-          }),
-        );
+    this.data$ = data$.pipe(
+      tap((data) => {
+        this.data = data;
       }),
     );
   }
@@ -179,7 +99,11 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
     });
   }
 
-  exportData() {
+  getSubmissionIds() {
+    return this.data.map((item) => item.submissionId);
+  }
+
+  exportData(columns: string[]) {
     const data = this.data.map((item) => {
       return [
         item.rank.toString(),
@@ -189,7 +113,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
         item.submissionId,
         item.submittedAt,
       ].concat(
-        this.columns.map((key) => {
+        columns.map((key) => {
           const { value } = item.items[key];
           return value.hasNumberValue()
             ? value.getNumberValue().toString()
@@ -204,7 +128,7 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
       'studentId',
       'submissionId',
       'submittedAt',
-    ].concat(this.columns);
+    ].concat(columns);
     return { data, fields };
   }
 }

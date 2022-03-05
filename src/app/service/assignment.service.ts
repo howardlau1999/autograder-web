@@ -22,6 +22,14 @@ export class AssignmentService {
     return this.apiService.hasLeaderboard(assignmentId);
   }
 
+  getLeaderboard(assignmentId: number) {
+    return this.apiService.getLeaderboard(assignmentId);
+  }
+
+  deleteLeaderboard(assignmentId: number, userId: number) {
+    return this.apiService.deleteLeaderboard(assignmentId, userId);
+  }
+
   getAssignmentsInCourse(courseId: number) {
     return this.apiService.getAssignmentsInCourse(courseId);
   }

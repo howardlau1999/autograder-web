@@ -36,6 +36,7 @@ import {
   SubmissionStatusMap,
 } from '../../../api/proto/model_pb';
 import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
+import { downloadURL } from '../../../common/downloader/blob.downloader';
 
 @Component({
   selector: 'app-submissions-table',
@@ -241,9 +242,9 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     this.downloadSubmissionSubscription = this.submissionService
       .downloadSubmission(submissionId)
       .subscribe((resp) => {
-        window.open(
+        downloadURL(
           this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
-          '_blank',
+          resp.getFilename(),
         );
       });
   }
