@@ -13,12 +13,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { LeaderboardDataSource, LeaderboardItem } from './leaderboard-datasource';
 import { UserService } from '../../service/user.service';
-import { exportCSV } from '../../common/csv-exporter/csv.exporter';
+import { downloadCSV } from '../../common/downloader/csv.downloader';
 import { SubmissionService } from '../../service/submission.service';
-import { downloadBlob, downloadURL } from '../../common/downloader/blob.downloader';
+import { downloadBlob } from '../../common/downloader/blob.downloader';
 import { NotificationService } from '../../service/notification.service';
 import { AssignmentService } from '../../service/assignment.service';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
+import { downloadURL } from '../../common/downloader/url.downloader';
 
 @Component({
   selector: 'app-leaderboard',
@@ -169,7 +170,7 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
   }
 
   onExportClicked() {
-    exportCSV(
+    downloadCSV(
       this.dataSource.exportData(this.columns),
       `leaderboard-${this.assignmentId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}.csv`,
     );

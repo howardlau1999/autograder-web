@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JoinDialogComponent } from './join-dialog.component';
+import { CourseJoinDialogComponent } from './course-join-dialog.component';
 
 describe('JoinDialogComponent', () => {
-  let component: JoinDialogComponent;
-  let fixture: ComponentFixture<JoinDialogComponent>;
+  let component: CourseJoinDialogComponent;
+  let fixture: ComponentFixture<CourseJoinDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [JoinDialogComponent],
+      declarations: [CourseJoinDialogComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JoinDialogComponent);
+    fixture = TestBed.createComponent(CourseJoinDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -36,7 +36,7 @@ import {
   SubmissionStatusMap,
 } from '../../../api/proto/model_pb';
 import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
-import { downloadURL } from '../../../common/downloader/blob.downloader';
+import { downloadURL } from '../../../common/downloader/url.downloader';
 
 @Component({
   selector: 'app-submissions-table',

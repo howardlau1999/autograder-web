@@ -8,11 +8,11 @@ import { CourseService, JoinCourseError } from '../../service/course.service';
 import { NotificationService } from '../../service/notification.service';
 
 @Component({
-  selector: 'app-join-dialog',
-  templateUrl: './join-dialog.component.html',
-  styleUrls: ['./join-dialog.component.css'],
+  selector: 'app-course-join-dialog',
+  templateUrl: './course-join-dialog.component.html',
+  styleUrls: ['./course-join-dialog.component.css'],
 })
-export class JoinDialogComponent implements OnInit {
+export class CourseJoinDialogComponent implements OnInit {
   invitationCode = new FormControl('');
 
   joinSubscription?: Subscription;
@@ -20,7 +20,7 @@ export class JoinDialogComponent implements OnInit {
   joining: boolean = false;
 
   constructor(
-    private dialogRef: MatDialogRef<JoinDialogComponent>,
+    private dialogRef: MatDialogRef<CourseJoinDialogComponent>,
     private courseService: CourseService,
     private notificationService: NotificationService,
   ) {}

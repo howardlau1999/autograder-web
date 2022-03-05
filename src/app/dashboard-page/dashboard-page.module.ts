@@ -12,12 +12,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardPageRoutingModule } from './dashboard-page-routing.module';
 import { DashboardPageComponent } from './dashboard-page.component';
-import { JoinDialogComponent } from './join-dialog/join-dialog.component';
+import { CourseJoinDialogComponent } from './course-join-dialog/course-join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
 import { MarkdownEditorModule } from '../common/markdown-editor/markdown-editor.module';
 
 @NgModule({
-  declarations: [DashboardPageComponent, JoinDialogComponent, CourseCreateDialogComponent],
+  declarations: [DashboardPageComponent, CourseJoinDialogComponent, CourseCreateDialogComponent],
   imports: [
     CommonModule,
     DashboardPageRoutingModule,

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './login-page.component';
 import { GithubLoginComponent } from './github-login/github-login.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
-import { SignUpComponent } from './register/sign-up.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 import { GithubBindComponent } from '../account-page/github-bind/github-bind.component';
 
 const routes: Routes = [

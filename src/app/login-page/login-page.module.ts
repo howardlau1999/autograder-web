@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginPageRoutingModule } from './login-page-routing.module';
 import { LoginPageComponent } from './login-page.component';
-import { SignUpComponent } from './register/sign-up.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { GithubLoginComponent } from './github-login/github-login.component';
 import { GithubBindComponent } from '../account-page/github-bind/github-bind.component';

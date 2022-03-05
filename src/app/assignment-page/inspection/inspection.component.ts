@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
-import { exportCSV } from '../../common/csv-exporter/csv.exporter';
+import { downloadCSV } from '../../common/downloader/csv.downloader';
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -103,7 +103,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
           entry.getMaxScore(),
           entry.getSubmissionCount(),
         ]);
-        exportCSV(
+        downloadCSV(
           { fields, data },
           `grades-${assignmentId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}`,
         );

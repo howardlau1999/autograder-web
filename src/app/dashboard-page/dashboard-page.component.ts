@@ -3,7 +3,7 @@ import { repeatWhen, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, Observable, of, Subject, Subscription } from 'rxjs';
-import { JoinDialogComponent } from './join-dialog/join-dialog.component';
+import { CourseJoinDialogComponent } from './course-join-dialog/course-join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
 import { DashboardService } from '../service/dashboard.service';
 import { NotificationService } from '../service/notification.service';
@@ -52,7 +52,7 @@ export class DashboardPageComponent {
   }
 
   joinCourse() {
-    const dialogRef = this.dialog.open(JoinDialogComponent);
+    const dialogRef = this.dialog.open(CourseJoinDialogComponent);
     if (this.joinDialogSubscription === undefined) {
       this.joinDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
         if (result) {

@@ -17,7 +17,7 @@ import { UserService } from '../../service/user.service';
 import { CourseRoleMap } from '../../api/proto/model_pb';
 import { CourseService } from '../../service/course.service';
 import { NotificationService } from '../../service/notification.service';
-import { exportCSV } from '../../common/csv-exporter/csv.exporter';
+import { downloadCSV } from '../../common/downloader/csv.downloader';
 
 @Component({
   selector: 'app-members',
@@ -104,7 +104,7 @@ export class MembersComponent implements OnInit, AfterViewInit {
   }
 
   onExportClicked() {
-    exportCSV(
+    downloadCSV(
       this.dataSource.exportData(),
       `members-${this.courseId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}.csv`,
     );
