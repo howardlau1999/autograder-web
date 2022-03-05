@@ -1,12 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { PasswordResetComponent } from './login-page/password-reset/password-reset.component';
-import { SignUpComponent } from './login-page/register/sign-up.component';
+import { ExtraOptions, PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginGuard } from './login.guard';
-import { GithubLoginComponent } from './login-page/github-login/github-login.component';
-import { AccountPageComponent } from './account-page/account-page.component';
-import { GithubBindComponent } from './account-page/github-bind/github-bind.component';
 import { AdminGuard } from './admin.guard';
 
 const routes: Routes = [
@@ -55,6 +49,7 @@ const routerOptions: ExtraOptions = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
   scrollOffset: [0, 64],
+  preloadingStrategy: PreloadAllModules,
 };
 
 @NgModule({

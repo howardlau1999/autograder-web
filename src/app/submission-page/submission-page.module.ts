@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,7 +24,6 @@ import { FilesComponent } from './files/files.component';
     SubmissionPageRoutingModule,
     MatToolbarModule,
     MatButtonModule,
-    MatTabsModule,
     MatTreeModule,
     MatIconModule,
     MatExpansionModule,
