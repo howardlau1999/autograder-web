@@ -12,6 +12,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SubmissionPageRoutingModule } from './submission-page-routing.module';
 import { SubmissionPageComponent } from './submission-page.component';
 import { ReportComponent } from './report/report.component';
@@ -33,6 +34,7 @@ import { FilesComponent } from './files/files.component';
     MatListModule,
     MatCardModule,
     MatProgressBarModule,
+    MatTooltipModule,
   ],
 })
 export class SubmissionPageModule {}
