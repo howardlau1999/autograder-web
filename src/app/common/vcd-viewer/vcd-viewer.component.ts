@@ -79,7 +79,6 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    console.log(vcdrom);
     vcdrom.vcdrom(this.vcdrom.nativeElement).then((handler: any) => {
       this.handler = handler;
       this.loadURL();
