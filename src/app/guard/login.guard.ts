@@ -8,35 +8,35 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from './service/user.service';
+import { UserService } from '../service/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard implements CanActivate, CanActivateChild {
+export class LoginGuard implements CanActivate, CanActivateChild {
   constructor(private userService: UserService, private router: Router) {}
 
-  gotoDashboard() {
-    this.router.navigate(['/', 'dashboard']).then();
-  }
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.userService.isAdmin) {
-      this.gotoDashboard();
-      return false;
-    }
-    return true;
+  gotoLogin() {
+    this.router.navigate(['/', 'login']);
   }
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.userService.isAdmin) {
-      this.gotoDashboard();
+    if (!this.userService.isLoggedIn()) {
+      this.gotoLogin();
+      return false;
+    }
+    return true;
+  }
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (!this.userService.isLoggedIn()) {
+      this.gotoLogin();
       return false;
     }
     return true;

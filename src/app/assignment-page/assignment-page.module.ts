@@ -28,7 +28,7 @@ import { SubmissionsComponent } from './submissions/submissions.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { UploadDialogComponent } from './submissions/upload-dialog/upload-dialog.component';
 import { FilesTableComponent } from './submissions/upload-dialog/files-table/files-table.component';
-import { FilesizePipe } from '../filesize.pipe';
+import { FilesizePipe } from '../pipe/filesize.pipe';
 import { ConfirmDialogModule } from '../common/confirm-dialog/confirm-dialog.module';
 
 @NgModule({

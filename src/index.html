@@ -13,6 +13,9 @@
       rel="stylesheet"
     />
     <link href="https://fonts.loli.net/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="prism-ghcolors.css" rel="stylesheet" />
+    <link href="toastui-editor.css" rel="stylesheet" />
+    <link href="codemirror.css" rel="stylesheet" />
     <script>
       if ('{{.ServerProvided}}' === 'true') {
         window.localStorage.setItem('server_hcaptcha_client_id', '{{.HcaptchaSiteKey}}');
@@ -32,9 +35,6 @@
     <script src="prism-clike.min.js"></script>
     <script src="prism-c.min.js"></script>
     <script src="prism-cpp.min.js"></script>
-    <link href="prism-ghcolors.css" rel="stylesheet" />
-    <link href="toastui-editor.css" rel="stylesheet" />
-    <link href="codemirror.css" rel="stylesheet" />
   </head>
   <body class="mat-typography">
     <app-root></app-root>
