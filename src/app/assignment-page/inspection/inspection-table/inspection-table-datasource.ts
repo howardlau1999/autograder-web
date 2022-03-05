@@ -1,9 +1,9 @@
-import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { map, tap } from 'rxjs/operators';
-import { merge, Observable } from 'rxjs';
-import { InspectAllSubmissionsInAssignmentResponse } from '../../../api/proto/api_pb';
+import { DataSource } from "@angular/cdk/collections";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { map, tap } from "rxjs/operators";
+import { merge, Observable } from "rxjs";
+import { InspectAllSubmissionsInAssignmentResponse } from "../../../api/proto/api_pb";
 
 // TODO: Replace this with your own data model type
 export type InspectionTableItem = InspectAllSubmissionsInAssignmentResponse.UserSubmissionInfo;

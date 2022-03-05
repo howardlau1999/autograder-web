@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SubmissionPageComponent } from './submission-page.component';
 import { ReportComponent } from './report/report.component';
-import { LeaderboardComponent } from '../assignment-page/leaderboard/leaderboard.component';
 import { FilesComponent } from './files/files.component';
 
 const routes: Routes = [

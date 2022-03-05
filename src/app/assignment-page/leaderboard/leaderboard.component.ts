@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { concatMap, delay, from, last, mergeMap, scan, Subject, Subscription } from 'rxjs';
+import { from, last, mergeMap, scan, Subject, Subscription } from 'rxjs';
 import { map, repeatWhen, switchMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';

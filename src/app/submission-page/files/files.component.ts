@@ -1,19 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, take } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiService } from '../../api/api.service';
-import {
-  DownloadFileType,
-  DownloadFileTypeMap,
-  FileTreeNode,
-  InitDownloadResponse,
-} from '../../api/proto/api_pb';
-import { environment } from '../../../environments/environment';
-import { SubmissionService } from '../../service/submission.service';
-import { NotificationService } from '../../service/notification.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FlatTreeControl } from "@angular/cdk/tree";
+import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
+import { ActivatedRoute } from "@angular/router";
+import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, take } from "rxjs";
+import { map } from "rxjs/operators";
+import { ApiService } from "../../api/api.service";
+import { DownloadFileType, DownloadFileTypeMap, FileTreeNode, InitDownloadResponse } from "../../api/proto/api_pb";
+import { environment } from "../../../environments/environment";
+import { SubmissionService } from "../../service/submission.service";
+import { NotificationService } from "../../service/notification.service";
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;

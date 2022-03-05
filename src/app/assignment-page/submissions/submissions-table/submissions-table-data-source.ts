@@ -1,11 +1,11 @@
-import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { map, tap } from 'rxjs/operators';
-import { merge, Observable, Subscription } from 'rxjs';
-import { SubmissionInfo } from '../../../api/proto/api_pb';
-import { SubmissionStatus } from '../../../api/proto/model_pb';
-import { SubmissionService } from '../../../service/submission.service';
+import { DataSource } from "@angular/cdk/collections";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { map, tap } from "rxjs/operators";
+import { merge, Observable, Subscription } from "rxjs";
+import { SubmissionInfo } from "../../../api/proto/api_pb";
+import { SubmissionStatus } from "../../../api/proto/model_pb";
+import { SubmissionService } from "../../../service/submission.service";
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
 function compare(a: string | number | Date, b: string | number | Date, isAsc: boolean): number {

@@ -9,8 +9,8 @@ import { DashboardService } from '../service/dashboard.service';
 import { NotificationService } from '../service/notification.service';
 import { GetCourseListResponse } from '../api/proto/api_pb';
 import { CourseRole, CourseRoleMap } from '../api/proto/model_pb';
-import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
 import { UserService } from '../service/user.service';
+import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
 
 @Component({
   selector: 'app-dashboard-page',

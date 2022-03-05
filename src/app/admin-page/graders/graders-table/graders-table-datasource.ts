@@ -1,10 +1,10 @@
-import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { map, tap } from 'rxjs/operators';
-import { merge, Observable, of as observableOf } from 'rxjs';
-import { GetAllGradersResponse } from '../../../api/proto/api_pb';
-import { GraderStatusMetadata } from '../../../api/proto/model_pb';
+import { DataSource } from "@angular/cdk/collections";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { map, tap } from "rxjs/operators";
+import { merge, Observable } from "rxjs";
+import { GetAllGradersResponse } from "../../../api/proto/api_pb";
+import { GraderStatusMetadata } from "../../../api/proto/model_pb";
 
 // TODO: Replace this with your own data model type
 export interface GradersTableItem {

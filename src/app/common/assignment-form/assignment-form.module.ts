@@ -7,7 +7,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { AssignmentFormComponent } from './assignment-form.component';
 import { DatetimePickerModule } from '../datetime-picker/datetime-picker.module';
-import { MarkdownEditorComponent } from '../markdown-editor/markdown-editor.component';
 import { MarkdownEditorModule } from '../markdown-editor/markdown-editor.module';
 
 @NgModule({
