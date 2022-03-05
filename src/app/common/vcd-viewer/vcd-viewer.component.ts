@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../service/notification.service';
 
+const vcdrom = require('./vcdrom');
+
 @Component({
   selector: 'app-vcd-viewer',
   templateUrl: './vcd-viewer.component.html',
@@ -67,7 +69,8 @@ export class VcdViewerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    (window as any).VCDrom(this.vcdrom.nativeElement).then((handler: any) => {
+    console.log(vcdrom);
+    vcdrom.vcdrom(this.vcdrom.nativeElement).then((handler: any) => {
       this.handler = handler;
       this.loadURL();
     });

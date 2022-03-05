@@ -19,7 +19,13 @@
     "target": "es2017",
     "module": "es2020",
     "lib": ["es2020", "dom"],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "crypto": ["./node_modules/crypto-browserify"],
+      "stream": ["./node_modules/stream-browserify"],
+      "path": ["./node_modules/path-browserify"],
+      "fs": ["./node_modules/fs-web"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

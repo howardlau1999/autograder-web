@@ -111,8 +111,8 @@ const getHandler = (element, vcdParser) => {
   };
 };
 
-global.VCDrom = async (element) => {
+export async function vcdrom(element) {
   const wasmLoader = await createVCD();
   const vcdParser = await webVcdParser(wasmLoader);
   return getHandler(element, vcdParser);
-};
+}
