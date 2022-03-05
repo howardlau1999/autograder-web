@@ -11,10 +11,17 @@ import { Observable } from 'rxjs';
 export class VcdViewerPageComponent implements OnInit {
   url$: Observable<string>;
 
+  total$: Observable<number>;
+
   constructor(private route: ActivatedRoute) {
     this.url$ = this.route.queryParams.pipe(
       map((params) => {
         return params['url'];
+      }),
+    );
+    this.total$ = this.route.queryParams.pipe(
+      map((params) => {
+        return Number.parseInt(params['total'] || '0', 10);
       }),
     );
   }

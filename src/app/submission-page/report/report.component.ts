@@ -149,7 +149,7 @@ export class ReportComponent implements OnInit {
           window.open(
             `/vcd?url=${encodeURIComponent(
               this.submissionService.getDownloadURL(filename, resp.getToken()),
-            )}`,
+            )}&total=${resp.getFilesize()}`,
             '_blank',
           );
         },

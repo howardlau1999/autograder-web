@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../service/notification.service';
 
@@ -9,10 +17,12 @@ const vcdrom = require('./vcdrom');
   templateUrl: './vcd-viewer.component.html',
   styleUrls: ['./vcd-viewer.component.css'],
 })
-export class VcdViewerComponent implements OnInit, AfterViewInit {
+export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   handler?: any;
 
   _url?: string;
+
+  @Input() total?: number;
 
   httpSubscription?: Subscription;
 
@@ -43,7 +53,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit {
       this.abortController.abort();
     }
     this.loading = true;
-    this.handler.onBegin();
+    this.handler.onBegin(this.total || 0);
     fetch(this._url, { method: 'get', signal: this.signal })
       .then((resp) => {
         const reader = resp.body?.getReader();

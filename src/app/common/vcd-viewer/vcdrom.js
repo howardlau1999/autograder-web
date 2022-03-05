@@ -4,6 +4,7 @@ const createVCD = require('vcd-stream/out/vcd.js');
 const webVcdParser = require('vcd-stream/lib/web-vcd-parser.js');
 const domContainer = require('@wavedrom/doppler/lib/dom-container.js');
 const parseTimescale = require('vcd-stream/lib/parse-time-scale.js');
+const filesize = require('filesize');
 
 const numberOrString = (val) => {
   if (val < BigInt(2) ** BigInt(52)) {
@@ -87,10 +88,11 @@ function vcdPipeDeso(descriptionObject, vcdParser, done) {
 }
 
 const getHandler = (element, vcdParser) => {
+  let progress = 0;
   let total = 0;
   return {
-    onBegin: () => {
-      total = 0;
+    onBegin: (totalBytes) => {
+      total = totalBytes;
       element.innerHTML = '';
       vcdPipeDeso({}, vcdParser, (descriptionObject) => {
         element.innerHTML = '';
@@ -100,9 +102,15 @@ const getHandler = (element, vcdParser) => {
     },
     onChunk: (chunk) => {
       const chunkLength = chunk.length;
-      total += chunkLength;
-      element.innerHTML = `<div class="wd-progress">${total.toLocaleString()} bytes loaded</div>`;
-
+      progress += chunkLength;
+      if (total) {
+        const percent = (progress / total) * 100;
+        element.innerHTML = `<div class="wd-progress">${filesize(progress)} / ${filesize(
+          total,
+        )} (${percent.toFixed(1)} %)</div>`;
+      } else {
+        element.innerHTML = `<div class="wd-progress">已加载 ${filesize(progress)}</div>`;
+      }
       vcdParser.write(chunk);
     },
     onEnd: () => {

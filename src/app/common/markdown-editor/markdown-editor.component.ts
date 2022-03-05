@@ -13,13 +13,6 @@ import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-c';
-import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-scala';
-import 'prismjs/components/prism-clojure';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { KatexOptions } from 'ngx-markdown-latex';
 
@@ -102,7 +95,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
         previewStyle: 'vertical',
         initialValue: this.markdown,
         height: 'auto',
-        plugins: [[codeSyntaxHighlight, { highlighter: Prism }]],
+        plugins: [[codeSyntaxHighlight, { highlighter: window.Prism }]],
         events: {
           load: (editor) => {
             renderMathInElement(editor.getEditorElements().mdPreview, this.options);
