@@ -23,7 +23,16 @@ export class UsersTableComponent implements AfterViewInit {
 
   dataSource: UsersTableDataSource;
 
-  displayedColumns = ['id', 'username', 'nickname', 'studentId', 'email', 'githubId', 'isAdmin'];
+  displayedColumns = [
+    'id',
+    'username',
+    'nickname',
+    'studentId',
+    'email',
+    'githubId',
+    'createdAt',
+    'isAdmin',
+  ];
 
   searchFormControl = new FormControl();
 

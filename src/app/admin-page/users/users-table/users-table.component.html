@@ -50,6 +50,13 @@
       <td mat-cell *matCellDef="let row">{{ row.getUser().getGithubId() }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>注册时间</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.getUser().getCreatedAt().toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="isAdmin">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>管理员权限</th>
       <td mat-cell *matCellDef="let row">
