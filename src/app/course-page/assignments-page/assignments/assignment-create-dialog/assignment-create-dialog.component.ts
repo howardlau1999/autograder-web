@@ -40,8 +40,8 @@ export class AssignmentCreateDialogComponent implements OnInit {
 
   submissionLimitForm = new FormGroup({
     total: new FormControl(0),
-    frequency: new FormControl(),
-    period: new FormControl(),
+    frequency: new FormControl(1),
+    period: new FormControl(1),
   });
 
   programmingAssignmentForm = new FormGroup(
