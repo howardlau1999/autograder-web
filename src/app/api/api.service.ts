@@ -196,7 +196,7 @@ export class ApiService {
     request.setSubmissionId(submissionId);
     return new Observable<SubscribeSubmissionResponse>((subscriber) => {
       return grpc.invoke(AutograderService.SubscribeSubmission, {
-        host: this.host,
+        host: this.host || window.location.origin,
         transport: grpc.WebsocketTransport(),
         metadata: new grpc.Metadata({
           authorization: `bearer ${this.tokenService.getToken()}`,

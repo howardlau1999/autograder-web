@@ -221,7 +221,6 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(([filename, manifestId, blob]) => {
         const entry = this.uploadEntries[filename];
-        console.log(entry, entry.isNew);
         if (entry.isNew) {
           this.totalSize += entry.filesize;
         }
