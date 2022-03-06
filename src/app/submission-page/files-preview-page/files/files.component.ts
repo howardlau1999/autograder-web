@@ -14,6 +14,7 @@ import {
 import { environment } from '../../../../environments/environment';
 import { SubmissionService } from '../../../service/submission.service';
 import { NotificationService } from '../../../service/notification.service';
+import { downloadURL } from '../../../common/downloader/url.downloader';
 
 /** File node data with possible child nodes. */
 export type FileNode = FileTreeNode;
@@ -48,7 +49,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   path$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-  downloadPath$: Observable<string>;
+  downloadPath$: Observable<string[]>;
 
   fileType?: DownloadFileTypeMap[keyof DownloadFileTypeMap];
 
@@ -110,9 +111,12 @@ export class FilesComponent implements OnInit, OnDestroy {
     );
     this.downloadPath$ = this.initDownload$.pipe(
       map((resp) => {
-        if (resp === null) return '';
+        if (resp === null) return ['', ''];
 
-        return this.getDownloadURL(resp.getFilename(), resp.getToken());
+        return [
+          this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
+          resp.getFilename(),
+        ];
       }),
     );
   }
@@ -123,8 +127,8 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   onDownloadClicked() {
     this.initDownloadSub?.unsubscribe();
-    this.initDownloadSub = this.downloadPath$.pipe(take(1)).subscribe((url) => {
-      window.open(url, '_blank');
+    this.initDownloadSub = this.downloadPath$.pipe(take(1)).subscribe(([url, filename]) => {
+      downloadURL(url, filename);
     });
   }
 
