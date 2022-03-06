@@ -163,10 +163,11 @@ export class ApiService {
     });
   }
 
-  initUpload(filename: string, manifestId: number) {
+  initUpload(filename: string, manifestId: number, filesize: number) {
     const request = new InitUploadRequest();
     request.setFilename(filename);
     request.setManifestId(manifestId);
+    request.setFilesize(filesize);
     return this.unary(AutograderService.InitUpload, request);
   }
 
@@ -279,6 +280,7 @@ export class ApiService {
     memory: number,
     timeout: number,
     submissionLimit: SubmissionLimitConfig,
+    uploadLimit: number,
   ) {
     const request = new CreateAssignmentRequest();
     const programmingConfig = new ProgrammingAssignmentConfig();
@@ -295,6 +297,7 @@ export class ApiService {
     programmingConfig.setTimeout(timeout);
     request.setProgrammingConfig(programmingConfig);
     request.setSubmissionLimit(submissionLimit);
+    request.setUploadLimit(uploadLimit);
     return this.unary(AutograderService.CreateAssignment, request);
   }
 

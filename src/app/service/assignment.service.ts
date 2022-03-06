@@ -68,6 +68,7 @@ export class AssignmentService {
     memory: number,
     timeout: number,
     submissionLimit: SubmissionLimitConfig,
+    uploadLimit: number,
   ): Observable<Either<FormError, CreateAssignmentResponse>> {
     return this.apiService
       .createProgrammingAssignment(
@@ -82,6 +83,7 @@ export class AssignmentService {
         memory * 1024 * 1024,
         timeout,
         submissionLimit,
+        uploadLimit * 1024,
       )
       .pipe(
         map((resp) => right(resp)),

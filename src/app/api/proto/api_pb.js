@@ -8113,7 +8113,8 @@ proto.UploadTokenPayload.toObject = function(includeInstance, msg) {
     assignmentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
     manifestId: jspb.Message.getFieldWithDefault(msg, 3, 0),
     filename: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    filesize: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    filesize: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    uploadLimit: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -8169,6 +8170,10 @@ proto.UploadTokenPayload.deserializeBinaryFromReader = function(msg, reader) {
     case 5:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setFilesize(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setUploadLimit(value);
       break;
     default:
       reader.skipField();
@@ -8231,6 +8236,13 @@ proto.UploadTokenPayload.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeUint64(
       5,
+      f
+    );
+  }
+  f = message.getUploadLimit();
+  if (f !== 0) {
+    writer.writeUint64(
+      6,
       f
     );
   }
@@ -8324,6 +8336,24 @@ proto.UploadTokenPayload.prototype.getFilesize = function() {
  */
 proto.UploadTokenPayload.prototype.setFilesize = function(value) {
   return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional uint64 upload_limit = 6;
+ * @return {number}
+ */
+proto.UploadTokenPayload.prototype.getUploadLimit = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.UploadTokenPayload} returns this
+ */
+proto.UploadTokenPayload.prototype.setUploadLimit = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
@@ -11700,7 +11730,8 @@ proto.CreateAssignmentRequest.toObject = function(includeInstance, msg) {
     lateDueDate: (f = msg.getLateDueDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     description: jspb.Message.getFieldWithDefault(msg, 7, ""),
     programmingConfig: (f = msg.getProgrammingConfig()) && model_pb.ProgrammingAssignmentConfig.toObject(includeInstance, f),
-    submissionLimit: (f = msg.getSubmissionLimit()) && model_pb.SubmissionLimitConfig.toObject(includeInstance, f)
+    submissionLimit: (f = msg.getSubmissionLimit()) && model_pb.SubmissionLimitConfig.toObject(includeInstance, f),
+    uploadLimit: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -11777,6 +11808,10 @@ proto.CreateAssignmentRequest.deserializeBinaryFromReader = function(msg, reader
       var value = new model_pb.SubmissionLimitConfig;
       reader.readMessage(value,model_pb.SubmissionLimitConfig.deserializeBinaryFromReader);
       msg.setSubmissionLimit(value);
+      break;
+    case 10:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setUploadLimit(value);
       break;
     default:
       reader.skipField();
@@ -11873,6 +11908,13 @@ proto.CreateAssignmentRequest.serializeBinaryToWriter = function(message, writer
       9,
       f,
       model_pb.SubmissionLimitConfig.serializeBinaryToWriter
+    );
+  }
+  f = message.getUploadLimit();
+  if (f !== 0) {
+    writer.writeUint64(
+      10,
+      f
     );
   }
 };
@@ -12132,6 +12174,24 @@ proto.CreateAssignmentRequest.prototype.clearSubmissionLimit = function() {
  */
 proto.CreateAssignmentRequest.prototype.hasSubmissionLimit = function() {
   return jspb.Message.getField(this, 9) != null;
+};
+
+
+/**
+ * optional uint64 upload_limit = 10;
+ * @return {number}
+ */
+proto.CreateAssignmentRequest.prototype.getUploadLimit = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.CreateAssignmentRequest} returns this
+ */
+proto.CreateAssignmentRequest.prototype.setUploadLimit = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
 };
 
 

@@ -13,11 +13,18 @@
     <th *matHeaderCellDef mat-header-cell mat-sort-header>上传进度</th>
     <td *matCellDef="let row" mat-cell>
       <mat-progress-bar
-        *ngIf="row.uploading"
+        *ngIf="row.uploading && !row.error"
         [mode]="row.progressBarMode"
         [value]="row.uploadProgress"
       ></mat-progress-bar>
       <mat-icon *ngIf="row.uploaded">done</mat-icon>
+      <span *ngIf="row.error" style="color: #cc0000">
+        <span [ngSwitch]="row.error">
+          <span *ngSwitchCase="'GET_SIZE'">获取提交大小失败</span>
+          <span *ngSwitchCase="'NO_SPACE'">大小超出限制</span>
+          <span *ngSwitchDefault>{{ row.error }}</span>
+        </span>
+      </span>
     </td>
   </ng-container>
 

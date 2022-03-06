@@ -773,6 +773,9 @@ export class UploadTokenPayload extends jspb.Message {
   getFilesize(): number;
   setFilesize(value: number): void;
 
+  getUploadLimit(): number;
+  setUploadLimit(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UploadTokenPayload.AsObject;
   static toObject(includeInstance: boolean, msg: UploadTokenPayload): UploadTokenPayload.AsObject;
@@ -790,6 +793,7 @@ export namespace UploadTokenPayload {
     manifestId: number,
     filename: string,
     filesize: number,
+    uploadLimit: number,
   }
 }
 
@@ -1322,6 +1326,9 @@ export class CreateAssignmentRequest extends jspb.Message {
   getSubmissionLimit(): model_pb.SubmissionLimitConfig | undefined;
   setSubmissionLimit(value?: model_pb.SubmissionLimitConfig): void;
 
+  getUploadLimit(): number;
+  setUploadLimit(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateAssignmentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateAssignmentRequest): CreateAssignmentRequest.AsObject;
@@ -1343,6 +1350,7 @@ export namespace CreateAssignmentRequest {
     description: string,
     programmingConfig?: model_pb.ProgrammingAssignmentConfig.AsObject,
     submissionLimit?: model_pb.SubmissionLimitConfig.AsObject,
+    uploadLimit: number,
   }
 }
 

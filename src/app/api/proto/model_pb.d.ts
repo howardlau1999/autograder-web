@@ -282,6 +282,9 @@ export class Assignment extends jspb.Message {
   getSubmissionLimit(): SubmissionLimitConfig | undefined;
   setSubmissionLimit(value?: SubmissionLimitConfig): void;
 
+  getUploadLimit(): number;
+  setUploadLimit(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Assignment.AsObject;
   static toObject(includeInstance: boolean, msg: Assignment): Assignment.AsObject;
@@ -304,6 +307,7 @@ export namespace Assignment {
     programmingConfig?: ProgrammingAssignmentConfig.AsObject,
     published: boolean,
     submissionLimit?: SubmissionLimitConfig.AsObject,
+    uploadLimit: number,
   }
 }
 
@@ -764,6 +768,9 @@ export class ManifestMetadata extends jspb.Message {
   getAssignmentId(): number;
   setAssignmentId(value: number): void;
 
+  getUploadLimit(): number;
+  setUploadLimit(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ManifestMetadata.AsObject;
   static toObject(includeInstance: boolean, msg: ManifestMetadata): ManifestMetadata.AsObject;
@@ -779,6 +786,31 @@ export namespace ManifestMetadata {
     createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     userId: number,
     assignmentId: number,
+    uploadLimit: number,
+  }
+}
+
+export class ManifestFileMetadata extends jspb.Message {
+  getManifestId(): number;
+  setManifestId(value: number): void;
+
+  getFilesize(): number;
+  setFilesize(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ManifestFileMetadata.AsObject;
+  static toObject(includeInstance: boolean, msg: ManifestFileMetadata): ManifestFileMetadata.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ManifestFileMetadata, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ManifestFileMetadata;
+  static deserializeBinaryFromReader(message: ManifestFileMetadata, reader: jspb.BinaryReader): ManifestFileMetadata;
+}
+
+export namespace ManifestFileMetadata {
+  export type AsObject = {
+    manifestId: number,
+    filesize: number,
   }
 }
 

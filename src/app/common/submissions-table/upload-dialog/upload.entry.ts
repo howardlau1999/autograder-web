@@ -19,6 +19,8 @@ export class UploadEntry {
 
   progressBarMode: 'determinate' | 'indeterminate' = 'indeterminate';
 
+  isNew = false;
+
   constructor(filename: string, filesize: number) {
     this.filename = filename;
     this.uploading = true;

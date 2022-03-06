@@ -16,7 +16,7 @@
           <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
             >匿名排行
           </mat-slide-toggle>
-          <button mat-icon-button (click)="onEditAssignmentClicked()">
+          <button matTooltip="编辑作业配置" mat-icon-button (click)="onEditAssignmentClicked()">
             <mat-icon>edit</mat-icon>
           </button>
         </div>

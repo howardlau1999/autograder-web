@@ -56,6 +56,11 @@ export class AssignmentCreateDialogComponent implements OnInit {
         Validators.min(128),
         Validators.max(8192),
       ]),
+      uploadLimit: new FormControl(128, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(8192),
+      ]),
       timeout: new FormControl(600, [Validators.required, Validators.min(1), Validators.max(6000)]),
       description: new FormControl('', [Validators.required]),
     },
@@ -74,8 +79,17 @@ export class AssignmentCreateDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onConfirmClicked() {
-    const { name, releaseDate, dueDate, description, dockerImage, cpu, memory, timeout } =
-      this.programmingAssignmentForm.value;
+    const {
+      name,
+      releaseDate,
+      dueDate,
+      description,
+      dockerImage,
+      cpu,
+      memory,
+      timeout,
+      uploadLimit,
+    } = this.programmingAssignmentForm.value;
     const { total, period, frequency } = this.submissionLimitForm.value;
     const submissionLimit = new SubmissionLimitConfig();
     submissionLimit.setPeriod(period);
@@ -95,6 +109,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
         memory,
         timeout,
         submissionLimit,
+        uploadLimit,
       )
       .subscribe((result) => {
         this.loading = false;

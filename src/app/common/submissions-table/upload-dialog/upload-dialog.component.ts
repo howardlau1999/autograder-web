@@ -23,6 +23,7 @@ import { NotificationService } from '../../../service/notification.service';
 
 export interface UploadDialogData {
   assignmentId: number;
+  uploadLimit: number;
 }
 
 @Component({
@@ -43,6 +44,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   total: number = 0;
 
+  totalSize: number = 0;
+
   uploaded: number = 0;
 
   errored: number = 0;
@@ -50,6 +53,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   loading: boolean = false;
 
   submitSubscription?: Subscription;
+
+  uploadSubscriptions: Subscription[] = [];
+
+  uploadLimit: number;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
@@ -59,18 +66,21 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
   ) {
     this.assignmentId = data.assignmentId;
+    this.uploadLimit = data.uploadLimit;
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.submitSubscription?.unsubscribe();
+    this.uploadSubscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   onFileDelete(filename: string) {
     this.uploadEntries[filename].cancelUpload();
     const sub$ = this.apiService.deleteFileInManifest(this.manifestId!, filename).subscribe({
       next: () => {
+        this.totalSize -= this.uploadEntries[filename].filesize;
         delete this.uploadEntries[filename];
         this.updateProgress();
         this.updateUploadEntries();
@@ -151,14 +161,15 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadFiles(files: File[]) {
-    (this.manifestId === null
-      ? this.apiService.createManifest(this.assignmentId).pipe(
-          map((resp) => {
-            this.manifestId = resp?.getManifestId() || 0;
-            return this.manifestId;
-          }),
-        )
-      : of(this.manifestId)
+    const subscription = (
+      this.manifestId === null
+        ? this.apiService.createManifest(this.assignmentId).pipe(
+            map((resp) => {
+              this.manifestId = resp?.getManifestId() || 0;
+              return this.manifestId;
+            }),
+          )
+        : of(this.manifestId)
     )
       .pipe(
         mergeMap((manifestId) => {
@@ -179,8 +190,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                       (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
                     );
                     uploadEntries.forEach((entry) => {
+                      const isNew = !this.uploadEntries[entry.filename];
                       this.uploadEntries[entry.filename]?.cancelUpload();
                       this.uploadEntries[entry.filename] = entry;
+                      this.uploadEntries[entry.filename].isNew = isNew;
                       return entry;
                     });
                     this.updateUploadEntries();
@@ -196,7 +209,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                   }),
                 );
               }
+              const isNew = !this.uploadEntries[file.name];
               this.uploadEntries[file.name] = new UploadEntry(file.name, file.size);
+              this.uploadEntries[file.name].isNew = isNew;
               this.updateUploadEntries();
               this.updateProgress();
               return zip(of(file.name), of(manifestId), of(file)).pipe(delay(50));
@@ -206,8 +221,17 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(([filename, manifestId, blob]) => {
         const entry = this.uploadEntries[filename];
+        console.log(entry, entry.isNew);
+        if (entry.isNew) {
+          this.totalSize += entry.filesize;
+        }
+        if (this.totalSize > this.uploadLimit) {
+          entry.error = '大小超过限制';
+          this.updateProgress();
+          return;
+        }
         entry.subscription = this.apiService
-          .initUpload(filename, manifestId)
+          .initUpload(filename, manifestId, entry.filesize)
           .pipe(
             mergeMap((resp) => {
               const token = resp?.getToken() || '';
@@ -226,8 +250,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
               throw err;
             }),
             retry({ delay: 1000, count: 5 }),
-            catchError((err) => {
-              entry.error = err;
+            catchError(({ message }) => {
+              entry.error = message;
+              this.updateProgress();
               return of(null);
             }),
           )
@@ -245,6 +270,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
       });
+    this.uploadSubscriptions.push(subscription);
   }
 
   uploadFileEvent(event: any) {
@@ -258,7 +284,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     let errored = 0;
     filenames.forEach((fn) => {
       if (this.uploadEntries[fn].uploaded) uploaded += 1;
-      if (this.uploadEntries[fn].error !== null) errored += 1;
+      if (this.uploadEntries[fn].error) errored += 1;
     });
     this.total = total;
     this.uploaded = uploaded;

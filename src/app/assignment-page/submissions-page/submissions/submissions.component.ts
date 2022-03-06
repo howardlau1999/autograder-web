@@ -50,6 +50,8 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
 
   submissionLimit?: SubmissionLimitConfig;
 
+  uploadLimit: number = 0;
+
   constructor(
     private notificationService: NotificationService,
     private assignmentService: AssignmentService,
@@ -83,6 +85,7 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
       map((resp) => resp.getAssignment()),
       tap((assignment) => {
         this.submissionLimit = assignment?.getSubmissionLimit();
+        this.uploadLimit = assignment?.getUploadLimit() || 0;
         if (this.canWriteCourse) {
           this.canSubmit = true;
           this.submissionLimit = undefined;
@@ -117,6 +120,7 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(UploadDialogComponent, {
       data: {
         assignmentId: this.assignmentId,
+        uploadLimit: this.uploadLimit,
       },
     });
     if (this.uploadDialogSubscription === null) {
