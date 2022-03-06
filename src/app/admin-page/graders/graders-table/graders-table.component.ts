@@ -3,7 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { map, repeatWhen } from 'rxjs/operators';
-import { interval } from 'rxjs';
+import { debounceTime, interval } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { GradersTableDataSource, GradersTableItem } from './graders-table-datasource';
 import { AdminService } from '../../../service/admin.service';
 import { GraderStatusMetadata } from '../../../api/proto/model_pb';
@@ -23,6 +24,8 @@ export class GradersTableComponent implements AfterViewInit {
   dataSource: GradersTableDataSource;
 
   displayedColumns = ['id', 'name', 'tags', 'ip', 'concurrency', 'status', 'lastHeartbeat'];
+
+  searchFormControl = new FormControl();
 
   getStatusClassname(status: GraderStatusMetadata.StatusMap[keyof GraderStatusMetadata.StatusMap]) {
     switch (status) {
@@ -54,6 +57,7 @@ export class GradersTableComponent implements AfterViewInit {
           return resp.getGradersList();
         }),
       ),
+      this.searchFormControl.valueChanges.pipe(debounceTime(100)),
     );
   }
 

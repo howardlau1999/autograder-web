@@ -11,6 +11,10 @@ export class AdminPageComponent implements OnInit {
       link: 'graders',
       label: '评测机管理',
     },
+    {
+      link: 'users',
+      label: '用户管理',
+    },
   ];
 
   constructor() {}

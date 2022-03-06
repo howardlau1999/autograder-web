@@ -1,10 +1,10 @@
-import { DataSource } from "@angular/cdk/collections";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { map, tap } from "rxjs/operators";
-import { merge, Observable } from "rxjs";
-import { GetAllGradersResponse } from "../../../api/proto/api_pb";
-import { GraderStatusMetadata } from "../../../api/proto/model_pb";
+import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { map, tap } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { GetAllGradersResponse } from '../../../api/proto/api_pb';
+import { GraderStatusMetadata } from '../../../api/proto/model_pb';
 
 // TODO: Replace this with your own data model type
 export interface GradersTableItem {
@@ -28,12 +28,21 @@ export class GradersTableDataSource extends DataSource<GradersTableItem> {
 
   data: GradersTableItem[] = [];
 
+  search$: Observable<string>;
+
+  search = '';
+
   paginator: MatPaginator | undefined;
 
   sort: MatSort | undefined;
 
-  constructor(data$: Observable<GetAllGradersResponse.Grader[]>) {
+  constructor(data$: Observable<GetAllGradersResponse.Grader[]>, search$: Observable<string>) {
     super();
+    this.search$ = search$.pipe(
+      tap((value) => {
+        this.search = value;
+      }),
+    );
     this.data$ = data$.pipe(
       map((graders) => {
         return graders.map((grader): GradersTableItem => {
@@ -66,13 +75,24 @@ export class GradersTableDataSource extends DataSource<GradersTableItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+      return merge(this.data$, this.paginator.page, this.sort.sortChange, this.search$).pipe(
         map(() => {
           return this.getPagedData(this.getSortedData([...this.data]));
         }),
       );
     }
     throw Error('Please set the paginator and sort on the data source before connecting.');
+  }
+
+  filterData(data: GradersTableItem[]): GradersTableItem[] {
+    if (!this.search) return data;
+    return data.filter((item) => {
+      return (
+        item.tags.includes(this.search) ||
+        item.ip.includes(this.search) ||
+        item.name.includes(this.search)
+      );
+    });
   }
 
   /**

@@ -22,6 +22,7 @@ import {
   ExportAssignmentGradesRequest,
   GenerateJoinCodeRequest,
   GetAllGradersRequest,
+  GetAllUsersRequest,
   GetAssignmentRequest,
   GetAssignmentsInCourseRequest,
   GetCourseListRequest,
@@ -46,6 +47,7 @@ import {
   RequestPasswordResetRequest,
   RequestSignUpTokenRequest,
   ResetPasswordRequest,
+  SetAdminRequest,
   SignUpRequest,
   SubscribeSubmissionRequest,
   SubscribeSubmissionResponse,
@@ -523,5 +525,17 @@ export class ApiService {
     request.setAssignmentId(assignmentId);
     request.setUserId(userId);
     return this.unary(AutograderService.DeleteLeaderboard, request);
+  }
+
+  getAllUsers() {
+    const request = new GetAllUsersRequest();
+    return this.unary(AutograderService.GetAllUsers, request);
+  }
+
+  setAdmin(userId: number, isAdmin: boolean) {
+    const request = new SetAdminRequest();
+    request.setUserId(userId);
+    request.setIsAdmin(isAdmin);
+    return this.unary(AutograderService.SetAdmin, request);
   }
 }

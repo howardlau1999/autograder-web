@@ -19,56 +19,17 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AssignmentPageRoutingModule } from './assignment-page-routing.module';
 import { AssignmentPageComponent } from './assignment-page.component';
-import { InspectionComponent } from './inspection/inspection.component';
-import { InspectionTableComponent } from './inspection/inspection-table/inspection-table.component';
 import { AssignmentFormModule } from '../common/assignment-form/assignment-form.module';
-import { AssignmentEditDialogComponent } from './submissions/assignment-edit-dialog/assignment-edit-dialog.component';
-import { SubmissionsTableComponent } from './submissions/submissions-table/submissions-table.component';
-import { SubmissionsComponent } from './submissions/submissions.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { UploadDialogComponent } from './submissions/upload-dialog/upload-dialog.component';
-import { FilesTableComponent } from './submissions/upload-dialog/files-table/files-table.component';
-import { FilesizePipe } from '../pipe/filesize.pipe';
-import { ConfirmDialogModule } from '../common/confirm-dialog/confirm-dialog.module';
 
 @NgModule({
-  declarations: [
-    AssignmentPageComponent,
-    InspectionComponent,
-    InspectionTableComponent,
-    AssignmentEditDialogComponent,
-    SubmissionsTableComponent,
-    SubmissionsComponent,
-    LeaderboardComponent,
-    UploadDialogComponent,
-    FilesTableComponent,
-    FilesizePipe,
-  ],
+  declarations: [AssignmentPageComponent],
   imports: [
     CommonModule,
     AssignmentPageRoutingModule,
     AssignmentFormModule,
-    ConfirmDialogModule,
     MatToolbarModule,
     MatListModule,
     MatIconModule,
-    MatToolbarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatButtonModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MarkdownModule.forChild(),
-    MatSortModule,
-    MatPaginatorModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatDialogModule,
   ],
 })
 export class AssignmentPageModule {}

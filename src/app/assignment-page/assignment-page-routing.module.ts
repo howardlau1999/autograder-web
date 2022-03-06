@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SubmissionsComponent } from './submissions/submissions.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { InspectionComponent } from './inspection/inspection.component';
 import { AssignmentPageComponent } from './assignment-page.component';
 
 const routes: Routes = [
@@ -12,19 +9,18 @@ const routes: Routes = [
     children: [
       {
         path: 'submissions',
-        component: SubmissionsComponent,
+        loadChildren: () =>
+          import('./submissions-page/submissions-page.module').then((m) => m.SubmissionsPageModule),
       },
       {
         path: 'leaderboard',
-        component: LeaderboardComponent,
+        loadChildren: () =>
+          import('./leaderboard-page/leaderboard-page.module').then((m) => m.LeaderboardPageModule),
       },
       {
         path: 'inspection',
-        component: InspectionComponent,
-      },
-      {
-        path: 'inspection/:userId',
-        component: InspectionComponent,
+        loadChildren: () =>
+          import('./inspection-page/inspection-page.module').then((m) => m.InspectionPageModule),
       },
       {
         path: '',

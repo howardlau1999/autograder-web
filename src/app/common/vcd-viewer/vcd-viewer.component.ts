@@ -8,7 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../service/notification.service';
 
 const vcdrom = require('./vcdrom');
 
@@ -20,7 +19,7 @@ const vcdrom = require('./vcdrom');
 export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   handler?: any;
 
-  _url?: string;
+  vcdFileURL?: string;
 
   @Input() total?: number;
 
@@ -34,46 +33,73 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('vcdrom') vcdrom!: ElementRef;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor() {}
 
   ngOnDestroy() {
     this.abortController.abort();
   }
 
   @Input() set url(value: string) {
-    this._url = value;
+    this.vcdFileURL = value;
     this.loadURL();
   }
 
+  errorCallback(error: any) {
+    this.vcdrom.nativeElement.innerHTML = `<div class="wd-progress">无法打开文件（错误信息：${error}）</div>`;
+    this.loading = false;
+    try {
+      if (this.handler) {
+        this.handler.onEnd();
+      }
+    } catch (e) {}
+  }
+
   loadURL() {
-    if (this.handler === undefined || !this._url) {
+    if (this.handler === undefined || !this.vcdFileURL) {
       return;
     }
     if (this.loading) {
       this.abortController.abort();
     }
     this.loading = true;
-    this.handler.onBegin(this.total || 0);
-    fetch(this._url, { method: 'get', signal: this.signal })
+    fetch(this.vcdFileURL, { method: 'get', signal: this.signal })
       .then((resp) => {
+        if (!resp.ok) {
+          this.errorCallback(resp.statusText);
+          return;
+        }
+        this.handler.onBegin(this.total || 0);
         const reader = resp.body?.getReader();
         const readCallback = (readResult: ReadableStreamDefaultReadResult<Uint8Array>) => {
           const { done, value } = readResult;
-          if (done) {
+          const subChunkLength = 128 * 1024;
+          if (done || !value) {
             this.loading = false;
             this.handler.onEnd();
             return;
           }
-          this.handler.onChunk(value);
-          reader?.read().then(readCallback);
+          let start = 0;
+          let end = Math.min(value.length, start + subChunkLength);
+          const chunkCallback = () => {
+            start += subChunkLength;
+            if (start >= value.length) {
+              reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
+              return;
+            }
+            end = Math.min(value.length, start + subChunkLength);
+            requestIdleCallback(() => {
+              this.handler.onChunk(value.subarray(start, end));
+              chunkCallback();
+            });
+          };
+          requestIdleCallback(() => {
+            this.handler.onChunk(value.subarray(start, end));
+            chunkCallback();
+          });
         };
-        reader?.read().then(readCallback);
+        reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
       })
-      .catch((error) => {
-        this.loading = false;
-        this.notificationService.showSnackBar(`加载出错 ${error}`);
-        this.handler.onEnd();
-      });
+      .catch(this.errorCallback.bind(this));
   }
 
   ngOnInit(): void {}

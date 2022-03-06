@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SubmissionPageComponent } from './submission-page.component';
-import { ReportComponent } from './report/report.component';
-import { FilesComponent } from './files/files.component';
+import { ReportComponent } from './report-view-page/report/report.component';
 
 const routes: Routes = [
   {
@@ -11,11 +10,15 @@ const routes: Routes = [
     children: [
       {
         path: 'report',
-        component: ReportComponent,
+        loadChildren: () =>
+          import('./report-view-page/report-view-page.module').then((m) => m.ReportViewPageModule),
       },
       {
         path: 'files',
-        component: FilesComponent,
+        loadChildren: () =>
+          import('./files-preview-page/files-preview-page.module').then(
+            (m) => m.FilesPreviewPageModule,
+          ),
       },
       {
         path: '',

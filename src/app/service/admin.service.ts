@@ -10,4 +10,12 @@ export class AdminService {
   getAllGraders() {
     return this.apiService.getAllGraders();
   }
+
+  getAllUsers() {
+    return this.apiService.getAllUsers();
+  }
+
+  setAdmin(userId: number, isAdmin: boolean) {
+    return this.apiService.setAdmin(userId, isAdmin);
+  }
 }

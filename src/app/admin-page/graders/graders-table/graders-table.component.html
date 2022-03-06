@@ -1,3 +1,23 @@
+<div style="margin-left: 10px; margin-right: 10px; display: flex; align-items: center">
+  <span style="flex: 1 1 auto;"></span>
+  <form>
+    <mat-form-field>
+      <mat-label>搜索</mat-label>
+      <input [formControl]="searchFormControl" matInput name="search" />
+      <button
+        (click)="searchFormControl.setValue('')"
+        *ngIf="searchFormControl.value"
+        mat-icon-button
+        matSuffix
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-icon-button>
+      <mat-icon>search</mat-icon>
+    </button>
+  </form>
+</div>
 <div class="mat-elevation-z1" style="margin: 10px">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->

@@ -3,7 +3,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { AssignmentDateValidator } from '../../course-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
+import { AssignmentDateValidator } from '../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
 
 @Component({
   selector: 'app-assignment-form',

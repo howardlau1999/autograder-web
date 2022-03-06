@@ -8,7 +8,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import Editor from '@toast-ui/editor';
 import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 
@@ -31,7 +30,7 @@ declare function renderMathInElement(elem: Element, options?: KatexOptions): voi
   ],
 })
 export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlValueAccessor {
-  editor!: Editor;
+  editor!: any;
 
   @Input() markdown: string = '';
 
@@ -89,7 +88,8 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    import('@toast-ui/editor').then(({ Editor }) => {
+      this.editorEl.nativeElement.innerHTML = '';
       this.editor = new Editor({
         el: this.editorEl.nativeElement,
         previewStyle: 'vertical',

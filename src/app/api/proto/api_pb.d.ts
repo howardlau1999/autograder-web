@@ -2942,6 +2942,9 @@ export class SetAdminRequest extends jspb.Message {
   getUserId(): number;
   setUserId(value: number): void;
 
+  getIsAdmin(): boolean;
+  setIsAdmin(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SetAdminRequest.AsObject;
   static toObject(includeInstance: boolean, msg: SetAdminRequest): SetAdminRequest.AsObject;
@@ -2955,6 +2958,7 @@ export class SetAdminRequest extends jspb.Message {
 export namespace SetAdminRequest {
   export type AsObject = {
     userId: number,
+    isAdmin: boolean,
   }
 }
 
@@ -2992,9 +2996,9 @@ export namespace GetAllUsersRequest {
 
 export class GetAllUsersResponse extends jspb.Message {
   clearUsersList(): void;
-  getUsersList(): Array<model_pb.User>;
-  setUsersList(value: Array<model_pb.User>): void;
-  addUsers(value?: model_pb.User, index?: number): model_pb.User;
+  getUsersList(): Array<GetAllUsersResponse.UserInfo>;
+  setUsersList(value: Array<GetAllUsersResponse.UserInfo>): void;
+  addUsers(value?: GetAllUsersResponse.UserInfo, index?: number): GetAllUsersResponse.UserInfo;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
@@ -3008,7 +3012,33 @@ export class GetAllUsersResponse extends jspb.Message {
 
 export namespace GetAllUsersResponse {
   export type AsObject = {
-    usersList: Array<model_pb.User.AsObject>,
+    usersList: Array<GetAllUsersResponse.UserInfo.AsObject>,
+  }
+
+  export class UserInfo extends jspb.Message {
+    getUserId(): number;
+    setUserId(value: number): void;
+
+    hasUser(): boolean;
+    clearUser(): void;
+    getUser(): model_pb.User | undefined;
+    setUser(value?: model_pb.User): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): UserInfo.AsObject;
+    static toObject(includeInstance: boolean, msg: UserInfo): UserInfo.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: UserInfo, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): UserInfo;
+    static deserializeBinaryFromReader(message: UserInfo, reader: jspb.BinaryReader): UserInfo;
+  }
+
+  export namespace UserInfo {
+    export type AsObject = {
+      userId: number,
+      user?: model_pb.User.AsObject,
+    }
   }
 }
 
