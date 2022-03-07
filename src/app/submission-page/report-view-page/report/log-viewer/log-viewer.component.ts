@@ -39,7 +39,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.term = new Terminal({ rows: 40, cols: 80 });
+    this.term = new Terminal({ rows: 40, cols: 100 });
     this.term.open(this.terminalDiv.nativeElement);
   }
 

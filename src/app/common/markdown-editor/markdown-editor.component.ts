@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnInit,
   Output,
   ViewChild,
@@ -36,11 +37,13 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
 
   @Output() markdownChange: EventEmitter<string> = new EventEmitter<string>();
 
-  @ViewChild('editor') editorEl!: ElementRef;
+  @ViewChild('editor') editorDiv!: ElementRef;
 
   disabled = false;
 
   touched = false;
+
+  loading = true;
 
   onChange = (_: string) => {};
 
@@ -85,13 +88,18 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
     return div.innerHTML;
   }
 
+  constructor(private ngZone: NgZone) {}
+
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     import('@toast-ui/editor').then(({ Editor }) => {
-      this.editorEl.nativeElement.innerHTML = '';
+      this.ngZone.run(() => {
+        this.loading = false;
+      });
+      this.editorDiv.nativeElement.innerHTML = '';
       this.editor = new Editor({
-        el: this.editorEl.nativeElement,
+        el: this.editorDiv.nativeElement,
         previewStyle: 'vertical',
         initialValue: this.markdown,
         height: 'auto',
