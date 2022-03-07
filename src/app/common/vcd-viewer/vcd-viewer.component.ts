@@ -3,11 +3,11 @@ import {
   Component,
   ElementRef,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 const vcdrom = require('./vcdrom');
 
@@ -23,17 +23,21 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() total?: number;
 
-  httpSubscription?: Subscription;
-
   abortController = new AbortController();
 
   signal = this.abortController.signal;
 
   loading: boolean = false;
 
+  error?: any;
+
+  progress: number = 0;
+
+  downloadProgress: number = 0;
+
   @ViewChild('vcdrom') vcdrom!: ElementRef;
 
-  constructor() {}
+  constructor(private ngZone: NgZone) {}
 
   ngOnDestroy() {
     this.abortController.abort();
@@ -45,13 +49,18 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   errorCallback(error: any) {
-    this.vcdrom.nativeElement.innerHTML = `<div class="wd-progress">无法打开文件（错误信息：${error}）</div>`;
-    this.loading = false;
+    this.ngZone.run(() => {
+      this.error = error;
+      this.loading = false;
+    });
     try {
       if (this.handler) {
         this.handler.onEnd();
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
+    this.vcdrom.nativeElement.innerHTML = '';
   }
 
   loadURL() {
@@ -59,6 +68,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     if (this.loading) {
+      this.loading = false;
       this.abortController.abort();
     }
     this.loading = true;
@@ -68,33 +78,51 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
           this.errorCallback(resp.statusText);
           return;
         }
-        this.handler.onBegin(this.total || 0);
+        this.handler.onBegin();
+        this.error = undefined;
+        this.progress = 0;
+        this.downloadProgress = 0;
         const reader = resp.body?.getReader();
         const readCallback = (readResult: ReadableStreamDefaultReadResult<Uint8Array>) => {
           const { done, value } = readResult;
           const subChunkLength = 128 * 1024;
           if (done || !value) {
-            this.loading = false;
-            this.handler.onEnd();
+            this.ngZone.run(() => {
+              this.loading = false;
+            });
+            this.vcdrom.nativeElement.innerHTML = `<div class="wd-progress">处理中……</div>`;
+            requestIdleCallback(() => {
+              this.handler.onEnd();
+            });
             return;
           }
-          let start = 0;
-          let end = Math.min(value.length, start + subChunkLength);
-          const chunkCallback = () => {
-            start += subChunkLength;
-            if (start >= value.length) {
-              reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
-              return;
-            }
-            end = Math.min(value.length, start + subChunkLength);
+          this.ngZone.run(() => {
+            this.downloadProgress += value.length;
+          });
+          const chunkCallback = (start: number) => {
+            const end = Math.min(value.length, start + subChunkLength);
+            const subChunk = value.subarray(start, end);
+            this.handler.onChunk(subChunk);
+            this.ngZone.run(() => {
+              this.progress += subChunk.length;
+            });
             requestIdleCallback(() => {
               this.handler.onChunk(value.subarray(start, end));
-              chunkCallback();
+              if (end < value.length) {
+                chunkCallback(end);
+              } else {
+                reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
+              }
             });
           };
           requestIdleCallback(() => {
-            this.handler.onChunk(value.subarray(start, end));
-            chunkCallback();
+            const end = Math.min(subChunkLength, value.length);
+            this.handler.onChunk(value.subarray(0, end));
+            if (end < value.length) {
+              chunkCallback(end);
+            } else {
+              reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
+            }
           });
         };
         reader?.read().then(readCallback).catch(this.errorCallback.bind(this));

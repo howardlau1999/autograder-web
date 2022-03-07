@@ -1,6 +1,16 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, last, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  delay,
+  last,
+  Observable,
+  of,
+  retryWhen,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -120,11 +130,14 @@ export class ReportComponent implements OnInit {
           }),
         );
       }),
-      catchError(({ message }) => {
+      catchError((error) => {
+        const { message } = error;
+        if (message === undefined) throw error;
         this.error = null;
         this.notificationService.showSnackBar(`无法获取报告 ${message}`);
         return of(undefined);
       }),
+      retryWhen((errors) => errors.pipe(delay(100))),
     );
   }
 

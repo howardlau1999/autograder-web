@@ -28,45 +28,11 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
 
   sort: MatSort | undefined;
 
-  runningSubmissions: { [id: string]: Subscription } = {};
-
-  constructor(submissionService: SubmissionService, data$: Observable<SubmissionsItem[]>) {
+  constructor(data$: Observable<SubmissionsItem[]>) {
     super();
     this.data$ = data$.pipe(
       tap((data) => {
         this.data = data;
-        Object.keys(this.runningSubmissions).forEach((id) => {
-          this.runningSubmissions[id].unsubscribe();
-        });
-        this.runningSubmissions = {};
-        data
-          .filter(
-            (submission) =>
-              submission.getStatus() === SubmissionStatus.RUNNING ||
-              submission.getStatus() === SubmissionStatus.CANCELLING ||
-              submission.getStatus() === SubmissionStatus.QUEUED,
-          )
-          .forEach((submission) => {
-            const submissionId = submission.getSubmissionId();
-            this.runningSubmissions[submissionId] = submissionService
-              .subscribeSubmission(submissionId)
-              .subscribe((resp) => {
-                if (resp.getPendingRank()) {
-                  submission.setPendingRank(resp.getPendingRank());
-                }
-                submission.setStatus(resp.getStatus());
-                submission.setScore(resp.getScore());
-                submission.setMaxScore(resp.getMaxscore());
-                if (
-                  submission.getStatus() === SubmissionStatus.FINISHED ||
-                  submission.getStatus() === SubmissionStatus.FAILED ||
-                  submission.getStatus() === SubmissionStatus.CANCELLED
-                ) {
-                  this.runningSubmissions[submissionId].unsubscribe();
-                  delete this.runningSubmissions[submissionId];
-                }
-              });
-          });
       }),
     );
   }
@@ -93,9 +59,7 @@ export class SubmissionsTableDataSource extends DataSource<SubmissionsItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
-    Object.keys(this.runningSubmissions).forEach((id) => this.runningSubmissions[id].unsubscribe());
-  }
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,

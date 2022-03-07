@@ -5,12 +5,45 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ApiService } from '../api/api.service';
 import { NotificationService } from './notification.service';
+import { SubmissionStatus, SubmissionStatusMap } from '../api/proto/model_pb';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubmissionService {
   constructor(private apiService: ApiService, private notificationService: NotificationService) {}
+
+  isSubmissionQueued(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.QUEUED;
+  }
+
+  isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.RUNNING;
+  }
+
+  isSubmissionFinished(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.FINISHED;
+  }
+
+  isSubmissionCancelling(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.CANCELLING;
+  }
+
+  isSubmissionCancelled(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.CANCELLED;
+  }
+
+  isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return status === SubmissionStatus.FAILED;
+  }
+
+  isSubmissionPending(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+    return (
+      status === SubmissionStatus.CANCELLING ||
+      status === SubmissionStatus.RUNNING ||
+      status === SubmissionStatus.QUEUED
+    );
+  }
 
   getSubmissionsInAssignment(assignmentId: number) {
     return this.apiService.getSubmissionsInAssignment(assignmentId);

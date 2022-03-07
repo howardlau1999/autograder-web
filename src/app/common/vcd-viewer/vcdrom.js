@@ -88,11 +88,8 @@ function vcdPipeDeso(descriptionObject, vcdParser, done) {
 }
 
 const getHandler = (element, vcdParser) => {
-  let progress = 0;
-  let total = 0;
   return {
-    onBegin: (totalBytes) => {
-      total = totalBytes;
+    onBegin: () => {
       element.innerHTML = '';
       vcdPipeDeso({}, vcdParser, (descriptionObject) => {
         element.innerHTML = '';
@@ -101,16 +98,6 @@ const getHandler = (element, vcdParser) => {
       });
     },
     onChunk: (chunk) => {
-      const chunkLength = chunk.length;
-      progress += chunkLength;
-      if (total) {
-        const percent = (progress / total) * 100;
-        element.innerHTML = `<div class="wd-progress">${filesize(progress)} / ${filesize(
-          total,
-        )} (${percent.toFixed(1)} %)</div>`;
-      } else {
-        element.innerHTML = `<div class="wd-progress">已加载 ${filesize(progress)}</div>`;
-      }
       vcdParser.write(chunk);
     },
     onEnd: () => {

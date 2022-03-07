@@ -18,16 +18,13 @@ import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 import { SubmissionsTableComponent } from './submissions-table.component';
 import { FilesTableComponent } from './upload-dialog/files-table/files-table.component';
 import { FilesizePipe } from '../../pipe/filesize.pipe';
+import { PipeModule } from '../../pipe/pipe.module';
 
 @NgModule({
-  declarations: [
-    SubmissionsTableComponent,
-    UploadDialogComponent,
-    FilesTableComponent,
-    FilesizePipe,
-  ],
+  declarations: [SubmissionsTableComponent, UploadDialogComponent, FilesTableComponent],
   imports: [
     CommonModule,
+    PipeModule,
     MatIconModule,
     MatToolbarModule,
     MatFormFieldModule,

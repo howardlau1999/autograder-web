@@ -190,11 +190,15 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                       (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
                     );
                     uploadEntries.forEach((entry) => {
-                      const isNew = !this.uploadEntries[entry.filename];
-                      this.uploadEntries[entry.filename]?.cancelUpload();
+                      if (this.uploadEntries[entry.filename]) {
+                        this.uploadEntries[entry.filename]?.cancelUpload();
+                        this.totalSize -= this.uploadEntries[entry.filename].filesize;
+                      }
                       this.uploadEntries[entry.filename] = entry;
-                      this.uploadEntries[entry.filename].isNew = isNew;
-                      return entry;
+                      this.totalSize += entry.filesize;
+                      if (this.totalSize > this.uploadLimit) {
+                        this.uploadEntries[entry.filename].error = '大小超过限制';
+                      }
                     });
                     this.updateUploadEntries();
                     this.updateProgress();
@@ -209,9 +213,16 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                   }),
                 );
               }
-              const isNew = !this.uploadEntries[file.name];
-              this.uploadEntries[file.name] = new UploadEntry(file.name, file.size);
-              this.uploadEntries[file.name].isNew = isNew;
+              const entry = new UploadEntry(file.name, file.size);
+              if (this.uploadEntries[file.name]) {
+                this.uploadEntries[file.name]?.cancelUpload();
+                this.totalSize -= this.uploadEntries[file.name].filesize;
+              }
+              this.totalSize += file.size;
+              this.uploadEntries[file.name] = entry;
+              if (this.totalSize > this.uploadLimit) {
+                entry.error = '大小超过限制';
+              }
               this.updateUploadEntries();
               this.updateProgress();
               return zip(of(file.name), of(manifestId), of(file)).pipe(delay(50));
@@ -221,14 +232,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(([filename, manifestId, blob]) => {
         const entry = this.uploadEntries[filename];
-        if (entry.isNew) {
-          this.totalSize += entry.filesize;
-        }
-        if (this.totalSize > this.uploadLimit) {
-          entry.error = '大小超过限制';
-          this.updateProgress();
-          return;
-        }
+        if (entry.error) return;
         entry.subscription = this.apiService
           .initUpload(filename, manifestId, entry.filesize)
           .pipe(

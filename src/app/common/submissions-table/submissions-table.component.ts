@@ -10,13 +10,16 @@ import {
 import {
   BehaviorSubject,
   catchError,
+  delay,
   mergeMap,
   mergeWith,
   Observable,
   of,
+  retryWhen,
   Subject,
   Subscription,
   switchMap,
+  take,
   tap,
   timer,
 } from 'rxjs';
@@ -30,11 +33,7 @@ import { SubmissionService } from '../../service/submission.service';
 import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
 import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
-import {
-  SubmissionLimitConfig,
-  SubmissionStatus,
-  SubmissionStatusMap,
-} from '../../api/proto/model_pb';
+import { SubmissionLimitConfig, SubmissionStatusMap } from '../../api/proto/model_pb';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../downloader/url.downloader';
 
@@ -90,6 +89,8 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   frequencySubscription?: Subscription;
 
+  runningSubmissions: { [id: string]: Subscription } = {};
+
   @Input() set assignmentId(value: number) {
     this.assignmentId$.next(value);
   }
@@ -98,7 +99,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     this.userId_ = value;
     if (this.table) {
       this.submissionsLoading = true;
-      this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.connect());
+      this.dataSource = new SubmissionsTableDataSource(this.connect());
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.table.dataSource = this.dataSource;
@@ -116,7 +117,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     private dialog: MatDialog,
   ) {
     this.submissions$ = this.connect();
-    this.dataSource = new SubmissionsTableDataSource(this.submissionService, this.submissions$);
+    this.dataSource = new SubmissionsTableDataSource(this.submissions$);
   }
 
   connect() {
@@ -156,24 +157,68 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
           const windowCount = windowSubmissions.length;
           this.frequencyReached = windowCount >= this.submissionLimit.getFrequency();
           if (this.frequencyReached) {
-            const oldestDiffMilliseconds = windowSubmissions.reduce((milliseconds, submission) => {
-              const diffMilliseconds = DateTime.now().diff(
-                DateTime.fromJSDate(submission.getSubmittedAt()?.toDate() || new Date()),
-                'milliseconds',
-              ).milliseconds;
-              return milliseconds > diffMilliseconds ? milliseconds : diffMilliseconds;
-            }, 0);
+            const nowToOldestSubmission = DateTime.now().diff(
+              windowSubmissions
+                .map((submission) => {
+                  return DateTime.fromJSDate(submission.getSubmittedAt()?.toDate() || new Date());
+                })
+                .sort((a, b) => {
+                  const diffMilliseconds = a.diff(b, 'milliseconds').milliseconds;
+                  if (diffMilliseconds < 0) return -1;
+                  if (diffMilliseconds > 0) return 1;
+                  return 0;
+                })[windowCount - this.submissionLimit.getFrequency()],
+              'milliseconds',
+            ).milliseconds;
+
             this.frequencySubscription?.unsubscribe();
             this.frequencySubscription = timer(
-              this.submissionLimit.getPeriod() * 60 * 1000 - oldestDiffMilliseconds,
+              this.submissionLimit.getPeriod() * 60 * 1000 - nowToOldestSubmission,
             ).subscribe(() => {
               this.frequencyReached = false;
             });
           }
         }
       }),
-      catchError(({ message }) => {
-        this.notificationService.showSnackBar(`加载提交记录出错 ${message}`);
+      tap((data) => {
+        Object.keys(this.runningSubmissions).forEach((id) => {
+          this.runningSubmissions[id].unsubscribe();
+        });
+        this.runningSubmissions = {};
+        data.forEach((submission) => {
+          if (!this.submissionService.isSubmissionPending(submission.getStatus())) return;
+          const submissionId = submission.getSubmissionId();
+          this.runningSubmissions[submissionId] = this.submissionService
+            .subscribeSubmission(submissionId)
+            .pipe(
+              catchError((error) => {
+                const { message } = error;
+                if (message === undefined) throw error;
+                this.notificationService.showSnackBar(`订阅提交 ${submissionId} 出错 ${message}`);
+                return of(undefined);
+              }),
+              retryWhen((errors) => {
+                return errors.pipe(delay(100));
+              }),
+            )
+            .subscribe((resp) => {
+              if (!resp || !this.submissionService.isSubmissionPending(resp.getStatus())) {
+                this.runningSubmissions[submissionId].unsubscribe();
+                delete this.runningSubmissions[submissionId];
+              }
+              if (!resp) return;
+              if (resp.getPendingRank()) {
+                submission.setPendingRank(resp.getPendingRank());
+              }
+              submission.setStatus(resp.getStatus());
+              submission.setScore(resp.getScore());
+              submission.setMaxScore(resp.getMaxscore());
+            });
+        });
+      }),
+      catchError((error) => {
+        const { message } = error;
+        this.notificationService.showSnackBar(`加载提交记录出错 ${message || error}`);
         return of([]);
       }),
     );
@@ -186,6 +231,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    Object.keys(this.runningSubmissions).forEach((id) => this.runningSubmissions[id].unsubscribe());
     this.downloadSubmissionSubscription?.unsubscribe();
     this.regradeSubmissionSubscription?.unsubscribe();
     this.cancelConfirmSubscription?.unsubscribe();
@@ -211,7 +257,8 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
       this.cancelSubmissionSubscription = this.submissionService
         .cancelSubmission(submissionId)
         .pipe(
-          catchError(() => {
+          catchError(({ message }) => {
+            this.notificationService.showSnackBar(`取消评测出错 ${message}`);
             this.internalSubmissionRefresher$.next(null);
             return of(null);
           }),
@@ -250,27 +297,27 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   isSubmissionQueued(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.QUEUED;
+    return this.submissionService.isSubmissionQueued(status);
   }
 
   isSubmissionRunning(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.RUNNING;
+    return this.submissionService.isSubmissionRunning(status);
   }
 
   isSubmissionFinished(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.FINISHED;
+    return this.submissionService.isSubmissionFinished(status);
   }
 
   isSubmissionCancelling(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.CANCELLING;
+    return this.submissionService.isSubmissionCancelling(status);
   }
 
   isSubmissionCancelled(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.CANCELLED;
+    return this.submissionService.isSubmissionCancelled(status);
   }
 
   isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return status === SubmissionStatus.FAILED;
+    return this.submissionService.isSubmissionInternalError(status);
   }
 
   onRowClicked(submissionId: number) {

@@ -1,1 +1,14 @@
+<div class="wd-progress" style="width: 30vw; text-align: center">
+  <span *ngIf="error">加载文件出错：{{ error }}</span>
+  <p *ngIf="loading">
+    加载中（{{ progress | filesize }}<span *ngIf="total"> / {{ total | filesize }}</span
+    >）
+  </p>
+  <mat-progress-bar
+    *ngIf="loading"
+    [mode]="total ? 'buffer' : 'indeterminate'"
+    [value]="(progress / (total || 1)) * 100"
+    [bufferValue]="(downloadProgress / (total || 1)) * 100"
+  ></mat-progress-bar>
+</div>
 <div style="height: 100%" #vcdrom></div>
