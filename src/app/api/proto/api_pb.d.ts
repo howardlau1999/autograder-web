@@ -3122,6 +3122,46 @@ export namespace DeleteLeaderboardResponse {
   }
 }
 
+export class WebStreamLogRequest extends jspb.Message {
+  getSubmissionId(): number;
+  setSubmissionId(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): WebStreamLogRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: WebStreamLogRequest): WebStreamLogRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: WebStreamLogRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WebStreamLogRequest;
+  static deserializeBinaryFromReader(message: WebStreamLogRequest, reader: jspb.BinaryReader): WebStreamLogRequest;
+}
+
+export namespace WebStreamLogRequest {
+  export type AsObject = {
+    submissionId: number,
+  }
+}
+
+export class WebStreamLogResponse extends jspb.Message {
+  getData(): string;
+  setData(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): WebStreamLogResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: WebStreamLogResponse): WebStreamLogResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: WebStreamLogResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WebStreamLogResponse;
+  static deserializeBinaryFromReader(message: WebStreamLogResponse, reader: jspb.BinaryReader): WebStreamLogResponse;
+}
+
+export namespace WebStreamLogResponse {
+  export type AsObject = {
+    data: string,
+  }
+}
+
 export interface DownloadFileTypeMap {
   BINARY: 0;
   TEXT: 1;

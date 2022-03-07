@@ -10,9 +10,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { ReportComponent } from './report/report.component';
 import { ReportViewPageRoutingModule } from './report-view-page-routing.module';
+import { LogViewerComponent } from './report/log-viewer/log-viewer.component';
 
 @NgModule({
-  declarations: [ReportComponent],
+  declarations: [ReportComponent, LogViewerComponent],
   imports: [
     CommonModule,
     ReportViewPageRoutingModule,

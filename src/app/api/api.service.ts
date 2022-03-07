@@ -50,13 +50,13 @@ import {
   SetAdminRequest,
   SignUpRequest,
   SubscribeSubmissionRequest,
-  SubscribeSubmissionResponse,
   UnbindGithubRequest,
   UpdateAssignmentRequest,
   UpdateCourseMemberRequest,
   UpdateCourseRequest,
   UpdatePasswordRequest,
   UpdateUserRequest,
+  WebStreamLogRequest,
 } from './proto/api_pb';
 import {
   Assignment,
@@ -72,6 +72,7 @@ import { ErrorService } from '../service/error.service';
 import UnaryMethodDefinition = grpc.UnaryMethodDefinition;
 import ProtobufMessage = grpc.ProtobufMessage;
 import UnaryOutput = grpc.UnaryOutput;
+import MethodDefinition = grpc.MethodDefinition;
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +85,43 @@ export class ApiService {
     private tokenService: TokenService,
     private errorService: ErrorService,
   ) {}
+
+  private serverStream<Request extends ProtobufMessage, Response extends ProtobufMessage>(
+    method: MethodDefinition<Request, Response>,
+    request: Request,
+  ) {
+    return new Observable<Response>((subscriber) => {
+      return grpc.invoke(method, {
+        host: this.host || window.location.origin,
+        transport: grpc.WebsocketTransport(),
+        metadata: new grpc.Metadata({
+          authorization: `bearer ${this.tokenService.getToken()}`,
+        }),
+        onHeaders: (headers: grpc.Metadata) => {
+          if (headers.has('token')) {
+            this.tokenService.setToken(headers.get('token')[0]);
+          }
+        },
+        onMessage: (message: Response) => {
+          if (!environment.production) {
+            console.log(message);
+          }
+          subscriber.next(message);
+        },
+        onEnd: (code, message) => {
+          if (code !== grpc.Code.OK) {
+            if (!environment.production) {
+              console.log(code, message);
+            }
+            subscriber.error({ status: code, message });
+            return;
+          }
+          subscriber.complete();
+        },
+        request,
+      }).close;
+    });
+  }
 
   private unary<Request extends ProtobufMessage, Response extends ProtobufMessage>(
     method: UnaryMethodDefinition<Request, Response>,
@@ -194,40 +232,7 @@ export class ApiService {
   subscribeSubmission(submissionId: number) {
     const request = new SubscribeSubmissionRequest();
     request.setSubmissionId(submissionId);
-    return new Observable<SubscribeSubmissionResponse>((subscriber) => {
-      return grpc.invoke(AutograderService.SubscribeSubmission, {
-        host: this.host || window.location.origin,
-        transport: grpc.WebsocketTransport(),
-        metadata: new grpc.Metadata({
-          authorization: `bearer ${this.tokenService.getToken()}`,
-        }),
-        onHeaders: (headers: grpc.Metadata) => {
-          if (headers.has('token')) {
-            this.tokenService.setToken(headers.get('token')[0]);
-          }
-        },
-        onMessage: (message: SubscribeSubmissionResponse) => {
-          if (!environment.production) {
-            console.log(message);
-          }
-          subscriber.next(message);
-        },
-        onEnd: (code, message) => {
-          if (code !== grpc.Code.OK) {
-            if (!environment.production) {
-              console.log(code, message);
-            }
-            subscriber.error(message);
-            return;
-          }
-          if (!environment.production) {
-            console.log(`SubscribeSubmission ${submissionId} ended`);
-          }
-          subscriber.complete();
-        },
-        request,
-      }).close;
-    });
+    return this.serverStream(AutograderService.SubscribeSubmission, request);
   }
 
   getSubmissionReport(submissionId: number) {
@@ -540,5 +545,11 @@ export class ApiService {
     request.setUserId(userId);
     request.setIsAdmin(isAdmin);
     return this.unary(AutograderService.SetAdmin, request);
+  }
+
+  streamLog(submissionId: number) {
+    const request = new WebStreamLogRequest();
+    request.setSubmissionId(submissionId);
+    return this.serverStream(AutograderService.StreamLog, request);
   }
 }

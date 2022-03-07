@@ -481,6 +481,15 @@ type AutograderServiceDeleteLeaderboard = {
   readonly responseType: typeof api_pb.DeleteLeaderboardResponse;
 };
 
+type AutograderServiceStreamLog = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof api_pb.WebStreamLogRequest;
+  readonly responseType: typeof api_pb.WebStreamLogResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -536,6 +545,7 @@ export class AutograderService {
   static readonly GetAllUsers: AutograderServiceGetAllUsers;
   static readonly GetGradeQueue: AutograderServiceGetGradeQueue;
   static readonly DeleteLeaderboard: AutograderServiceDeleteLeaderboard;
+  static readonly StreamLog: AutograderServiceStreamLog;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -1039,5 +1049,6 @@ export class AutograderServiceClient {
     requestMessage: api_pb.DeleteLeaderboardRequest,
     callback: (error: ServiceError|null, responseMessage: api_pb.DeleteLeaderboardResponse|null) => void
   ): UnaryResponse;
+  streamLog(requestMessage: api_pb.WebStreamLogRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.WebStreamLogResponse>;
 }
 

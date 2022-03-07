@@ -109,6 +109,8 @@
         <mat-card-title>测试运行中…</mat-card-title>
         <p></p>
         <mat-progress-bar mode="buffer"></mat-progress-bar>
+        <br>
+        <app-log-viewer [submissionId]="submissionId"></app-log-viewer>
       </mat-card>
       <mat-card *ngSwitchDefault>
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
