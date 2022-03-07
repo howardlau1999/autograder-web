@@ -3143,8 +3143,10 @@ export namespace WebStreamLogRequest {
 }
 
 export class WebStreamLogResponse extends jspb.Message {
-  getData(): string;
-  setData(value: string): void;
+  getData(): Uint8Array | string;
+  getData_asU8(): Uint8Array;
+  getData_asB64(): string;
+  setData(value: Uint8Array | string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WebStreamLogResponse.AsObject;
@@ -3158,7 +3160,7 @@ export class WebStreamLogResponse extends jspb.Message {
 
 export namespace WebStreamLogResponse {
   export type AsObject = {
-    data: string,
+    data: Uint8Array | string,
   }
 }
 

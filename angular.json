@@ -84,7 +84,8 @@
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
-              "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css",
+              "node_modules/xterm/css/xterm.css"
             ],
             "scripts": [
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",

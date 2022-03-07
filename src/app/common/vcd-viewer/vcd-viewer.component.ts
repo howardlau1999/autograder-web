@@ -35,7 +35,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   downloadProgress: number = 0;
 
-  @ViewChild('vcdrom') vcdrom!: ElementRef;
+  @ViewChild('vcdrom') vcdromDiv!: ElementRef;
 
   constructor(private ngZone: NgZone) {}
 
@@ -60,7 +60,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (e) {
       console.error(e);
     }
-    this.vcdrom.nativeElement.innerHTML = '';
+    this.vcdromDiv.nativeElement.innerHTML = '';
   }
 
   loadURL() {
@@ -90,7 +90,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ngZone.run(() => {
               this.loading = false;
             });
-            this.vcdrom.nativeElement.innerHTML = `<div class="wd-progress">处理中……</div>`;
+            this.vcdromDiv.nativeElement.innerHTML = `<div class="wd-progress">处理中……</div>`;
             requestIdleCallback(() => {
               this.handler.onEnd();
             });
@@ -133,7 +133,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    vcdrom.vcdrom(this.vcdrom.nativeElement).then((handler: any) => {
+    vcdrom.vcdrom(this.vcdromDiv.nativeElement).then((handler: any) => {
       this.handler = handler;
       this.loadURL();
     });

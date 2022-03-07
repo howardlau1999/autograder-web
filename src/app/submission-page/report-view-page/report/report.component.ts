@@ -92,7 +92,12 @@ export class ReportComponent implements OnInit {
           catchError((error) => {
             const { message } = error;
             this.error = message;
-            if (message !== 'RUNNING' && message !== 'QUEUED' && message !== 'CANCELLING')
+            if (
+              message !== 'RUNNING' &&
+              message !== 'QUEUED' &&
+              message !== 'CANCELLING' &&
+              message !== 'CANCELLED'
+            )
               throw error;
 
             return this.submissionService.subscribeSubmission(submissionId).pipe(
@@ -109,6 +114,9 @@ export class ReportComponent implements OnInit {
                     break;
                   case SubmissionStatus.QUEUED:
                     this.error = 'QUEUED';
+                    break;
+                  case SubmissionStatus.CANCELLED:
+                    this.error = 'CANCELLED';
                     break;
                   default:
                 }

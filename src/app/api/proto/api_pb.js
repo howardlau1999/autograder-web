@@ -24309,7 +24309,7 @@ proto.WebStreamLogResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.WebStreamLogResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    data: jspb.Message.getFieldWithDefault(msg, 1, "")
+    data: msg.getData_asB64()
   };
 
   if (includeInstance) {
@@ -24347,7 +24347,7 @@ proto.WebStreamLogResponse.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setData(value);
       break;
     default:
@@ -24379,9 +24379,9 @@ proto.WebStreamLogResponse.prototype.serializeBinary = function() {
  */
 proto.WebStreamLogResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getData();
+  f = message.getData_asU8();
   if (f.length > 0) {
-    writer.writeString(
+    writer.writeBytes(
       1,
       f
     );
@@ -24390,20 +24390,44 @@ proto.WebStreamLogResponse.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string data = 1;
- * @return {string}
+ * optional bytes data = 1;
+ * @return {!(string|Uint8Array)}
  */
 proto.WebStreamLogResponse.prototype.getData = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {string} value
+ * optional bytes data = 1;
+ * This is a type-conversion wrapper around `getData()`
+ * @return {string}
+ */
+proto.WebStreamLogResponse.prototype.getData_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getData()));
+};
+
+
+/**
+ * optional bytes data = 1;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getData()`
+ * @return {!Uint8Array}
+ */
+proto.WebStreamLogResponse.prototype.getData_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getData()));
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
  * @return {!proto.WebStreamLogResponse} returns this
  */
 proto.WebStreamLogResponse.prototype.setData = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3BytesField(this, 1, value);
 };
 
 
