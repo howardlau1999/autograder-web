@@ -18,7 +18,10 @@ import { SubmissionService } from '../../../service/submission.service';
 import { downloadBlob } from '../../../common/downloader/blob.downloader';
 import { NotificationService } from '../../../service/notification.service';
 import { AssignmentService } from '../../../service/assignment.service';
-import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
+} from '../../../common/confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../../../common/downloader/url.downloader';
 
 @Component({
@@ -182,10 +185,11 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
 
   onDeleteLeaderboardClicked(userId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: '确认删除排行榜记录？',
-        message: '删除后需要学生重新提交排行榜记录',
-      },
+      data: new ConfirmDialogModel(
+        '确认删除排行榜记录？',
+        '删除后需要学生重新提交排行榜记录',
+        false,
+      ),
     });
     this.deleteConfirmSubscription?.unsubscribe();
     this.deleteConfirmSubscription = dialogRef.afterClosed().subscribe((confirmed) => {

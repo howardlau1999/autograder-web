@@ -19,7 +19,6 @@ import {
   Subject,
   Subscription,
   switchMap,
-  take,
   tap,
   timer,
 } from 'rxjs';
@@ -34,7 +33,10 @@ import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
 import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
 import { SubmissionLimitConfig, SubmissionStatusMap } from '../../api/proto/model_pb';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
+} from '../confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../downloader/url.downloader';
 
 @Component({
@@ -243,10 +245,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: '确认停止评测？',
-        message: '停止后如需重评要联系助教或老师。',
-      },
+      data: new ConfirmDialogModel('确认停止评测？', '停止后如需重评要联系助教或老师。', false),
     });
     this.cancelConfirmSubscription?.unsubscribe();
     this.cancelConfirmSubscription = dialogRef.afterClosed().subscribe((confirmed) => {
@@ -317,7 +316,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
-    return this.submissionService.isSubmissionInternalError(status);
+    return this.submissionService.isSubmissionFailed(status);
   }
 
   onRowClicked(submissionId: number) {

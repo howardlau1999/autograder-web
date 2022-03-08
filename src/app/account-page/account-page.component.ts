@@ -5,7 +5,10 @@ import { repeatWhen } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../service/user.service';
 import { NotificationService } from '../service/notification.service';
-import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
+} from '../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-account-page',
@@ -82,10 +85,11 @@ export class AccountPageComponent implements OnInit, OnDestroy {
 
   onUnbindClicked(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: '解绑 GitHub 账户',
-        message: `确认要解绑 GitHub 账户 ${this.githubLogin} 吗？`,
-      },
+      data: new ConfirmDialogModel(
+        '解绑 GitHub 账户',
+        `确认要解绑 GitHub 账户 ${this.githubLogin} 吗？`,
+        false,
+      ),
     });
     if (this.dialogSubscription === undefined) {
       this.dialogSubscription = dialogRef.afterClosed().subscribe((confirmed) => {

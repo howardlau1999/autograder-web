@@ -33,7 +33,7 @@ export class SubmissionService {
     return status === SubmissionStatus.CANCELLED;
   }
 
-  isSubmissionInternalError(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
+  isSubmissionFailed(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.FAILED;
   }
 

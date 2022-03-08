@@ -8,5 +8,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onDismiss()">取消</button>
-  <button mat-button color="warn" (click)="onConfirm()">确定</button>
+  <button mat-button [color]="normal ? 'primary' : 'warn'" (click)="onConfirm()">确定</button>
 </mat-dialog-actions>

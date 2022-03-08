@@ -8,9 +8,9 @@
         <mat-list-item *ngFor="let item of report.getLeaderboardList()">
           {{ item.getName() }}
           {{
-            item.getValue()?.hasNumberValue()
-              ? item.getValue()?.getNumberValue()
-              : item.getValue()?.getStringValue()
+          item.getValue()?.hasNumberValue()
+            ? item.getValue()?.getNumberValue()
+            : item.getValue()?.getStringValue()
           }}
           &nbsp;
           {{ item.getSuffix() }}
@@ -45,7 +45,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-            >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+          >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
           </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -80,7 +80,7 @@
       mat-list-item
     >
       <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-        >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+      >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
       </span>
     </a>
   </mat-nav-list>
@@ -100,13 +100,20 @@
         <mat-card-title>
           测试排队中…
           <span *ngIf="pendingRank"
-            >( {{ pendingRank.getRank() }} / {{ pendingRank.getTotal() }} )</span
+          >( {{ pendingRank.getRank() }} / {{ pendingRank.getTotal() }} )</span
           >
         </mat-card-title>
         <p></p>
       </mat-card>
       <mat-card *ngSwitchCase="'RUNNING'">
-        <mat-card-title>测试运行中…</mat-card-title>
+        <mat-card-title>
+          <div style="display: flex; align-items: center">测试运行中…
+            <button mat-button (click)="onCancelClicked()">
+              <mat-icon>cancel</mat-icon>
+              取消
+            </button>
+          </div>
+        </mat-card-title>
         <p></p>
         <mat-progress-bar mode="buffer"></mat-progress-bar>
         <br>

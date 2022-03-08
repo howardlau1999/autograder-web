@@ -8,7 +8,10 @@ import { FormControl } from '@angular/forms';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';
 import { downloadCSV } from '../../../common/downloader/csv.downloader';
-import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
+} from '../../../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-inspection',
@@ -113,10 +116,11 @@ export class InspectionComponent implements OnInit, OnDestroy {
   regradeAssignment() {
     this.regradeConfirmSubscription?.unsubscribe();
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
-      data: {
-        title: '确认重评所有提交？',
-        message: '请注意该操作可能会对评测机带来较大影响',
-      },
+      data: new ConfirmDialogModel(
+        '确认重评所有提交？',
+        '请注意该操作可能会对评测机带来较大影响',
+        false,
+      ),
     });
     this.regradeConfirmSubscription = dialogRef.afterClosed().subscribe((confirmed) => {
       this.regradeConfirmSubscription?.unsubscribe();

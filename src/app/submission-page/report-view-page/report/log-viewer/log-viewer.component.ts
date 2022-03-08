@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
 import { SubmissionService } from '../../../../service/submission.service';
 
 @Component({
@@ -39,8 +40,11 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.term = new Terminal({ rows: 40, cols: 100 });
+    this.term = new Terminal({ rows: 40, cols: 100, convertEol: true, disableStdin: true });
+    const fitAddon = new FitAddon();
+    this.term.loadAddon(fitAddon);
     this.term.open(this.terminalDiv.nativeElement);
+    fitAddon.fit();
   }
 
   streamLog() {
@@ -50,7 +54,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
       .subscribe((resp) => {
-        this.term?.write(resp.getData());
+        this.term?.write(resp.getData_asU8());
       });
   }
 }

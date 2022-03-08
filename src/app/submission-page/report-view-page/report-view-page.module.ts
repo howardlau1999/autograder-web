@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ReportComponent } from './report/report.component';
 import { ReportViewPageRoutingModule } from './report-view-page-routing.module';
 import { LogViewerComponent } from './report/log-viewer/log-viewer.component';
@@ -24,6 +25,7 @@ import { LogViewerComponent } from './report/log-viewer/log-viewer.component';
     MatListModule,
     MatProgressBarModule,
     MatIconModule,
+    MatDialogModule,
   ],
 })
 export class ReportViewPageModule {}
