@@ -28,6 +28,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
+import { grpc } from '@improbable-eng/grpc-web';
 import { SubmissionService } from '../../service/submission.service';
 import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
@@ -194,13 +195,14 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
             .subscribeSubmission(submissionId)
             .pipe(
               catchError((error) => {
-                const { message } = error;
-                if (message === undefined) throw error;
+                const { status, message } = error;
+                if (message === undefined || status === undefined || status === grpc.Code.Unknown)
+                  throw error;
                 this.notificationService.showSnackBar(`订阅提交 ${submissionId} 出错 ${message}`);
                 return of(undefined);
               }),
               retryWhen((errors) => {
-                return errors.pipe(delay(100));
+                return errors.pipe(delay(1000));
               }),
             )
             .subscribe((resp) => {

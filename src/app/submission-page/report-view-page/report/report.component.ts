@@ -9,12 +9,14 @@ import {
   retryWhen,
   Subscription,
   switchMap,
+  takeWhile,
   tap,
 } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { MatDialog } from '@angular/material/dialog';
+import { grpc } from '@improbable-eng/grpc-web';
 import {
   PendingRank,
   SubmissionReport,
@@ -111,48 +113,53 @@ export class ReportComponent implements OnInit, OnDestroy {
         const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
         this.submissionId = submissionId;
         return this.submissionService.getSubmissionReport(submissionId).pipe(
-          catchError((error) => {
-            const { message } = error;
-            this.error = message;
-            if (
-              message !== 'RUNNING' &&
-              message !== 'QUEUED' &&
-              message !== 'CANCELLING' &&
-              message !== 'CANCELLED'
-            )
-              throw error;
-
-            return this.submissionService.subscribeSubmission(submissionId).pipe(
-              tap((resp) => {
-                if (resp.getPendingRank()) {
-                  this.pendingRank = resp.getPendingRank();
-                }
-                switch (resp.getStatus()) {
-                  case SubmissionStatus.RUNNING:
-                    this.error = 'RUNNING';
-                    break;
-                  case SubmissionStatus.CANCELLING:
-                    this.error = 'CANCELLING';
-                    break;
-                  case SubmissionStatus.QUEUED:
-                    this.error = 'QUEUED';
-                    break;
-                  case SubmissionStatus.CANCELLED:
-                    this.error = 'CANCELLED';
-                    break;
-                  default:
-                }
-              }),
-              retryWhen((errors) => errors.pipe(delay(100))),
-              last((resp) => {
-                return (
-                  resp.getStatus() === SubmissionStatus.FINISHED ||
-                  resp.getStatus() === SubmissionStatus.CANCELLED ||
-                  resp.getStatus() === SubmissionStatus.FAILED
+          retryWhen((errors) => {
+            return errors.pipe(
+              takeWhile((error) => {
+                const { status, message } = error;
+                this.error = message;
+                return !(
+                  message !== 'RUNNING' &&
+                  message !== 'QUEUED' &&
+                  message !== 'CANCELLING' &&
+                  message !== 'CANCELLED' &&
+                  status !== grpc.Code.Unknown
                 );
               }),
               switchMap(() => {
-                return this.submissionService.getSubmissionReport(submissionId);
+                return this.submissionService.subscribeSubmission(submissionId).pipe(
+                  tap((resp) => {
+                    if (resp.getPendingRank()) {
+                      this.pendingRank = resp.getPendingRank();
+                    }
+                    switch (resp.getStatus()) {
+                      case SubmissionStatus.RUNNING:
+                        this.error = 'RUNNING';
+                        break;
+                      case SubmissionStatus.CANCELLING:
+                        this.error = 'CANCELLING';
+                        break;
+                      case SubmissionStatus.QUEUED:
+                        this.error = 'QUEUED';
+                        break;
+                      case SubmissionStatus.CANCELLED:
+                        this.error = 'CANCELLED';
+                        break;
+                      default:
+                    }
+                  }),
+                  retryWhen((subscribeErrors) => subscribeErrors.pipe(delay(1000))),
+                  last((resp) => {
+                    return (
+                      resp.getStatus() === SubmissionStatus.FINISHED ||
+                      resp.getStatus() === SubmissionStatus.CANCELLED ||
+                      resp.getStatus() === SubmissionStatus.FAILED
+                    );
+                  }),
+                  switchMap(() => {
+                    return this.submissionService.getSubmissionReport(submissionId);
+                  }),
+                );
               }),
             );
           }),
@@ -168,7 +175,7 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.notificationService.showSnackBar(`无法获取报告 ${message}`);
         return of(undefined);
       }),
-      retryWhen((errors) => errors.pipe(delay(100))),
+      retryWhen((errors) => errors.pipe(delay(1000))),
     );
   }
 
