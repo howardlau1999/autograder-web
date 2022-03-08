@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { delay, retryWhen, Subscription } from 'rxjs';
 import { FitAddon } from 'xterm-addon-fit';
 import { SubmissionService } from '../../service/submission.service';
 
@@ -74,6 +74,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logSubscription?.unsubscribe();
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
+      .pipe(retryWhen((errors) => errors.pipe(delay(1000))))
       .subscribe((resp) => {
         this.term?.write(resp.getData_asU8());
       });

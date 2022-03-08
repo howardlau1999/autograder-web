@@ -143,6 +143,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                   default:
                 }
               }),
+              retryWhen((errors) => errors.pipe(delay(100))),
               last((resp) => {
                 return (
                   resp.getStatus() === SubmissionStatus.FINISHED ||
