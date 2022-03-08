@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MarkdownModule } from 'ngx-markdown-latex';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FilesComponent } from './files/files.component';
 import { FilesPreviewPageRoutingModule } from './files-preview-page-routing.module';
 
@@ -26,6 +27,7 @@ import { FilesPreviewPageRoutingModule } from './files-preview-page-routing.modu
     MarkdownModule.forChild(),
     NgxExtendedPdfViewerModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class FilesPreviewPageModule {}

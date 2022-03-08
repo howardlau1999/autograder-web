@@ -4,6 +4,7 @@
     <div class="sidenav-body-inner">
       <div class="sidenav-nav">
         <div class="sidenav-container">
+          <mat-spinner *ngIf="filesLoading"></mat-spinner>
           <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
             <mat-tree-node
               (click)="treeNodeClicked(node)"
@@ -42,41 +43,46 @@
         <div *ngIf="path$ | async as path; else selectFile">
           <h3>
             {{ path$ | async }} &nbsp;
-            <button mat-raised-button (click)="onDownloadClicked()">
+            <button [disabled]="initDownloading" mat-raised-button (click)="onDownloadClicked()">
               <mat-icon>download</mat-icon>&nbsp;下载
             </button>
           </h3>
           <div *ngIf="initDownload$ | async as fileInfo">
-            <div [ngSwitch]="fileInfo.getFileType()" class="file-previewer">
-              <div *ngSwitchCase="DownloadFileType.TEXT">
-                <div
-                  *ngIf="
-                    fileInfo.getFilesize() > 100 * 1024 || fileInfo.getFilesize() <= 0;
-                    else markdownPreviewer
-                  "
-                >
-                  文件过大或大小未知，无法预览，请直接下载。
+            <div *ngIf="urlAvailable; else fetchingURL">
+              <div [ngSwitch]="fileInfo.getFileType()" class="file-previewer">
+                <div *ngSwitchCase="DownloadFileType.TEXT">
+                  <div
+                    *ngIf="
+                      fileInfo.getFilesize() > 100 * 1024 || fileInfo.getFilesize() <= 0;
+                      else markdownPreviewer
+                    "
+                  >
+                    文件过大或大小未知，无法预览，请直接下载。
+                  </div>
+                  <ng-template #markdownPreviewer>
+                    <markdown
+                      [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
+                    ></markdown>
+                  </ng-template>
                 </div>
-                <ng-template #markdownPreviewer>
-                  <markdown
+                <div *ngSwitchCase="DownloadFileType.IMAGE">
+                  <img
                     [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                  ></markdown>
-                </ng-template>
+                    alt="Image Preview"
+                  />
+                </div>
+                <div *ngSwitchCase="DownloadFileType.PDF">
+                  <ngx-extended-pdf-viewer
+                    [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
+                    [useBrowserLocale]="true"
+                  ></ngx-extended-pdf-viewer>
+                </div>
+                <div *ngSwitchDefault>该文件类型无法预览，请直接下载。</div>
               </div>
-              <div *ngSwitchCase="DownloadFileType.IMAGE">
-                <img
-                  [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                  alt="Image Preview"
-                />
-              </div>
-              <div *ngSwitchCase="DownloadFileType.PDF">
-                <ngx-extended-pdf-viewer
-                  [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                  [useBrowserLocale]="true"
-                ></ngx-extended-pdf-viewer>
-              </div>
-              <div *ngSwitchDefault>该文件类型无法预览，请直接下载。</div>
             </div>
+            <ng-template #fetchingURL>
+              <mat-spinner></mat-spinner>
+            </ng-template>
           </div>
         </div>
       </div>

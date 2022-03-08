@@ -7,8 +7,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { delay, retryWhen, Subscription } from 'rxjs';
+import { delay, retryWhen, Subscription, tap } from 'rxjs';
 import { FitAddon } from 'xterm-addon-fit';
+import type { Terminal } from 'xterm';
 import { SubmissionService } from '../../service/submission.service';
 
 @Component({
@@ -21,7 +22,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('terminal') terminalDiv!: ElementRef;
 
-  term?: any;
+  term?: Terminal;
 
   terminalData?: string;
 
@@ -57,9 +58,9 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     const initCallback = () => {
-      this.term.open(this.terminalDiv.nativeElement);
+      this.term?.open(this.terminalDiv.nativeElement);
       this.fitAddon?.fit();
-      if (this.terminalData) this.term.write(this.terminalData);
+      if (this.terminalData) this.term?.write(this.terminalData);
       if (this.streamedSubmissionId) this.streamLog();
     };
     if (this.term) {
@@ -74,7 +75,14 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logSubscription?.unsubscribe();
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
-      .pipe(retryWhen((errors) => errors.pipe(delay(1000))))
+      .pipe(
+        retryWhen((errors) =>
+          errors.pipe(
+            tap(() => this.term?.clear()),
+            delay(500),
+          ),
+        ),
+      )
       .subscribe((resp) => {
         this.term?.write(resp.getData_asU8());
       });

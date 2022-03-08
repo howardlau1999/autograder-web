@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import type { Editor } from '@toast-ui/editor';
 
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -31,7 +32,7 @@ declare function renderMathInElement(elem: Element, options?: KatexOptions): voi
   ],
 })
 export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlValueAccessor {
-  editor!: any;
+  editor!: Editor;
 
   @Input() markdown: string = '';
 
@@ -108,6 +109,15 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
           load: (editor) => {
             renderMathInElement(editor.getEditorElements().mdPreview, this.options);
           },
+          change: () => {
+            this.editor.on('change', () => {
+              this.markAsTouched();
+              this.markdown = this.editor.getMarkdown();
+              this.markdownChange.emit(this.markdown);
+              renderMathInElement(this.editor.getEditorElements().mdPreview, this.options);
+              this.onChange(this.markdown);
+            });
+          },
         },
         customHTMLRenderer: {
           softbreak: (_, { options }) => {
@@ -117,14 +127,6 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
             };
           },
         },
-      });
-      this.editor.off('change');
-      this.editor.on('change', () => {
-        this.markAsTouched();
-        this.markdown = this.editor.getMarkdown();
-        this.markdownChange.emit(this.markdown);
-        renderMathInElement(this.editor.getEditorElements().mdPreview, this.options);
-        this.onChange(this.markdown);
       });
     });
   }

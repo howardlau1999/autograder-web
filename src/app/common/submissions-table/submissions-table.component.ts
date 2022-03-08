@@ -54,7 +54,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
 
   assignmentId$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  userId_?: number;
+  submissionUserId?: number;
 
   userId$: Subject<number> = new Subject<number>();
 
@@ -99,7 +99,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   @Input() set userId(value: number | undefined) {
-    this.userId_ = value;
+    this.submissionUserId = value;
     if (this.table) {
       this.submissionsLoading = true;
       this.dataSource = new SubmissionsTableDataSource(this.connect());
@@ -131,8 +131,11 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
             this.submissionsLoading = true;
           }),
           mergeMap(() => {
-            return this.userId_
-              ? this.submissionService.inspectUserSubmissionHistory(this.userId_, assignmentId)
+            return this.submissionUserId
+              ? this.submissionService.inspectUserSubmissionHistory(
+                  this.submissionUserId,
+                  assignmentId,
+                )
               : this.submissionService.getSubmissionsInAssignment(assignmentId);
           }),
           repeatWhen(() =>
@@ -182,13 +185,12 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
             });
           }
         }
-      }),
-      tap((data) => {
+
         Object.keys(this.runningSubmissions).forEach((id) => {
           this.runningSubmissions[id].unsubscribe();
         });
         this.runningSubmissions = {};
-        data.forEach((submission) => {
+        submissions.forEach((submission) => {
           if (!this.submissionService.isSubmissionPending(submission.getStatus())) return;
           const submissionId = submission.getSubmissionId();
           this.runningSubmissions[submissionId] = this.submissionService
@@ -202,7 +204,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
                 return of(undefined);
               }),
               retryWhen((errors) => {
-                return errors.pipe(delay(1000));
+                return errors.pipe(delay(500));
               }),
             )
             .subscribe((resp) => {
@@ -289,7 +291,14 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
     this.downloadSubmissionSubscription?.unsubscribe();
     this.downloadSubmissionSubscription = this.submissionService
       .downloadSubmission(submissionId)
+      .pipe(
+        catchError(({ message }) => {
+          this.notificationService.showSnackBar(`无法下载提交 ${message}`);
+          return of(undefined);
+        }),
+      )
       .subscribe((resp) => {
+        if (!resp) return;
         downloadURL(
           this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
           resp.getFilename(),

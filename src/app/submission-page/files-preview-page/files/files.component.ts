@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../api/api.service';
 import {
@@ -43,9 +43,9 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  filesSub: Subscription | undefined;
+  filesSubscription: Subscription | undefined;
 
-  initDownloadSub?: Subscription;
+  initDownloadSubscription?: Subscription;
 
   path$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
@@ -63,6 +63,12 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   serverHost = environment.serverHost;
 
+  filesLoading: boolean = true;
+
+  initDownloading: boolean = false;
+
+  urlAvailable: boolean = true;
+
   constructor(
     private apiService: ApiService,
     private submissionService: SubmissionService,
@@ -78,7 +84,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.filesSub = this.route.parent?.parent?.paramMap
+    this.filesSubscription = this.route.parent?.parent?.paramMap
       .pipe(
         switchMap((params) => {
           const submissionId = Number.parseInt(params.get('submissionId') || '0', 10);
@@ -87,6 +93,7 @@ export class FilesComponent implements OnInit, OnDestroy {
           return this.apiService.getFilesInSubmission(submissionId);
         }),
         map((resp) => {
+          this.filesLoading = false;
           return resp.getRootsList() || [];
         }),
         catchError(({ message }) => {
@@ -104,6 +111,9 @@ export class FilesComponent implements OnInit, OnDestroy {
         }
         return this.apiService.initDownload(this.submissionId, path);
       }),
+      tap(() => {
+        this.urlAvailable = true;
+      }),
       catchError(({ message }) => {
         this.notificationService.showSnackBar(`无法下载 ${message}`);
         return of(null);
@@ -112,7 +122,6 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.downloadPath$ = this.initDownload$.pipe(
       map((resp) => {
         if (resp === null) return ['', ''];
-
         return [
           this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
           resp.getFilename(),
@@ -126,8 +135,11 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   onDownloadClicked() {
-    this.initDownloadSub?.unsubscribe();
-    this.initDownloadSub = this.downloadPath$.pipe(take(1)).subscribe(([url, filename]) => {
+    this.initDownloadSubscription?.unsubscribe();
+    this.initDownloading = true;
+    this.initDownloadSubscription = this.downloadPath$.subscribe(([url, filename]) => {
+      this.initDownloading = false;
+      if (!url || !filename) return;
       downloadURL(url, filename);
     });
   }
@@ -135,8 +147,8 @@ export class FilesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.filesSub?.unsubscribe();
-    this.initDownloadSub?.unsubscribe();
+    this.filesSubscription?.unsubscribe();
+    this.initDownloadSubscription?.unsubscribe();
   }
 
   /** Transform the data to something the tree can read. */
@@ -171,6 +183,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   treeNodeClicked(node: FlatTreeNode) {
+    this.urlAvailable = false;
     this.path$.next(node.path);
   }
 }
