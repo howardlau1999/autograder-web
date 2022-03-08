@@ -28,6 +28,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from '../../../common/confirm-dialog/confirm-dialog.component';
+import { downloadURL } from '../../../common/downloader/url.downloader';
 
 @Component({
   selector: 'app-report',
@@ -178,7 +179,7 @@ export class ReportComponent implements OnInit, OnDestroy {
       .downloadOutputFile(this.submissionId, filename)
       .subscribe({
         next: (resp) => {
-          window.open(this.submissionService.getDownloadURL(filename, resp.getToken()), '_blank');
+          downloadURL(this.submissionService.getDownloadURL(filename, resp.getToken()), filename);
         },
 
         error: ({ message }) => {

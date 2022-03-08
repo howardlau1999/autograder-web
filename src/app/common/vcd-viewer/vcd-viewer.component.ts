@@ -64,6 +64,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadURL() {
+    const subChunkLength = 128 * 1024;
     if (this.handler === undefined || !this.vcdFileURL) {
       return;
     }
@@ -85,29 +86,28 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         const reader = resp.body?.getReader();
         const readCallback = (readResult: ReadableStreamDefaultReadResult<Uint8Array>) => {
           const { done, value } = readResult;
-          const subChunkLength = 128 * 1024;
           if (done || !value) {
-            this.ngZone.run(() => {
-              this.loading = false;
-            });
-            this.vcdromDiv.nativeElement.innerHTML = `<div class="wd-progress">处理中……</div>`;
-            requestIdleCallback(() => {
-              this.handler.onEnd();
-            });
             return;
           }
           this.ngZone.run(() => {
             this.downloadProgress += value.length;
           });
+
           const chunkCallback = (start: number) => {
             const end = Math.min(value.length, start + subChunkLength);
-            const subChunk = value.subarray(start, end);
-            this.handler.onChunk(subChunk);
-            this.ngZone.run(() => {
-              this.progress += subChunk.length;
-            });
             requestIdleCallback(() => {
-              this.handler.onChunk(value.subarray(start, end));
+              this.ngZone.run(() => {
+                this.handler.onChunk(value.subarray(start, end));
+                this.progress += end - start;
+                if (this.progress === this.total) {
+                  requestIdleCallback(() => {
+                    this.handler.onEnd();
+                    this.ngZone.run(() => {
+                      this.loading = false;
+                    });
+                  });
+                }
+              });
               if (end < value.length) {
                 chunkCallback(end);
               } else {
@@ -115,15 +115,8 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             });
           };
-          requestIdleCallback(() => {
-            const end = Math.min(subChunkLength, value.length);
-            this.handler.onChunk(value.subarray(0, end));
-            if (end < value.length) {
-              chunkCallback(end);
-            } else {
-              reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
-            }
-          });
+
+          chunkCallback(0);
         };
         reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
       })
