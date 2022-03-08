@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { debounceTime, from, last, mergeMap, scan, Subject, Subscription } from 'rxjs';
+import { debounceTime, from, mergeMap, scan, Subject, Subscription, takeLast } from 'rxjs';
 import { map, repeatWhen, switchMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
@@ -249,7 +249,7 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
           this.exportedSubmissions = completed + 1;
           return this.exportedSubmissions;
         }, 0),
-        last(),
+        takeLast(1),
         mergeMap(() => from(zipWriter.close())),
       )
       .subscribe((zipBlob: Blob) => {

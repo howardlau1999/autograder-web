@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
   delay,
-  last,
   Observable,
   of,
   retryWhen,
   Subscription,
   switchMap,
+  takeLast,
   takeWhile,
   tap,
 } from 'rxjs';
@@ -149,13 +149,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                     }
                   }),
                   retryWhen((subscribeErrors) => subscribeErrors.pipe(delay(1000))),
-                  last((resp) => {
-                    return (
-                      resp.getStatus() === SubmissionStatus.FINISHED ||
-                      resp.getStatus() === SubmissionStatus.CANCELLED ||
-                      resp.getStatus() === SubmissionStatus.FAILED
-                    );
-                  }),
+                  takeLast(1),
                   switchMap(() => {
                     return this.submissionService.getSubmissionReport(submissionId);
                   }),
