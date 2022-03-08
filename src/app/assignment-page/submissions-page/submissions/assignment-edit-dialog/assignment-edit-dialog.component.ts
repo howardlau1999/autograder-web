@@ -9,11 +9,6 @@ import { AssignmentService } from '../../../../service/assignment.service';
 import { Assignment, SubmissionLimitConfig } from '../../../../api/proto/model_pb';
 import { ErrorService } from '../../../../service/error.service';
 
-export interface AssignmentEditDialogData {
-  assignmentId: number;
-  assignment: Assignment;
-}
-
 @Component({
   selector: 'app-assignment-edit-dialog',
   templateUrl: './assignment-edit-dialog.component.html',

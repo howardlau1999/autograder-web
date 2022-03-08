@@ -35,6 +35,11 @@ export class ErrorService {
     this.router.navigate(['/', 'login']).then();
   }
 
+  handlePermissionDenied() {
+    this.notificationService.showSnackBar('无权访问');
+    this.router.navigate(['/', 'login']).then();
+  }
+
   getFormError(err: RPCError) {
     const { status, message } = err;
     const error: FormFieldError = status === grpc.Code.AlreadyExists ? 'duplicated' : 'invalid';

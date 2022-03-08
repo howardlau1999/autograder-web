@@ -6,12 +6,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AssignmentFormComponent } from './assignment-form.component';
+import { ProgrammingAssignmentFormComponent } from './programming/programming-assignment-form.component';
 import { DatetimePickerModule } from '../datetime-picker/datetime-picker.module';
 import { MarkdownEditorModule } from '../markdown-editor/markdown-editor.module';
 
 @NgModule({
-  declarations: [AssignmentFormComponent],
+  declarations: [ProgrammingAssignmentFormComponent],
   imports: [
     CommonModule,
     DatetimePickerModule,
@@ -23,6 +23,6 @@ import { MarkdownEditorModule } from '../markdown-editor/markdown-editor.module'
     MarkdownEditorModule,
     MatTooltipModule,
   ],
-  exports: [AssignmentFormComponent],
+  exports: [ProgrammingAssignmentFormComponent],
 })
 export class AssignmentFormModule {}

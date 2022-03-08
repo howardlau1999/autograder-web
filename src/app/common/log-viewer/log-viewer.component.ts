@@ -8,9 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { SubmissionService } from '../../../../service/submission.service';
+import { SubmissionService } from '../../service/submission.service';
 
 @Component({
   selector: 'app-log-viewer',
@@ -22,11 +21,21 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('terminal') terminalDiv!: ElementRef;
 
-  term?: Terminal;
+  term?: any;
+
+  terminalData?: string;
+
+  fitAddon?: FitAddon;
+
+  initCallbacks: any[] = [];
 
   @Input() set submissionId(submissionId: number) {
     this.streamedSubmissionId = submissionId;
     this.streamLog();
+  }
+
+  @Input() set data(data: string) {
+    this.terminalData = data;
   }
 
   logSubscription?: Subscription;
@@ -37,19 +46,31 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private submissionService: SubmissionService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    import('xterm').then(({ Terminal }) => {
+      this.term = new Terminal({ rows: 40, convertEol: true, disableStdin: true });
+      this.fitAddon = new FitAddon();
+      this.term.loadAddon(this.fitAddon as any);
+      this.initCallbacks.forEach((cb) => cb());
+    });
+  }
 
   ngAfterViewInit() {
-    this.term = new Terminal({ rows: 40, cols: 100, convertEol: true, disableStdin: true });
-    const fitAddon = new FitAddon();
-    this.term.loadAddon(fitAddon);
-    this.term.open(this.terminalDiv.nativeElement);
-    fitAddon.fit();
+    const initCallback = () => {
+      this.term.open(this.terminalDiv.nativeElement);
+      this.fitAddon?.fit();
+      if (this.terminalData) this.term.write(this.terminalData);
+      if (this.streamedSubmissionId) this.streamLog();
+    };
+    if (this.term) {
+      initCallback();
+    } else {
+      this.initCallbacks.push(initCallback);
+    }
   }
 
   streamLog() {
     if (!this.streamedSubmissionId) return;
-    this.term?.clear();
     this.logSubscription?.unsubscribe();
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)

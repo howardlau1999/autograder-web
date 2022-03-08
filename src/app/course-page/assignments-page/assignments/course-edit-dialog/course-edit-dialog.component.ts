@@ -5,13 +5,6 @@ import { match } from 'fp-ts/Either';
 import { CourseService } from '../../../../service/course.service';
 import { ErrorService } from '../../../../service/error.service';
 
-export interface CourseEditDialogData {
-  courseId: number;
-  name: string;
-  shortName: string;
-  description: string;
-}
-
 @Component({
   selector: 'app-course-edit-dialog',
   templateUrl: './course-edit-dialog.component.html',

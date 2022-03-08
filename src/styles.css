@@ -16,7 +16,6 @@ app-submission-page,
 app-course-page,
 app-assignment-page,
 app-dashboard-page {
-  margin-top: 64px;
   overflow: auto;
   display: flex;
 }
@@ -25,6 +24,7 @@ app-vcd-viewer-page,
 app-vcd-viewer {
   height: 100%;
   z-index: 100;
+  position: sticky;
 }
 
 app-root {

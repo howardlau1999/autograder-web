@@ -3,14 +3,14 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { AssignmentDateValidator } from '../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
+import { AssignmentDateValidator } from '../../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
 
 @Component({
   selector: 'app-assignment-form',
-  templateUrl: './assignment-form.component.html',
-  styleUrls: ['./assignment-form.component.css'],
+  templateUrl: './programming-assignment-form.component.html',
+  styleUrls: ['./programming-assignment-form.component.css'],
 })
-export class AssignmentFormComponent implements OnInit {
+export class ProgrammingAssignmentFormComponent implements OnInit {
   assignmentType: string = 'programming';
 
   addOnBlur = true;

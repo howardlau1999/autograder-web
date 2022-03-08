@@ -4,7 +4,6 @@ const createVCD = require('vcd-stream/out/vcd.js');
 const webVcdParser = require('vcd-stream/lib/web-vcd-parser.js');
 const domContainer = require('@wavedrom/doppler/lib/dom-container.js');
 const parseTimescale = require('vcd-stream/lib/parse-time-scale.js');
-const filesize = require('filesize');
 
 const numberOrString = (val) => {
   if (val < BigInt(2) ** BigInt(52)) {

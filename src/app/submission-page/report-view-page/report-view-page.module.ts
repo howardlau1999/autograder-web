@@ -11,13 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReportComponent } from './report/report.component';
 import { ReportViewPageRoutingModule } from './report-view-page-routing.module';
-import { LogViewerComponent } from './report/log-viewer/log-viewer.component';
+import { LogViewerModule } from '../../common/log-viewer/log-viewer.module';
 
 @NgModule({
-  declarations: [ReportComponent, LogViewerComponent],
+  declarations: [ReportComponent],
   imports: [
     CommonModule,
     ReportViewPageRoutingModule,
+    LogViewerModule,
     MatExpansionModule,
     MatButtonModule,
     MatTooltipModule,

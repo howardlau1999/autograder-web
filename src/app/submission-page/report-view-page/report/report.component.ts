@@ -195,7 +195,7 @@ export class ReportComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (resp) => {
           window.open(
-            `/vcd?url=${encodeURIComponent(
+            `/vcd-viewer?url=${encodeURIComponent(
               this.submissionService.getDownloadURL(filename, resp.getToken()),
             )}&total=${resp.getFilesize()}`,
             '_blank',

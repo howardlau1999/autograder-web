@@ -5,7 +5,7 @@ import { AdminGuard } from './guard/admin.guard';
 
 const routes: Routes = [
   {
-    path: 'vcd',
+    path: 'vcd-viewer',
     loadChildren: () =>
       import('./vcd-viewer-page/vcd-viewer-page.module').then((m) => m.VcdViewerPageModule),
   },
@@ -39,6 +39,8 @@ const routes: Routes = [
     path: 'courses/:courseId/assignments/:assignmentId/submissions/:submissionId',
     loadChildren: () =>
       import('./submission-page/submission-page.module').then((m) => m.SubmissionPageModule),
+    canActivate: [LoginGuard],
+    canActivateChild: [LoginGuard],
   },
   {
     path: '',

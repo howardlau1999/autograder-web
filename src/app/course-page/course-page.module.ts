@@ -32,6 +32,7 @@ import { AssignmentsTableComponent } from './assignments-page/assignments/assign
 import { AssignmentCreateDialogComponent } from './assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
 import { AssignmentFormModule } from '../common/assignment-form/assignment-form.module';
 import { MarkdownEditorModule } from '../common/markdown-editor/markdown-editor.module';
+import { CourseFormModule } from '../common/course-form/course-form.module';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { MarkdownEditorModule } from '../common/markdown-editor/markdown-editor.
     MatInputModule,
     MatSortModule,
     MarkdownEditorModule,
+    CourseFormModule,
   ],
 })
 export class CoursePageModule {}

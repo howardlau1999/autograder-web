@@ -15,6 +15,7 @@ import { DashboardPageComponent } from './dashboard-page.component';
 import { CourseJoinDialogComponent } from './course-join-dialog/course-join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
 import { MarkdownEditorModule } from '../common/markdown-editor/markdown-editor.module';
+import { CourseFormModule } from '../common/course-form/course-form.module';
 
 @NgModule({
   declarations: [DashboardPageComponent, CourseJoinDialogComponent, CourseCreateDialogComponent],
@@ -31,6 +32,7 @@ import { MarkdownEditorModule } from '../common/markdown-editor/markdown-editor.
     MatToolbarModule,
     MarkdownEditorModule,
     ReactiveFormsModule,
+    CourseFormModule,
   ],
 })
 export class DashboardPageModule {}
