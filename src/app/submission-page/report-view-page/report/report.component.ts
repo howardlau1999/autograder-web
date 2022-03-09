@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } fro
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
-  delay,
   Observable,
   of,
   retryWhen,
@@ -31,6 +30,7 @@ import {
   ConfirmDialogModel,
 } from '../../../common/confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../../../common/downloader/url.downloader';
+import { retryExponentialBackoff } from '../../../common/operator/retryExponentialBackoff';
 
 @Component({
   selector: 'app-report',
@@ -148,7 +148,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                       default:
                     }
                   }),
-                  retryWhen((subscribeErrors) => subscribeErrors.pipe(delay(1000))),
+                  retryWhen(retryExponentialBackoff()),
                   takeLast(1),
                   switchMap(() => {
                     return this.submissionService.getSubmissionReport(submissionId);
@@ -169,7 +169,7 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.notificationService.showSnackBar(`无法获取报告 ${message}`);
         return of(undefined);
       }),
-      retryWhen((errors) => errors.pipe(delay(1000))),
+      retryWhen(retryExponentialBackoff()),
     );
   }
 
@@ -179,14 +179,16 @@ export class ReportComponent implements OnInit, OnDestroy {
     this.downloadSubscription?.unsubscribe();
     this.downloadSubscription = this.submissionService
       .downloadOutputFile(this.submissionId, filename)
-      .subscribe({
-        next: (resp) => {
-          downloadURL(this.submissionService.getDownloadURL(filename, resp.getToken()), filename);
-        },
-
-        error: ({ message }) => {
+      .pipe(
+        catchError((error) => {
+          const { message } = error;
           this.notificationService.showSnackBar(`无法下载 ${message}`);
-        },
+          return of(null);
+        }),
+      )
+      .subscribe((resp) => {
+        if (!resp) return;
+        downloadURL(this.submissionService.getDownloadURL(filename, resp.getToken()), filename);
       });
   }
 
@@ -194,18 +196,21 @@ export class ReportComponent implements OnInit, OnDestroy {
     this.downloadSubscription?.unsubscribe();
     this.downloadSubscription = this.submissionService
       .downloadOutputFile(this.submissionId, filename)
-      .subscribe({
-        next: (resp) => {
-          window.open(
-            `/vcd-viewer?url=${encodeURIComponent(
-              this.submissionService.getDownloadURL(filename, resp.getToken()),
-            )}&total=${resp.getFilesize()}`,
-            '_blank',
-          );
-        },
-        error: ({ message }) => {
+      .pipe(
+        catchError((error) => {
+          const { message } = error;
           this.notificationService.showSnackBar(`无法下载 ${message}`);
-        },
+          return of(null);
+        }),
+      )
+      .subscribe((resp) => {
+        if (!resp) return;
+        window.open(
+          `/vcd-viewer?url=${encodeURIComponent(
+            this.submissionService.getDownloadURL(filename, resp.getToken()),
+          )}&total=${resp.getFilesize()}`,
+          '_blank',
+        );
       });
   }
 

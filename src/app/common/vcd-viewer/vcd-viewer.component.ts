@@ -8,6 +8,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { catchError, of, Subscription } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
 
 const vcdrom = require('./vcdrom');
 
@@ -23,10 +25,6 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() total?: number;
 
-  abortController = new AbortController();
-
-  signal = this.abortController.signal;
-
   loading: boolean = false;
 
   error?: any;
@@ -35,12 +33,14 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   downloadProgress: number = 0;
 
+  downloadSubscription?: Subscription;
+
   @ViewChild('vcdrom') vcdromDiv!: ElementRef;
 
   constructor(private ngZone: NgZone) {}
 
   ngOnDestroy() {
-    this.abortController.abort();
+    this.downloadSubscription?.unsubscribe();
   }
 
   @Input() set url(value: string) {
@@ -70,20 +70,31 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.loading) {
       this.loading = false;
-      this.abortController.abort();
     }
     this.loading = true;
-    fetch(this.vcdFileURL, { method: 'get', signal: this.signal })
-      .then((resp) => {
+    this.downloadSubscription?.unsubscribe();
+    this.downloadSubscription = fromFetch(this.vcdFileURL)
+      .pipe(
+        catchError((error) => {
+          this.errorCallback(error);
+          return of(null);
+        }),
+      )
+      .subscribe((resp) => {
+        if (!resp) return;
         if (!resp.ok) {
           this.errorCallback(resp.statusText);
+          return;
+        }
+        if (!resp.body) {
+          this.errorCallback('未知错误');
           return;
         }
         this.handler.onBegin();
         this.error = undefined;
         this.progress = 0;
         this.downloadProgress = 0;
-        const reader = resp.body?.getReader();
+        const reader = resp.body.getReader();
         const readCallback = (readResult: ReadableStreamDefaultReadResult<Uint8Array>) => {
           const { done, value } = readResult;
           if (done || !value) {
@@ -111,16 +122,15 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
               if (end < value.length) {
                 chunkCallback(end);
               } else {
-                reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
+                reader.read().then(readCallback).catch(this.errorCallback.bind(this));
               }
             });
           };
 
           chunkCallback(0);
         };
-        reader?.read().then(readCallback).catch(this.errorCallback.bind(this));
-      })
-      .catch(this.errorCallback.bind(this));
+        reader.read().then(readCallback).catch(this.errorCallback.bind(this));
+      });
   }
 
   ngOnInit(): void {}

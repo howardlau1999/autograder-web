@@ -16,6 +16,7 @@ import {
   Observable,
   of,
   retryWhen,
+  scan,
   Subject,
   Subscription,
   switchMap,
@@ -39,6 +40,7 @@ import {
   ConfirmDialogModel,
 } from '../confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../downloader/url.downloader';
+import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
 
 @Component({
   selector: 'app-submissions-table',
@@ -203,9 +205,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
                 this.notificationService.showSnackBar(`订阅提交 ${submissionId} 出错 ${message}`);
                 return of(undefined);
               }),
-              retryWhen((errors) => {
-                return errors.pipe(delay(500));
-              }),
+              retryWhen(retryExponentialBackoff()),
             )
             .subscribe((resp) => {
               if (!resp || !this.submissionService.isSubmissionPending(resp.getStatus())) {

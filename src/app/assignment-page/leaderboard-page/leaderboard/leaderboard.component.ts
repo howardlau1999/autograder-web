@@ -3,7 +3,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { debounceTime, from, mergeMap, scan, Subject, Subscription, takeLast } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  from,
+  mergeMap,
+  of,
+  scan,
+  Subject,
+  Subscription,
+  takeLast,
+} from 'rxjs';
 import { map, repeatWhen, switchMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
@@ -158,6 +168,11 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
             }),
           );
         }),
+        catchError((error) => {
+          const { message } = error;
+          this.notificationService.showSnackBar(`无法加载排行榜 ${message}`);
+          return of([]);
+        }),
       ),
       this.searchFormControl.valueChanges.pipe(debounceTime(100)),
     );
@@ -253,7 +268,9 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
         mergeMap(() => from(zipWriter.close())),
       )
       .subscribe((zipBlob: Blob) => {
-        this.notificationService.showSnackBar('导出完成');
+        this.notificationService.showSnackBar(
+          `已导出 ${this.exportedSubmissions} 份提交，总计 ${this.exportingSubmissions} 份`,
+        );
         this.exportedSubmissions = 0;
         this.exportingSubmissions = 0;
         downloadBlob(
