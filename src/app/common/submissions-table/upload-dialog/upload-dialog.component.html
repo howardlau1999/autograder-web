@@ -1,11 +1,13 @@
 <h2 mat-dialog-title>创建提交</h2>
-<div
-  (click)="fileInput.click()"
-  (dragover)="onDragOver($event)"
-  (drop)="onDrop($event)"
-  class="drop-area"
->
-  单击此处或拖放文件到此以上传（.zip 文件将自动解压缩）
+<div class="drop-area-container">
+  <div
+    (click)="directoryInput.click()"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    class="drop-area"
+  >
+    点此上传文件夹或将文件夹拖动到此（可拖动 .zip 文件到此）
+  </div>
 </div>
 <input
   #fileInput
@@ -16,10 +18,23 @@
   style="display: none"
   type="file"
 />
-<p class="counter">已上传 / 出错 / 总计 {{ this.uploaded }} / {{ this.errored }} / {{ this.total }}</p>
-<p>
-  提交大小 / 限制 {{ this.totalSize | filesize }} / {{ this.uploadLimit | filesize }}
+
+<input
+  #directoryInput
+  (input)="uploadFileEvent($event)"
+  id="uploadDirectory"
+  multiple
+  directory
+  webkitdirectory
+  name="uploadDirectory"
+  style="display: none"
+  type="file"
+/>
+
+<p class="counter">
+  已上传 / 出错 / 总计 {{ this.uploaded }} / {{ this.errored }} / {{ this.total }}
 </p>
+<p>提交大小 / 限制 {{ this.totalSize | filesize }} / {{ this.uploadLimit | filesize }}</p>
 <mat-dialog-content style="max-width: 60vw; min-width: 40vw; max-height: 40vh">
   <app-files-table
     (fileDelete)="onFileDelete($event)"

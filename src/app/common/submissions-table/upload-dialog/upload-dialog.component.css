@@ -1,5 +1,8 @@
+.drop-area-container {
+  display: flex;
+}
 .drop-area {
-  width: 100%;
+  flex: 1 1 auto;
   height: 6em;
   line-height: 6em;
   text-align: center;

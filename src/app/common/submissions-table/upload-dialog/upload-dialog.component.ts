@@ -175,7 +175,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         mergeMap((manifestId) => {
           return from(files).pipe(
             concatMap((file) => {
-              if (file.type === 'application/x-zip-compressed') {
+              if (file.type === 'application/x-zip-compressed' && !file.webkitRelativePath) {
                 const blobReader = new zipjs.BlobReader(file);
                 const zipReader = new zipjs.ZipReader(blobReader, {
                   useWebWorkers: true,
@@ -213,19 +213,20 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                   }),
                 );
               }
-              const entry = new UploadEntry(file.name, file.size);
-              if (this.uploadEntries[file.name]) {
-                this.uploadEntries[file.name]?.cancelUpload();
-                this.totalSize -= this.uploadEntries[file.name].filesize;
+              const filename = file.webkitRelativePath || file.name;
+              const entry = new UploadEntry(filename, file.size);
+              if (this.uploadEntries[filename]) {
+                this.uploadEntries[filename]?.cancelUpload();
+                this.totalSize -= this.uploadEntries[filename].filesize;
               }
               this.totalSize += file.size;
-              this.uploadEntries[file.name] = entry;
+              this.uploadEntries[filename] = entry;
               if (this.totalSize > this.uploadLimit) {
                 entry.error = '大小超过限制';
               }
               this.updateUploadEntries();
               this.updateProgress();
-              return zip(of(file.name), of(manifestId), of(file)).pipe(delay(50));
+              return zip(of(filename), of(manifestId), of(file)).pipe(delay(50));
             }),
           );
         }),
