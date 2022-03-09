@@ -10,13 +10,10 @@ import {
 import {
   BehaviorSubject,
   catchError,
-  delay,
   mergeMap,
   mergeWith,
   Observable,
   of,
-  retryWhen,
-  scan,
   Subject,
   Subscription,
   switchMap,
@@ -187,7 +184,8 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
             });
           }
         }
-
+      }),
+      tap((submissions) => {
         Object.keys(this.runningSubmissions).forEach((id) => {
           this.runningSubmissions[id].unsubscribe();
         });
@@ -205,7 +203,7 @@ export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
                 this.notificationService.showSnackBar(`订阅提交 ${submissionId} 出错 ${message}`);
                 return of(undefined);
               }),
-              retryWhen(retryExponentialBackoff()),
+              retryExponentialBackoff(),
             )
             .subscribe((resp) => {
               if (!resp || !this.submissionService.isSubmissionPending(resp.getStatus())) {
