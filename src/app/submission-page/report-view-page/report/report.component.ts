@@ -148,7 +148,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                       default:
                     }
                   }),
-                  retryWhen(retryExponentialBackoff()),
+                  retryExponentialBackoff(),
                   takeLast(1),
                   switchMap(() => {
                     return this.submissionService.getSubmissionReport(submissionId);
@@ -169,7 +169,7 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.notificationService.showSnackBar(`无法获取报告 ${message}`);
         return of(undefined);
       }),
-      retryWhen(retryExponentialBackoff()),
+      retryExponentialBackoff(),
     );
   }
 

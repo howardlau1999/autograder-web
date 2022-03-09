@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { retryWhen, Subscription, tap } from 'rxjs';
+import { catchError, Subscription } from 'rxjs';
 import { FitAddon } from 'xterm-addon-fit';
 import type { Terminal } from 'xterm';
 import { SubmissionService } from '../../service/submission.service';
@@ -77,9 +77,11 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
       .pipe(
-        retryWhen((errors) =>
-          retryExponentialBackoff()(errors.pipe(tap(() => this.term?.clear()))),
-        ),
+        catchError((error) => {
+          this.term?.clear();
+          throw error;
+        }),
+        retryExponentialBackoff(),
       )
       .subscribe((resp) => {
         this.term?.write(resp.getData_asU8());
