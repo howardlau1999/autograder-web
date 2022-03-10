@@ -151,11 +151,6 @@ export class ApiService {
               subscriber.complete();
               return;
             }
-            if (output.status === grpc.Code.PermissionDenied) {
-              this.errorService.handlePermissionDenied();
-              subscriber.complete();
-              return;
-            }
             subscriber.error({ status: output.status, message: output.statusMessage });
             return;
           }
