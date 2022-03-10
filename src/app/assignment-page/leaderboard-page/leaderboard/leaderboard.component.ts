@@ -33,6 +33,7 @@ import {
   ConfirmDialogModel,
 } from '../../../common/confirm-dialog/confirm-dialog.component';
 import { downloadURL } from '../../../common/downloader/url.downloader';
+import { retryExponentialBackoff } from '../../../common/operator/retryExponentialBackoff';
 
 @Component({
   selector: 'app-leaderboard',
@@ -245,7 +246,9 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
     this.exportSubmissionSubscription = from(submissionIds)
       .pipe(
         mergeMap((submissionId) => {
-          return this.submissionService.downloadSubmission(submissionId);
+          return this.submissionService
+            .downloadSubmission(submissionId)
+            .pipe(retryExponentialBackoff(5));
         }, 10),
         mergeMap((resp) => {
           return this.http
@@ -253,6 +256,7 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
               responseType: 'blob',
             })
             .pipe(
+              retryExponentialBackoff(5),
               mergeMap((submissionZipBlob) => {
                 return from(
                   zipWriter.add(resp.getFilename(), new zip.BlobReader(submissionZipBlob)),
