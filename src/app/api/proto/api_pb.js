@@ -21270,7 +21270,8 @@ proto.ExportAssignmentGradesResponse.Entry.toObject = function(includeInstance, 
     nickname: jspb.Message.getFieldWithDefault(msg, 4, ""),
     score: jspb.Message.getFieldWithDefault(msg, 5, 0),
     maxScore: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    submissionCount: jspb.Message.getFieldWithDefault(msg, 7, 0)
+    submissionCount: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    submissionId: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -21334,6 +21335,10 @@ proto.ExportAssignmentGradesResponse.Entry.deserializeBinaryFromReader = functio
     case 7:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setSubmissionCount(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setSubmissionId(value);
       break;
     default:
       reader.skipField();
@@ -21410,6 +21415,13 @@ proto.ExportAssignmentGradesResponse.Entry.serializeBinaryToWriter = function(me
   if (f !== 0) {
     writer.writeUint64(
       7,
+      f
+    );
+  }
+  f = message.getSubmissionId();
+  if (f !== 0) {
+    writer.writeUint64(
+      8,
       f
     );
   }
@@ -21539,6 +21551,24 @@ proto.ExportAssignmentGradesResponse.Entry.prototype.getSubmissionCount = functi
  */
 proto.ExportAssignmentGradesResponse.Entry.prototype.setSubmissionCount = function(value) {
   return jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional uint64 submission_id = 8;
+ * @return {number}
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.getSubmissionId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ExportAssignmentGradesResponse.Entry} returns this
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.setSubmissionId = function(value) {
+  return jspb.Message.setProto3IntField(this, 8, value);
 };
 
 

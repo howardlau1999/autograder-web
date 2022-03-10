@@ -96,6 +96,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
           'score',
           'maxScore',
           'submissionCount',
+          'submissionId',
         ];
         const data = entries.map((entry) => [
           entry.getUserId(),
@@ -105,6 +106,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
           entry.getScore(),
           entry.getMaxScore(),
           entry.getSubmissionCount(),
+          entry.getSubmissionId(),
         ]);
         downloadCSV(
           { fields, data },

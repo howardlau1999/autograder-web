@@ -2719,6 +2719,9 @@ export namespace ExportAssignmentGradesResponse {
     getSubmissionCount(): number;
     setSubmissionCount(value: number): void;
 
+    getSubmissionId(): number;
+    setSubmissionId(value: number): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Entry.AsObject;
     static toObject(includeInstance: boolean, msg: Entry): Entry.AsObject;
@@ -2738,6 +2741,7 @@ export namespace ExportAssignmentGradesResponse {
       score: number,
       maxScore: number,
       submissionCount: number,
+      submissionId: number,
     }
   }
 }
