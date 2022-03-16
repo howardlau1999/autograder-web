@@ -490,6 +490,15 @@ type AutograderServiceStreamLog = {
   readonly responseType: typeof api_pb.WebStreamLogResponse;
 };
 
+type AutograderServiceGetAllCourses = {
+  readonly methodName: string;
+  readonly service: typeof AutograderService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof api_pb.GetAllCoursesRequest;
+  readonly responseType: typeof api_pb.GetAllCoursesResponse;
+};
+
 export class AutograderService {
   static readonly serviceName: string;
   static readonly Login: AutograderServiceLogin;
@@ -546,6 +555,7 @@ export class AutograderService {
   static readonly GetGradeQueue: AutograderServiceGetGradeQueue;
   static readonly DeleteLeaderboard: AutograderServiceDeleteLeaderboard;
   static readonly StreamLog: AutograderServiceStreamLog;
+  static readonly GetAllCourses: AutograderServiceGetAllCourses;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -1050,5 +1060,14 @@ export class AutograderServiceClient {
     callback: (error: ServiceError|null, responseMessage: api_pb.DeleteLeaderboardResponse|null) => void
   ): UnaryResponse;
   streamLog(requestMessage: api_pb.WebStreamLogRequest, metadata?: grpc.Metadata): ResponseStream<api_pb.WebStreamLogResponse>;
+  getAllCourses(
+    requestMessage: api_pb.GetAllCoursesRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllCoursesResponse|null) => void
+  ): UnaryResponse;
+  getAllCourses(
+    requestMessage: api_pb.GetAllCoursesRequest,
+    callback: (error: ServiceError|null, responseMessage: api_pb.GetAllCoursesResponse|null) => void
+  ): UnaryResponse;
 }
 

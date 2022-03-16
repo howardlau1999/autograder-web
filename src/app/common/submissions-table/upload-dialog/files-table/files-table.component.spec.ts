@@ -10,14 +10,12 @@ describe('FilesTableComponent', () => {
   let component: FilesTableComponent;
   let fixture: ComponentFixture<FilesTableComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FilesTableComponent],
-        imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [FilesTableComponent],
+      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilesTableComponent);

@@ -10,14 +10,12 @@ describe('LeaderboardComponent', () => {
   let component: LeaderboardComponent;
   let fixture: ComponentFixture<LeaderboardComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [LeaderboardComponent],
-        imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LeaderboardComponent],
+      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeaderboardComponent);

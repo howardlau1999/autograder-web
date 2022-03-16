@@ -12,13 +12,8 @@ describe('UsersTableComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsersTableComponent ],
-      imports: [
-        NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
-      ]
+      declarations: [UsersTableComponent],
+      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
     }).compileComponents();
   }));
 

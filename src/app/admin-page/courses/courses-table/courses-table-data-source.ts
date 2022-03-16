@@ -1,37 +1,41 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
-import { UploadEntry } from '../upload.entry';
+import { GetAllCoursesResponse } from '../../../api/proto/api_pb';
+import UserInfo = GetAllCoursesResponse.CourseInfo;
 
-// TODO: Replace this with your own data model type
-export type FilesTableItem = UploadEntry;
+export type CoursesTableItem = UserInfo;
 
 /**
- * Data source for the FilesTable view. This class should
+ * Data source for the UsersTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class FilesTableDataSource extends DataSource<FilesTableItem> {
-  data$: Observable<FilesTableItem[]>;
+export class CoursesTableDataSource extends DataSource<CoursesTableItem> {
+  data$: Observable<CoursesTableItem[]>;
 
-  data: FilesTableItem[] = [];
+  data: CoursesTableItem[] = [];
+
+  search: string = '';
+
+  search$: Observable<string>;
 
   paginator: MatPaginator | undefined;
 
   sort: MatSort | undefined;
 
-  constructor(observable: Observable<{ [filename: string]: UploadEntry }>) {
+  constructor(data$: Observable<CoursesTableItem[]>, search$: Observable<string>) {
     super();
-    this.data$ = observable.pipe(
-      map((entries) => {
-        const items: FilesTableItem[] = [];
-        for (const fn in entries) {
-          const entry = entries[fn];
-          items.push(entry);
-        }
-        return (this.data = items);
+    this.data$ = data$.pipe(
+      tap((data) => {
+        this.data = data;
+      }),
+    );
+    this.search$ = search$.pipe(
+      tap((value) => {
+        this.search = value;
       }),
     );
   }
@@ -41,13 +45,13 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<FilesTableItem[]> {
+  connect(): Observable<CoursesTableItem[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(this.data$, this.paginator.page, this.sort.sortChange).pipe(
+      return merge(this.data$, this.paginator.page, this.sort.sortChange, this.search$).pipe(
         map(() => {
-          return this.getPagedData(this.getSortedData([...this.data]));
+          return this.getPagedData(this.getSortedData(this.filterData([...this.data])));
         }),
       );
     }
@@ -60,11 +64,25 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
    */
   disconnect(): void {}
 
+  private filterData(data: CoursesTableItem[]): CoursesTableItem[] {
+    if (!this.search) {
+      return data;
+    }
+    return data.filter((item) => {
+      const course = item.getCourse();
+      return (
+        course?.getName().includes(this.search) ||
+        course?.getShortName().includes(this.search) ||
+        course?.getJoinCode().includes(this.search)
+      );
+    });
+  }
+
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: FilesTableItem[]): FilesTableItem[] {
+  private getPagedData(data: CoursesTableItem[]): CoursesTableItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -76,7 +94,7 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: FilesTableItem[]): FilesTableItem[] {
+  private getSortedData(data: CoursesTableItem[]): CoursesTableItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -84,12 +102,6 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'filename':
-          return compare(a.filename, b.filename, isAsc);
-        case 'progress':
-          return compare(a.uploadProgress, b.uploadProgress, isAsc);
-        case 'filesize':
-          return compare(a.filesize, b.filesize, isAsc);
         default:
           return 0;
       }

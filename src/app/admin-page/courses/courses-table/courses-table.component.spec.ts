@@ -1,24 +1,24 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
-import { MembersComponent } from './members.component';
+import { CoursesTableComponent } from './courses-table.component';
 
-describe('MembersComponent', () => {
-  let component: MembersComponent;
-  let fixture: ComponentFixture<MembersComponent>;
+describe('UsersTableComponent', () => {
+  let component: CoursesTableComponent;
+  let fixture: ComponentFixture<CoursesTableComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [MembersComponent],
+      declarations: [CoursesTableComponent],
       imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MembersComponent);
+    fixture = TestBed.createComponent(CoursesTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

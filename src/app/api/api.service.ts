@@ -21,6 +21,7 @@ import {
   DeleteLeaderboardRequest,
   ExportAssignmentGradesRequest,
   GenerateJoinCodeRequest,
+  GetAllCoursesRequest,
   GetAllGradersRequest,
   GetAllUsersRequest,
   GetAssignmentRequest,
@@ -551,5 +552,10 @@ export class ApiService {
     const request = new WebStreamLogRequest();
     request.setSubmissionId(submissionId);
     return this.serverStream(AutograderService.StreamLog, request);
+  }
+
+  getAllCourses() {
+    const request = new GetAllCoursesRequest();
+    return this.unary(AutograderService.GetAllCourses, request);
   }
 }

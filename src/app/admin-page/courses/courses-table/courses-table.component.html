@@ -1,0 +1,62 @@
+<div style="margin-left: 10px; margin-right: 10px; display: flex; align-items: center">
+  <span style="flex: 1 1 auto"></span>
+  <form>
+    <mat-form-field>
+      <mat-label>搜索</mat-label>
+      <input [formControl]="searchFormControl" matInput name="search" />
+      <button
+        (click)="searchFormControl.setValue('')"
+        *ngIf="searchFormControl.value"
+        mat-icon-button
+        matSuffix
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-icon-button>
+      <mat-icon>search</mat-icon>
+    </button>
+  </form>
+</div>
+<div class="mat-elevation-z1" style="margin: 10px">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>课程 ID</th>
+      <td mat-cell *matCellDef="let row">{{ row.getCourseId() }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>课程名</th>
+      <td mat-cell *matCellDef="let row">{{ row.getCourse().getName() }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="shortName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>课程代码</th>
+      <td mat-cell *matCellDef="let row">{{ row.getCourse().getShortName() }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="joinCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>加课码</th>
+      <td mat-cell *matCellDef="let row">{{ row.getCourse().getJoinCode() }}</td>
+    </ng-container>
+    <ng-container matColumnDef="allowsJoin">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>允许加入</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox [disabled]="true" [checked]="row.getCourse().getAllowsJoin()"> </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    #paginator
+    [length]="dataSource?.data?.length"
+    [pageIndex]="0"
+    [pageSize]="20"
+    [pageSizeOptions]="[5, 10, 20, 50, 100]"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

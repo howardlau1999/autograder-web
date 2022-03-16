@@ -1,37 +1,34 @@
 <div class="leaderboard-container">
   <h2>排行榜</h2>
   <div style="display: flex; align-items: center">
-    <div style="display: flex; align-items: center" *ngIf="exportEnabled" >
-    <button (click)="onExportClicked()" mat-raised-button>
-      <mat-icon>download</mat-icon>
-      导出排行榜
-    </button>
-    &nbsp;
-    <button
-      [disabled]="exportingSubmissions > 0"
-      (click)="onExportSubmissionsClicked()"
-      mat-flat-button
-    >
-      <mat-icon>cloud_download</mat-icon>
-      导出排行榜提交
-    </button>
-    &nbsp;
-    <div *ngIf="exportingSubmissions" style="display: flex; flex-direction: column; width: 8em">
-      导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
-      <mat-progress-bar
-        mode="determinate"
-        [value]="(exportedSubmissions / exportingSubmissions) * 100"
-      ></mat-progress-bar>
+    <div style="display: flex; align-items: center" *ngIf="exportEnabled">
+      <button (click)="onExportClicked()" mat-raised-button>
+        <mat-icon>download</mat-icon>
+        导出排行榜
+      </button>
+      &nbsp;
+      <button
+        [disabled]="exportingSubmissions > 0"
+        (click)="onExportSubmissionsClicked()"
+        mat-flat-button
+      >
+        <mat-icon>cloud_download</mat-icon>
+        导出排行榜提交
+      </button>
+      &nbsp;
+      <div *ngIf="exportingSubmissions" style="display: flex; flex-direction: column; width: 8em">
+        导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
+        <mat-progress-bar
+          mode="determinate"
+          [value]="(exportedSubmissions / exportingSubmissions) * 100"
+        ></mat-progress-bar>
+      </div>
+      <button *ngIf="exportingSubmissions" (click)="onCancelExportClicked()" mat-flat-button>
+        <mat-icon>cancel</mat-icon>
+        取消导出
+      </button>
     </div>
-    <button
-      *ngIf="exportingSubmissions"
-      (click)="onCancelExportClicked()"
-      mat-flat-button
-    >
-      <mat-icon>cancel</mat-icon>
-      取消导出
-    </button></div>
-    <span style="flex: 1 1 auto;"></span>
+    <span style="flex: 1 1 auto"></span>
     <form *ngIf="!searchDisabled">
       <mat-form-field>
         <mat-label>搜索</mat-label>

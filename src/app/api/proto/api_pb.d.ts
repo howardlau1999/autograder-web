@@ -3168,6 +3168,70 @@ export namespace WebStreamLogResponse {
   }
 }
 
+export class GetAllCoursesRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllCoursesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllCoursesRequest): GetAllCoursesRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllCoursesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllCoursesRequest;
+  static deserializeBinaryFromReader(message: GetAllCoursesRequest, reader: jspb.BinaryReader): GetAllCoursesRequest;
+}
+
+export namespace GetAllCoursesRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetAllCoursesResponse extends jspb.Message {
+  clearCoursesList(): void;
+  getCoursesList(): Array<GetAllCoursesResponse.CourseInfo>;
+  setCoursesList(value: Array<GetAllCoursesResponse.CourseInfo>): void;
+  addCourses(value?: GetAllCoursesResponse.CourseInfo, index?: number): GetAllCoursesResponse.CourseInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllCoursesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllCoursesResponse): GetAllCoursesResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAllCoursesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllCoursesResponse;
+  static deserializeBinaryFromReader(message: GetAllCoursesResponse, reader: jspb.BinaryReader): GetAllCoursesResponse;
+}
+
+export namespace GetAllCoursesResponse {
+  export type AsObject = {
+    coursesList: Array<GetAllCoursesResponse.CourseInfo.AsObject>,
+  }
+
+  export class CourseInfo extends jspb.Message {
+    getCourseId(): number;
+    setCourseId(value: number): void;
+
+    hasCourse(): boolean;
+    clearCourse(): void;
+    getCourse(): model_pb.Course | undefined;
+    setCourse(value?: model_pb.Course): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CourseInfo.AsObject;
+    static toObject(includeInstance: boolean, msg: CourseInfo): CourseInfo.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CourseInfo, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CourseInfo;
+    static deserializeBinaryFromReader(message: CourseInfo, reader: jspb.BinaryReader): CourseInfo;
+  }
+
+  export namespace CourseInfo {
+    export type AsObject = {
+      courseId: number,
+      course?: model_pb.Course.AsObject,
+    }
+  }
+}
+
 export interface DownloadFileTypeMap {
   BINARY: 0;
   TEXT: 1;

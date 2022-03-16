@@ -15,6 +15,10 @@ export class AdminService {
     return this.apiService.getAllUsers();
   }
 
+  getAllCourses() {
+    return this.apiService.getAllCourses();
+  }
+
   setAdmin(userId: number, isAdmin: boolean) {
     return this.apiService.setAdmin(userId, isAdmin);
   }

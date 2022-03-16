@@ -13,22 +13,20 @@ describe('DashboardPageComponent', () => {
   let component: DashboardPageComponent;
   let fixture: ComponentFixture<DashboardPageComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [DashboardPageComponent],
-        imports: [
-          NoopAnimationsModule,
-          LayoutModule,
-          MatButtonModule,
-          MatCardModule,
-          MatGridListModule,
-          MatIconModule,
-          MatMenuModule,
-        ],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [DashboardPageComponent],
+      imports: [
+        NoopAnimationsModule,
+        LayoutModule,
+        MatButtonModule,
+        MatCardModule,
+        MatGridListModule,
+        MatIconModule,
+        MatMenuModule,
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardPageComponent);

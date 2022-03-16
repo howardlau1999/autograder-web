@@ -19,6 +19,8 @@ import { GradersTableComponent } from './graders/graders-table/graders-table.com
 import { AdminPageComponent } from './admin-page.component';
 import { UsersComponent } from './users/users.component';
 import { UsersTableComponent } from './users/users-table/users-table.component';
+import { CoursesComponent } from './courses/courses.component';
+import { CoursesTableComponent } from './courses/courses-table/courses-table.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { UsersTableComponent } from './users/users-table/users-table.component';
     GradersTableComponent,
     UsersComponent,
     UsersTableComponent,
+    CoursesComponent,
+    CoursesTableComponent,
   ],
   imports: [
     CommonModule,
@@ -45,4 +49,5 @@ import { UsersTableComponent } from './users/users-table/users-table.component';
     MatButtonModule,
   ],
 })
-export class AdminPageModule {}
+export class AdminPageModule {
+}

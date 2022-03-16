@@ -1,69 +1,69 @@
 <h2>测试报告</h2>
-<div *ngIf='report$ | async as report; else errorMsg' class='report-container'>
-  <p *ngIf='report.getInternalError()'>发生内部错误（错误码：{{ report.getInternalError() }}）</p>
-  <mat-accordion class='testcase-accordion' multi>
-    <mat-expansion-panel *ngIf='report.getLeaderboardList()?.length'>
+<div *ngIf="report$ | async as report; else errorMsg" class="report-container">
+  <p *ngIf="report.getInternalError()">发生内部错误（错误码：{{ report.getInternalError() }}）</p>
+  <mat-accordion class="testcase-accordion" multi>
+    <mat-expansion-panel *ngIf="report.getLeaderboardList()?.length">
       <mat-expansion-panel-header> 排行榜分数</mat-expansion-panel-header>
       <mat-list>
-        <mat-list-item *ngFor='let item of report.getLeaderboardList()'>
+        <mat-list-item *ngFor="let item of report.getLeaderboardList()">
           {{ item.getName() }}
           {{
-          item.getValue()?.hasNumberValue()
-            ? item.getValue()?.getNumberValue()
-            : item.getValue()?.getStringValue()
+            item.getValue()?.hasNumberValue()
+              ? item.getValue()?.getNumberValue()
+              : item.getValue()?.getStringValue()
           }}
           &nbsp;
           {{ item.getSuffix() }}
         </mat-list-item>
       </mat-list>
-      <mat-action-row class='attachment'>
+      <mat-action-row class="attachment">
         <button
-          (click)='activateSubmission()'
-          matTooltip='使用该分数参与排行榜排行'
-          color='accent'
+          (click)="activateSubmission()"
+          matTooltip="使用该分数参与排行榜排行"
+          color="accent"
           mat-flat-button
         >
           提交排行
         </button>
       </mat-action-row>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf='report.getOutput()' class='testcase-panel'>
+    <mat-expansion-panel *ngIf="report.getOutput()" class="testcase-panel">
       <mat-expansion-panel-header>
         <mat-panel-title> 测试输出</mat-panel-title>
       </mat-expansion-panel-header>
-      <app-log-viewer [data]='report.getOutput()'></app-log-viewer>
+      <app-log-viewer [data]="report.getOutput()"></app-log-viewer>
     </mat-expansion-panel>
     <mat-expansion-panel
       #testcase
-      *ngFor='let testcase of report.getTestsList(); index as i'
-      class='testcase-panel'
-      [hideToggle]='!testcase.getOutput()'
-      [disabled]='!testcase.getOutput()'
+      *ngFor="let testcase of report.getTestsList(); index as i"
+      class="testcase-panel"
+      [hideToggle]="!testcase.getOutput()"
+      [disabled]="!testcase.getOutput()"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-          >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+            >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
           </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
-        <app-log-viewer [data]='testcase.getOutput()'></app-log-viewer>
+        <app-log-viewer [data]="testcase.getOutput()"></app-log-viewer>
       </ng-template>
-      <mat-action-row *ngIf='testcase.getOutputPath()' class='attachment'>
+      <mat-action-row *ngIf="testcase.getOutputPath()" class="attachment">
         <mat-icon>file_present</mat-icon>
         {{ testcase.getOutputPath() }}
         <button
           mat-icon-button
-          matTooltip='下载输出附件'
-          (click)='onDownloadOutputFileClicked(testcase.getOutputPath())'
+          matTooltip="下载输出附件"
+          (click)="onDownloadOutputFileClicked(testcase.getOutputPath())"
         >
           <mat-icon>download</mat-icon>
         </button>
         <button
-          matTooltip='在线预览波形图'
+          matTooltip="在线预览波形图"
           *ngIf="testcase.getOutputPath().endsWith('.vcd')"
-          (click)='onViewVCDClicked(testcase.getOutputPath())'
+          (click)="onViewVCDClicked(testcase.getOutputPath())"
           mat-icon-button
         >
           <mat-icon>water</mat-icon>
@@ -71,21 +71,21 @@
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
-  <mat-nav-list class='testcase-list'>
+  <mat-nav-list class="testcase-list">
     <a
-      (click)='scrollTo(i)'
-      *ngFor='let testcase of report.getTestsList(); index as i'
+      (click)="scrollTo(i)"
+      *ngFor="let testcase of report.getTestsList(); index as i"
       mat-list-item
     >
       <span [class]="testcase.getScore() === testcase.getMaxScore() ? 'green-font' : 'red-font'"
-      >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
+        >{{ testcase.getName() }} ({{ testcase.getScore() }}/{{ testcase.getMaxScore() }})
       </span>
     </a>
   </mat-nav-list>
 </div>
 <ng-template #errorMsg>
-  <div [ngSwitch]='error' class='report-container'>
-    <div style='width: 100%'>
+  <div [ngSwitch]="error" class="report-container">
+    <div style="width: 100%">
       <mat-card *ngSwitchCase="'CANCELLED'">
         <mat-card-title>测试已取消</mat-card-title>
         <p></p>
@@ -97,29 +97,29 @@
       <mat-card *ngSwitchCase="'QUEUED'">
         <mat-card-title>
           测试排队中…
-          <span *ngIf='pendingRank'
-          >( {{ pendingRank.getRank() }} / {{ pendingRank.getTotal() }} )</span
+          <span *ngIf="pendingRank"
+            >( {{ pendingRank.getRank() }} / {{ pendingRank.getTotal() }} )</span
           >
         </mat-card-title>
         <p></p>
       </mat-card>
       <mat-card *ngSwitchCase="'RUNNING'">
         <mat-card-title>
-          <div style='display: flex; align-items: center'>
+          <div style="display: flex; align-items: center">
             测试运行中…
-            <button mat-button (click)='onCancelClicked()'>
+            <button mat-button (click)="onCancelClicked()">
               <mat-icon>cancel</mat-icon>
               取消
             </button>
           </div>
         </mat-card-title>
         <p></p>
-        <mat-progress-bar mode='buffer'></mat-progress-bar>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
         <br />
-        <app-log-viewer [submissionId]='submissionId'></app-log-viewer>
+        <app-log-viewer [submissionId]="submissionId"></app-log-viewer>
       </mat-card>
       <mat-card *ngSwitchDefault>
-        <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card>
     </div>
   </div>

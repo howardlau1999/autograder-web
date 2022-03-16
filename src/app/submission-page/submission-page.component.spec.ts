@@ -9,14 +9,12 @@ describe('SubmissionPageComponent', () => {
   let component: SubmissionPageComponent;
   let fixture: ComponentFixture<SubmissionPageComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [SubmissionPageComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SubmissionPageComponent],
+      imports: [MatButtonModule, MatIconModule, MatTreeModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubmissionPageComponent);

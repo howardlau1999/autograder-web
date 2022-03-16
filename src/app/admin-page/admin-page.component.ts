@@ -15,6 +15,10 @@ export class AdminPageComponent implements OnInit {
       link: 'users',
       label: '用户管理',
     },
+    {
+      link: 'courses',
+      label: '课程管理',
+    }
   ];
 
   constructor() {}

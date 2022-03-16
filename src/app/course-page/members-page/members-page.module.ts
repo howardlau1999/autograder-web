@@ -3,12 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { MembersPageRoutingModule } from './members-page-routing.module';
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    MembersPageRoutingModule
-  ]
+  imports: [CommonModule, MembersPageRoutingModule],
 })
-export class MembersPageModule { }
+export class MembersPageModule {}
