@@ -160,17 +160,54 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cancelUpload();
   }
 
+  getManifestId() {
+    return this.manifestId === null
+      ? this.apiService.createManifest(this.assignmentId).pipe(
+          map((resp) => {
+            this.manifestId = resp?.getManifestId() || 0;
+            return this.manifestId;
+          }),
+        )
+      : of(this.manifestId);
+  }
+
+  fromZip(zipReader: zipjs.ZipReader, manifestId: number) {
+    return from(zipReader.getEntries()).pipe(
+      mergeMap((entries) => {
+        zipReader.close().then();
+        const fileEntries = entries.filter(
+          (entry) => !entry.directory && entry.getData !== undefined,
+        );
+        const uploadEntries = fileEntries.map(
+          (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
+        );
+        uploadEntries.forEach((entry) => {
+          if (this.uploadEntries[entry.filename]) {
+            this.uploadEntries[entry.filename]?.cancelUpload();
+            this.totalSize -= this.uploadEntries[entry.filename].filesize;
+          }
+          this.uploadEntries[entry.filename] = entry;
+          this.totalSize += entry.filesize;
+          if (this.totalSize > this.uploadLimit) {
+            this.uploadEntries[entry.filename].error = '大小超过限制';
+          }
+        });
+        this.updateUploadEntries();
+        this.updateProgress();
+        return from(fileEntries);
+      }),
+      concatMap((entry) => {
+        return zip(
+          of(entry.filename),
+          of(manifestId),
+          from(entry.getData!(new BlobWriter()) as Promise<Blob>),
+        ).pipe(delay(50));
+      }),
+    );
+  }
+
   uploadFiles(files: File[]) {
-    const subscription = (
-      this.manifestId === null
-        ? this.apiService.createManifest(this.assignmentId).pipe(
-            map((resp) => {
-              this.manifestId = resp?.getManifestId() || 0;
-              return this.manifestId;
-            }),
-          )
-        : of(this.manifestId)
-    )
+    const subscription = this.getManifestId()
       .pipe(
         mergeMap((manifestId) => {
           return from(files).pipe(
@@ -181,37 +218,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
                   useWebWorkers: true,
                   filenameEncoding: 'gbk',
                 });
-                return from(zipReader.getEntries()).pipe(
-                  mergeMap((entries) => {
-                    const fileEntries = entries.filter(
-                      (entry) => !entry.directory && entry.getData !== undefined,
-                    );
-                    const uploadEntries = fileEntries.map(
-                      (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
-                    );
-                    uploadEntries.forEach((entry) => {
-                      if (this.uploadEntries[entry.filename]) {
-                        this.uploadEntries[entry.filename]?.cancelUpload();
-                        this.totalSize -= this.uploadEntries[entry.filename].filesize;
-                      }
-                      this.uploadEntries[entry.filename] = entry;
-                      this.totalSize += entry.filesize;
-                      if (this.totalSize > this.uploadLimit) {
-                        this.uploadEntries[entry.filename].error = '大小超过限制';
-                      }
-                    });
-                    this.updateUploadEntries();
-                    this.updateProgress();
-                    return from(fileEntries);
-                  }),
-                  concatMap((entry) => {
-                    return zip(
-                      of(entry.filename),
-                      of(manifestId),
-                      from(entry.getData!(new BlobWriter()) as Promise<Blob>),
-                    ).pipe(delay(50));
-                  }),
-                );
+                return this.fromZip(zipReader, manifestId);
               }
               const filename = file.webkitRelativePath || file.name;
               const entry = new UploadEntry(filename, file.size);

@@ -61,7 +61,7 @@
                   </div>
                   <ng-template #markdownPreviewer>
                     <mat-spinner *ngIf="fileContentLoading"></mat-spinner>
-                    <markdown [data]="fileContent$ | async"></markdown>
+                    <markdown [data]="(fileContent$ | async) || undefined"></markdown>
                   </ng-template>
                 </div>
                 <div *ngSwitchCase="DownloadFileType.IMAGE">
