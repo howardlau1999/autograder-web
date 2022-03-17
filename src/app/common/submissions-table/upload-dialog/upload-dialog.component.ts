@@ -10,10 +10,10 @@ import {
   mergeMap,
   of,
   retry,
+  skipWhile,
   Subscription,
   zip,
 } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
 import { ApiService } from '../../../api/api.service';
@@ -54,6 +54,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitSubscription?: Subscription;
 
+  manifestId$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
+  createManifestSubscription?: Subscription;
+
   uploadSubscriptions: Subscription[] = [];
 
   uploadLimit: number;
@@ -73,6 +77,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.submitSubscription?.unsubscribe();
+    this.createManifestSubscription?.unsubscribe();
     this.uploadSubscriptions.forEach((sub) => sub.unsubscribe());
   }
 
@@ -161,14 +166,15 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getManifestId() {
-    return this.manifestId === null
-      ? this.apiService.createManifest(this.assignmentId).pipe(
-          map((resp) => {
-            this.manifestId = resp?.getManifestId() || 0;
-            return this.manifestId;
-          }),
-        )
-      : of(this.manifestId);
+    if (this.createManifestSubscription === undefined) {
+      this.createManifestSubscription = this.apiService
+        .createManifest(this.assignmentId)
+        .subscribe((resp) => {
+          this.manifestId = resp.getManifestId();
+          this.manifestId$.next(this.manifestId);
+        });
+    }
+    return this.manifestId$.pipe(skipWhile((manifestId) => manifestId === 0));
   }
 
   fromZip(zipReader: zipjs.ZipReader, manifestId: number) {
