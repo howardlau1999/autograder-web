@@ -4,6 +4,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../api/api.service';
 import {
   DownloadFileType,
@@ -67,13 +68,18 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   initDownloading: boolean = false;
 
+  fileContentLoading: boolean = false;
+
   urlAvailable: boolean = true;
+
+  fileContent$: Observable<string>;
 
   constructor(
     private apiService: ApiService,
     private submissionService: SubmissionService,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
+    private http: HttpClient,
   ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -126,6 +132,25 @@ export class FilesComponent implements OnInit, OnDestroy {
           this.submissionService.getDownloadURL(resp.getFilename(), resp.getToken()),
           resp.getFilename(),
         ];
+      }),
+    );
+    this.fileContent$ = this.downloadPath$.pipe(
+      switchMap(([url, filename]) => {
+        return url
+          ? this.http.get(url, { responseType: 'text' }).pipe(
+              tap(() => {
+                this.fileContentLoading = false;
+              }),
+              map((data) => {
+                const parts = filename.split('.');
+                const ext = parts.length ? parts[parts.length - 1] : '';
+                if (ext !== 'md') {
+                  return `\`\`\`${ext}\n${data}\n\`\`\``;
+                }
+                return data;
+              }),
+            )
+          : of('');
       }),
     );
   }

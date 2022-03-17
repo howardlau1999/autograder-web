@@ -60,9 +60,8 @@
                     文件过大或大小未知，无法预览，请直接下载。
                   </div>
                   <ng-template #markdownPreviewer>
-                    <markdown
-                      [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                    ></markdown>
+                    <mat-spinner *ngIf="fileContentLoading"></mat-spinner>
+                    <markdown [data]="fileContent$ | async"></markdown>
                   </ng-template>
                 </div>
                 <div *ngSwitchCase="DownloadFileType.IMAGE">
