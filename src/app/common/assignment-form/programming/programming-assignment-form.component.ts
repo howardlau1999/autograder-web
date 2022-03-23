@@ -39,7 +39,7 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
       memory: new FormControl(4096, [
         Validators.required,
         Validators.min(128),
-        Validators.max(8192),
+        Validators.max(65536),
       ]),
       timeout: new FormControl(600, [Validators.required, Validators.min(1), Validators.max(6000)]),
       description: new FormControl('', [Validators.required]),

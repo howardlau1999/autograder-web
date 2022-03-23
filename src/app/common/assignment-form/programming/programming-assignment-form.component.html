@@ -74,7 +74,7 @@
     <input formControlName="cpu" matInput type="number" name="cpu" required />
     <mat-hint>运行最多使用的 CPU 数</mat-hint>
   </mat-form-field>
-  <mat-form-field style="width: 6em" matTooltip="设置运行最多可使用的内存（最小 128，最大 8192）">
+  <mat-form-field style="width: 6em" matTooltip="设置运行最多可使用的内存（最小 128，最大 65536）">
     <mat-label>内存限制</mat-label>
     <input formControlName="memory" matInput type="number" name="memory" required />
     <span matSuffix>MB</span>
