@@ -60,12 +60,12 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
       ]),
       memory: new FormControl(
         Math.round((this.assignment.getProgrammingConfig()?.getMemory() || 0) / 1024 / 1024),
-        [Validators.required, Validators.min(128), Validators.max(8192)],
+        [Validators.required, Validators.min(128), Validators.max(65536)],
       ),
       uploadLimit: new FormControl(Math.round(this.assignment.getUploadLimit() / 1024), [
         Validators.required,
         Validators.min(1),
-        Validators.max(65536),
+        Validators.max(8192),
       ]),
       timeout: new FormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
         Validators.required,
