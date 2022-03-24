@@ -70,7 +70,7 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
       timeout: new FormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
         Validators.required,
         Validators.min(1),
-        Validators.max(6000),
+        Validators.max(18000),
       ]),
       description: new FormControl(this.assignment.getDescription(), [Validators.required]),
     });

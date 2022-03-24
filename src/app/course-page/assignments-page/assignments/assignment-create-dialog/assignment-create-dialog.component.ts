@@ -61,7 +61,11 @@ export class AssignmentCreateDialogComponent implements OnInit {
         Validators.min(1),
         Validators.max(8192),
       ]),
-      timeout: new FormControl(600, [Validators.required, Validators.min(1), Validators.max(6000)]),
+      timeout: new FormControl(600, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(18000),
+      ]),
       description: new FormControl('', [Validators.required]),
     },
     { validators: [AssignmentDateValidator] },
