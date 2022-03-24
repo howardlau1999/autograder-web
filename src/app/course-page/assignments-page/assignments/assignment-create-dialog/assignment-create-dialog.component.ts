@@ -54,7 +54,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
       memory: new FormControl(4096, [
         Validators.required,
         Validators.min(128),
-        Validators.max(8192),
+        Validators.max(65536),
       ]),
       uploadLimit: new FormControl(128, [
         Validators.required,

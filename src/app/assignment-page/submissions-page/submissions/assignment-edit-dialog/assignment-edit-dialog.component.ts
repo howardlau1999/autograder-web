@@ -65,7 +65,7 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
       uploadLimit: new FormControl(Math.round(this.assignment.getUploadLimit() / 1024), [
         Validators.required,
         Validators.min(1),
-        Validators.max(8192),
+        Validators.max(65536),
       ]),
       timeout: new FormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
         Validators.required,
