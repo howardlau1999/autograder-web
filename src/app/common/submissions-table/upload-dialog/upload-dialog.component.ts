@@ -100,6 +100,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   onDrop(event: DragEvent) {
     event.preventDefault();
 
+    console.log(event.dataTransfer);
     if (event.dataTransfer?.items) {
       const files: File[] = [];
       for (let i = 0; i < event.dataTransfer.items.length; i += 1) {

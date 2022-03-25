@@ -1,16 +1,13 @@
 <h2 mat-dialog-title>创建提交</h2>
 <div class="drop-area-container">
-  <div
-    (click)="directoryInput.click()"
-    (dragover)="onDragOver($event)"
-    (drop)="onDrop($event)"
-    class="drop-area"
-  >
-    <div class="drop-area-text">
-      点此上传文件夹<br />
-      或将文件夹拖动到此（可拖动 .zip 文件到此）
-    </div>
-  </div>
+  <button mat-raised-button (click)="fileInput.click()" class="upload-button">
+    <mat-icon>description</mat-icon>
+    上传文件
+  </button>
+  <button mat-raised-button (click)="directoryInput.click()" class="upload-button">
+    <mat-icon>folder</mat-icon>
+    上传文件夹
+  </button>
 </div>
 <input
   #fileInput

@@ -1,6 +1,13 @@
 .drop-area-container {
   display: flex;
 }
+
+.upload-button {
+  flex: 1 1 auto;
+  text-align: center;
+  margin: 10px;
+}
+
 .drop-area {
   flex: 1 1 auto;
   text-align: center;
