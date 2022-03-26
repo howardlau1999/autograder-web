@@ -56,7 +56,7 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
       cpu: new FormControl(this.assignment.getProgrammingConfig()?.getCpu(), [
         Validators.required,
         Validators.min(0.5),
-        Validators.max(8),
+        Validators.max(64),
       ]),
       memory: new FormControl(
         Math.round((this.assignment.getProgrammingConfig()?.getMemory() || 0) / 1024 / 1024),

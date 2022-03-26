@@ -50,7 +50,7 @@ export class AssignmentCreateDialogComponent implements OnInit {
       releaseDate: new FormControl(DateTime.now()),
       dueDate: new FormControl(DateTime.now().plus({ days: 7 })),
       dockerImage: new FormControl('', [Validators.required]),
-      cpu: new FormControl(1, [Validators.required, Validators.min(0.5), Validators.max(8)]),
+      cpu: new FormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
       memory: new FormControl(4096, [
         Validators.required,
         Validators.min(128),
