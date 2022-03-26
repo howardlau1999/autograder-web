@@ -64,6 +64,12 @@ export class ReportComponent implements OnInit, OnDestroy {
     return this.submissionService.isSubmissionFailed(status);
   }
 
+  truncateTestcaseName(name: string) {
+    if (name.length < 32) return name;
+    const suffix = name.slice(name.length - 32, name.length);
+    return `...${suffix}`;
+  }
+
   activateSubmission() {
     this.activateConfirmSubscription?.unsubscribe();
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
