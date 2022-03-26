@@ -65,8 +65,8 @@ export class ReportComponent implements OnInit, OnDestroy {
   }
 
   truncateTestcaseName(name: string) {
-    if (name.length < 32) return name;
-    const suffix = name.slice(name.length - 32, name.length);
+    if (name.length < 64) return name;
+    const suffix = name.slice(name.length - 64, name.length);
     return `...${suffix}`;
   }
 
