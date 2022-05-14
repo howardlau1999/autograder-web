@@ -99,7 +99,7 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
             this.canSubmit = true;
           } else {
             this.releaseTimerSubscription = timer(releaseDate).subscribe(() => {
-              if (new Date() > releaseDate) {
+              if (new Date() >= releaseDate) {
                 this.canSubmit = true;
               }
             });
@@ -109,7 +109,7 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
             this.canSubmit = false;
           } else {
             this.dueTimerSubscription = timer(dueDate).subscribe(() => {
-              if (new Date() > dueDate) {
+              if (new Date() >= dueDate) {
                 this.canSubmit = false;
               }
             });
