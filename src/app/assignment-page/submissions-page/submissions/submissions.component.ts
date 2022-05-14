@@ -92,7 +92,6 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
         } else {
           this.releaseTimerSubscription?.unsubscribe();
           this.dueTimerSubscription?.unsubscribe();
-          this.canSubmit = false;
           const receiveTs = new Date();
           const releaseDate = assignment?.getReleaseDate()?.toDate() || new Date();
           const dueDate = assignment?.getDueDate()?.toDate() || new Date();
@@ -100,7 +99,9 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
             this.canSubmit = true;
           } else {
             this.releaseTimerSubscription = timer(releaseDate).subscribe(() => {
-              this.canSubmit = true;
+              if (new Date() > releaseDate) {
+                this.canSubmit = true;
+              }
             });
           }
 
@@ -108,7 +109,9 @@ export class SubmissionsComponent implements OnInit, OnDestroy {
             this.canSubmit = false;
           } else {
             this.dueTimerSubscription = timer(dueDate).subscribe(() => {
-              this.canSubmit = false;
+              if (new Date() > dueDate) {
+                this.canSubmit = false;
+              }
             });
           }
         }
