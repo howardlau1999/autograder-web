@@ -26,7 +26,7 @@
         </button>
       </mat-action-row>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf='report.getInternalError()' [hideToggle]='true'>
+    <mat-expansion-panel *ngIf='report.getInternalError()' [hideToggle]='true' [disabled]='true'>
       <mat-expansion-panel-header>
         <mat-panel-title>发生内部错误（错误码：{{ report.getInternalError() }}）</mat-panel-title>
       </mat-expansion-panel-header>
