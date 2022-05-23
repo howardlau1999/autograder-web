@@ -29,13 +29,13 @@
     <mat-expansion-panel *ngIf='report.getInternalError()'>
       <mat-expansion-panel-header>
         <mat-panel-title>发生内部错误</mat-panel-title>
-        <p>
-          错误码：{{ report.getInternalError() }}
-        </p>
-        <p *ngIf='report.getInternalError() === 7'>
-          运行超时
-        </p>
       </mat-expansion-panel-header>
+      <p>
+        错误码：{{ report.getInternalError() }}
+      </p>
+      <p *ngIf='report.getInternalError() === 7'>
+        运行超时
+      </p>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf='report.getOutput()' class='testcase-panel'>
       <mat-expansion-panel-header>
