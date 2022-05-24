@@ -39,7 +39,7 @@
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf='report.getOutput()' class='testcase-panel'>
       <mat-expansion-panel-header>
-        <mat-panel-title> 测试输出</mat-panel-title>
+        <mat-panel-title> 运行日志</mat-panel-title>
       </mat-expansion-panel-header>
       <app-log-viewer [data]='report.getOutput()'></app-log-viewer>
     </mat-expansion-panel>
