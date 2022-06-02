@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { AssignmentService } from '../service/assignment.service';
 import { CourseService } from '../service/course.service';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-assignment-page',
@@ -17,11 +18,15 @@ export class AssignmentPageComponent implements OnInit {
 
   canWriteCourse$: Observable<boolean>;
 
+  inspectionLink: string;
+
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
     private assignmentService: AssignmentService,
+    private userService: UserService,
   ) {
+    this.inspectionLink = `inspection/${this.userService.userId}`;
     this.canWriteCourse$ = this.route.paramMap.pipe(
       map((params) => {
         return Number.parseInt(params.get('courseId') || '0', 10);

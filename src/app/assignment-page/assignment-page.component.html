@@ -13,7 +13,7 @@
               <mat-icon>leaderboard</mat-icon>
               &nbsp;排行榜</a
             >
-            <a *ngIf="canWriteCourse$ | async" mat-list-item routerLink="inspection">
+            <a *ngIf="canWriteCourse$ | async" mat-list-item [routerLink]="inspectionLink">
               <mat-icon>group</mat-icon>
               &nbsp;查看所有提交</a
             >
