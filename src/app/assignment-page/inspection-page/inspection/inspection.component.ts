@@ -12,6 +12,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from '../../../common/confirm-dialog/confirm-dialog.component';
+import { UserService } from '../../../service/user.service';
 
 @Component({
   selector: 'app-inspection',
@@ -40,6 +41,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
     private assignmentService: AssignmentService,
     private notificationService: NotificationService,
     private matDialog: MatDialog,
@@ -52,7 +54,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
     this.userId$ = this.route.paramMap.pipe(
       map((params) => {
         const userIdString = params.get('userId');
-        if (!userIdString) return undefined;
+        if (!userIdString) return this.userService.userId || 0;
         return Number.parseInt(userIdString, 10);
       }),
     );

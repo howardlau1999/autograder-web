@@ -7,10 +7,6 @@ const routes: Routes = [
     path: ':userId',
     component: InspectionComponent,
   },
-  {
-    path: '',
-    component: InspectionComponent,
-  },
 ];
 
 @NgModule({
