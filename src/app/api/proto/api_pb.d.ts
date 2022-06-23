@@ -2722,6 +2722,11 @@ export namespace ExportAssignmentGradesResponse {
     getSubmissionId(): number;
     setSubmissionId(value: number): void;
 
+    clearLeaderboardList(): void;
+    getLeaderboardList(): Array<model_pb.LeaderboardItem>;
+    setLeaderboardList(value: Array<model_pb.LeaderboardItem>): void;
+    addLeaderboard(value?: model_pb.LeaderboardItem, index?: number): model_pb.LeaderboardItem;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Entry.AsObject;
     static toObject(includeInstance: boolean, msg: Entry): Entry.AsObject;
@@ -2742,6 +2747,7 @@ export namespace ExportAssignmentGradesResponse {
       maxScore: number,
       submissionCount: number,
       submissionId: number,
+      leaderboardList: Array<model_pb.LeaderboardItem.AsObject>,
     }
   }
 }

@@ -2504,7 +2504,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.ExportAssignmentGradesResponse.Entry = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.ExportAssignmentGradesResponse.Entry.repeatedFields_, null);
 };
 goog.inherits(proto.ExportAssignmentGradesResponse.Entry, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -21299,6 +21299,13 @@ proto.ExportAssignmentGradesResponse.serializeBinaryToWriter = function(message,
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.ExportAssignmentGradesResponse.Entry.repeatedFields_ = [9];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -21337,7 +21344,9 @@ proto.ExportAssignmentGradesResponse.Entry.toObject = function(includeInstance, 
     score: jspb.Message.getFieldWithDefault(msg, 5, 0),
     maxScore: jspb.Message.getFieldWithDefault(msg, 6, 0),
     submissionCount: jspb.Message.getFieldWithDefault(msg, 7, 0),
-    submissionId: jspb.Message.getFieldWithDefault(msg, 8, 0)
+    submissionId: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    leaderboardList: jspb.Message.toObjectList(msg.getLeaderboardList(),
+    model_pb.LeaderboardItem.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -21405,6 +21414,11 @@ proto.ExportAssignmentGradesResponse.Entry.deserializeBinaryFromReader = functio
     case 8:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setSubmissionId(value);
+      break;
+    case 9:
+      var value = new model_pb.LeaderboardItem;
+      reader.readMessage(value,model_pb.LeaderboardItem.deserializeBinaryFromReader);
+      msg.addLeaderboard(value);
       break;
     default:
       reader.skipField();
@@ -21489,6 +21503,14 @@ proto.ExportAssignmentGradesResponse.Entry.serializeBinaryToWriter = function(me
     writer.writeUint64(
       8,
       f
+    );
+  }
+  f = message.getLeaderboardList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      9,
+      f,
+      model_pb.LeaderboardItem.serializeBinaryToWriter
     );
   }
 };
@@ -21635,6 +21657,44 @@ proto.ExportAssignmentGradesResponse.Entry.prototype.getSubmissionId = function(
  */
 proto.ExportAssignmentGradesResponse.Entry.prototype.setSubmissionId = function(value) {
   return jspb.Message.setProto3IntField(this, 8, value);
+};
+
+
+/**
+ * repeated LeaderboardItem leaderboard = 9;
+ * @return {!Array<!proto.LeaderboardItem>}
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.getLeaderboardList = function() {
+  return /** @type{!Array<!proto.LeaderboardItem>} */ (
+    jspb.Message.getRepeatedWrapperField(this, model_pb.LeaderboardItem, 9));
+};
+
+
+/**
+ * @param {!Array<!proto.LeaderboardItem>} value
+ * @return {!proto.ExportAssignmentGradesResponse.Entry} returns this
+*/
+proto.ExportAssignmentGradesResponse.Entry.prototype.setLeaderboardList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 9, value);
+};
+
+
+/**
+ * @param {!proto.LeaderboardItem=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.LeaderboardItem}
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.addLeaderboard = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 9, opt_value, proto.LeaderboardItem, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.ExportAssignmentGradesResponse.Entry} returns this
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.clearLeaderboardList = function() {
+  return this.setLeaderboardList([]);
 };
 
 
