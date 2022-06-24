@@ -122,7 +122,11 @@ export class InspectionComponent implements OnInit, OnDestroy {
             const name = item.getName();
             const value = item.getValue();
             const idx = leaderboardNameIdx[name];
-            leaderboardValues[idx] = value;
+            if (value !== undefined) {
+              leaderboardValues[idx] = value.hasNumberValue()
+                ? value.getNumberValue()
+                : value.getStringValue();
+            }
           });
           return [
             entry.getUserId(),
@@ -133,7 +137,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
             entry.getMaxScore(),
             entry.getSubmissionCount(),
             entry.getSubmissionId(),
-            entry.getSubmitAt(),
+            entry.getSubmitAt()?.toDate().toISOString(),
             ...leaderboardValues,
           ];
         });
