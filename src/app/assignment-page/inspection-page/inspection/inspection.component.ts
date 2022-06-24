@@ -90,6 +90,19 @@ export class InspectionComponent implements OnInit, OnDestroy {
       )
       .subscribe(([resp, assignmentId]) => {
         const entries = resp.getEntriesList();
+        // Collect Leaderboard Items
+        const leaderboardNames: string[] = [];
+        const leaderboardNameIdx: { [k: string]: number } = {};
+        entries.forEach((entry) => {
+          const leaderboardList = entry.getLeaderboardList();
+          leaderboardList.forEach((item) => {
+            const name = item.getName();
+            if (leaderboardNameIdx[name] === undefined) {
+              leaderboardNameIdx[name] = leaderboardNames.length;
+              leaderboardNames.push(name);
+            }
+          });
+        });
         const fields = [
           'userId',
           'username',
@@ -99,17 +112,31 @@ export class InspectionComponent implements OnInit, OnDestroy {
           'maxScore',
           'submissionCount',
           'submissionId',
+          'submitAt',
+          ...leaderboardNames,
         ];
-        const data = entries.map((entry) => [
-          entry.getUserId(),
-          entry.getUsername(),
-          entry.getNickname(),
-          entry.getStudentId(),
-          entry.getScore(),
-          entry.getMaxScore(),
-          entry.getSubmissionCount(),
-          entry.getSubmissionId(),
-        ]);
+        const data = entries.map((entry) => {
+          const leaderboard = entry.getLeaderboardList();
+          const leaderboardValues = Array(leaderboardNames.length).fill('');
+          leaderboard.forEach((item) => {
+            const name = item.getName();
+            const value = item.getValue();
+            const idx = leaderboardNameIdx[name];
+            leaderboardValues[idx] = value;
+          });
+          return [
+            entry.getUserId(),
+            entry.getUsername(),
+            entry.getNickname(),
+            entry.getStudentId(),
+            entry.getScore(),
+            entry.getMaxScore(),
+            entry.getSubmissionCount(),
+            entry.getSubmissionId(),
+            entry.getSubmitAt(),
+            ...leaderboardValues,
+          ];
+        });
         downloadCSV(
           { fields, data },
           `grades-${assignmentId}-${DateTime.now().toFormat('yyyy-MM-dd_HH-mm-ss')}`,

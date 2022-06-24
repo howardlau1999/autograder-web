@@ -21346,7 +21346,8 @@ proto.ExportAssignmentGradesResponse.Entry.toObject = function(includeInstance, 
     submissionCount: jspb.Message.getFieldWithDefault(msg, 7, 0),
     submissionId: jspb.Message.getFieldWithDefault(msg, 8, 0),
     leaderboardList: jspb.Message.toObjectList(msg.getLeaderboardList(),
-    model_pb.LeaderboardItem.toObject, includeInstance)
+    model_pb.LeaderboardItem.toObject, includeInstance),
+    submitAt: (f = msg.getSubmitAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -21419,6 +21420,11 @@ proto.ExportAssignmentGradesResponse.Entry.deserializeBinaryFromReader = functio
       var value = new model_pb.LeaderboardItem;
       reader.readMessage(value,model_pb.LeaderboardItem.deserializeBinaryFromReader);
       msg.addLeaderboard(value);
+      break;
+    case 10:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setSubmitAt(value);
       break;
     default:
       reader.skipField();
@@ -21511,6 +21517,14 @@ proto.ExportAssignmentGradesResponse.Entry.serializeBinaryToWriter = function(me
       9,
       f,
       model_pb.LeaderboardItem.serializeBinaryToWriter
+    );
+  }
+  f = message.getSubmitAt();
+  if (f != null) {
+    writer.writeMessage(
+      10,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -21695,6 +21709,43 @@ proto.ExportAssignmentGradesResponse.Entry.prototype.addLeaderboard = function(o
  */
 proto.ExportAssignmentGradesResponse.Entry.prototype.clearLeaderboardList = function() {
   return this.setLeaderboardList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp submit_at = 10;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.getSubmitAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 10));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.ExportAssignmentGradesResponse.Entry} returns this
+*/
+proto.ExportAssignmentGradesResponse.Entry.prototype.setSubmitAt = function(value) {
+  return jspb.Message.setWrapperField(this, 10, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.ExportAssignmentGradesResponse.Entry} returns this
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.clearSubmitAt = function() {
+  return this.setSubmitAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.ExportAssignmentGradesResponse.Entry.prototype.hasSubmitAt = function() {
+  return jspb.Message.getField(this, 10) != null;
 };
 
 

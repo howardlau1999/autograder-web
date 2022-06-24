@@ -2727,6 +2727,11 @@ export namespace ExportAssignmentGradesResponse {
     setLeaderboardList(value: Array<model_pb.LeaderboardItem>): void;
     addLeaderboard(value?: model_pb.LeaderboardItem, index?: number): model_pb.LeaderboardItem;
 
+    hasSubmitAt(): boolean;
+    clearSubmitAt(): void;
+    getSubmitAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setSubmitAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Entry.AsObject;
     static toObject(includeInstance: boolean, msg: Entry): Entry.AsObject;
@@ -2748,6 +2753,7 @@ export namespace ExportAssignmentGradesResponse {
       submissionCount: number,
       submissionId: number,
       leaderboardList: Array<model_pb.LeaderboardItem.AsObject>,
+      submitAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }
   }
 }
