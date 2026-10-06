@@ -114,6 +114,12 @@ export class ApiService {
             if (!environment.production) {
               console.log(code, message);
             }
+            if (code === grpc.Code.Unauthenticated && message === 'INVALID_TOKEN') {
+              this.tokenService.logout();
+              this.errorService.handleInvalidToken();
+              subscriber.complete();
+              return;
+            }
             subscriber.error({ status: code, message });
             return;
           }

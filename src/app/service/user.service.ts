@@ -16,6 +16,7 @@ import { environment } from '../../environments/environment';
 export interface User {
   username: string | null;
   userId: number | null;
+  nickname: string | null;
   isAdmin: boolean;
 }
 
@@ -27,13 +28,18 @@ export interface LoginError {
   providedIn: 'root',
 })
 export class UserService {
+  static readonly GITHUB_LOGIN_STATE_KEY = 'github_login_state';
+
+  static readonly GITHUB_BIND_STATE_KEY = 'github_bind_state';
+
   user$: BehaviorSubject<User> = new BehaviorSubject<User>({
     userId: null,
     username: null,
+    nickname: null,
     isAdmin: false,
   });
 
-  user: User = { userId: null, username: null, isAdmin: false };
+  user: User = { userId: null, username: null, nickname: null, isAdmin: false };
 
   hcaptchaSiteKey: string;
 
@@ -55,6 +61,25 @@ export class UserService {
     return this.user.isAdmin;
   }
 
+  get nickname() {
+    return this.user.nickname;
+  }
+
+  private static generateOAuthState(): string {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Compares the state echoed back by GitHub against the per-tab value we
+  // stored before redirecting. sessionStorage is unreadable cross-origin, so a
+  // forged callback cannot carry a matching state. Kept (not deleted) so a
+  // legitimate retry within the same session still validates.
+  verifyGithubState(key: string, state: string | null | undefined): boolean {
+    const expected = sessionStorage.getItem(key);
+    return expected !== null && !!state && expected === state;
+  }
+
   constructor(
     private apiService: ApiService,
     private tokenService: TokenService,
@@ -72,17 +97,23 @@ export class UserService {
       this.githubClientId = serverGithubClientId;
     }
 
-    this.githubLoginURL = `https://github.com/login/oauth/authorize?client_id=${
+    const baseGithubURL = `https://github.com/login/oauth/authorize?client_id=${
       this.githubClientId
     }&scope=${encodeURIComponent('read:user user:email')}`;
 
-    this.githubBindURL = `${this.githubLoginURL}&redirect_uri=${encodeURIComponent(
+    const loginState = UserService.generateOAuthState();
+    sessionStorage.setItem(UserService.GITHUB_LOGIN_STATE_KEY, loginState);
+    this.githubLoginURL = `${baseGithubURL}&state=${loginState}`;
+
+    const bindState = UserService.generateOAuthState();
+    sessionStorage.setItem(UserService.GITHUB_BIND_STATE_KEY, bindState);
+    this.githubBindURL = `${baseGithubURL}&redirect_uri=${encodeURIComponent(
       // eslint-disable-next-line no-restricted-globals
       `${location.protocol}//${location.host}/github/bind`,
-    )}`;
+    )}&state=${bindState}`;
     this.tokenService.user$.subscribe((user) => {
       if (user !== null) {
-        this.updateUser(user.getUserId(), user.getUsername(), user.getIsAdmin());
+        this.updateUser(user.getUserId(), user.getUsername(), user.getNickname(), user.getIsAdmin());
         return;
       }
       this.updateUser(null, null);
@@ -93,9 +124,15 @@ export class UserService {
     return this.user.userId !== null;
   }
 
-  updateUser(userId: number | null, username: string | null, isAdmin: boolean = false) {
+  updateUser(
+    userId: number | null,
+    username: string | null,
+    nickname: string | null = null,
+    isAdmin: boolean = false,
+  ) {
     this.user.userId = userId;
     this.user.username = username;
+    this.user.nickname = nickname;
     this.user.isAdmin = isAdmin;
     this.user$.next(this.user);
   }

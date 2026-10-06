@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap, switchMap, tap } from 'rxjs/operators';
-import { catchError, from } from 'rxjs';
+import { catchError, from, throwError } from 'rxjs';
 import { UserService } from '../../service/user.service';
 import { NotificationService } from '../../service/notification.service';
 
@@ -12,12 +12,20 @@ import { NotificationService } from '../../service/notification.service';
 })
 export class GithubLoginComponent implements OnInit {
   login$ = this.route.queryParams.pipe(
-    switchMap((params) => this.userService.githubLogin(params['code'])),
+    switchMap((params) => {
+      if (!this.userService.verifyGithubState(UserService.GITHUB_LOGIN_STATE_KEY, params['state'])) {
+        return throwError(() => ({ message: 'STATE_MISMATCH' }));
+      }
+      return this.userService.githubLogin(params['code']);
+    }),
     tap(() => this.notificationService.showSnackBar(`欢迎回来，${this.userService.username}`)),
     mergeMap(() => from(this.router.navigate(['/', 'courses']))),
     catchError(({ message }) => {
       let error = message;
       switch (message) {
+        case 'STATE_MISMATCH':
+          error = 'GitHub 回调校验失败，请重新发起登录';
+          break;
         case 'EMAIL_DIFFERENT':
           error = 'GitHub 邮箱对应的用户已绑定其他 GitHub ID';
           break;

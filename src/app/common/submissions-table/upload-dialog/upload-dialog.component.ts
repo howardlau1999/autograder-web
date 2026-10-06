@@ -100,7 +100,6 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   onDrop(event: DragEvent) {
     event.preventDefault();
 
-    console.log(event.dataTransfer);
     if (event.dataTransfer?.items) {
       const files: File[] = [];
       for (let i = 0; i < event.dataTransfer.items.length; i += 1) {
@@ -111,8 +110,8 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             files.push(file);
           }
         }
-        this.uploadFiles(files);
       }
+      this.uploadFiles(files);
     }
   }
 
@@ -131,7 +130,7 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.assignmentId,
       this.manifestId!,
       [this.userService.user.userId!],
-      'Howard Lau',
+      this.userService.user.nickname || this.userService.user.username || '',
     );
   }
 
@@ -171,6 +170,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.createManifestSubscription = this.apiService
         .createManifest(this.assignmentId)
         .subscribe((resp) => {
+          if (!resp) {
+            return;
+          }
           this.manifestId = resp.getManifestId();
           this.manifestId$.next(this.manifestId);
         });

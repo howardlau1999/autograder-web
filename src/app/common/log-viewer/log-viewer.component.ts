@@ -42,6 +42,8 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   logSubscription?: Subscription;
 
+  streamEnded = false;
+
   ngOnDestroy() {
     this.logSubscription?.unsubscribe();
   }
@@ -74,6 +76,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   streamLog() {
     if (!this.streamedSubmissionId) return;
     this.logSubscription?.unsubscribe();
+    this.streamEnded = false;
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
       .pipe(
@@ -83,8 +86,22 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
         }),
         retryExponentialBackoff(),
       )
-      .subscribe((resp) => {
-        this.term?.write(resp.getData_asU8());
+      .subscribe({
+        next: (resp) => {
+          this.term?.write(resp.getData_asU8());
+        },
+        error: () => {
+          // Reached only after the backoff retries are exhausted (auth
+          // failures are handled upstream and complete the stream). Surface it
+          // instead of leaving a silently frozen viewer, and offer a manual
+          // reconnect.
+          this.streamEnded = true;
+          this.term?.write('\r\n\x1b[31m[日志流已断开，自动重试已耗尽，请点击“重新连接”。]\x1b[0m\r\n');
+        },
       });
+  }
+
+  reconnect() {
+    this.streamLog();
   }
 }

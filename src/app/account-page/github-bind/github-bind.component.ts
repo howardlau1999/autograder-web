@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { mergeMap, switchMap, tap } from 'rxjs/operators';
-import { catchError, from } from 'rxjs';
+import { catchError, from, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../service/notification.service';
 import { UserService } from '../../service/user.service';
@@ -12,7 +12,12 @@ import { UserService } from '../../service/user.service';
 })
 export class GithubBindComponent implements OnInit {
   bindResult$ = this.route.queryParams.pipe(
-    switchMap((params) => this.userService.bindGithub(params['code'])),
+    switchMap((params) => {
+      if (!this.userService.verifyGithubState(UserService.GITHUB_BIND_STATE_KEY, params['state'])) {
+        return throwError(() => ({ message: 'STATE_MISMATCH' }));
+      }
+      return this.userService.bindGithub(params['code']);
+    }),
     tap((resp) =>
       this.notificationService.showSnackBar(resp.getSuccess() ? `绑定成功` : `绑定失败，请重试`),
     ),
@@ -20,6 +25,9 @@ export class GithubBindComponent implements OnInit {
     catchError(({ message }) => {
       let error = message;
       switch (message) {
+        case 'STATE_MISMATCH':
+          error = 'GitHub 回调校验失败，请重新发起绑定';
+          break;
         case 'ALREADY_IN_USE':
           error = '该 GitHub 账户已绑定其他用户，请先解绑';
           break;
