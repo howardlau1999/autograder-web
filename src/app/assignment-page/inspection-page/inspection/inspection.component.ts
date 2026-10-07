@@ -8,10 +8,8 @@ import { FormControl } from '@angular/forms';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';
 import { downloadCSV } from '../../../common/downloader/csv.downloader';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogModel,
-} from '../../../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModel } from '../../../common/confirm-dialog/confirm-dialog-model';
 import { UserService } from '../../../service/user.service';
 
 @Component({

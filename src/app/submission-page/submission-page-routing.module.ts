@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SubmissionPageComponent } from './submission-page.component';
-import { ReportComponent } from './report-view-page/report/report.component';
 
 const routes: Routes = [
   {

@@ -41,8 +41,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     .fill(0)
     .map((_, i) => i);
 
-  constructor() {}
-
   onChange = (_: DateTime) => {};
 
   onTouched = () => {};

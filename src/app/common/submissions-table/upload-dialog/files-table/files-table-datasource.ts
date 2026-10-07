@@ -5,6 +5,11 @@ import { map } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { UploadEntry } from '../upload.entry';
 
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: string | number, b: string | number, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
 // TODO: Replace this with your own data model type
 export type FilesTableItem = UploadEntry;
 
@@ -26,12 +31,9 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
     super();
     this.data$ = observable.pipe(
       map((entries) => {
-        const items: FilesTableItem[] = [];
-        for (const fn in entries) {
-          const entry = entries[fn];
-          items.push(entry);
-        }
-        return (this.data = items);
+        const items: FilesTableItem[] = Object.values(entries);
+        this.data = items;
+        return items;
       }),
     );
   }
@@ -95,9 +97,4 @@ export class FilesTableDataSource extends DataSource<FilesTableItem> {
       }
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

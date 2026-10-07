@@ -44,8 +44,6 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor {
     CourseRole.STUDENT,
   ];
 
-  constructor() {}
-
   onChange = (_: CourseRoleMap[keyof CourseRoleMap]) => {};
 
   onTouched = () => {};

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { repeatWhen, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css'],
 })
-export class DashboardPageComponent {
+export class DashboardPageComponent implements OnDestroy {
   refresher$: Subject<null> = new Subject<null>();
 
   loading: boolean = true;

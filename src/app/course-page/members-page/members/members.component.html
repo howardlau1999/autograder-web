@@ -56,7 +56,11 @@
       <ng-container matColumnDef="githubId">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>GitHub ID</th>
         <td *matCellDef="let row" mat-cell>
-          <a [href]="'https://github.com/' + row.getGithubId()" target="_blank">
+          <a
+            [href]="'https://github.com/' + row.getGithubId()"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {{ row.getGithubId() }}
           </a>
         </td>
@@ -65,7 +69,9 @@
       <ng-container matColumnDef="email">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>邮箱</th>
         <td *matCellDef="let row" mat-cell>
-          <a [href]="'mailto:' + row.getEmail()" target="_blank"> {{ row.getEmail() }}</a>
+          <a [href]="'mailto:' + row.getEmail()" target="_blank" rel="noopener noreferrer">
+            {{ row.getEmail() }}</a
+          >
         </td>
       </ng-container>
 

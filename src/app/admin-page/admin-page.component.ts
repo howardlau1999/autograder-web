@@ -18,10 +18,8 @@ export class AdminPageComponent implements OnInit {
     {
       link: 'courses',
       label: '课程管理',
-    }
+    },
   ];
-
-  constructor() {}
 
   ngOnInit(): void {}
 }

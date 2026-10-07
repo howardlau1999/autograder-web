@@ -21,8 +21,8 @@ export class LoginGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    _childRoute: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (!this.userService.isLoggedIn()) {
       this.gotoLogin();
@@ -32,8 +32,8 @@ export class LoginGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (!this.userService.isLoggedIn()) {
       this.gotoLogin();

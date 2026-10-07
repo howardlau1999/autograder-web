@@ -5,6 +5,11 @@ import { map, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { InspectAllSubmissionsInAssignmentResponse } from '../../../../api/proto/api_pb';
 
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: string | number, b: string | number, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
 // TODO: Replace this with your own data model type
 export type InspectionTableItem = InspectAllSubmissionsInAssignmentResponse.UserSubmissionInfo;
 
@@ -106,9 +111,4 @@ export class InspectionTableDataSource extends DataSource<InspectionTableItem> {
       }
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -95,21 +95,7 @@ export class CoursesTableDataSource extends DataSource<CoursesTableItem> {
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getSortedData(data: CoursesTableItem[]): CoursesTableItem[] {
-    if (!this.sort || !this.sort.active || this.sort.direction === '') {
-      return data;
-    }
-
-    return data.sort((a, b) => {
-      const isAsc = this.sort?.direction === 'asc';
-      switch (this.sort?.active) {
-        default:
-          return 0;
-      }
-    });
+    // Client-side sorting is not implemented for this table, so the order is unchanged.
+    return data;
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

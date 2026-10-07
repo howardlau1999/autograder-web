@@ -49,5 +49,4 @@ import { CoursesTableComponent } from './courses/courses-table/courses-table.com
     MatButtonModule,
   ],
 })
-export class AdminPageModule {
-}
+export class AdminPageModule {}

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmDialogModel } from './confirm-dialog-model';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -34,13 +35,4 @@ export class ConfirmDialogComponent implements OnInit {
     // Close the dialog, return false
     this.dialogRef.close(false);
   }
-}
-
-/**
- * Class to represent confirm dialog model.
- *
- * It has been kept here to keep it as part of shared component.
- */
-export class ConfirmDialogModel {
-  constructor(public title: string, public message: string, public normal: boolean) {}
 }

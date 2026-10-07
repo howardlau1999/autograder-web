@@ -6,7 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./graders.component.css'],
 })
 export class GradersComponent implements OnInit {
-  constructor() {}
-
   ngOnInit(): void {}
 }

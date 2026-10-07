@@ -105,6 +105,7 @@ export class ApiService {
         },
         onMessage: (message: Response) => {
           if (!environment.production) {
+            // eslint-disable-next-line no-console
             console.log(message);
           }
           subscriber.next(message);
@@ -112,6 +113,7 @@ export class ApiService {
         onEnd: (code, message) => {
           if (code !== grpc.Code.OK) {
             if (!environment.production) {
+              // eslint-disable-next-line no-console
               console.log(code, message);
             }
             if (code === grpc.Code.Unauthenticated && message === 'INVALID_TOKEN') {
@@ -143,6 +145,7 @@ export class ApiService {
         }),
         onEnd: (output: UnaryOutput<Response>) => {
           if (!environment.production) {
+            // eslint-disable-next-line no-console
             console.log(output);
           }
           if (output.status !== grpc.Code.OK || output.message === null) {

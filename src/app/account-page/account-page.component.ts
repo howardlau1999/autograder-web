@@ -5,10 +5,8 @@ import { repeatWhen } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../service/user.service';
 import { NotificationService } from '../service/notification.service';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogModel,
-} from '../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModel } from '../common/confirm-dialog/confirm-dialog-model';
 
 @Component({
   selector: 'app-account-page',

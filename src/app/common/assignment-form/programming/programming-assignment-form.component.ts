@@ -68,7 +68,5 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
     }
   }
 
-  constructor() {}
-
   ngOnInit(): void {}
 }

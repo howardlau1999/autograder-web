@@ -13,7 +13,9 @@ import { NotificationService } from '../../service/notification.service';
 export class GithubLoginComponent implements OnInit {
   login$ = this.route.queryParams.pipe(
     switchMap((params) => {
-      if (!this.userService.verifyGithubState(UserService.GITHUB_LOGIN_STATE_KEY, params['state'])) {
+      if (
+        !this.userService.verifyGithubState(UserService.GITHUB_LOGIN_STATE_KEY, params['state'])
+      ) {
         return throwError(() => ({ message: 'STATE_MISMATCH' }));
       }
       return this.userService.githubLogin(params['code']);

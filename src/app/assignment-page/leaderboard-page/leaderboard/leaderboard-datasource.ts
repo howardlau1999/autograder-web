@@ -5,6 +5,25 @@ import { map, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 
+function compareNative(a: number | Date, b: number | Date, isDesc: boolean): number {
+  let result: number = 0;
+  if (a > b) result = 1;
+  else result = -1;
+  return result * (isDesc ? -1 : 1);
+}
+
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: Value, b: Value, isDesc: boolean): number {
+  let result: number = 0;
+  if (a.hasNumberValue() && b.hasNumberValue()) {
+    result = a.getNumberValue() < b.getNumberValue() ? -1 : 1;
+  }
+  if (a.hasStringValue() && b.hasStringValue()) {
+    result = a.getStringValue() < b.getStringValue() ? -1 : 1;
+  }
+  return result * (isDesc ? -1 : 1);
+}
+
 export interface LeaderboardItem {
   items: { [k: string]: { value: Value; desc: boolean; order: number; suffix: string } };
   rank: number;
@@ -151,23 +170,4 @@ export class LeaderboardDataSource extends DataSource<LeaderboardItem> {
     ].concat(columns);
     return { data, fields };
   }
-}
-
-function compareNative(a: number | Date, b: number | Date, isDesc: boolean): number {
-  let result: number = 0;
-  if (a > b) result = 1;
-  else result = -1;
-  return result * (isDesc ? -1 : 1);
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: Value, b: Value, isDesc: boolean): number {
-  let result: number = 0;
-  if (a.hasNumberValue() && b.hasNumberValue()) {
-    result = a.getNumberValue() < b.getNumberValue() ? -1 : 1;
-  }
-  if (a.hasStringValue() && b.hasStringValue()) {
-    result = a.getStringValue() < b.getStringValue() ? -1 : 1;
-  }
-  return result * (isDesc ? -1 : 1);
 }

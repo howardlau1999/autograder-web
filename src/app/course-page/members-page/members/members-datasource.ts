@@ -5,6 +5,11 @@ import { map } from 'rxjs/operators';
 import { merge, Observable, tap } from 'rxjs';
 import { GetCourseMembersResponse } from '../../../api/proto/api_pb';
 
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: string | number, b: string | number, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
 export type MembersItem = GetCourseMembersResponse.MemberInfo;
 
 /**
@@ -128,9 +133,4 @@ export class MembersDataSource extends DataSource<MembersItem> {
       }
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

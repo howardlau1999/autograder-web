@@ -13,7 +13,5 @@ export class CourseFormComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
   });
 
-  constructor() {}
-
   ngOnInit(): void {}
 }

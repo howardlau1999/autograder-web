@@ -32,10 +32,8 @@ import { AssignmentService } from '../../service/assignment.service';
 import { NotificationService } from '../../service/notification.service';
 import { SubmissionsItem, SubmissionsTableDataSource } from './submissions-table-data-source';
 import { SubmissionLimitConfig, SubmissionStatusMap } from '../../api/proto/model_pb';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogModel,
-} from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModel } from '../confirm-dialog/confirm-dialog-model';
 import { downloadURL } from '../downloader/url.downloader';
 import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
 

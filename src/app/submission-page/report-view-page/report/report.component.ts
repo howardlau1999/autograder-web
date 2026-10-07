@@ -25,10 +25,8 @@ import {
 import { ApiService } from '../../../api/api.service';
 import { SubmissionService } from '../../../service/submission.service';
 import { NotificationService } from '../../../service/notification.service';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogModel,
-} from '../../../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModel } from '../../../common/confirm-dialog/confirm-dialog-model';
 import { downloadURL } from '../../../common/downloader/url.downloader';
 import { retryExponentialBackoff } from '../../../common/operator/retryExponentialBackoff';
 

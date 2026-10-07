@@ -10,4 +10,7 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
+  // A bootstrap failure must leave a trace; without it the app is just a
+  // blank page with nothing in the console.
+  // eslint-disable-next-line no-console
   .catch((err) => console.error(err));

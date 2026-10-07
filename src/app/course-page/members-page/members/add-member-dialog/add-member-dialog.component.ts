@@ -45,7 +45,7 @@ export class AddMemberDialogComponent implements OnInit {
     newMember.setEmail(email);
     newMember.setName(name);
     newMember.setRole(role);
-    this.apiService.addCourseMembers(this.courseId, [newMember]).subscribe((resp) => {
+    this.apiService.addCourseMembers(this.courseId, [newMember]).subscribe((_resp) => {
       this.snackBar.open('添加课程成员成功', '关闭', { duration: 3000 });
       this.dialogRef.close(true);
     });

@@ -7,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { ApiService } from '../../api/api.service';
 import { UserService } from '../../service/user.service';
-import { environment } from '../../../environments/environment';
 import { ErrorService } from '../../service/error.service';
 
 @Component({
@@ -85,10 +84,7 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  onExpired(response: any) {
-    if (!environment.production) {
-      console.log(response);
-    }
+  onExpired(_response: any) {
     this.snackBar.open(`图形验证码已过期，请重试`, '关闭', { duration: 3000 });
   }
 

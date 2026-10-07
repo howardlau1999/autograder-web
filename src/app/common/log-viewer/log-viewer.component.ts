@@ -96,7 +96,9 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
           // instead of leaving a silently frozen viewer, and offer a manual
           // reconnect.
           this.streamEnded = true;
-          this.term?.write('\r\n\x1b[31m[日志流已断开，自动重试已耗尽，请点击“重新连接”。]\x1b[0m\r\n');
+          this.term?.write(
+            '\r\n\x1b[31m[日志流已断开，自动重试已耗尽，请点击“重新连接”。]\x1b[0m\r\n',
+          );
         },
       });
   }

@@ -113,7 +113,12 @@ export class UserService {
     )}&state=${bindState}`;
     this.tokenService.user$.subscribe((user) => {
       if (user !== null) {
-        this.updateUser(user.getUserId(), user.getUsername(), user.getNickname(), user.getIsAdmin());
+        this.updateUser(
+          user.getUserId(),
+          user.getUsername(),
+          user.getNickname(),
+          user.getIsAdmin(),
+        );
         return;
       }
       this.updateUser(null, null);

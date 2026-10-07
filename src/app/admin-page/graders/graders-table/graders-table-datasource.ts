@@ -6,6 +6,11 @@ import { merge, Observable } from 'rxjs';
 import { GetAllGradersResponse } from '../../../api/proto/api_pb';
 import { GraderStatusMetadata } from '../../../api/proto/model_pb';
 
+/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+function compare(a: string | number, b: string | number, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
 // TODO: Replace this with your own data model type
 export interface GradersTableItem {
   name: string;
@@ -134,9 +139,4 @@ export class GradersTableDataSource extends DataSource<GradersTableItem> {
       }
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean): number {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
