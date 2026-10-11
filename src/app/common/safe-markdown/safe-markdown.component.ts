@@ -29,6 +29,22 @@ export interface KatexOptions {
 declare function renderMathInElement(elem: Element, options?: KatexOptions): void;
 declare const Prism: { highlightAllUnder(element: Element): void } | undefined;
 
+// A private DOMPurify instance so the hook cannot leak into other users of
+// the library. The only <input> that may survive is a GFM task-list
+// checkbox, and it is kept inert; anything else (text or password fields
+// that could pose as a login form) is removed.
+const purifier = DOMPurify();
+purifier.addHook('uponSanitizeElement', (node, data) => {
+  if (data.tagName !== 'input' || !(node instanceof Element)) {
+    return;
+  }
+  if (node.getAttribute('type') !== 'checkbox') {
+    node.parentNode?.removeChild(node);
+    return;
+  }
+  node.setAttribute('disabled', '');
+});
+
 export const DEFAULT_KATEX_OPTIONS: KatexOptions = {
   delimiters: [
     { left: '$$', right: '$$', display: true },
@@ -82,12 +98,13 @@ export class SafeMarkdownComponent implements OnChanges, AfterViewInit {
   static sanitize(html: string, staffContent: boolean): string {
     // <style> elements could restyle the whole page (inline styles are bounded
     // to their element); forms and buttons have no legitimate use in either
-    // kind of content. <input> stays for staff so GFM task lists render.
+    // kind of content. <input> stays for staff so GFM task lists render, but
+    // the hook below reduces it to disabled checkboxes.
     const forbiddenTags = ['style', 'form', 'button', 'select', 'textarea'];
     if (!staffContent) {
       forbiddenTags.push('input');
     }
-    return DOMPurify.sanitize(html, {
+    return purifier.sanitize(html, {
       // HTML only: no SVG or MathML from the input. KaTeX adds its own MathML
       // to the DOM afterwards, which is unaffected.
       USE_PROFILES: { html: true },
@@ -108,7 +125,7 @@ export class SafeMarkdownComponent implements OnChanges, AfterViewInit {
     if (this.katex && typeof renderMathInElement === 'function') {
       renderMathInElement(element, this.katexOptions);
     }
-    if (typeof Prism !== 'undefined') {
+    if (typeof Prism !== 'undefined' && typeof Prism.highlightAllUnder === 'function') {
       Prism.highlightAllUnder(element);
     }
   }
