@@ -38,12 +38,15 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   downloadSubscription?: Subscription;
 
+  private load = 0;
+
   @ViewChild('vcdrom') vcdromDiv!: ElementRef;
 
   constructor(private ngZone: NgZone) {}
 
   ngOnDestroy() {
     this.downloadSubscription?.unsubscribe();
+    this.handler?.onAbort();
   }
 
   @Input() set url(value: string) {
@@ -53,18 +56,10 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   errorCallback(error: any) {
     this.ngZone.run(() => {
-      this.error = error;
+      this.error = error instanceof Error ? error.message : error;
       this.loading = false;
     });
-    try {
-      if (this.handler) {
-        this.handler.onEnd();
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
-    this.vcdromDiv.nativeElement.innerHTML = '';
+    this.handler?.onAbort();
   }
 
   loadURL() {
@@ -77,11 +72,19 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loading = false;
     }
     this.loading = true;
+    // Chunks of a superseded download must not reach the parser session
+    // started for the newer URL.
+    const load = ++this.load;
+    const fail = (error: unknown) => {
+      if (load === this.load) {
+        this.errorCallback(error);
+      }
+    };
     this.downloadSubscription?.unsubscribe();
     this.downloadSubscription = fromFetch(this.vcdFileURL)
       .pipe(
         catchError((error) => {
-          this.errorCallback(error);
+          fail(error);
           return of(null);
         }),
       )
@@ -102,7 +105,17 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         const reader = resp.body.getReader();
         const readCallback = (readResult: ReadableStreamReadResult<Uint8Array>) => {
           const { done, value } = readResult;
+          if (load !== this.load) {
+            reader.cancel();
+            return;
+          }
           if (done || !value) {
+            // Every chunk has been handed over: the next read() is only
+            // issued after the last sub-chunk of the previous one.
+            handler.onEnd();
+            this.ngZone.run(() => {
+              this.loading = false;
+            });
             return;
           }
           this.ngZone.run(() => {
@@ -112,38 +125,39 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
           const chunkCallback = (start: number) => {
             const end = Math.min(value.length, start + subChunkLength);
             requestIdleCallback(() => {
+              if (load !== this.load) {
+                reader.cancel();
+                return;
+              }
               this.ngZone.run(() => {
                 handler.onChunk(value.subarray(start, end));
                 this.progress += end - start;
-                if (this.progress === this.total) {
-                  requestIdleCallback(() => {
-                    handler.onEnd();
-                    this.ngZone.run(() => {
-                      this.loading = false;
-                    });
-                  });
-                }
               });
               if (end < value.length) {
                 chunkCallback(end);
               } else {
-                reader.read().then(readCallback).catch(this.errorCallback.bind(this));
+                reader.read().then(readCallback).catch(fail);
               }
             });
           };
 
           chunkCallback(0);
         };
-        reader.read().then(readCallback).catch(this.errorCallback.bind(this));
+        reader.read().then(readCallback).catch(fail);
       });
   }
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    vcdrom(this.vcdromDiv.nativeElement).then((handler) => {
-      this.handler = handler;
-      this.loadURL();
-    });
+    vcdrom(this.vcdromDiv.nativeElement, {
+      onError: (error) => this.errorCallback(error),
+    }).then(
+      (handler) => {
+        this.handler = handler;
+        this.loadURL();
+      },
+      (error) => this.errorCallback(error),
+    );
   }
 }

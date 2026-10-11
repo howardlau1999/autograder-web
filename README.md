@@ -16,7 +16,15 @@ npm test                     # vitest, jsdom
 
 `vcd-stream` is not a regular dependency because its install script builds a
 native addon. It is installed separately with scripts disabled (only the
-prebuilt WebAssembly parser is used) and pinned to 1.3.0: later releases
-changed the `wires` structure that `src/app/common/vcd-viewer/vcdrom.js` and
-`@wavedrom/doppler` 0.5 consume. `npm install` prunes it again, so re-run the
-command after installing packages.
+prebuilt WebAssembly parser is used) and pinned to the release that
+`src/app/common/vcd-viewer/vcdrom.js` is written against (currently 1.5.0,
+matching upstream [vcdrom](https://github.com/wavedrom/vcdrom)). `npm install`
+prunes it again, so re-run the command after installing packages.
+
+### VCD viewer
+
+`vcdrom.js` is a port of vcdrom's browser glue: `vcd-stream` parses the file
+into a description object, `@wavedrom/doppler` renders the waves (WebGL 2) and
+`waveql` provides the CodeMirror 6 signal list. doppler's theme is mounted
+scoped to the viewer element so that it does not restyle the rest of the
+application.

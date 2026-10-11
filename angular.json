@@ -31,7 +31,9 @@
               "@toast-ui/editor-plugin-code-syntax-highlight",
               "papaparse",
               "vcd-stream",
-              "@wavedrom/doppler"
+              "@wavedrom/doppler",
+              "waveql",
+              "onml"
             ],
             "externalDependencies": ["fs", "path", "crypto"],
             "polyfills": ["zone.js", "@angular/localize/init", "src/polyfills.ts"],
@@ -77,11 +79,6 @@
               {
                 "glob": "toastui-editor.css",
                 "input": "node_modules/@toast-ui/editor/dist",
-                "output": "/"
-              },
-              {
-                "glob": "codemirror.css",
-                "input": "node_modules/codemirror/lib",
                 "output": "/"
               }
             ],
