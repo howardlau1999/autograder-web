@@ -3,7 +3,7 @@
     <mat-card-title i18n="login">登录</mat-card-title>
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="login-form">
-        <mat-form-field appearance="standard" class="login-form-control">
+        <mat-form-field class="login-form-control">
           <mat-label i18n="username">用户名/电子邮箱</mat-label>
           <input
             formControlName="username"
@@ -16,7 +16,7 @@
           <mat-error *ngIf="loginForm.get('username')?.invalid"> 请输入用户名 </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="standard" class="login-form-control">
+        <mat-form-field class="login-form-control">
           <mat-label i18n="password">密码</mat-label>
           <input
             formControlName="password"

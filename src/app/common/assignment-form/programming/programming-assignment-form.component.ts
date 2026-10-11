@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { AssignmentDateValidator } from '../../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
 
 @Component({

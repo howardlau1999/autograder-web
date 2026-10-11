@@ -21,10 +21,10 @@ import {
   timer,
 } from 'rxjs';
 import { map, repeatWhen } from 'rxjs/operators';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
 import { grpc } from '@improbable-eng/grpc-web';
 import { SubmissionService } from '../../service/submission.service';

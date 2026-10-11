@@ -49,14 +49,14 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>运行标签</mat-label>
-    <mat-chip-list #tagsList>
-      <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
+    <mat-chip-grid #tagsList>
+      <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)">
         {{ tag }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
-      </mat-chip>
-    </mat-chip-list>
+      </mat-chip-row>
+    </mat-chip-grid>
     <input
       [matChipInputFor]="tagsList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
