@@ -1,18 +1,22 @@
 <div class="wd-progress" style="width: 30vw; text-align: center">
   @if (error) {
-  <span>加载文件出错：{{ error }}</span>
-  } @if (loading) {
-  <p>
-    加载中（{{ progress | filesize }}@if (total) {
-    <span> / {{ total | filesize }}</span>
-    }）
-  </p>
-  } @if (loading) {
-  <mat-progress-bar
-    [mode]="total ? 'buffer' : 'indeterminate'"
-    [value]="(progress / (total || 1)) * 100"
-    [bufferValue]="(downloadProgress / (total || 1)) * 100"
-  ></mat-progress-bar>
+    <span>加载文件出错：{{ error }}</span>
+  }
+  @if (loading) {
+    <p>
+      加载中（{{ progress | filesize }}
+      @if (total) {
+        <span> / {{ total | filesize }}</span>
+      }
+      ）
+    </p>
+  }
+  @if (loading) {
+    <mat-progress-bar
+      [mode]="total ? 'buffer' : 'indeterminate'"
+      [value]="(progress / (total || 1)) * 100"
+      [bufferValue]="(downloadProgress / (total || 1)) * 100"
+    ></mat-progress-bar>
   }
 </div>
 <div style="height: 100%" #vcdrom></div>

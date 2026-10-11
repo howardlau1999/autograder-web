@@ -11,7 +11,10 @@ import { SubmissionStatus, SubmissionStatusMap } from '../api/proto/model_pb';
   providedIn: 'root',
 })
 export class SubmissionService {
-  constructor(private apiService: ApiService, private notificationService: NotificationService) {}
+  constructor(
+    private apiService: ApiService,
+    private notificationService: NotificationService,
+  ) {}
 
   isSubmissionQueued(status: SubmissionStatusMap[keyof SubmissionStatusMap]) {
     return status === SubmissionStatus.QUEUED;

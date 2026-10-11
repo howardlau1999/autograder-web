@@ -1,24 +1,25 @@
 @if (formField) {
-<mat-form-field class="role-form-field">
-  @if (label) {
-  <mat-label>
-    {{ label }}
-  </mat-label>
-  }
+  <mat-form-field class="role-form-field">
+    @if (label) {
+      <mat-label>
+        {{ label }}
+      </mat-label>
+    }
+    <mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" [value]="role">
+      @for (role of roles; track role) {
+        <mat-option [value]="role">
+          {{ mapRoleToString(role) }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}
+@if (!formField) {
   <mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" [value]="role">
     @for (role of roles; track role) {
-    <mat-option [value]="role">
-      {{ mapRoleToString(role) }}
-    </mat-option>
+      <mat-option [value]="role">
+        {{ mapRoleToString(role) }}
+      </mat-option>
     }
   </mat-select>
-</mat-form-field>
-} @if (!formField) {
-<mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" [value]="role">
-  @for (role of roles; track role) {
-  <mat-option [value]="role">
-    {{ mapRoleToString(role) }}
-  </mat-option>
-  }
-</mat-select>
 }

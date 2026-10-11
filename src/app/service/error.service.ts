@@ -24,7 +24,10 @@ export interface FormError {
   providedIn: 'root',
 })
 export class ErrorService {
-  constructor(private notificationService: NotificationService, private router: Router) {}
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+  ) {}
 
   handleUnknownError(errorMessage: string) {
     this.notificationService.showSnackBar(`未知错误 ${errorMessage}`);

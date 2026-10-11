@@ -4,58 +4,60 @@
     <mat-tab label="基本信息">
       <div class="tab-content">
         @if (infoLoading) {
-        <mat-spinner class="spinner"></mat-spinner>
-        } @if (!infoLoading) {
-        <div>
-          <form [formGroup]="basicInfoForm" class="basic-info-form">
-            <mat-form-field>
-              <mat-label>用户名</mat-label>
-              <input matInput formControlName="username" />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>注册邮箱</mat-label>
-              <input matInput formControlName="email" />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>昵称</mat-label>
-              <input matInput formControlName="nickname" />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label> 学号</mat-label>
-              <input matInput formControlName="studentId" />
-            </mat-form-field>
-          </form>
-          <div class="github-integration">
-            @if (!githubLogin) {
-            <a [href]="githubBindURL" mat-raised-button class="full-width">
-              <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
-              绑定 GitHub 账号
-            </a>
-            } @if (githubLogin) {
-            <button
-              (click)="onUnbindClicked()"
-              [disabled]="unbinding"
-              matTooltip="点击解绑"
-              mat-raised-button
-              class="full-width"
-            >
-              <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
-              已绑定 GitHub 账号 {{ githubLogin }}
-            </button>
-            }
+          <mat-spinner class="spinner"></mat-spinner>
+        }
+        @if (!infoLoading) {
+          <div>
+            <form [formGroup]="basicInfoForm" class="basic-info-form">
+              <mat-form-field>
+                <mat-label>用户名</mat-label>
+                <input matInput formControlName="username" />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>注册邮箱</mat-label>
+                <input matInput formControlName="email" />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>昵称</mat-label>
+                <input matInput formControlName="nickname" />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label> 学号</mat-label>
+                <input matInput formControlName="studentId" />
+              </mat-form-field>
+            </form>
+            <div class="github-integration">
+              @if (!githubLogin) {
+                <a [href]="githubBindURL" mat-raised-button class="full-width">
+                  <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
+                  绑定 GitHub 账号
+                </a>
+              }
+              @if (githubLogin) {
+                <button
+                  (click)="onUnbindClicked()"
+                  [disabled]="unbinding"
+                  matTooltip="点击解绑"
+                  mat-raised-button
+                  class="full-width"
+                >
+                  <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
+                  已绑定 GitHub 账号 {{ githubLogin }}
+                </button>
+              }
+            </div>
+            <div class="buttons">
+              <span class="spacer"> </span>
+              <button
+                mat-raised-button
+                [disabled]="infoSaving"
+                (click)="onSaveClicked()"
+                color="primary"
+              >
+                保存
+              </button>
+            </div>
           </div>
-          <div class="buttons">
-            <span class="spacer"> </span>
-            <button
-              mat-raised-button
-              [disabled]="infoSaving"
-              (click)="onSaveClicked()"
-              color="primary"
-            >
-              保存
-            </button>
-          </div>
-        </div>
         }
       </div>
     </mat-tab>

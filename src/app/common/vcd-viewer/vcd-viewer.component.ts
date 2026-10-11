@@ -12,7 +12,7 @@ import {
 import { catchError, of, Subscription } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
-const vcdrom = require('./vcdrom');
+import { vcdrom, VcdromHandler } from './vcdrom';
 
 @Component({
   selector: 'app-vcd-viewer',
@@ -22,7 +22,7 @@ const vcdrom = require('./vcdrom');
   standalone: false,
 })
 export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
-  handler?: any;
+  handler?: VcdromHandler;
 
   vcdFileURL?: string;
 
@@ -69,7 +69,8 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loadURL() {
     const subChunkLength = 128 * 1024;
-    if (this.handler === undefined || !this.vcdFileURL) {
+    const handler = this.handler;
+    if (handler === undefined || !this.vcdFileURL) {
       return;
     }
     if (this.loading) {
@@ -94,7 +95,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
           this.errorCallback('未知错误');
           return;
         }
-        this.handler.onBegin();
+        handler.onBegin();
         this.error = undefined;
         this.progress = 0;
         this.downloadProgress = 0;
@@ -112,11 +113,11 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
             const end = Math.min(value.length, start + subChunkLength);
             requestIdleCallback(() => {
               this.ngZone.run(() => {
-                this.handler.onChunk(value.subarray(start, end));
+                handler.onChunk(value.subarray(start, end));
                 this.progress += end - start;
                 if (this.progress === this.total) {
                   requestIdleCallback(() => {
-                    this.handler.onEnd();
+                    handler.onEnd();
                     this.ngZone.run(() => {
                       this.loading = false;
                     });
@@ -140,7 +141,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    vcdrom.vcdrom(this.vcdromDiv.nativeElement).then((handler: any) => {
+    vcdrom(this.vcdromDiv.nativeElement).then((handler) => {
       this.handler = handler;
       this.loadURL();
     });

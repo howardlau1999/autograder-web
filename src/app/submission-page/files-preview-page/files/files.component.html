@@ -5,7 +5,7 @@
       <div class="sidenav-nav">
         <div class="sidenav-container">
           @if (filesLoading) {
-          <mat-spinner></mat-spinner>
+            <mat-spinner></mat-spinner>
           }
           <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
             <mat-tree-node
@@ -43,53 +43,63 @@
       </div>
       <div class="file-preview-container">
         @if (path$ | async; as path) {
-        <div>
-          <h3>
-            {{ path$ | async }} &nbsp;
-            <button [disabled]="initDownloading" mat-raised-button (click)="onDownloadClicked()">
-              <mat-icon>download</mat-icon>&nbsp;下载
-            </button>
-          </h3>
-          @if (initDownload$ | async; as fileInfo) {
           <div>
-            @if (urlAvailable) {
-            <div>
-              <div class="file-previewer">
-                @switch (fileInfo.getFileType()) { @case (DownloadFileType.TEXT) {
-                <div>
-                  @if ( fileInfo.getFilesize() > 100 * 1024 || fileInfo.getFilesize() <= 0) {
-                  <div>文件过大或大小未知，无法预览，请直接下载。</div>
-                  } @else { @if (fileContentLoading) {
+            <h3>
+              {{ path$ | async }} &nbsp;
+              <button [disabled]="initDownloading" mat-raised-button (click)="onDownloadClicked()">
+                <mat-icon>download</mat-icon>&nbsp;下载
+              </button>
+            </h3>
+            @if (initDownload$ | async; as fileInfo) {
+              <div>
+                @if (urlAvailable) {
+                  <div>
+                    <div class="file-previewer">
+                      @switch (fileInfo.getFileType()) {
+                        @case (DownloadFileType.TEXT) {
+                          <div>
+                            @if (
+                              fileInfo.getFilesize() > 100 * 1024 || fileInfo.getFilesize() <= 0
+                            ) {
+                              <div>文件过大或大小未知，无法预览，请直接下载。</div>
+                            } @else {
+                              @if (fileContentLoading) {
+                                <mat-spinner></mat-spinner>
+                              }
+                              <app-safe-markdown [data]="fileContent$ | async"></app-safe-markdown>
+                            }
+                          </div>
+                        }
+                        @case (DownloadFileType.IMAGE) {
+                          <div>
+                            <img
+                              [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
+                              alt="Image Preview"
+                            />
+                          </div>
+                        }
+                        @case (DownloadFileType.PDF) {
+                          <div>
+                            <ngx-extended-pdf-viewer
+                              [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
+                            ></ngx-extended-pdf-viewer>
+                          </div>
+                        }
+                        @default {
+                          <div>该文件类型无法预览，请直接下载。</div>
+                        }
+                      }
+                    </div>
+                  </div>
+                } @else {
                   <mat-spinner></mat-spinner>
-                  }
-                  <app-safe-markdown [data]="fileContent$ | async"></app-safe-markdown>
-                  }
-                </div>
-                } @case (DownloadFileType.IMAGE) {
-                <div>
-                  <img
-                    [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                    alt="Image Preview"
-                  />
-                </div>
-                } @case (DownloadFileType.PDF) {
-                <div>
-                  <ngx-extended-pdf-viewer
-                    [src]="getDownloadURL(fileInfo.getFilename(), fileInfo.getToken())"
-                  ></ngx-extended-pdf-viewer>
-                </div>
-                } @default {
-                <div>该文件类型无法预览，请直接下载。</div>
-                } }
+                }
               </div>
-            </div>
-            } @else {
-            <mat-spinner></mat-spinner>
             }
           </div>
-          }
-        </div>
-        } @else { 请选择文件预览。 }
+        } @else {
+          请选择文件预览。
+        }
       </div>
     </div>
   </div>

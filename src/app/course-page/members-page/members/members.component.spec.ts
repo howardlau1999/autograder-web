@@ -1,29 +1,33 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideActivatedRouteStub } from '../../../../testing/activated-route-stub';
 
+import { CoursePageModule } from '../../course-page.module';
 import { MembersComponent } from './members.component';
 
 describe('MembersComponent', () => {
   let component: MembersComponent;
   let fixture: ComponentFixture<MembersComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MembersComponent],
-      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CoursePageModule],
+      providers: [
+        provideRouter([]),
+        provideActivatedRouteStub({
+          courseId: '1',
+          assignmentId: '1',
+          submissionId: '1',
+          userId: '1',
+        }),
+      ],
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(MembersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should compile', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -3,27 +3,28 @@
   <div class="buttons">
     <button (click)="joinCourse()" color="primary" mat-raised-button>加入课程</button>
     @if (showCreateCourse) {
-    <button (click)="createCourse()" mat-flat-button>
-      <mat-icon>add</mat-icon>
-      创建课程
-    </button>
+      <button (click)="createCourse()" mat-flat-button>
+        <mat-icon>add</mat-icon>
+        创建课程
+      </button>
     }
   </div>
   <div class="card-tile">
     @if (loading) {
-    <mat-spinner></mat-spinner>
-    } @for (card of cards$ | async; track card) {
-    <mat-card class="dashboard-card">
-      <mat-card-title>
-        {{ card.getName() }}
-      </mat-card-title>
-      <mat-card-content class="dashboard-card-content">
-        <div>{{ card.getShortName() }}</div>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <a [routerLink]="['/courses', card.getCourseId()]" mat-button>进入</a>
-      </mat-card-actions>
-    </mat-card>
+      <mat-spinner></mat-spinner>
+    }
+    @for (card of cards$ | async; track card) {
+      <mat-card class="dashboard-card">
+        <mat-card-title>
+          {{ card.getName() }}
+        </mat-card-title>
+        <mat-card-content class="dashboard-card-content">
+          <div>{{ card.getShortName() }}</div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <a [routerLink]="['/courses', card.getCourseId()]" mat-button>进入</a>
+        </mat-card-actions>
+      </mat-card>
     }
   </div>
 </div>

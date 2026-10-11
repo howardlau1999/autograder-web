@@ -6,8 +6,11 @@ import { UserService } from '../service/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LoginGuard  {
-  constructor(private userService: UserService, private router: Router) {}
+export class LoginGuard {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
   gotoLogin() {
     this.router.navigate(['/', 'login']);

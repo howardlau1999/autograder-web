@@ -8,7 +8,10 @@ import { NotificationService } from './notification.service';
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor(private apiService: ApiService, private notificationService: NotificationService) {}
+  constructor(
+    private apiService: ApiService,
+    private notificationService: NotificationService,
+  ) {}
 
   getCourseList() {
     return this.apiService.getCourseList().pipe(

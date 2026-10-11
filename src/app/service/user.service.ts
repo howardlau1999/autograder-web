@@ -108,7 +108,6 @@ export class UserService {
     this.githubLoginURL = `${baseGithubURL}&state=${loginState}`;
     const bindState = UserService.loadOrCreateOAuthState(UserService.GITHUB_BIND_STATE_KEY);
     this.githubBindURL = `${baseGithubURL}&redirect_uri=${encodeURIComponent(
-      // eslint-disable-next-line no-restricted-globals
       `${location.protocol}//${location.host}/github/bind`,
     )}&state=${bindState}`;
   }

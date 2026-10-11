@@ -13,24 +13,30 @@
     <th *matHeaderCellDef mat-header-cell mat-sort-header>上传进度</th>
     <td *matCellDef="let row" mat-cell>
       @if (row.uploading && !row.error) {
-      <mat-progress-bar
-        [mode]="row.progressBarMode"
-        [value]="row.uploadProgress"
-      ></mat-progress-bar>
-      } @if (row.uploaded) {
-      <mat-icon>done</mat-icon>
-      } @if (row.error) {
-      <span style="color: #cc0000">
-        <span>
-          @switch (row.error) { @case ('GET_SIZE') {
-          <span>获取提交大小失败</span>
-          } @case ('NO_SPACE') {
-          <span>大小超出限制</span>
-          } @default {
-          <span>{{ row.error }}</span>
-          } }
+        <mat-progress-bar
+          [mode]="row.progressBarMode"
+          [value]="row.uploadProgress"
+        ></mat-progress-bar>
+      }
+      @if (row.uploaded) {
+        <mat-icon>done</mat-icon>
+      }
+      @if (row.error) {
+        <span style="color: #cc0000">
+          <span>
+            @switch (row.error) {
+              @case ('GET_SIZE') {
+                <span>获取提交大小失败</span>
+              }
+              @case ('NO_SPACE') {
+                <span>大小超出限制</span>
+              }
+              @default {
+                <span>{{ row.error }}</span>
+              }
+            }
+          </span>
         </span>
-      </span>
       }
     </td>
   </ng-container>

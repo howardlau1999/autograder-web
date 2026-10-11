@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { CoursePageModule } from '../../../course-page.module';
 import { RoleSelectComponent } from './role-select.component';
 
 describe('RoleSelectComponent', () => {
@@ -8,11 +10,9 @@ describe('RoleSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RoleSelectComponent],
+      imports: [CoursePageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(RoleSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

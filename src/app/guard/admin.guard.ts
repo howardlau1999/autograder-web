@@ -6,8 +6,11 @@ import { UserService } from '../service/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard  {
-  constructor(private userService: UserService, private router: Router) {}
+export class AdminGuard {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
   gotoDashboard() {
     this.router.navigate(['/', 'dashboard']).then();

@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideActivatedRouteStub } from '../../../../testing/activated-route-stub';
 
+import { ReportViewPageModule } from '../report-view-page.module';
 import { ReportComponent } from './report.component';
 
 describe('ReportComponent', () => {
@@ -8,11 +11,17 @@ describe('ReportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReportComponent],
+      imports: [ReportViewPageModule],
+      providers: [
+        provideRouter([]),
+        provideActivatedRouteStub({
+          courseId: '1',
+          assignmentId: '1',
+          submissionId: '1',
+          userId: '1',
+        }),
+      ],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

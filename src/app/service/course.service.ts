@@ -20,7 +20,10 @@ export enum JoinCourseError {
   providedIn: 'root',
 })
 export class CourseService {
-  constructor(private apiService: ApiService, private errorService: ErrorService) {}
+  constructor(
+    private apiService: ApiService,
+    private errorService: ErrorService,
+  ) {}
 
   canWriteCourse(courseId: number) {
     return this.apiService.canWriteCourse(courseId);

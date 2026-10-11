@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { AdminPageModule } from '../admin-page.module';
 import { UsersComponent } from './users.component';
 
 describe('UsersComponent', () => {
@@ -8,11 +10,9 @@ describe('UsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UsersComponent],
+      imports: [AdminPageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(UsersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

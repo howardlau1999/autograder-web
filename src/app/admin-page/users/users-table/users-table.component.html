@@ -5,9 +5,9 @@
       <mat-label>搜索</mat-label>
       <input [formControl]="searchFormControl" matInput name="search" />
       @if (searchFormControl.value) {
-      <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
-        <mat-icon>close</mat-icon>
-      </button>
+        <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
+          <mat-icon>close</mat-icon>
+        </button>
       }
     </mat-form-field>
     <button mat-icon-button>

@@ -1,70 +1,74 @@
 <div class="assignments-container">
   <mat-card class="course-info-card">
     @if (course$ | async; as course) {
-    <div>
-      @if (editMode) {
       <div>
-        <app-course-edit-dialog
-          [courseId]="courseId"
-          [name]="course.getName()"
-          [shortName]="course.getShortName()"
-          [description]="course.getDescription()"
-          (cancelled)="onEditCourseCancelled()"
-          (confirmed)="onEditCourseConfirmed()"
-        ></app-course-edit-dialog>
-      </div>
-      } @if (!editMode) {
-      <div>
-        @if (canWriteCourse) {
-        <div class="course-edit-button">
-          @if (course.getAllowsJoin()) {
-          <span>
-            加课码： @if (course.getJoinCode()) {
-            <span>{{ course.getJoinCode() }}</span>
-            } @else {
-            <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>点击生成</button>
-            }
-          </span>
-          }
-          <mat-slide-toggle
-            [checked]="course.getAllowsJoin()"
-            (change)="onAllowsJoinChanged($event)"
-            >允许加入
-          </mat-slide-toggle>
-          <button (click)="onEditCourseClicked()" mat-icon-button matTooltip="编辑课程信息">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-        }
-        <mat-card-title>
-          {{ course.getName() }}
-        </mat-card-title>
-        <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
-        <mat-card-content>
-          <div class="description">
-            <app-safe-markdown
-              [katex]="true"
-              [katexOptions]="options"
-              [staffContent]="true"
-              [data]="course.getDescription()"
-            ></app-safe-markdown>
+        @if (editMode) {
+          <div>
+            <app-course-edit-dialog
+              [courseId]="courseId"
+              [name]="course.getName()"
+              [shortName]="course.getShortName()"
+              [description]="course.getDescription()"
+              (cancelled)="onEditCourseCancelled()"
+              (confirmed)="onEditCourseConfirmed()"
+            ></app-course-edit-dialog>
           </div>
-        </mat-card-content>
+        }
+        @if (!editMode) {
+          <div>
+            @if (canWriteCourse) {
+              <div class="course-edit-button">
+                @if (course.getAllowsJoin()) {
+                  <span>
+                    加课码：
+                    @if (course.getJoinCode()) {
+                      <span>{{ course.getJoinCode() }}</span>
+                    } @else {
+                      <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>
+                        点击生成
+                      </button>
+                    }
+                  </span>
+                }
+                <mat-slide-toggle
+                  [checked]="course.getAllowsJoin()"
+                  (change)="onAllowsJoinChanged($event)"
+                  >允许加入
+                </mat-slide-toggle>
+                <button (click)="onEditCourseClicked()" mat-icon-button matTooltip="编辑课程信息">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            }
+            <mat-card-title>
+              {{ course.getName() }}
+            </mat-card-title>
+            <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
+            <mat-card-content>
+              <div class="description">
+                <app-safe-markdown
+                  [katex]="true"
+                  [katexOptions]="options"
+                  [staffContent]="true"
+                  [data]="course.getDescription()"
+                ></app-safe-markdown>
+              </div>
+            </mat-card-content>
+          </div>
+        }
       </div>
-      }
-    </div>
     } @else {
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
   </mat-card>
   <h2>作业列表</h2>
   <mat-card class="assignment-table-card">
     <div class="assignment-operations">
       @if (canWriteCourse) {
-      <button (click)="onAddAssignmentClicked()" mat-raised-button>
-        <mat-icon>add</mat-icon>
-        &nbsp;添加作业
-      </button>
+        <button (click)="onAddAssignmentClicked()" mat-raised-button>
+          <mat-icon>add</mat-icon>
+          &nbsp;添加作业
+        </button>
       }
     </div>
     <app-assignments-table

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
   changeDetection: ChangeDetectionStrategy.Eager,

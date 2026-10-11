@@ -3,14 +3,14 @@
     <mat-label>课程名称</mat-label>
     <input formControlName="name" matInput required />
     @if (courseForm.get('name')?.invalid) {
-    <mat-error> 请输入课程名称</mat-error>
+      <mat-error> 请输入课程名称</mat-error>
     }
   </mat-form-field>
   <mat-form-field>
     <mat-label>课程号</mat-label>
     <input formControlName="shortName" matInput required />
     @if (courseForm.get('shortName')?.invalid) {
-    <mat-error> 请输入课程代码</mat-error>
+      <mat-error> 请输入课程代码</mat-error>
     }
   </mat-form-field>
   <div style="margin-top: 10px"></div>

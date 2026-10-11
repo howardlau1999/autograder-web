@@ -14,7 +14,7 @@
           />
           <mat-icon matSuffix>account_circle</mat-icon>
           @if (loginForm.get('username')?.invalid) {
-          <mat-error> 请输入用户名 </mat-error>
+            <mat-error> 请输入用户名 </mat-error>
           }
         </mat-form-field>
 
@@ -30,13 +30,13 @@
           />
           <mat-icon matSuffix>password</mat-icon>
           @if (loginForm.get('password')?.invalid) {
-          <mat-error>
-            @if (loginForm.get('password')?.hasError('password')) {
-            <span>用户名或密码错误</span>
-            } @else {
-            <span>请输入密码</span>
-            }
-          </mat-error>
+            <mat-error>
+              @if (loginForm.get('password')?.hasError('password')) {
+                <span>用户名或密码错误</span>
+              } @else {
+                <span>请输入密码</span>
+              }
+            </mat-error>
           }
         </mat-form-field>
 
@@ -57,9 +57,10 @@
             type="submit"
           >
             @if (!loggingIn) {
-            <span class="login-button" i18n="login">登录</span>
-            } @if (loggingIn) {
-            <span class="login-button" i18n="login">登录中</span>
+              <span class="login-button" i18n="login">登录</span>
+            }
+            @if (loggingIn) {
+              <span class="login-button" i18n="login">登录中</span>
             }
           </button>
         </p>

@@ -51,12 +51,12 @@
     <mat-label>运行标签</mat-label>
     <mat-chip-grid #tagsList>
       @for (tag of tags; track tag) {
-      <mat-chip-row (removed)="removeTag(tag)">
-        {{ tag }}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip-row>
+        <mat-chip-row (removed)="removeTag(tag)">
+          {{ tag }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
       }
     </mat-chip-grid>
     <input

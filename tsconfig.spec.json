@@ -3,8 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": ["jasmine"]
+    "types": ["vitest/globals", "@angular/localize"]
   },
-  "files": ["src/test.ts", "src/polyfills.ts"],
+  "files": ["src/polyfills.ts"],
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

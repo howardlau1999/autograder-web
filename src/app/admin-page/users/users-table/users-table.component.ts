@@ -40,7 +40,10 @@ export class UsersTableComponent implements AfterViewInit {
 
   userId: number;
 
-  constructor(private adminService: AdminService, private userService: UserService) {
+  constructor(
+    private adminService: AdminService,
+    private userService: UserService,
+  ) {
     this.userId = this.userService.userId!;
     this.dataSource = new UsersTableDataSource(
       this.adminService.getAllUsers().pipe(

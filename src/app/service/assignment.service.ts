@@ -12,7 +12,10 @@ import { CreateAssignmentResponse, UpdateAssignmentResponse } from '../api/proto
   providedIn: 'root',
 })
 export class AssignmentService {
-  constructor(private apiService: ApiService, private errorService: ErrorService) {}
+  constructor(
+    private apiService: ApiService,
+    private errorService: ErrorService,
+  ) {}
 
   getAssignment(assignmentId: number) {
     return this.apiService.getAssignment(assignmentId);

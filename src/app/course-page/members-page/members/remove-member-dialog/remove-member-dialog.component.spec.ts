@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { CoursePageModule } from '../../../course-page.module';
 import { RemoveMemberDialogComponent } from './remove-member-dialog.component';
 
 describe('RemoveMemberDialogComponent', () => {
@@ -8,11 +11,13 @@ describe('RemoveMemberDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RemoveMemberDialogComponent],
+      imports: [CoursePageModule],
+      providers: [
+        provideRouter([]),
+        { provide: MatDialogRef, useValue: { close: () => undefined } },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(RemoveMemberDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

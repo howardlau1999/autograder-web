@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { LoginPageModule } from '../../login-page/login-page.module';
 import { GithubBindComponent } from './github-bind.component';
 
 describe('GithubBindComponent', () => {
@@ -8,11 +10,9 @@ describe('GithubBindComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GithubBindComponent],
+      imports: [LoginPageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(GithubBindComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

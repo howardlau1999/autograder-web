@@ -34,7 +34,7 @@
               "@wavedrom/doppler"
             ],
             "externalDependencies": ["fs", "path", "crypto"],
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": ["zone.js", "@angular/localize/init", "src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -124,6 +124,24 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "testing": {
+              "aot": false,
+              "optimization": false,
+              "extractLicenses": false,
+              "assets": ["src/favicon.ico", "src/assets"],
+              "styles": [
+                "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                "src/styles.css"
+              ],
+              "scripts": [],
+              "polyfills": [
+                "zone.js",
+                "zone.js/testing",
+                "zone.js/plugins/vitest-patch",
+                "@angular/localize/init",
+                "src/polyfills.ts"
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -147,18 +165,13 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
-            ],
-            "scripts": []
+            "reporters": ["default"],
+            "coverageReporters": ["html", "text-summary"],
+            "buildTarget": ":build:testing",
+            "runner": "vitest"
           }
         },
         "lint": {

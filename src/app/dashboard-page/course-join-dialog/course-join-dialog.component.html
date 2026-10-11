@@ -5,9 +5,9 @@
       <mat-label>加课码</mat-label>
       <input [formControl]="invitationCode" matInput type="text" />
       @if (invitationCode.value) {
-      <button (click)="invitationCode.setValue('')" mat-icon-button matSuffix>
-        <mat-icon>close</mat-icon>
-      </button>
+        <button (click)="invitationCode.setValue('')" mat-icon-button matSuffix>
+          <mat-icon>close</mat-icon>
+        </button>
       }
     </mat-form-field>
   </form>

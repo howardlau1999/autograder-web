@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { SubmissionsTableModule } from './submissions-table.module';
 import { SubmissionsTableComponent } from './submissions-table.component';
 
 describe('SubmissionsTableComponent', () => {
@@ -8,11 +10,9 @@ describe('SubmissionsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubmissionsTableComponent],
+      imports: [SubmissionsTableModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(SubmissionsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

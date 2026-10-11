@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { CourseFormModule } from './course-form.module';
 import { CourseFormComponent } from './course-form.component';
 
 describe('CourseFormComponent', () => {
@@ -8,11 +10,9 @@ describe('CourseFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CourseFormComponent],
+      imports: [CourseFormModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(CourseFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

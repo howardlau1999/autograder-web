@@ -16,7 +16,10 @@ export class CoursePageComponent implements OnInit {
 
   canWriteCourse$: Observable<boolean>;
 
-  constructor(private route: ActivatedRoute, private courseService: CourseService) {
+  constructor(
+    private route: ActivatedRoute,
+    private courseService: CourseService,
+  ) {
     this.courseId$ = this.route.paramMap.pipe(
       map((params) => Number.parseInt(params.get('courseId') || '0', 10)),
     );

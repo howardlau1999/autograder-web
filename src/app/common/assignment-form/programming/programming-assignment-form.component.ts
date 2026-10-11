@@ -54,6 +54,11 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
         Validators.min(128),
         Validators.max(65536),
       ]),
+      uploadLimit: new UntypedFormControl(128, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(8192),
+      ]),
       timeout: new UntypedFormControl(600, [
         Validators.required,
         Validators.min(1),

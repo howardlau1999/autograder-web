@@ -1,29 +1,24 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { AdminPageModule } from '../../admin-page.module';
 import { GradersTableComponent } from './graders-table.component';
 
 describe('GradersTableComponent', () => {
   let component: GradersTableComponent;
   let fixture: ComponentFixture<GradersTableComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [GradersTableComponent],
-      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AdminPageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(GradersTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should compile', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

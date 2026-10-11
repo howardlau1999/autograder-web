@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { SubmissionsTableModule } from '../submissions-table.module';
 import { UploadDialogComponent } from './upload-dialog.component';
 
 describe('UploadDialogComponent', () => {
@@ -8,11 +11,13 @@ describe('UploadDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadDialogComponent],
+      imports: [SubmissionsTableModule],
+      providers: [
+        provideRouter([]),
+        { provide: MatDialogRef, useValue: { close: () => undefined } },
+        { provide: MAT_DIALOG_DATA, useValue: { assignmentId: 1, uploadLimit: 1024 } },
+      ],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(UploadDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

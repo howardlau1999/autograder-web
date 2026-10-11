@@ -7,34 +7,40 @@
           <mat-label>用户名</mat-label>
           <input formControlName="username" matInput required />
           @if (signUpForm.get('username')?.invalid) {
-          <mat-error>
-            @if (signUpForm.get('username')?.hasError('required')) {
-            <span> 请输入用户名 </span>
-            } @if (signUpForm.get('username')?.hasError('pattern')) {
-            <span> 仅可包含英文字符和数字以及_，长度至少为 4 个字符 </span>
-            } @if (signUpForm.get('username')?.hasError('invalid')) {
-            <span> 用户名无效 </span>
-            } @if (signUpForm.get('username')?.hasError('duplicated')) {
-            <span> 用户名已存在 </span>
-            }
-          </mat-error>
+            <mat-error>
+              @if (signUpForm.get('username')?.hasError('required')) {
+                <span> 请输入用户名 </span>
+              }
+              @if (signUpForm.get('username')?.hasError('pattern')) {
+                <span> 仅可包含英文字符和数字以及_，长度至少为 4 个字符 </span>
+              }
+              @if (signUpForm.get('username')?.hasError('invalid')) {
+                <span> 用户名无效 </span>
+              }
+              @if (signUpForm.get('username')?.hasError('duplicated')) {
+                <span> 用户名已存在 </span>
+              }
+            </mat-error>
           }
         </mat-form-field>
         <mat-form-field class="full-width-field">
           <mat-label> 电子邮箱</mat-label>
           <input formControlName="email" matInput required type="email" />
           @if (signUpForm.get('email')?.invalid) {
-          <mat-error>
-            @if (signUpForm.get('email')?.hasError('required')) {
-            <span> 请输入 Email 地址 </span>
-            } @if (signUpForm.get('email')?.hasError('email')) {
-            <span> Email 地址无效 </span>
-            } @if (signUpForm.get('email')?.hasError('invalid')) {
-            <span> Email 地址无效 </span>
-            } @if (signUpForm.get('email')?.hasError('duplicated')) {
-            <span> Email 地址已存在 </span>
-            }
-          </mat-error>
+            <mat-error>
+              @if (signUpForm.get('email')?.hasError('required')) {
+                <span> 请输入 Email 地址 </span>
+              }
+              @if (signUpForm.get('email')?.hasError('email')) {
+                <span> Email 地址无效 </span>
+              }
+              @if (signUpForm.get('email')?.hasError('invalid')) {
+                <span> Email 地址无效 </span>
+              }
+              @if (signUpForm.get('email')?.hasError('duplicated')) {
+                <span> Email 地址已存在 </span>
+              }
+            </mat-error>
           }
         </mat-form-field>
         <div class="code-input">
@@ -42,15 +48,17 @@
             <mat-label>验证码</mat-label>
             <input autocomplete="off" formControlName="code" matInput required />
             @if (signUpForm.get('code')?.invalid) {
-            <mat-error>
-              @if (signUpForm.get('code')?.hasError('required')) {
-              <span> 请输入验证码 </span>
-              } @if (signUpForm.get('code')?.hasError('pattern')) {
-              <span> 验证码无效，应为 6 位数字 </span>
-              } @if (signUpForm.get('code')?.hasError('invalid')) {
-              <span> 验证码无效，请重新发送验证码 </span>
-              }
-            </mat-error>
+              <mat-error>
+                @if (signUpForm.get('code')?.hasError('required')) {
+                  <span> 请输入验证码 </span>
+                }
+                @if (signUpForm.get('code')?.hasError('pattern')) {
+                  <span> 验证码无效，应为 6 位数字 </span>
+                }
+                @if (signUpForm.get('code')?.hasError('invalid')) {
+                  <span> 验证码无效，请重新发送验证码 </span>
+                }
+              </mat-error>
             }
           </mat-form-field>
           <button
@@ -70,13 +78,15 @@
             ngHcaptchaInvisibleButton
           >
             @if (!requestingCode) {
-            <span>
-              发送验证码@if (requestCodeCounter) {
-              <span> ({{ requestCodeCounter }})</span>
-              }
-            </span>
-            } @if (requestingCode) {
-            <span>发送中</span>
+              <span>
+                发送验证码
+                @if (requestCodeCounter) {
+                  <span> ({{ requestCodeCounter }})</span>
+                }
+              </span>
+            }
+            @if (requestingCode) {
+              <span>发送中</span>
             }
           </button>
         </div>
@@ -90,15 +100,17 @@
             type="password"
           />
           @if (signUpForm.get('password')?.invalid) {
-          <mat-error>
-            @if (signUpForm.get('password')?.hasError('required')) {
-            <span> 请输入密码 </span>
-            } @if (signUpForm.get('password')?.hasError('length')) {
-            <span> 密码太短，长度至少为 8 个字符 </span>
-            } @if (signUpForm.get('password')?.hasError('invalid')) {
-            <span> 密码无效，长度至少为 8 个字符 </span>
-            }
-          </mat-error>
+            <mat-error>
+              @if (signUpForm.get('password')?.hasError('required')) {
+                <span> 请输入密码 </span>
+              }
+              @if (signUpForm.get('password')?.hasError('length')) {
+                <span> 密码太短，长度至少为 8 个字符 </span>
+              }
+              @if (signUpForm.get('password')?.hasError('invalid')) {
+                <span> 密码无效，长度至少为 8 个字符 </span>
+              }
+            </mat-error>
           }
         </mat-form-field>
         <p class="buttons-container">

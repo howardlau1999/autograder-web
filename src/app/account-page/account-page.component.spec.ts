@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { AccountPageModule } from './account-page.module';
 import { AccountPageComponent } from './account-page.component';
 
 describe('AccountPageComponent', () => {
@@ -8,11 +10,9 @@ describe('AccountPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountPageComponent],
+      imports: [AccountPageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(AccountPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

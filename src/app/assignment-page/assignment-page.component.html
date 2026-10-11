@@ -10,15 +10,16 @@
               &nbsp;提交记录</a
             >
             @if (hasLeaderboard$ | async) {
-            <a mat-list-item routerLink="leaderboard">
-              <mat-icon>leaderboard</mat-icon>
-              &nbsp;排行榜</a
-            >
-            } @if (canWriteCourse$ | async) {
-            <a mat-list-item [routerLink]="inspectionLink">
-              <mat-icon>group</mat-icon>
-              &nbsp;查看所有提交</a
-            >
+              <a mat-list-item routerLink="leaderboard">
+                <mat-icon>leaderboard</mat-icon>
+                &nbsp;排行榜</a
+              >
+            }
+            @if (canWriteCourse$ | async) {
+              <a mat-list-item [routerLink]="inspectionLink">
+                <mat-icon>group</mat-icon>
+                &nbsp;查看所有提交</a
+              >
             }
             <a mat-list-item routerLink="../..">
               <mat-icon>arrow_back</mat-icon>

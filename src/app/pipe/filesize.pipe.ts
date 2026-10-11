@@ -6,7 +6,7 @@ import { filesize } from 'filesize';
   standalone: false,
 })
 export class FilesizePipe implements PipeTransform {
-  transform(bytes: number): string {
-    return filesize(bytes, { base: 2 });
+  transform(bytes: number | null | undefined): string {
+    return filesize(bytes ?? 0, { base: 2 });
   }
 }

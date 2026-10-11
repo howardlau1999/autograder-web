@@ -2,52 +2,54 @@
   <h2>排行榜</h2>
   <div style="display: flex; align-items: center">
     @if (exportEnabled) {
-    <div style="display: flex; align-items: center">
-      <button (click)="onExportClicked()" mat-raised-button>
-        <mat-icon>download</mat-icon>
-        导出排行榜
-      </button>
-      &nbsp;
-      <button
-        [disabled]="exportingSubmissions > 0"
-        (click)="onExportSubmissionsClicked()"
-        mat-flat-button
-      >
-        <mat-icon>cloud_download</mat-icon>
-        导出排行榜提交
-      </button>
-      &nbsp; @if (exportingSubmissions) {
-      <div style="display: flex; flex-direction: column; width: 8em">
-        导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
-        <mat-progress-bar
-          mode="determinate"
-          [value]="(exportedSubmissions / exportingSubmissions) * 100"
-        ></mat-progress-bar>
+      <div style="display: flex; align-items: center">
+        <button (click)="onExportClicked()" mat-raised-button>
+          <mat-icon>download</mat-icon>
+          导出排行榜
+        </button>
+        &nbsp;
+        <button
+          [disabled]="exportingSubmissions > 0"
+          (click)="onExportSubmissionsClicked()"
+          mat-flat-button
+        >
+          <mat-icon>cloud_download</mat-icon>
+          导出排行榜提交
+        </button>
+        &nbsp;
+        @if (exportingSubmissions) {
+          <div style="display: flex; flex-direction: column; width: 8em">
+            导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
+            <mat-progress-bar
+              mode="determinate"
+              [value]="(exportedSubmissions / exportingSubmissions) * 100"
+            ></mat-progress-bar>
+          </div>
+        }
+        @if (exportingSubmissions) {
+          <button (click)="onCancelExportClicked()" mat-flat-button>
+            <mat-icon>cancel</mat-icon>
+            取消导出
+          </button>
+        }
       </div>
-      } @if (exportingSubmissions) {
-      <button (click)="onCancelExportClicked()" mat-flat-button>
-        <mat-icon>cancel</mat-icon>
-        取消导出
-      </button>
-      }
-    </div>
     }
     <span style="flex: 1 1 auto"></span>
     @if (!searchDisabled) {
-    <form>
-      <mat-form-field>
-        <mat-label>搜索</mat-label>
-        <input [formControl]="searchFormControl" matInput name="search" />
-        @if (searchFormControl.value) {
-        <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
-          <mat-icon>close</mat-icon>
+      <form>
+        <mat-form-field>
+          <mat-label>搜索</mat-label>
+          <input [formControl]="searchFormControl" matInput name="search" />
+          @if (searchFormControl.value) {
+            <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+        <button mat-icon-button>
+          <mat-icon>search</mat-icon>
         </button>
-        }
-      </mat-form-field>
-      <button mat-icon-button>
-        <mat-icon>search</mat-icon>
-      </button>
-    </form>
+      </form>
     }
   </div>
   <div class="leaderboard-tab-container mat-elevation-z1">
@@ -64,20 +66,22 @@
       </ng-container>
 
       @for (column of columns; track column) {
-      <ng-container [matColumnDef]="column">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column }}</th>
-        <td *matCellDef="let row" mat-cell>
-          @if (row.items[column].value.hasNumberValue()) {
-          <span>
-            {{ row.items[column].value.getNumberValue() }}
-          </span>
-          } @if (row.items[column].value.hasStringValue()) {
-          <span>
-            {{ row.items[column].value.getStringValue() }}
-          </span>
-          } &nbsp;{{ row.items[column].suffix }}
-        </td>
-      </ng-container>
+        <ng-container [matColumnDef]="column">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column }}</th>
+          <td *matCellDef="let row" mat-cell>
+            @if (row.items[column].value.hasNumberValue()) {
+              <span>
+                {{ row.items[column].value.getNumberValue() }}
+              </span>
+            }
+            @if (row.items[column].value.hasStringValue()) {
+              <span>
+                {{ row.items[column].value.getStringValue() }}
+              </span>
+            }
+            &nbsp;{{ row.items[column].suffix }}
+          </td>
+        </ng-container>
       }
 
       <ng-container matColumnDef="submittedAt">

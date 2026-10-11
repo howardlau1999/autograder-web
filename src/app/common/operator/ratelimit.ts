@@ -9,7 +9,11 @@ class TokenBucket {
 
   fillInterval: number;
 
-  constructor(private frequency: number, private period: number, private capacity: number) {
+  constructor(
+    private frequency: number,
+    private period: number,
+    private capacity: number,
+  ) {
     this.tokens = frequency;
     this.lastFilled = Date.now();
     this.fillRate = frequency / period;

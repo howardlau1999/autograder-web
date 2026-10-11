@@ -6,9 +6,7 @@ import { merge, Observable } from 'rxjs';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 
 function compareNative(a: number | Date, b: number | Date, isDesc: boolean): number {
-  let result: number = 0;
-  if (a > b) result = 1;
-  else result = -1;
+  const result = a > b ? 1 : -1;
   return result * (isDesc ? -1 : 1);
 }
 

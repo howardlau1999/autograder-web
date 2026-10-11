@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { MarkdownEditorModule } from './markdown-editor.module';
 import { MarkdownEditorComponent } from './markdown-editor.component';
 
 describe('MarkdownEditorComponent', () => {
@@ -8,11 +10,9 @@ describe('MarkdownEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MarkdownEditorComponent],
+      imports: [MarkdownEditorModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(MarkdownEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

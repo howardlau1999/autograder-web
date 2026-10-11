@@ -36,7 +36,10 @@ export class CourseEditDialogComponent implements OnInit {
 
   courseForm!: UntypedFormGroup;
 
-  constructor(private courseService: CourseService, private errorService: ErrorService) {}
+  constructor(
+    private courseService: CourseService,
+    private errorService: ErrorService,
+  ) {}
 
   ngOnInit(): void {
     this.courseForm = new UntypedFormGroup({

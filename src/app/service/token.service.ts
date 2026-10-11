@@ -37,7 +37,7 @@ export class TokenService {
       const a = payload.payload;
       const b = Uint8Array.from(atob(a), (c) => c.charCodeAt(0));
       this.user$.next(UserTokenPayload.deserializeBinary(b));
-    } catch (e) {
+    } catch {
       this.user$.next(null);
     }
   }

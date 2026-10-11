@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 
+import { AssignmentFormModule } from '../assignment-form.module';
 import { ProgrammingAssignmentFormComponent } from './programming-assignment-form.component';
 
 describe('AssignmentFormComponent', () => {
@@ -8,11 +11,9 @@ describe('AssignmentFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProgrammingAssignmentFormComponent],
+      imports: [AssignmentFormModule],
+      providers: [provideRouter([]), provideLuxonDateAdapter()],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProgrammingAssignmentFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

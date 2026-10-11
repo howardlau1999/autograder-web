@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { VcdViewerPageModule } from './vcd-viewer-page.module';
 import { VcdViewerPageComponent } from './vcd-viewer-page.component';
 
 describe('VcdViewerPageComponent', () => {
@@ -8,14 +10,13 @@ describe('VcdViewerPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VcdViewerPageComponent],
+      imports: [VcdViewerPageModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(VcdViewerPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // No change detection: the view would boot the VCD wasm module over
+    // fetch(), which jsdom cannot serve.
   });
 
   it('should create', () => {

@@ -43,7 +43,10 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
 
   updateSubscription?: Subscription;
 
-  constructor(private assignmentService: AssignmentService, private errorService: ErrorService) {}
+  constructor(
+    private assignmentService: AssignmentService,
+    private errorService: ErrorService,
+  ) {}
 
   ngOnInit(): void {
     this.tags = this.assignment.getProgrammingConfig()?.getTagsList() || [];

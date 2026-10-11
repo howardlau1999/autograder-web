@@ -1,33 +1,35 @@
 @if (submissionsLoading) {
-<mat-progress-bar mode="indeterminate"></mat-progress-bar>
-} @if (showSubmit) {
-<div class="submission-operations">
-  <span
-    [matTooltip]="
-      canSubmit
-        ? !limitReached
-          ? !frequencyReached
-            ? '上传文件并提交'
-            : '已达到提交频率限制'
-          : '已达到提交次数限制'
-        : '不在可提交时间范围内'
-    "
-  >
-    @if (!submissionsLoading) {
-    <button
-      [disabled]="!canSubmit || limitReached || frequencyReached"
-      (click)="onSubmitClicked()"
-      color="primary"
-      mat-raised-button
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+@if (showSubmit) {
+  <div class="submission-operations">
+    <span
+      [matTooltip]="
+        canSubmit
+          ? !limitReached
+            ? !frequencyReached
+              ? '上传文件并提交'
+              : '已达到提交频率限制'
+            : '已达到提交次数限制'
+          : '不在可提交时间范围内'
+      "
     >
-      <mat-icon>add</mat-icon>
-      上传提交
-    </button>
-    }
-  </span>
-</div>
-} @if (!submissionsLoading && !dataSource.data.length) {
-<h3>暂无提交</h3>
+      @if (!submissionsLoading) {
+        <button
+          [disabled]="!canSubmit || limitReached || frequencyReached"
+          (click)="onSubmitClicked()"
+          color="primary"
+          mat-raised-button
+        >
+          <mat-icon>add</mat-icon>
+          上传提交
+        </button>
+      }
+    </span>
+  </div>
+}
+@if (!submissionsLoading && !dataSource.data.length) {
+  <h3>暂无提交</h3>
 }
 <table
   class="submission-history-table"
@@ -50,34 +52,44 @@
     <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
     <td *matCellDef="let submission" mat-cell>
       @if (isSubmissionInternalError(submission.getStatus())) {
-      <div>内部错误</div>
-      } @else { @if (isSubmissionCancelling(submission.getStatus())) {
-      <span>取消中</span>
-      } @if (isSubmissionCancelled(submission.getStatus())) {
-      <span>已取消</span>
-      } @if (isSubmissionFinished(submission.getStatus())) {
-      <span> {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span>
-      } @if (isSubmissionQueued(submission.getStatus())) {
-      <span
-        >排队中 @if (submission.getPendingRank()) {
-        <span>
-          ( {{ submission.getPendingRank().getRank() }} /
-          {{ submission.getPendingRank().getTotal() }} )
-        </span>
+        <div>内部错误</div>
+      } @else {
+        @if (isSubmissionCancelling(submission.getStatus())) {
+          <span>取消中</span>
         }
-      </span>
-      } @if (isSubmissionRunning(submission.getStatus())) {
-      <span>运行中</span>
-      } @if ( isSubmissionQueued(submission.getStatus()) ||
-      isSubmissionRunning(submission.getStatus()) || isSubmissionFinished(submission.getStatus()) )
-      {
-      <mat-progress-bar
-        [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
-        [value]="(submission.getScore() / submission.getMaxScore()) * 100"
-        class="score-bar"
-      >
-      </mat-progress-bar>
-      } }
+        @if (isSubmissionCancelled(submission.getStatus())) {
+          <span>已取消</span>
+        }
+        @if (isSubmissionFinished(submission.getStatus())) {
+          <span> {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span>
+        }
+        @if (isSubmissionQueued(submission.getStatus())) {
+          <span
+            >排队中
+            @if (submission.getPendingRank()) {
+              <span>
+                ( {{ submission.getPendingRank().getRank() }} /
+                {{ submission.getPendingRank().getTotal() }} )
+              </span>
+            }
+          </span>
+        }
+        @if (isSubmissionRunning(submission.getStatus())) {
+          <span>运行中</span>
+        }
+        @if (
+          isSubmissionQueued(submission.getStatus()) ||
+          isSubmissionRunning(submission.getStatus()) ||
+          isSubmissionFinished(submission.getStatus())
+        ) {
+          <mat-progress-bar
+            [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
+            [value]="(submission.getScore() / submission.getMaxScore()) * 100"
+            class="score-bar"
+          >
+          </mat-progress-bar>
+        }
+      }
     </td>
   </ng-container>
   <ng-container matColumnDef="status">
@@ -104,25 +116,27 @@
         <mat-icon>download</mat-icon>
       </button>
       @if (showRegrade) {
-      <button
-        i18n="retry"
-        matTooltip="重评提交"
-        (click)="regradeSubmission($event, submission.getSubmissionId())"
-        mat-icon-button
-        [disabled]="isSubmissionRunning(submission.getStatus())"
-      >
-        <mat-icon>cached</mat-icon>
-      </button>
-      } @if ( isSubmissionRunning(submission.getStatus()) ||
-      isSubmissionQueued(submission.getStatus()) ) {
-      <button
-        i18n="cancel"
-        matTooltip="取消评测"
-        (click)="cancelSubmission($event, submission.getSubmissionId())"
-        mat-icon-button
-      >
-        <mat-icon>cancel</mat-icon>
-      </button>
+        <button
+          i18n="retry"
+          matTooltip="重评提交"
+          (click)="regradeSubmission($event, submission.getSubmissionId())"
+          mat-icon-button
+          [disabled]="isSubmissionRunning(submission.getStatus())"
+        >
+          <mat-icon>cached</mat-icon>
+        </button>
+      }
+      @if (
+        isSubmissionRunning(submission.getStatus()) || isSubmissionQueued(submission.getStatus())
+      ) {
+        <button
+          i18n="cancel"
+          matTooltip="取消评测"
+          (click)="cancelSubmission($event, submission.getSubmissionId())"
+          mat-icon-button
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
       }
     </td>
   </ng-container>

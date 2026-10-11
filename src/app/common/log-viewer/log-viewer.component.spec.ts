@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
+import { LogViewerModule } from './log-viewer.module';
 import { LogViewerComponent } from './log-viewer.component';
 
 describe('LogViewerComponent', () => {
@@ -8,11 +10,9 @@ describe('LogViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogViewerComponent],
+      imports: [LogViewerModule],
+      providers: [provideRouter([])],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LogViewerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

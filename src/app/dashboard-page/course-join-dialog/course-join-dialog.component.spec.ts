@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { DashboardPageModule } from '../dashboard-page.module';
 import { CourseJoinDialogComponent } from './course-join-dialog.component';
 
 describe('JoinDialogComponent', () => {
@@ -8,11 +11,13 @@ describe('JoinDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CourseJoinDialogComponent],
+      imports: [DashboardPageModule],
+      providers: [
+        provideRouter([]),
+        { provide: MatDialogRef, useValue: { close: () => undefined } },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(CourseJoinDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
