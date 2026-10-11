@@ -79,6 +79,10 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.submitSubscription?.unsubscribe();
     this.createManifestSubscription?.unsubscribe();
     this.uploadSubscriptions.forEach((sub) => sub.unsubscribe());
+    // uploadSubscriptions only covers the batch pipelines; each file's HTTP
+    // upload lives on its entry and would otherwise keep running after the
+    // dialog is dismissed with ESC or a backdrop click.
+    Object.values(this.uploadEntries).forEach((entry) => entry.cancelUpload());
   }
 
   onFileDelete(filename: string) {
@@ -169,12 +173,22 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.createManifestSubscription === undefined) {
       this.createManifestSubscription = this.apiService
         .createManifest(this.assignmentId)
-        .subscribe((resp) => {
-          if (!resp) {
-            return;
-          }
-          this.manifestId = resp.getManifestId();
-          this.manifestId$.next(this.manifestId);
+        .subscribe({
+          next: (resp) => {
+            if (!resp) {
+              return;
+            }
+            this.manifestId = resp.getManifestId();
+            this.manifestId$.next(this.manifestId);
+          },
+          error: (error) => {
+            // Without this the failure was invisible and, because the
+            // subscription stayed set, never retried: every later upload
+            // would wait on manifestId$ forever. Clearing it lets the next
+            // file selection try again.
+            this.notificationService.showSnackBar(`创建上传任务出错 ${error?.message ?? error}`);
+            this.createManifestSubscription = undefined;
+          },
         });
     }
     return this.manifestId$.pipe(skipWhile((manifestId) => manifestId === 0));

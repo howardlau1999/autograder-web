@@ -44,6 +44,10 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   streamEnded = false;
 
+  // Set when the log stream errored and cleared by the next chunk, so that a
+  // completion can be told apart from an exhausted retry budget.
+  private streamErrored = false;
+
   ngOnDestroy() {
     this.logSubscription?.unsubscribe();
   }
@@ -77,33 +81,43 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.streamedSubmissionId) return;
     this.logSubscription?.unsubscribe();
     this.streamEnded = false;
+    this.streamErrored = false;
     this.logSubscription = this.submissionService
       .streamLog(this.streamedSubmissionId)
       .pipe(
         catchError((error) => {
           this.term?.clear();
+          this.streamErrored = true;
           throw error;
         }),
         retryExponentialBackoff(),
       )
       .subscribe({
         next: (resp) => {
+          this.streamErrored = false;
           this.term?.write(resp.getData_asU8());
         },
-        error: () => {
-          // Reached only after the backoff retries are exhausted (auth
-          // failures are handled upstream and complete the stream). Surface it
-          // instead of leaving a silently frozen viewer, and offer a manual
-          // reconnect.
-          this.streamEnded = true;
-          this.term?.write(
-            '\r\n\x1b[31m[日志流已断开，自动重试已耗尽，请点击“重新连接”。]\x1b[0m\r\n',
-          );
+        // retryWhen completes rather than errors once its retry budget is
+        // spent, so an exhausted stream arrives here looking like a normal
+        // end; the error flag tells the two apart. A stream that ended because
+        // grading finished (or after an auth failure, which the API layer
+        // completes after logging out) carries no pending error.
+        complete: () => {
+          if (this.streamErrored) {
+            this.onStreamLost();
+          }
         },
+        error: () => this.onStreamLost(),
       });
   }
 
+  private onStreamLost() {
+    this.streamEnded = true;
+    this.term?.write('\r\n\x1b[31m[日志流已断开，自动重试已耗尽，请点击“重新连接”。]\x1b[0m\r\n');
+  }
+
   reconnect() {
+    this.term?.clear();
     this.streamLog();
   }
 }

@@ -58,7 +58,8 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.handler.onEnd();
       }
     } catch (e) {
-      // Ignore errors thrown while closing the handler.
+      // eslint-disable-next-line no-console
+      console.error(e);
     }
     this.vcdromDiv.nativeElement.innerHTML = '';
   }
