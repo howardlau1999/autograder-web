@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { match } from 'fp-ts/Either';

@@ -14,7 +14,7 @@ import {
 import { map } from 'rxjs/operators';
 import { Either, match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { grpc } from '@improbable-eng/grpc-web';
 import {
   PendingRank,

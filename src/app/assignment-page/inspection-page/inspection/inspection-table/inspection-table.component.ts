@@ -7,9 +7,9 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
 import { BehaviorSubject, catchError, Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { InspectionTableDataSource, InspectionTableItem } from './inspection-table-datasource';

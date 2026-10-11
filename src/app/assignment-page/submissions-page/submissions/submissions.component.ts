@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { mergeMap, Observable, of, Subject, Subscription, switchMap, tap, timer } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
 import { KatexOptions } from '../../../common/safe-markdown/safe-markdown.component';
 import { UploadDialogComponent } from '../../../common/submissions-table/upload-dialog/upload-dialog.component';
 import { Assignment, CourseRole, SubmissionLimitConfig } from '../../../api/proto/model_pb';

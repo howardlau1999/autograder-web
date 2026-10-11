@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatOptionModule } from '@angular/material/core';
+import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { DatetimePickerComponent } from './datetime-picker.component';
 
 @NgModule({

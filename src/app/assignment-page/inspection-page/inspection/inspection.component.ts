@@ -3,7 +3,7 @@ import { debounceTime, Observable, of, Subject, Subscription, switchMap, zipWith
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';

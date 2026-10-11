@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { repeatWhen, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { catchError, Observable, of, Subject, Subscription } from 'rxjs';
 import { CourseJoinDialogComponent } from './course-join-dialog/course-join-dialog.component';
 import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';

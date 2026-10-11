@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
 import { ActivatedRoute } from '@angular/router';
 import {
   catchError,
@@ -19,7 +19,7 @@ import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
 import * as zip from '@zip.js/zip.js';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { LeaderboardDataSource, LeaderboardItem } from './leaderboard-datasource';
 import { UserService } from '../../../service/user.service';
