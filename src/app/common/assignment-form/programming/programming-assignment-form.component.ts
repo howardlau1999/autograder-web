@@ -7,10 +7,13 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { DateTime } from 'luxon';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { AssignmentDateValidator } from '../../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
+import {
+  createProgrammingAssignmentForm,
+  createSubmissionLimitForm,
+  ProgrammingAssignmentForm,
+  SubmissionLimitForm,
+} from './programming-assignment-form';
 
 @Component({
   selector: 'app-assignment-form',
@@ -32,42 +35,9 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
-  @Input() submissionLimitConfig = new UntypedFormGroup({
-    total: new UntypedFormControl(0),
-    frequency: new UntypedFormControl(0),
-    period: new UntypedFormControl(0),
-  });
+  @Input() submissionLimitConfig: SubmissionLimitForm = createSubmissionLimitForm();
 
-  @Input() formGroup = new UntypedFormGroup(
-    {
-      name: new UntypedFormControl('', [Validators.required]),
-      releaseDate: new UntypedFormControl(DateTime.now()),
-      dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
-      dockerImage: new UntypedFormControl('', [Validators.required]),
-      cpu: new UntypedFormControl(1, [
-        Validators.required,
-        Validators.min(0.5),
-        Validators.max(64),
-      ]),
-      memory: new UntypedFormControl(4096, [
-        Validators.required,
-        Validators.min(128),
-        Validators.max(65536),
-      ]),
-      uploadLimit: new UntypedFormControl(128, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(8192),
-      ]),
-      timeout: new UntypedFormControl(600, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(18000),
-      ]),
-      description: new UntypedFormControl('', [Validators.required]),
-    },
-    { validators: [AssignmentDateValidator] },
-  );
+  @Input() formGroup: ProgrammingAssignmentForm = createProgrammingAssignmentForm();
 
   addTag(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();

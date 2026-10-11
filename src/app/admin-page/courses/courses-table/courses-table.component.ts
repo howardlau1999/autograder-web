@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs/operators';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { CoursesTableDataSource, CoursesTableItem } from './courses-table-data-source';
 import { AdminService } from '../../../service/admin.service';
 import { UserService } from '../../../service/user.service';
@@ -26,7 +26,7 @@ export class CoursesTableComponent implements AfterViewInit {
 
   displayedColumns = ['id', 'name', 'shortName', 'joinCode', 'allowsJoin'];
 
-  searchFormControl = new UntypedFormControl();
+  searchFormControl = new FormControl('', { nonNullable: true });
 
   userId: number;
 

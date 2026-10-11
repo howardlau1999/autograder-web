@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { CourseForm, createCourseForm } from './course-form';
 
 @Component({
   selector: 'app-course-form',
@@ -9,11 +9,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
   standalone: false,
 })
 export class CourseFormComponent implements OnInit {
-  @Input() courseForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    shortName: new UntypedFormControl('', [Validators.required]),
-    description: new UntypedFormControl('', [Validators.required]),
-  });
+  @Input() courseForm: CourseForm = createCourseForm();
 
   ngOnInit(): void {}
 }

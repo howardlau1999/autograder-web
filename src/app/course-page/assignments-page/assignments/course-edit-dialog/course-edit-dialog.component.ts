@@ -6,11 +6,11 @@ import {
   Output,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { CourseService } from '../../../../service/course.service';
 import { ErrorService } from '../../../../service/error.service';
+import { CourseForm, createCourseForm } from '../../../../common/course-form/course-form';
 
 @Component({
   selector: 'app-course-edit-dialog',
@@ -34,7 +34,7 @@ export class CourseEditDialogComponent implements OnInit {
 
   @Output() confirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  courseForm!: UntypedFormGroup;
+  courseForm!: CourseForm;
 
   constructor(
     private courseService: CourseService,
@@ -42,10 +42,10 @@ export class CourseEditDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.courseForm = new UntypedFormGroup({
-      name: new UntypedFormControl(this.name, [Validators.required]),
-      shortName: new UntypedFormControl(this.shortName, [Validators.required]),
-      description: new UntypedFormControl(this.description, [Validators.required]),
+    this.courseForm = createCourseForm({
+      name: this.name,
+      shortName: this.shortName,
+      description: this.description,
     });
   }
 
@@ -55,7 +55,7 @@ export class CourseEditDialogComponent implements OnInit {
 
   onConfirmClicked() {
     this.loading = true;
-    const { name, shortName, description } = this.courseForm.value;
+    const { name, shortName, description } = this.courseForm.getRawValue();
     this.courseService
       .updateCourse(this.courseId, name, shortName, description)
       .subscribe((result) => {

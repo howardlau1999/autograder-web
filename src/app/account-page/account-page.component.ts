@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription, tap } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,16 +16,16 @@ import { ConfirmDialogModel } from '../common/confirm-dialog/confirm-dialog-mode
   standalone: false,
 })
 export class AccountPageComponent implements OnInit, OnDestroy {
-  basicInfoForm = new UntypedFormGroup({
-    username: new UntypedFormControl({ disabled: true, value: '' }),
-    email: new UntypedFormControl({ disabled: true, value: '' }),
-    studentId: new UntypedFormControl({ disabled: false, value: '' }),
-    nickname: new UntypedFormControl({ disabled: false, value: '' }),
+  basicInfoForm = new FormGroup({
+    username: new FormControl({ disabled: true, value: '' }, { nonNullable: true }),
+    email: new FormControl({ disabled: true, value: '' }, { nonNullable: true }),
+    studentId: new FormControl('', { nonNullable: true }),
+    nickname: new FormControl('', { nonNullable: true }),
   });
 
-  editPasswordForm = new UntypedFormGroup({
-    oldPassword: new UntypedFormControl(''),
-    newPassword: new UntypedFormControl('', [Validators.minLength(8)]),
+  editPasswordForm = new FormGroup({
+    oldPassword: new FormControl('', { nonNullable: true }),
+    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.minLength(8)] }),
   });
 
   userSubscription?: Subscription;
@@ -74,11 +74,12 @@ export class AccountPageComponent implements OnInit, OnDestroy {
         if (user?.getGithubId().length) {
           this.githubLogin = user?.getGithubId();
         }
+        if (!user) return;
         this.basicInfoForm.setValue({
-          username: user?.getUsername(),
-          email: user?.getEmail(),
-          nickname: user?.getNickname(),
-          studentId: user?.getStudentId(),
+          username: user.getUsername(),
+          email: user.getEmail(),
+          nickname: user.getNickname(),
+          studentId: user.getStudentId(),
         });
       });
   }
@@ -110,7 +111,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
 
   onSaveClicked(): void {
     this.infoSaving = true;
-    const { nickname, studentId } = this.basicInfoForm.value;
+    const { nickname, studentId } = this.basicInfoForm.getRawValue();
     this.updateSubscription?.unsubscribe();
     this.updateSubscription = this.userService.updateUserInfo(nickname, studentId).subscribe({
       next: (success) => {
@@ -127,14 +128,14 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   onChangePasswordClicked(): void {
     this.passwordSaving = true;
     this.passwordSubscription?.unsubscribe();
-    const { oldPassword, newPassword } = this.editPasswordForm.value;
+    const { oldPassword, newPassword } = this.editPasswordForm.getRawValue();
     this.passwordSubscription = this.userService
       .updatePassword(oldPassword, newPassword)
       .subscribe({
         next: (success) => {
           this.passwordSaving = false;
           if (!success) {
-            this.editPasswordForm.get('oldPassword')?.setValue('');
+            this.editPasswordForm.controls.oldPassword.setValue('');
             this.notificationService.showSnackBar('密码修改失败');
             return;
           }

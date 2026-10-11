@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { repeatWhen, switchMap } from 'rxjs/operators';
 import { catchError, debounceTime, map, Observable, of, Subject, Subscription } from 'rxjs';
 import { DateTime } from 'luxon';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MembersDataSource, MembersItem } from './members-datasource';
 import { BatchAddMemberDialogComponent } from './batch-add-member-dialog/batch-add-member-dialog.component';
 import { AddMemberDialogComponent } from './add-member-dialog/add-member-dialog.component';
@@ -51,7 +51,7 @@ export class MembersComponent implements OnInit, AfterViewInit {
 
   members$!: Observable<MembersItem[]>;
 
-  searchFormControl = new UntypedFormControl('');
+  searchFormControl = new FormControl('', { nonNullable: true });
 
   search$!: Observable<string>;
 

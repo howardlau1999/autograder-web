@@ -92,9 +92,10 @@ export class ApiService {
     request: Request,
   ) {
     return new Observable<Response>((subscriber) => {
+      // Server streams arrive over a plain fetch() response body; the server
+      // bridge flushes every message, so no WebSocket transport is needed.
       return grpc.invoke(method, {
         host: this.host || window.location.origin,
-        transport: grpc.WebsocketTransport(),
         metadata: new grpc.Metadata({
           authorization: `bearer ${this.tokenService.getToken()}`,
         }),

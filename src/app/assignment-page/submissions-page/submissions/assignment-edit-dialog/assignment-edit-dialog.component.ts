@@ -7,7 +7,6 @@ import {
   Output,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
@@ -16,6 +15,12 @@ import { Subscription } from 'rxjs';
 import { AssignmentService } from '../../../../service/assignment.service';
 import { Assignment, SubmissionLimitConfig } from '../../../../api/proto/model_pb';
 import { ErrorService } from '../../../../service/error.service';
+import {
+  createProgrammingAssignmentForm,
+  createSubmissionLimitForm,
+  ProgrammingAssignmentForm,
+  SubmissionLimitForm,
+} from '../../../../common/assignment-form/programming/programming-assignment-form';
 
 @Component({
   selector: 'app-assignment-edit-dialog',
@@ -35,9 +40,9 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
 
   @Output() cancelled: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  programmingAssignmentForm!: UntypedFormGroup;
+  programmingAssignmentForm!: ProgrammingAssignmentForm;
 
-  submissionLimitConfig!: UntypedFormGroup;
+  submissionLimitConfig!: SubmissionLimitForm;
 
   tags: string[] = [];
 
@@ -50,42 +55,23 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.tags = this.assignment.getProgrammingConfig()?.getTagsList() || [];
-    this.submissionLimitConfig = new UntypedFormGroup({
-      total: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getTotal() || 0),
-      frequency: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getFrequency() || 0),
-      period: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getPeriod() || 0),
+    const limit = this.assignment.getSubmissionLimit();
+    this.submissionLimitConfig = createSubmissionLimitForm({
+      total: limit?.getTotal() || 0,
+      frequency: limit?.getFrequency() || 0,
+      period: limit?.getPeriod() || 0,
     });
-    this.programmingAssignmentForm = new UntypedFormGroup({
-      name: new UntypedFormControl(this.assignment.getName(), [Validators.required]),
-      releaseDate: new UntypedFormControl(
-        DateTime.fromJSDate(this.assignment.getReleaseDate()?.toDate() || new Date()),
-      ),
-      dueDate: new UntypedFormControl(
-        DateTime.fromJSDate(this.assignment.getDueDate()?.toDate() || new Date()),
-      ),
-      dockerImage: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getImage(), [
-        Validators.required,
-      ]),
-      cpu: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getCpu(), [
-        Validators.required,
-        Validators.min(0.5),
-        Validators.max(64),
-      ]),
-      memory: new UntypedFormControl(
-        Math.round((this.assignment.getProgrammingConfig()?.getMemory() || 0) / 1024 / 1024),
-        [Validators.required, Validators.min(128), Validators.max(65536)],
-      ),
-      uploadLimit: new UntypedFormControl(Math.round(this.assignment.getUploadLimit() / 1024), [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(8192),
-      ]),
-      timeout: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(18000),
-      ]),
-      description: new UntypedFormControl(this.assignment.getDescription(), [Validators.required]),
+    const config = this.assignment.getProgrammingConfig();
+    this.programmingAssignmentForm = createProgrammingAssignmentForm({
+      name: this.assignment.getName(),
+      releaseDate: DateTime.fromJSDate(this.assignment.getReleaseDate()?.toDate() || new Date()),
+      dueDate: DateTime.fromJSDate(this.assignment.getDueDate()?.toDate() || new Date()),
+      dockerImage: config?.getImage() || '',
+      cpu: config?.getCpu() || 0,
+      memory: Math.round((config?.getMemory() || 0) / 1024 / 1024),
+      uploadLimit: Math.round(this.assignment.getUploadLimit() / 1024),
+      timeout: config?.getTimeout() || 0,
+      description: this.assignment.getDescription(),
     });
   }
 
@@ -105,8 +91,8 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
       memory,
       timeout,
       uploadLimit,
-    } = this.programmingAssignmentForm.value;
-    const { total, period, frequency } = this.submissionLimitConfig.value;
+    } = this.programmingAssignmentForm.getRawValue();
+    const { total, period, frequency } = this.submissionLimitConfig.getRawValue();
     const submissionLimit = this.assignment.getSubmissionLimit() || new SubmissionLimitConfig();
     const assignment = this.assignment.clone();
     assignment.setName(name);

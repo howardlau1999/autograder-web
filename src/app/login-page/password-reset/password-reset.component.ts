@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -27,10 +27,13 @@ export class PasswordResetComponent implements OnInit {
 
   siteKey = this.userService.hcaptchaSiteKey;
 
-  resetForm = new UntypedFormGroup({
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    code: new UntypedFormControl('', [Validators.required]),
-    password: new UntypedFormControl('', [Validators.required]),
+  resetForm = new FormGroup({
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    code: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
@@ -45,7 +48,7 @@ export class PasswordResetComponent implements OnInit {
 
   onSubmit() {
     if (this.resetForm.invalid) return;
-    const { email, code, password } = this.resetForm.value;
+    const { email, code, password } = this.resetForm.getRawValue();
     this.resetting = true;
     this.userService.resetPassword(email, code, password).subscribe((result) => {
       this.resetting = false;
@@ -61,7 +64,8 @@ export class PasswordResetComponent implements OnInit {
 
   onVerify(token: string) {
     this.requestingCode = true;
-    this.userService.requestPasswordReset(this.resetForm.value.email, token).subscribe((result) => {
+    const { email } = this.resetForm.getRawValue();
+    this.userService.requestPasswordReset(email, token).subscribe((result) => {
       this.requestingCode = false;
       pipe(
         result,

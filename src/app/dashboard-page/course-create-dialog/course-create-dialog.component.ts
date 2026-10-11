@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { CourseService } from '../../service/course.service';
 import { ErrorService } from '../../service/error.service';
+import { createCourseForm } from '../../common/course-form/course-form';
 
 @Component({
   selector: 'app-assignment-course-create-dialog',
@@ -16,11 +16,7 @@ import { ErrorService } from '../../service/error.service';
 export class CourseCreateDialogComponent implements OnInit {
   creating: boolean = false;
 
-  courseForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    shortName: new UntypedFormControl('', [Validators.required]),
-    description: new UntypedFormControl('', [Validators.required]),
-  });
+  courseForm = createCourseForm();
 
   constructor(
     private dialogRef: MatDialogRef<CourseCreateDialogComponent>,
@@ -32,7 +28,7 @@ export class CourseCreateDialogComponent implements OnInit {
 
   onCreateClicked() {
     this.creating = true;
-    const { name, shortName, description } = this.courseForm.value;
+    const { name, shortName, description } = this.courseForm.getRawValue();
     this.courseService.createCourse(name, shortName, description).subscribe((result) => {
       this.creating = false;
       pipe(

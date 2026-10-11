@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -15,7 +15,7 @@ import { NotificationService } from '../../service/notification.service';
   standalone: false,
 })
 export class CourseJoinDialogComponent implements OnInit {
-  invitationCode = new UntypedFormControl('');
+  invitationCode = new FormControl('', { nonNullable: true });
 
   joinSubscription?: Subscription;
 

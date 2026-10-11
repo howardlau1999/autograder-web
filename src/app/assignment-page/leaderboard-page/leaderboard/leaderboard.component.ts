@@ -26,7 +26,7 @@ import { HttpClient } from '@angular/common/http';
 import * as zip from '@zip.js/zip.js';
 import { Value } from 'google-protobuf/google/protobuf/struct_pb';
 import { MatDialog } from '@angular/material/dialog';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { LeaderboardDataSource, LeaderboardItem } from './leaderboard-datasource';
 import { UserService } from '../../../service/user.service';
 import { downloadCSV } from '../../../common/downloader/csv.downloader';
@@ -79,7 +79,7 @@ export class LeaderboardComponent implements AfterViewInit, OnDestroy {
 
   exportedSubmissions = 0;
 
-  searchFormControl = new UntypedFormControl('');
+  searchFormControl = new FormControl('', { nonNullable: true });
 
   searchDisabled = true;
 

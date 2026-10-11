@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../../api/api.service';
 import { AddCourseMembersRequest } from '../../../../api/proto/api_pb';
+import { CourseRole, CourseRoleMap } from '../../../../api/proto/model_pb';
 
 export interface AddMemberDialogData {
   courseId: number;
@@ -19,10 +20,15 @@ export interface AddMemberDialogData {
 export class AddMemberDialogComponent implements OnInit {
   courseId: number;
 
-  addMemberForm = new UntypedFormGroup({
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    name: new UntypedFormControl('', [Validators.required]),
-    role: new UntypedFormControl(0),
+  addMemberForm = new FormGroup({
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    role: new FormControl<CourseRoleMap[keyof CourseRoleMap]>(CourseRole.STUDENT, {
+      nonNullable: true,
+    }),
   });
 
   constructor(
@@ -43,7 +49,7 @@ export class AddMemberDialogComponent implements OnInit {
   onConfirmClicked() {
     if (this.addMemberForm.invalid) return;
     const newMember = new AddCourseMembersRequest.MemberToAdd();
-    const { email, name, role } = this.addMemberForm.value;
+    const { email, name, role } = this.addMemberForm.getRawValue();
     newMember.setEmail(email);
     newMember.setName(name);
     newMember.setRole(role);

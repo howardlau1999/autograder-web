@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -21,9 +21,12 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   githubLoginURL = this.userService.githubLoginURL;
 
-  loginForm = new UntypedFormGroup({
-    username: new UntypedFormControl('', [Validators.required]),
-    password: new UntypedFormControl('', [Validators.required, Validators.minLength(4)]),
+  loginForm = new FormGroup({
+    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4)],
+    }),
   });
 
   userSubscription: Subscription;
@@ -49,17 +52,17 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.loginForm.invalid) return;
-    const { username, password } = this.loginForm.value;
+    const { username, password } = this.loginForm.getRawValue();
     this.loggingIn = true;
     this.errorMessage = null;
-    this.loginForm.get('password')?.setErrors(null);
+    this.loginForm.controls.password.setErrors(null);
     this.userService.login(username, password).subscribe((result) => {
       this.loggingIn = false;
       pipe(
         result,
         match(
           () => {
-            this.loginForm.get('password')?.setErrors({ password: true });
+            this.loginForm.controls.password.setErrors({ password: true });
           },
           () => {},
         ),

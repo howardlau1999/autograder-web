@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -27,14 +27,23 @@ export class SignUpComponent implements OnInit {
 
   siteKey = this.userService.hcaptchaSiteKey;
 
-  signUpForm = new UntypedFormGroup({
-    username: new UntypedFormControl('', [
-      Validators.required,
-      Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_]{3,}$/),
-    ]),
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    code: new UntypedFormControl('', [Validators.required, Validators.pattern(/[0-9]{6}/)]),
-    password: new UntypedFormControl('', [Validators.required, Validators.minLength(8)]),
+  signUpForm = new FormGroup({
+    username: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_]{3,}$/)],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    code: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern(/[0-9]{6}/)],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
   });
 
   constructor(
@@ -49,7 +58,7 @@ export class SignUpComponent implements OnInit {
 
   onSubmit() {
     if (this.signUpForm.invalid) return;
-    const { username, email, code, password } = this.signUpForm.value;
+    const { username, email, code, password } = this.signUpForm.getRawValue();
     this.registering = true;
     this.userService.signUp(username, email, code, password).subscribe((result) => {
       this.registering = false;
@@ -64,9 +73,9 @@ export class SignUpComponent implements OnInit {
   }
 
   onVerify(token: string) {
-    if (this.signUpForm.get('username')?.invalid || this.signUpForm.get('email')?.invalid) return;
+    if (this.signUpForm.controls.username.invalid || this.signUpForm.controls.email.invalid) return;
     this.requestingCode = true;
-    const { email, username } = this.signUpForm.value;
+    const { email, username } = this.signUpForm.getRawValue();
     this.userService.requestSignUpToken(username, email, token).subscribe((result) => {
       this.requestingCode = false;
       pipe(

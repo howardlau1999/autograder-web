@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs/operators';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UsersTableDataSource, UsersTableItem } from './users-table-datasource';
 import { AdminService } from '../../../service/admin.service';
@@ -36,7 +36,7 @@ export class UsersTableComponent implements AfterViewInit {
     'isAdmin',
   ];
 
-  searchFormControl = new UntypedFormControl();
+  searchFormControl = new FormControl('', { nonNullable: true });
 
   userId: number;
 

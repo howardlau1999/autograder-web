@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { AssignmentService } from '../../../service/assignment.service';
 import { NotificationService } from '../../../service/notification.service';
 import { downloadCSV } from '../../../common/downloader/csv.downloader';
@@ -36,7 +36,7 @@ export class InspectionComponent implements OnInit, OnDestroy {
 
   search$: Observable<string>;
 
-  searchValueFormControl = new UntypedFormControl('');
+  searchValueFormControl = new FormControl('', { nonNullable: true });
 
   constructor(
     private route: ActivatedRoute,

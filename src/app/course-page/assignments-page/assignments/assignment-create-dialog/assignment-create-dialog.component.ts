@@ -1,34 +1,18 @@
 import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DateTime } from 'luxon';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { AssignmentService } from '../../../../service/assignment.service';
 import { ErrorService } from '../../../../service/error.service';
 import { SubmissionLimitConfig } from '../../../../api/proto/model_pb';
+import {
+  createProgrammingAssignmentForm,
+  createSubmissionLimitForm,
+} from '../../../../common/assignment-form/programming/programming-assignment-form';
 
 export interface AssignmentCreateDialogData {
   courseId: number;
 }
-
-export const AssignmentDateValidator: ValidatorFn = (group): ValidationErrors => {
-  const releaseDateControl = group.get('releaseDate');
-  const dueDateControl = group.get('dueDate');
-  const releaseDate: DateTime = releaseDateControl?.value || DateTime.now();
-  const dueDate: DateTime = dueDateControl?.value || DateTime.now();
-  if (dueDate.toJSDate() < releaseDate.toJSDate()) {
-    dueDateControl?.setErrors({ before: true });
-    return { dueDate: true };
-  }
-  return {};
-};
 
 @Component({
   selector: 'app-assignment-course-create-dialog',
@@ -46,42 +30,9 @@ export class AssignmentCreateDialogComponent implements OnInit {
 
   tags: string[] = [];
 
-  submissionLimitForm = new UntypedFormGroup({
-    total: new UntypedFormControl(0),
-    frequency: new UntypedFormControl(1),
-    period: new UntypedFormControl(1),
-  });
+  submissionLimitForm = createSubmissionLimitForm();
 
-  programmingAssignmentForm = new UntypedFormGroup(
-    {
-      name: new UntypedFormControl('', [Validators.required]),
-      releaseDate: new UntypedFormControl(DateTime.now()),
-      dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
-      dockerImage: new UntypedFormControl('', [Validators.required]),
-      cpu: new UntypedFormControl(1, [
-        Validators.required,
-        Validators.min(0.5),
-        Validators.max(64),
-      ]),
-      memory: new UntypedFormControl(4096, [
-        Validators.required,
-        Validators.min(128),
-        Validators.max(65536),
-      ]),
-      uploadLimit: new UntypedFormControl(128, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(8192),
-      ]),
-      timeout: new UntypedFormControl(600, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(18000),
-      ]),
-      description: new UntypedFormControl('', [Validators.required]),
-    },
-    { validators: [AssignmentDateValidator] },
-  );
+  programmingAssignmentForm = createProgrammingAssignmentForm();
 
   constructor(
     private dialogRef: MatDialogRef<AssignmentCreateDialogComponent>,
@@ -105,8 +56,8 @@ export class AssignmentCreateDialogComponent implements OnInit {
       memory,
       timeout,
       uploadLimit,
-    } = this.programmingAssignmentForm.value;
-    const { total, period, frequency } = this.submissionLimitForm.value;
+    } = this.programmingAssignmentForm.getRawValue();
+    const { total, period, frequency } = this.submissionLimitForm.getRawValue();
     const submissionLimit = new SubmissionLimitConfig();
     submissionLimit.setPeriod(period);
     submissionLimit.setFrequency(frequency);
