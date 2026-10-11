@@ -1,7 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
-import { UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { AssignmentService } from '../../../../service/assignment.service';
@@ -28,6 +34,7 @@ export const AssignmentDateValidator: ValidatorFn = (group): ValidationErrors =>
   selector: 'app-assignment-course-create-dialog',
   templateUrl: './assignment-create-dialog.component.html',
   styleUrls: ['./assignment-create-dialog.component.css'],
+  standalone: false,
 })
 export class AssignmentCreateDialogComponent implements OnInit {
   assignmentType: string = 'programming';
@@ -50,7 +57,11 @@ export class AssignmentCreateDialogComponent implements OnInit {
       releaseDate: new UntypedFormControl(DateTime.now()),
       dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
       dockerImage: new UntypedFormControl('', [Validators.required]),
-      cpu: new UntypedFormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
+      cpu: new UntypedFormControl(1, [
+        Validators.required,
+        Validators.min(0.5),
+        Validators.max(64),
+      ]),
       memory: new UntypedFormControl(4096, [
         Validators.required,
         Validators.min(128),

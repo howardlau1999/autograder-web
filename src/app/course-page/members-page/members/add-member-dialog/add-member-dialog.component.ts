@@ -13,6 +13,7 @@ export interface AddMemberDialogData {
   selector: 'app-add-member-dialog',
   templateUrl: './add-member-dialog.component.html',
   styleUrls: ['./add-member-dialog.component.css'],
+  standalone: false,
 })
 export class AddMemberDialogComponent implements OnInit {
   courseId: number;

@@ -55,6 +55,7 @@ export function fenceUntrustedContent(content: string, ext: string): string {
   selector: 'app-files',
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css'],
+  standalone: false,
 })
 export class FilesComponent implements OnInit, OnDestroy {
   treeControl: FlatTreeControl<FlatTreeNode>;

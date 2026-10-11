@@ -13,6 +13,7 @@ import { GraderStatusMetadata } from '../../../api/proto/model_pb';
   selector: 'app-graders-table',
   templateUrl: './graders-table.component.html',
   styleUrls: ['./graders-table.component.css'],
+  standalone: false,
 })
 export class GradersTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

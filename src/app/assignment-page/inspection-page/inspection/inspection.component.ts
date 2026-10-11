@@ -16,6 +16,7 @@ import { UserService } from '../../../service/user.service';
   selector: 'app-inspection',
   templateUrl: './inspection.component.html',
   styleUrls: ['./inspection.component.css'],
+  standalone: false,
 })
 export class InspectionComponent implements OnInit, OnDestroy {
   assignmentId$: Observable<number>;

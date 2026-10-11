@@ -12,6 +12,7 @@ import { UserService } from '../../../service/user.service';
   selector: 'app-courses-table',
   templateUrl: './courses-table.component.html',
   styleUrls: ['./courses-table.component.css'],
+  standalone: false,
 })
 export class CoursesTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

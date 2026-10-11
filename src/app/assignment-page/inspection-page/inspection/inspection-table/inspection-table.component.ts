@@ -19,6 +19,7 @@ import { SubmissionService } from '../../../../service/submission.service';
   selector: 'app-inspection-table',
   templateUrl: './inspection-table.component.html',
   styleUrls: ['./inspection-table.component.css'],
+  standalone: false,
 })
 export class InspectionTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

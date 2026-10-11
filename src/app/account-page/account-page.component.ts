@@ -12,6 +12,7 @@ import { ConfirmDialogModel } from '../common/confirm-dialog/confirm-dialog-mode
   selector: 'app-account-page',
   templateUrl: './account-page.component.html',
   styleUrls: ['./account-page.component.css'],
+  standalone: false,
 })
 export class AccountPageComponent implements OnInit, OnDestroy {
   basicInfoForm = new UntypedFormGroup({

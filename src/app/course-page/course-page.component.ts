@@ -8,6 +8,7 @@ import { CourseService } from '../service/course.service';
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css'],
+  standalone: false,
 })
 export class CoursePageComponent implements OnInit {
   courseId$: Observable<number>;

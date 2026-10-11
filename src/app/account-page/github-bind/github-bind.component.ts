@@ -9,6 +9,7 @@ import { UserService } from '../../service/user.service';
   selector: 'app-github-bind',
   templateUrl: './github-bind.component.html',
   styleUrls: ['./github-bind.component.css'],
+  standalone: false,
 })
 export class GithubBindComponent implements OnInit {
   bindResult$ = this.route.queryParams.pipe(

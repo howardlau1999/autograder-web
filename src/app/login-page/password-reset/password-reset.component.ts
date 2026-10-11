@@ -13,6 +13,7 @@ import { ErrorService } from '../../service/error.service';
   selector: 'app-password-reset',
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.css'],
+  standalone: false,
 })
 export class PasswordResetComponent implements OnInit {
   requestingCode: boolean = false;

@@ -34,6 +34,7 @@ import { retryExponentialBackoff } from '../../../common/operator/retryExponenti
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css'],
+  standalone: false,
 })
 export class ReportComponent implements OnInit, OnDestroy {
   report$: Observable<SubmissionReport | undefined> | undefined;

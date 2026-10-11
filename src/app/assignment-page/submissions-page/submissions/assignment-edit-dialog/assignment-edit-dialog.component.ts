@@ -13,6 +13,7 @@ import { ErrorService } from '../../../../service/error.service';
   selector: 'app-assignment-edit-dialog',
   templateUrl: './assignment-edit-dialog.component.html',
   styleUrls: ['./assignment-edit-dialog.component.css'],
+  standalone: false,
 })
 export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
   loading: boolean = false;

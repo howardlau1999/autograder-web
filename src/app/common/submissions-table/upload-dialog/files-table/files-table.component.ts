@@ -10,6 +10,7 @@ import { UploadEntry } from '../upload.entry';
   selector: 'app-files-table',
   templateUrl: './files-table.component.html',
   styleUrls: ['./files-table.component.css'],
+  standalone: false,
 })
 export class FilesTableComponent implements AfterViewInit {
   @Input() paginator!: MatPaginator;

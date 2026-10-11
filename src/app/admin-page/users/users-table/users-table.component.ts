@@ -13,6 +13,7 @@ import { UserService } from '../../../service/user.service';
   selector: 'app-users-table',
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css'],
+  standalone: false,
 })
 export class UsersTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

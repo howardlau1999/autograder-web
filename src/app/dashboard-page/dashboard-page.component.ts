@@ -16,6 +16,7 @@ import CourseCardInfo = GetCourseListResponse.CourseCardInfo;
   selector: 'app-dashboard-page',
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css'],
+  standalone: false,
 })
 export class DashboardPageComponent implements OnDestroy {
   refresher$: Subject<null> = new Subject<null>();

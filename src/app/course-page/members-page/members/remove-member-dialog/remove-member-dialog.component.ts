@@ -10,6 +10,7 @@ export interface RemoveMemberDialogData {
   selector: 'app-remove-member-dialog',
   templateUrl: './remove-member-dialog.component.html',
   styleUrls: ['./remove-member-dialog.component.css'],
+  standalone: false,
 })
 export class RemoveMemberDialogComponent implements OnInit {
   nickname: string;

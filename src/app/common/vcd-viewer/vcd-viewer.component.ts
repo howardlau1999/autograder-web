@@ -17,6 +17,7 @@ const vcdrom = require('./vcdrom');
   selector: 'app-vcd-viewer',
   templateUrl: './vcd-viewer.component.html',
   styleUrls: ['./vcd-viewer.component.css'],
+  standalone: false,
 })
 export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   handler?: any;

@@ -41,6 +41,7 @@ import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
   selector: 'app-submissions-table',
   templateUrl: './submissions-table.component.html',
   styleUrls: ['./submissions-table.component.css'],
+  standalone: false,
 })
 export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

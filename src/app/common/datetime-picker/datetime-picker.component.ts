@@ -15,6 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: DatetimePickerComponent,
     },
   ],
+  standalone: false,
 })
 export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() label: string = '';

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
   selector: 'app-vcd-viewer-page',
   templateUrl: './vcd-viewer-page.component.html',
   styleUrls: ['./vcd-viewer-page.component.css'],
+  standalone: false,
 })
 export class VcdViewerPageComponent implements OnInit {
   url$: Observable<string>;

@@ -13,6 +13,7 @@ import { AssignmentService } from '../../../../service/assignment.service';
   selector: 'app-assignments-table',
   templateUrl: './assignments-table.component.html',
   styleUrls: ['./assignments-table.component.css'],
+  standalone: false,
 })
 export class AssignmentsTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -30,6 +30,7 @@ export interface UploadDialogData {
   selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./upload-dialog.component.css'],
+  standalone: false,
 })
 export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   assignmentId: number;

@@ -9,6 +9,7 @@ import { NotificationService } from '../../service/notification.service';
   selector: 'app-github-login',
   templateUrl: './github-login.component.html',
   styleUrls: ['./github-login.component.css'],
+  standalone: false,
 })
 export class GithubLoginComponent implements OnInit {
   login$ = this.route.queryParams.pipe(

@@ -13,6 +13,7 @@ import { ErrorService } from '../../service/error.service';
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
+  standalone: false,
 })
 export class SignUpComponent implements OnInit {
   requestingCode: boolean = false;

@@ -5,6 +5,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
   selector: 'app-course-form',
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.css'],
+  standalone: false,
 })
 export class CourseFormComponent implements OnInit {
   @Input() courseForm = new UntypedFormGroup({

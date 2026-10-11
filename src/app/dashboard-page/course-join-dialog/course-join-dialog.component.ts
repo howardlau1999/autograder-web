@@ -11,6 +11,7 @@ import { NotificationService } from '../../service/notification.service';
   selector: 'app-course-join-dialog',
   templateUrl: './course-join-dialog.component.html',
   styleUrls: ['./course-join-dialog.component.css'],
+  standalone: false,
 })
 export class CourseJoinDialogComponent implements OnInit {
   invitationCode = new UntypedFormControl('');

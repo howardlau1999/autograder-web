@@ -16,6 +16,7 @@ import { NotificationService } from '../../../service/notification.service';
   selector: 'app-submissions',
   templateUrl: './submissions.component.html',
   styleUrls: ['./submissions.component.css'],
+  standalone: false,
 })
 export class SubmissionsComponent implements OnInit, OnDestroy {
   assignmentId: number = 0;

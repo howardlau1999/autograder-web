@@ -9,6 +9,7 @@ import { AssignmentDateValidator } from '../../../course-page/assignments-page/a
   selector: 'app-assignment-form',
   templateUrl: './programming-assignment-form.component.html',
   styleUrls: ['./programming-assignment-form.component.css'],
+  standalone: false,
 })
 export class ProgrammingAssignmentFormComponent implements OnInit {
   assignmentType: string = 'programming';
@@ -35,7 +36,11 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
       releaseDate: new UntypedFormControl(DateTime.now()),
       dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
       dockerImage: new UntypedFormControl('', [Validators.required]),
-      cpu: new UntypedFormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
+      cpu: new UntypedFormControl(1, [
+        Validators.required,
+        Validators.min(0.5),
+        Validators.max(64),
+      ]),
       memory: new UntypedFormControl(4096, [
         Validators.required,
         Validators.min(128),

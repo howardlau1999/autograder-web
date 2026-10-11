@@ -10,6 +10,7 @@ import { UserService } from '../service/user.service';
   selector: 'app-assignment-page',
   templateUrl: './assignment-page.component.html',
   styleUrls: ['./assignment-page.component.css'],
+  standalone: false,
 })
 export class AssignmentPageComponent implements OnInit {
   assignmentId$: Observable<number>;

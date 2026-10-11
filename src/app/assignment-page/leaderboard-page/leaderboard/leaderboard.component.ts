@@ -37,6 +37,7 @@ import { retryExponentialBackoff } from '../../../common/operator/retryExponenti
   selector: 'app-leaderboard',
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css'],
+  standalone: false,
 })
 export class LeaderboardComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

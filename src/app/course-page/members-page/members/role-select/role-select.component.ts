@@ -14,6 +14,7 @@ import { CourseRole, CourseRoleMap } from '../../../../api/proto/model_pb';
       useExisting: RoleSelectComponent,
     },
   ],
+  standalone: false,
 })
 export class RoleSelectComponent implements OnInit, ControlValueAccessor {
   @Input() formField: boolean = false;

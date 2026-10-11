@@ -11,6 +11,7 @@ interface TabLink {
   selector: 'app-submission-page',
   templateUrl: './submission-page.component.html',
   styleUrls: ['./submission-page.component.css'],
+  standalone: false,
 })
 export class SubmissionPageComponent {
   links: TabLink[] = [

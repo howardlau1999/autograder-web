@@ -6,6 +6,7 @@ import { ConfirmDialogModel } from './confirm-dialog-model';
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.css'],
+  standalone: false,
 })
 export class ConfirmDialogComponent implements OnInit {
   title: string;

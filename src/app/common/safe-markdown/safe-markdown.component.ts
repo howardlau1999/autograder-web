@@ -48,6 +48,7 @@ export const DEFAULT_KATEX_OPTIONS: KatexOptions = {
   // The rendered markup is not part of the template, so styles for it have
   // to be global; keep encapsulation off so the host class can be targeted.
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class SafeMarkdownComponent implements OnChanges, AfterViewInit {
   @Input() data: string | null | undefined;

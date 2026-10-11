@@ -14,6 +14,7 @@ import { NotificationService } from '../../../service/notification.service';
   selector: 'app-assignments',
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.css'],
+  standalone: false,
 })
 export class AssignmentsComponent implements OnInit, OnDestroy {
   course$: Observable<Course | undefined>;

@@ -10,6 +10,7 @@ import { ErrorService } from '../../service/error.service';
   selector: 'app-assignment-course-create-dialog',
   templateUrl: './course-create-dialog.component.html',
   styleUrls: ['./course-create-dialog.component.css'],
+  standalone: false,
 })
 export class CourseCreateDialogComponent implements OnInit {
   creating: boolean = false;

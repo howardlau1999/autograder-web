@@ -23,6 +23,7 @@ import { downloadCSV } from '../../../common/downloader/csv.downloader';
   selector: 'app-members',
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.css'],
+  standalone: false,
 })
 export class MembersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

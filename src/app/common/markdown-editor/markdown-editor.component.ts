@@ -28,6 +28,7 @@ declare function renderMathInElement(elem: Element, options?: KatexOptions): voi
       useExisting: MarkdownEditorComponent,
     },
   ],
+  standalone: false,
 })
 export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlValueAccessor {
   editor!: Editor;

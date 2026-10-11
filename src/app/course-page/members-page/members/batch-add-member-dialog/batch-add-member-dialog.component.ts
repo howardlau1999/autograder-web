@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-batch-add-member-dialog',
   templateUrl: './batch-add-member-dialog.component.html',
   styleUrls: ['./batch-add-member-dialog.component.css'],
+  standalone: false,
 })
 export class BatchAddMemberDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<BatchAddMemberDialogComponent>) {}

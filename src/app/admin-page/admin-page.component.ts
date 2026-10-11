@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css'],
+  standalone: false,
 })
 export class AdminPageComponent implements OnInit {
   links: { link: string; label: string }[] = [
