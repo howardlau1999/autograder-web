@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -25,14 +25,14 @@ export class SignUpComponent implements OnInit {
 
   siteKey = this.userService.hcaptchaSiteKey;
 
-  signUpForm = new FormGroup({
-    username: new FormControl('', [
+  signUpForm = new UntypedFormGroup({
+    username: new UntypedFormControl('', [
       Validators.required,
       Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_]{3,}$/),
     ]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    code: new FormControl('', [Validators.required, Validators.pattern(/[0-9]{6}/)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    code: new UntypedFormControl('', [Validators.required, Validators.pattern(/[0-9]{6}/)]),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(8)]),
   });
 
   constructor(

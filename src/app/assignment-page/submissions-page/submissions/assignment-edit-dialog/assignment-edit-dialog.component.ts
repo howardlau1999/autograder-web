@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
@@ -25,9 +25,9 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
 
   @Output() cancelled: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  programmingAssignmentForm!: FormGroup;
+  programmingAssignmentForm!: UntypedFormGroup;
 
-  submissionLimitConfig!: FormGroup;
+  submissionLimitConfig!: UntypedFormGroup;
 
   tags: string[] = [];
 
@@ -37,42 +37,42 @@ export class AssignmentEditDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.tags = this.assignment.getProgrammingConfig()?.getTagsList() || [];
-    this.submissionLimitConfig = new FormGroup({
-      total: new FormControl(this.assignment.getSubmissionLimit()?.getTotal() || 0),
-      frequency: new FormControl(this.assignment.getSubmissionLimit()?.getFrequency() || 0),
-      period: new FormControl(this.assignment.getSubmissionLimit()?.getPeriod() || 0),
+    this.submissionLimitConfig = new UntypedFormGroup({
+      total: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getTotal() || 0),
+      frequency: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getFrequency() || 0),
+      period: new UntypedFormControl(this.assignment.getSubmissionLimit()?.getPeriod() || 0),
     });
-    this.programmingAssignmentForm = new FormGroup({
-      name: new FormControl(this.assignment.getName(), [Validators.required]),
-      releaseDate: new FormControl(
+    this.programmingAssignmentForm = new UntypedFormGroup({
+      name: new UntypedFormControl(this.assignment.getName(), [Validators.required]),
+      releaseDate: new UntypedFormControl(
         DateTime.fromJSDate(this.assignment.getReleaseDate()?.toDate() || new Date()),
       ),
-      dueDate: new FormControl(
+      dueDate: new UntypedFormControl(
         DateTime.fromJSDate(this.assignment.getDueDate()?.toDate() || new Date()),
       ),
-      dockerImage: new FormControl(this.assignment.getProgrammingConfig()?.getImage(), [
+      dockerImage: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getImage(), [
         Validators.required,
       ]),
-      cpu: new FormControl(this.assignment.getProgrammingConfig()?.getCpu(), [
+      cpu: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getCpu(), [
         Validators.required,
         Validators.min(0.5),
         Validators.max(64),
       ]),
-      memory: new FormControl(
+      memory: new UntypedFormControl(
         Math.round((this.assignment.getProgrammingConfig()?.getMemory() || 0) / 1024 / 1024),
         [Validators.required, Validators.min(128), Validators.max(65536)],
       ),
-      uploadLimit: new FormControl(Math.round(this.assignment.getUploadLimit() / 1024), [
+      uploadLimit: new UntypedFormControl(Math.round(this.assignment.getUploadLimit() / 1024), [
         Validators.required,
         Validators.min(1),
         Validators.max(8192),
       ]),
-      timeout: new FormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
+      timeout: new UntypedFormControl(this.assignment.getProgrammingConfig()?.getTimeout(), [
         Validators.required,
         Validators.min(1),
         Validators.max(18000),
       ]),
-      description: new FormControl(this.assignment.getDescription(), [Validators.required]),
+      description: new UntypedFormControl(this.assignment.getDescription(), [Validators.required]),
     });
   }
 

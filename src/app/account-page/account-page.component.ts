@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription, tap } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,16 +14,16 @@ import { ConfirmDialogModel } from '../common/confirm-dialog/confirm-dialog-mode
   styleUrls: ['./account-page.component.css'],
 })
 export class AccountPageComponent implements OnInit, OnDestroy {
-  basicInfoForm = new FormGroup({
-    username: new FormControl({ disabled: true, value: '' }),
-    email: new FormControl({ disabled: true, value: '' }),
-    studentId: new FormControl({ disabled: false, value: '' }),
-    nickname: new FormControl({ disabled: false, value: '' }),
+  basicInfoForm = new UntypedFormGroup({
+    username: new UntypedFormControl({ disabled: true, value: '' }),
+    email: new UntypedFormControl({ disabled: true, value: '' }),
+    studentId: new UntypedFormControl({ disabled: false, value: '' }),
+    nickname: new UntypedFormControl({ disabled: false, value: '' }),
   });
 
-  editPasswordForm = new FormGroup({
-    oldPassword: new FormControl(''),
-    newPassword: new FormControl('', [Validators.minLength(8)]),
+  editPasswordForm = new UntypedFormGroup({
+    oldPassword: new UntypedFormControl(''),
+    newPassword: new UntypedFormControl('', [Validators.minLength(8)]),
   });
 
   userSubscription?: Subscription;

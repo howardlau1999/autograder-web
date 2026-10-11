@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../../api/api.service';
 import { AddCourseMembersRequest } from '../../../../api/proto/api_pb';
@@ -17,10 +17,10 @@ export interface AddMemberDialogData {
 export class AddMemberDialogComponent implements OnInit {
   courseId: number;
 
-  addMemberForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    name: new FormControl('', [Validators.required]),
-    role: new FormControl(0),
+  addMemberForm = new UntypedFormGroup({
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    name: new UntypedFormControl('', [Validators.required]),
+    role: new UntypedFormControl(0),
   });
 
   constructor(

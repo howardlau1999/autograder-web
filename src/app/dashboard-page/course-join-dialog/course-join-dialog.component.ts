@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -13,7 +13,7 @@ import { NotificationService } from '../../service/notification.service';
   styleUrls: ['./course-join-dialog.component.css'],
 })
 export class CourseJoinDialogComponent implements OnInit {
-  invitationCode = new FormControl('');
+  invitationCode = new UntypedFormControl('');
 
   joinSubscription?: Subscription;
 

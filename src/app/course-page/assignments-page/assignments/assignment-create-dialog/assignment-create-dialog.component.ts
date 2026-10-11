@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
-import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { AssignmentService } from '../../../../service/assignment.service';
@@ -38,35 +38,35 @@ export class AssignmentCreateDialogComponent implements OnInit {
 
   tags: string[] = [];
 
-  submissionLimitForm = new FormGroup({
-    total: new FormControl(0),
-    frequency: new FormControl(1),
-    period: new FormControl(1),
+  submissionLimitForm = new UntypedFormGroup({
+    total: new UntypedFormControl(0),
+    frequency: new UntypedFormControl(1),
+    period: new UntypedFormControl(1),
   });
 
-  programmingAssignmentForm = new FormGroup(
+  programmingAssignmentForm = new UntypedFormGroup(
     {
-      name: new FormControl('', [Validators.required]),
-      releaseDate: new FormControl(DateTime.now()),
-      dueDate: new FormControl(DateTime.now().plus({ days: 7 })),
-      dockerImage: new FormControl('', [Validators.required]),
-      cpu: new FormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
-      memory: new FormControl(4096, [
+      name: new UntypedFormControl('', [Validators.required]),
+      releaseDate: new UntypedFormControl(DateTime.now()),
+      dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
+      dockerImage: new UntypedFormControl('', [Validators.required]),
+      cpu: new UntypedFormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
+      memory: new UntypedFormControl(4096, [
         Validators.required,
         Validators.min(128),
         Validators.max(65536),
       ]),
-      uploadLimit: new FormControl(128, [
+      uploadLimit: new UntypedFormControl(128, [
         Validators.required,
         Validators.min(1),
         Validators.max(8192),
       ]),
-      timeout: new FormControl(600, [
+      timeout: new UntypedFormControl(600, [
         Validators.required,
         Validators.min(1),
         Validators.max(18000),
       ]),
-      description: new FormControl('', [Validators.required]),
+      description: new UntypedFormControl('', [Validators.required]),
     },
     { validators: [AssignmentDateValidator] },
   );

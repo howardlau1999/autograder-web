@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { grpc } from '@improbable-eng/grpc-web';
 import { toLowerCase } from 'fp-ts/string';
 import { of } from 'rxjs';
@@ -53,7 +53,7 @@ export class ErrorService {
     );
   }
 
-  handleFormError(form: FormGroup): (err: FormError) => any {
+  handleFormError(form: UntypedFormGroup): (err: FormError) => any {
     return (err: FormError) => {
       const { field, error, message } = err;
       const control = form.get(field);

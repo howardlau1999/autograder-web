@@ -9,8 +9,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import 'prismjs/themes/prism.css';
-import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import type { Editor } from '@toast-ui/editor';
 
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';

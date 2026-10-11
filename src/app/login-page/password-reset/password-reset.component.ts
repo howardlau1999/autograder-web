@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -25,10 +25,10 @@ export class PasswordResetComponent implements OnInit {
 
   siteKey = this.userService.hcaptchaSiteKey;
 
-  resetForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    code: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
+  resetForm = new UntypedFormGroup({
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    code: new UntypedFormControl('', [Validators.required]),
+    password: new UntypedFormControl('', [Validators.required]),
   });
 
   constructor(

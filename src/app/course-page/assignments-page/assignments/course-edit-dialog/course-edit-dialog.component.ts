@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { CourseService } from '../../../../service/course.service';
@@ -25,15 +25,15 @@ export class CourseEditDialogComponent implements OnInit {
 
   @Output() confirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  courseForm!: FormGroup;
+  courseForm!: UntypedFormGroup;
 
   constructor(private courseService: CourseService, private errorService: ErrorService) {}
 
   ngOnInit(): void {
-    this.courseForm = new FormGroup({
-      name: new FormControl(this.name, [Validators.required]),
-      shortName: new FormControl(this.shortName, [Validators.required]),
-      description: new FormControl(this.description, [Validators.required]),
+    this.courseForm = new UntypedFormGroup({
+      name: new UntypedFormControl(this.name, [Validators.required]),
+      shortName: new UntypedFormControl(this.shortName, [Validators.required]),
+      description: new UntypedFormControl(this.description, [Validators.required]),
     });
   }
 

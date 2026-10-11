@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { match } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
@@ -19,9 +19,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   githubLoginURL = this.userService.githubLoginURL;
 
-  loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+  loginForm = new UntypedFormGroup({
+    username: new UntypedFormControl('', [Validators.required]),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(4)]),
   });
 
   userSubscription: Subscription;

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { AssignmentDateValidator } from '../../../course-page/assignments-page/assignments/assignment-create-dialog/assignment-create-dialog.component';
@@ -23,30 +23,30 @@ export class ProgrammingAssignmentFormComponent implements OnInit {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
-  @Input() submissionLimitConfig = new FormGroup({
-    total: new FormControl(0),
-    frequency: new FormControl(0),
-    period: new FormControl(0),
+  @Input() submissionLimitConfig = new UntypedFormGroup({
+    total: new UntypedFormControl(0),
+    frequency: new UntypedFormControl(0),
+    period: new UntypedFormControl(0),
   });
 
-  @Input() formGroup = new FormGroup(
+  @Input() formGroup = new UntypedFormGroup(
     {
-      name: new FormControl('', [Validators.required]),
-      releaseDate: new FormControl(DateTime.now()),
-      dueDate: new FormControl(DateTime.now().plus({ days: 7 })),
-      dockerImage: new FormControl('', [Validators.required]),
-      cpu: new FormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
-      memory: new FormControl(4096, [
+      name: new UntypedFormControl('', [Validators.required]),
+      releaseDate: new UntypedFormControl(DateTime.now()),
+      dueDate: new UntypedFormControl(DateTime.now().plus({ days: 7 })),
+      dockerImage: new UntypedFormControl('', [Validators.required]),
+      cpu: new UntypedFormControl(1, [Validators.required, Validators.min(0.5), Validators.max(64)]),
+      memory: new UntypedFormControl(4096, [
         Validators.required,
         Validators.min(128),
         Validators.max(65536),
       ]),
-      timeout: new FormControl(600, [
+      timeout: new UntypedFormControl(600, [
         Validators.required,
         Validators.min(1),
         Validators.max(18000),
       ]),
-      description: new FormControl('', [Validators.required]),
+      description: new UntypedFormControl('', [Validators.required]),
     },
     { validators: [AssignmentDateValidator] },
   );

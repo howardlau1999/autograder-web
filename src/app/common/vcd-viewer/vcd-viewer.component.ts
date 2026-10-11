@@ -96,7 +96,7 @@ export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.progress = 0;
         this.downloadProgress = 0;
         const reader = resp.body.getReader();
-        const readCallback = (readResult: ReadableStreamDefaultReadResult<Uint8Array>) => {
+        const readCallback = (readResult: ReadableStreamReadResult<Uint8Array>) => {
           const { done, value } = readResult;
           if (done || !value) {
             return;

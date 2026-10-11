@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-course-form',
@@ -7,10 +7,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./course-form.component.css'],
 })
 export class CourseFormComponent implements OnInit {
-  @Input() courseForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    shortName: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+  @Input() courseForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required]),
+    shortName: new UntypedFormControl('', [Validators.required]),
+    description: new UntypedFormControl('', [Validators.required]),
   });
 
   ngOnInit(): void {}

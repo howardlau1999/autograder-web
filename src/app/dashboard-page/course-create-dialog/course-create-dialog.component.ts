@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
 import { CourseService } from '../../service/course.service';
@@ -14,10 +14,10 @@ import { ErrorService } from '../../service/error.service';
 export class CourseCreateDialogComponent implements OnInit {
   creating: boolean = false;
 
-  courseForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    shortName: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+  courseForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required]),
+    shortName: new UntypedFormControl('', [Validators.required]),
+    description: new UntypedFormControl('', [Validators.required]),
   });
 
   constructor(
