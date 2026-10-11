@@ -132,10 +132,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "autograder-web:build:production"
+              "buildTarget": "autograder-web:build:production"
             },
             "development": {
-              "browserTarget": "autograder-web:build:development"
+              "buildTarget": "autograder-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -143,7 +143,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "autograder-web:build"
+            "buildTarget": "autograder-web:build"
           }
         },
         "test": {
