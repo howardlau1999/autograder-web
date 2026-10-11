@@ -14,7 +14,7 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
@@ -24,7 +24,9 @@
       "crypto": ["./node_modules/crypto-browserify"],
       "stream": ["./node_modules/stream-browserify"],
       "path": ["./node_modules/path-browserify"],
-      "fs": ["./node_modules/fs-web"]
+      "fs": ["./node_modules/fs-web"],
+      "buffer": ["./node_modules/buffer"],
+      "toast-ui-editor-types": ["./node_modules/@toast-ui/editor/types/index"]
     },
     "useDefineForClassFields": false
   },
