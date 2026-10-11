@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import type { Editor } from '@toast-ui/editor';
 
@@ -28,6 +29,7 @@ declare function renderMathInElement(elem: Element, options?: KatexOptions): voi
       useExisting: MarkdownEditorComponent,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlValueAccessor {

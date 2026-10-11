@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -19,6 +20,7 @@ import { SubmissionService } from '../../../../service/submission.service';
   selector: 'app-inspection-table',
   templateUrl: './inspection-table.component.html',
   styleUrls: ['./inspection-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class InspectionTableComponent implements OnInit, AfterViewInit {

@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -10,6 +18,7 @@ import { UploadEntry } from '../upload.entry';
   selector: 'app-files-table',
   templateUrl: './files-table.component.html',
   styleUrls: ['./files-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FilesTableComponent implements AfterViewInit {

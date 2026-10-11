@@ -6,6 +6,7 @@ import {
   OnChanges,
   ViewChild,
   ViewEncapsulation,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
@@ -48,6 +49,7 @@ export const DEFAULT_KATEX_OPTIONS: KatexOptions = {
   // The rendered markup is not part of the template, so styles for it have
   // to be global; keep encapsulation off so the host class can be targeted.
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SafeMarkdownComponent implements OnChanges, AfterViewInit {

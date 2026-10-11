@@ -6,6 +6,7 @@ import {
   OnDestroy,
   Output,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -41,6 +42,7 @@ import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
   selector: 'app-submissions-table',
   templateUrl: './submissions-table.component.html',
   styleUrls: ['./submissions-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SubmissionsTableComponent implements AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { debounceTime, Observable, of, Subject, Subscription, switchMap, zipWith } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { UserService } from '../../../service/user.service';
   selector: 'app-inspection',
   templateUrl: './inspection.component.html',
   styleUrls: ['./inspection.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class InspectionComponent implements OnInit, OnDestroy {

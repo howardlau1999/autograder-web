@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { NotificationService } from '../../service/notification.service';
   selector: 'app-course-join-dialog',
   templateUrl: './course-join-dialog.component.html',
   styleUrls: ['./course-join-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CourseJoinDialogComponent implements OnInit {

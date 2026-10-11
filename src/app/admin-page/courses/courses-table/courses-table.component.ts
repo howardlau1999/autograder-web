@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -12,6 +12,7 @@ import { UserService } from '../../../service/user.service';
   selector: 'app-courses-table',
   templateUrl: './courses-table.component.html',
   styleUrls: ['./courses-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CoursesTableComponent implements AfterViewInit {

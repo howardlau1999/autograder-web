@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { catchError, of, Subscription } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
@@ -17,6 +18,7 @@ const vcdrom = require('./vcdrom');
   selector: 'app-vcd-viewer',
   templateUrl: './vcd-viewer.component.html',
   styleUrls: ['./vcd-viewer.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class VcdViewerComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { mergeMap, Observable, of, Subject, Subscription, switchMap, tap, timer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { NotificationService } from '../../../service/notification.service';
   selector: 'app-submissions',
   templateUrl: './submissions.component.html',
   styleUrls: ['./submissions.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SubmissionsComponent implements OnInit, OnDestroy {

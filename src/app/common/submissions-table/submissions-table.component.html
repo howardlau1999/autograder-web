@@ -26,12 +26,12 @@
     }
   </span>
 </div>
-} @if (!submissionsLoading && !dataSource?.data?.length) {
+} @if (!submissionsLoading && !dataSource.data.length) {
 <h3>暂无提交</h3>
 }
 <table
   class="submission-history-table"
-  [class.hidden]="submissionsLoading || !dataSource?.data?.length"
+  [class.hidden]="submissionsLoading || !dataSource.data.length"
   mat-table
   matSort
   multiTemplateDataRows
@@ -135,8 +135,8 @@
   ></tr>
 </table>
 <mat-paginator
-  [class.hidden]="submissionsLoading || !dataSource?.data?.length"
-  [length]="dataSource?.data?.length"
+  [class.hidden]="submissionsLoading || !dataSource.data.length"
+  [length]="dataSource.data.length"
   [pageSizeOptions]="[5, 10]"
   [pageSize]="10"
   showFirstLastButtons

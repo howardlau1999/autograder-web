@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -11,6 +11,7 @@ interface TabLink {
   selector: 'app-submission-page',
   templateUrl: './submission-page.component.html',
   styleUrls: ['./submission-page.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SubmissionPageComponent {

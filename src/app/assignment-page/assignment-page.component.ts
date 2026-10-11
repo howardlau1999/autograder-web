@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { UserService } from '../service/user.service';
   selector: 'app-assignment-page',
   templateUrl: './assignment-page.component.html',
   styleUrls: ['./assignment-page.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AssignmentPageComponent implements OnInit {

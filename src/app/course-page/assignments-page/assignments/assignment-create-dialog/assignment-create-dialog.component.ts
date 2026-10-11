@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
 import {
@@ -34,6 +34,7 @@ export const AssignmentDateValidator: ValidatorFn = (group): ValidationErrors =>
   selector: 'app-assignment-course-create-dialog',
   templateUrl: './assignment-create-dialog.component.html',
   styleUrls: ['./assignment-create-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AssignmentCreateDialogComponent implements OnInit {

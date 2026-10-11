@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { GraderStatusMetadata } from '../../../api/proto/model_pb';
   selector: 'app-graders-table',
   templateUrl: './graders-table.component.html',
   styleUrls: ['./graders-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class GradersTableComponent implements AfterViewInit {

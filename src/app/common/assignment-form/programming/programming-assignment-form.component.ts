@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
@@ -9,6 +16,7 @@ import { AssignmentDateValidator } from '../../../course-page/assignments-page/a
   selector: 'app-assignment-form',
   templateUrl: './programming-assignment-form.component.html',
   styleUrls: ['./programming-assignment-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProgrammingAssignmentFormComponent implements OnInit {

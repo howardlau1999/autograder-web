@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
 import { match } from 'fp-ts/Either';
@@ -9,6 +16,7 @@ import { ErrorService } from '../../../../service/error.service';
   selector: 'app-course-edit-dialog',
   templateUrl: './course-edit-dialog.component.html',
   styleUrls: ['./course-edit-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CourseEditDialogComponent implements OnInit {

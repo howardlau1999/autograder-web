@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CourseRole, CourseRoleMap } from '../../../../api/proto/model_pb';
@@ -14,6 +21,7 @@ import { CourseRole, CourseRoleMap } from '../../../../api/proto/model_pb';
       useExisting: RoleSelectComponent,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class RoleSelectComponent implements OnInit, ControlValueAccessor {

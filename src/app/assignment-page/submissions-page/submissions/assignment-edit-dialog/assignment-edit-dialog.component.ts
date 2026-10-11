@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { pipe } from 'fp-ts/function';
@@ -13,6 +21,7 @@ import { ErrorService } from '../../../../service/error.service';
   selector: 'app-assignment-edit-dialog',
   templateUrl: './assignment-edit-dialog.component.html',
   styleUrls: ['./assignment-edit-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AssignmentEditDialogComponent implements OnInit, OnDestroy {

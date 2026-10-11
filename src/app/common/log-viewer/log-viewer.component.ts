@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { catchError, Subscription } from 'rxjs';
 import { FitAddon } from 'xterm-addon-fit';
@@ -17,6 +18,7 @@ import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
   selector: 'app-log-viewer',
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {

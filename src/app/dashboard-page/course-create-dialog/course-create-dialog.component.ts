@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { pipe } from 'fp-ts/function';
@@ -10,6 +10,7 @@ import { ErrorService } from '../../service/error.service';
   selector: 'app-assignment-course-create-dialog',
   templateUrl: './course-create-dialog.component.html',
   styleUrls: ['./course-create-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CourseCreateDialogComponent implements OnInit {

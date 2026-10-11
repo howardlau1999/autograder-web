@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap, switchMap, tap } from 'rxjs/operators';
 import { catchError, from, throwError } from 'rxjs';
@@ -9,6 +9,7 @@ import { NotificationService } from '../../service/notification.service';
   selector: 'app-github-login',
   templateUrl: './github-login.component.html',
   styleUrls: ['./github-login.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class GithubLoginComponent implements OnInit {

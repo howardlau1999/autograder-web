@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { mergeMap, switchMap, tap } from 'rxjs/operators';
 import { catchError, from, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { UserService } from '../../service/user.service';
   selector: 'app-github-bind',
   templateUrl: './github-bind.component.html',
   styleUrls: ['./github-bind.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class GithubBindComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface RemoveMemberDialogData {
@@ -10,6 +10,7 @@ export interface RemoveMemberDialogData {
   selector: 'app-remove-member-dialog',
   templateUrl: './remove-member-dialog.component.html',
   styleUrls: ['./remove-member-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class RemoveMemberDialogComponent implements OnInit {

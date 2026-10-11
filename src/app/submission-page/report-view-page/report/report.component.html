@@ -2,7 +2,7 @@
 @if (report$ | async; as report) {
 <div class="report-container">
   <mat-accordion class="testcase-accordion" multi>
-    @if (report.getLeaderboardList()?.length) {
+    @if (report.getLeaderboardList().length) {
     <mat-expansion-panel>
       <mat-expansion-panel-header> 排行榜分数</mat-expansion-panel-header>
       <mat-list>

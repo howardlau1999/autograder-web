@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription, tap } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { ConfirmDialogModel } from '../common/confirm-dialog/confirm-dialog-mode
   selector: 'app-account-page',
   templateUrl: './account-page.component.html',
   styleUrls: ['./account-page.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AccountPageComponent implements OnInit, OnDestroy {
