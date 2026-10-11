@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, repeatWhen } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { KatexOptions } from 'ngx-markdown-latex';
+import { KatexOptions } from '../../../common/safe-markdown/safe-markdown.component';
 import { UploadDialogComponent } from '../../../common/submissions-table/upload-dialog/upload-dialog.component';
 import { Assignment, CourseRole, SubmissionLimitConfig } from '../../../api/proto/model_pb';
 import { SubmissionsItem } from '../../../common/submissions-table/submissions-table-data-source';

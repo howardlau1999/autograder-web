@@ -41,11 +41,12 @@
         </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
-            <markdown
-              katex
+            <app-safe-markdown
+              [katex]="true"
               [katexOptions]="options"
+              [staffContent]="true"
               [data]="assignment.getDescription()"
-            ></markdown>
+            ></app-safe-markdown>
           </div>
         </mat-card-content>
       </div>

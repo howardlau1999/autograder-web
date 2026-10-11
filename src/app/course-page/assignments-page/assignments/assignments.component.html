@@ -40,7 +40,12 @@
         <mat-card-subtitle> #{{ courseId }} </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
-            <markdown katex [katexOptions]="options" [data]="course.getDescription()"></markdown>
+            <app-safe-markdown
+              [katex]="true"
+              [katexOptions]="options"
+              [staffContent]="true"
+              [data]="course.getDescription()"
+            ></app-safe-markdown>
           </div>
         </mat-card-content>
       </div>

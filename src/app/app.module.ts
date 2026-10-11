@@ -1,4 +1,4 @@
-import { NgModule, SecurityContext } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,11 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
-import { MarkdownModule } from 'ngx-markdown-latex';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,10 +29,6 @@ import { PaginatorIntl } from './service/paginator-intl.service';
     MatSnackBarModule,
     MatTooltipModule,
     MatLuxonDateModule,
-    MarkdownModule.forRoot({
-      loader: HttpClient,
-      sanitize: SecurityContext.NONE,
-    }),
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } },

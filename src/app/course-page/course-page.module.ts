@@ -15,10 +15,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MarkdownModule } from 'ngx-markdown-latex';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
+import { SafeMarkdownModule } from '../common/safe-markdown/safe-markdown.module';
 import { CoursePageRoutingModule } from './course-page-routing.module';
 import { CoursePageComponent } from './course-page.component';
 import { MembersComponent } from './members-page/members/members.component';
@@ -66,7 +66,7 @@ import { CourseFormModule } from '../common/course-form/course-form.module';
     MatStepperModule,
     MatListModule,
     MatToolbarModule,
-    MarkdownModule.forChild(),
+    SafeMarkdownModule,
     MatFormFieldModule,
     MatPaginatorModule,
     MatInputModule,

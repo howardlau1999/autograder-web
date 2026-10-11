@@ -13,9 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MarkdownModule } from 'ngx-markdown-latex';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SafeMarkdownModule } from '../../common/safe-markdown/safe-markdown.module';
 import { SubmissionsComponent } from './submissions/submissions.component';
 import { AssignmentEditDialogComponent } from './submissions/assignment-edit-dialog/assignment-edit-dialog.component';
 import { SubmissionsPageRoutingModule } from './submissions-page-routing.module';
@@ -44,7 +44,7 @@ import { SubmissionsTableModule } from '../../common/submissions-table/submissio
     MatProgressBarModule,
     MatTooltipModule,
     MatSlideToggleModule,
-    MarkdownModule.forChild(),
+    SafeMarkdownModule,
     MatSortModule,
     MatPaginatorModule,
     MatInputModule,

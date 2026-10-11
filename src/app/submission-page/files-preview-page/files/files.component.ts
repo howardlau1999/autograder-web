@@ -32,14 +32,13 @@ export interface FlatTreeNode {
   path: string;
 }
 
-// Wraps a submitted file in a fenced code block that its content cannot close.
-// The markdown pipeline renders with sanitization disabled (see app.module.ts),
-// so anything escaping the fence would run as live HTML in the reviewer's
-// session. A closing fence must be at least as long as the opening one, so the
+// Wraps a submitted file in a fenced code block that its content cannot close,
+// so the whole file shows up as one code block instead of being interpreted as
+// markdown. A closing fence must be at least as long as the opening one, so the
 // fence is made longer than any backtick run in the content, and the language
-// tag is reduced to characters that cannot terminate the info string. This
-// deliberately applies to .md files as well: they preview as source, because
-// rendering student-supplied markdown unsanitized is not safe.
+// tag is reduced to characters that cannot terminate the info string. (The
+// output is sanitized by SafeMarkdownComponent either way; this is about
+// showing the file faithfully.)
 export function fenceUntrustedContent(content: string, ext: string): string {
   const lang = ext.replace(/[^A-Za-z0-9_+#.-]/g, '');
   let longestRun = 0;
@@ -164,7 +163,9 @@ export class FilesComponent implements OnInit, OnDestroy {
               map((data) => {
                 const parts = filename.split('.');
                 const ext = parts.length > 1 ? parts[parts.length - 1] : '';
-                return fenceUntrustedContent(data, ext);
+                // Markdown files are rendered (sanitized, no inline styles);
+                // everything else is shown as source.
+                return ext === 'md' ? data : fenceUntrustedContent(data, ext);
               }),
             )
           : of('');

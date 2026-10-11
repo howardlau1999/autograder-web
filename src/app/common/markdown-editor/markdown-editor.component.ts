@@ -15,7 +15,7 @@ import type { Editor } from '@toast-ui/editor';
 
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { KatexOptions } from 'ngx-markdown-latex';
+import { KatexOptions } from '../safe-markdown/safe-markdown.component';
 
 declare function renderMathInElement(elem: Element, options?: KatexOptions): void;
 
