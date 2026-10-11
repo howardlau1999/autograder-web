@@ -125,6 +125,12 @@
               "sourceMap": true,
               "namedChunks": true
             },
+            "server-embed": {
+              "outputPath": {
+                "base": "../pkg/web/dist",
+                "browser": ""
+              }
+            },
             "testing": {
               "aot": false,
               "optimization": false,

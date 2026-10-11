@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "install:vcd-stream": "npm install --no-save --ignore-scripts vcd-stream@1.3.0"
+    "install:vcd-stream": "npm install --no-save --ignore-scripts vcd-stream@1.3.0",
+    "build:server": "ng build --configuration production,server-embed"
   },
   "private": true,
   "dependencies": {
