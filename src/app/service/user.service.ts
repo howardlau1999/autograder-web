@@ -71,13 +71,46 @@ export class UserService {
     return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
   }
 
+  // Returns the per-tab OAuth state for key, creating one only if none is
+  // stored yet. The GitHub callback is a full page load that constructs this
+  // service again, so the state issued before the redirect must be reused
+  // here; generating a fresh one unconditionally would make every callback
+  // fail its own check.
+  private static loadOrCreateOAuthState(key: string): string {
+    const existing = sessionStorage.getItem(key);
+    if (existing) {
+      return existing;
+    }
+    const state = UserService.generateOAuthState();
+    sessionStorage.setItem(key, state);
+    return state;
+  }
+
   // Compares the state echoed back by GitHub against the per-tab value we
   // stored before redirecting. sessionStorage is unreadable cross-origin, so a
-  // forged callback cannot carry a matching state. Kept (not deleted) so a
-  // legitimate retry within the same session still validates.
+  // forged callback cannot carry a matching state. A state that verified is
+  // consumed and replaced, so the same callback URL cannot be replayed.
   verifyGithubState(key: string, state: string | null | undefined): boolean {
     const expected = sessionStorage.getItem(key);
-    return expected !== null && !!state && expected === state;
+    const ok = expected !== null && !!state && expected === state;
+    if (ok) {
+      sessionStorage.removeItem(key);
+      this.refreshGithubURLs();
+    }
+    return ok;
+  }
+
+  private refreshGithubURLs() {
+    const baseGithubURL = `https://github.com/login/oauth/authorize?client_id=${
+      this.githubClientId
+    }&scope=${encodeURIComponent('read:user user:email')}`;
+    const loginState = UserService.loadOrCreateOAuthState(UserService.GITHUB_LOGIN_STATE_KEY);
+    this.githubLoginURL = `${baseGithubURL}&state=${loginState}`;
+    const bindState = UserService.loadOrCreateOAuthState(UserService.GITHUB_BIND_STATE_KEY);
+    this.githubBindURL = `${baseGithubURL}&redirect_uri=${encodeURIComponent(
+      // eslint-disable-next-line no-restricted-globals
+      `${location.protocol}//${location.host}/github/bind`,
+    )}&state=${bindState}`;
   }
 
   constructor(
@@ -88,29 +121,20 @@ export class UserService {
     this.hcaptchaSiteKey = environment.hcaptchaSiteKey;
     this.githubClientId = environment.githubClientId;
 
+    // The server injects these into index.html; an unconfigured server writes
+    // an empty string, which must not override the build-time fallback.
     const serverHcaptchaSiteKey = localStorage.getItem('server_hcaptcha_site_key');
-    if (serverHcaptchaSiteKey !== null) {
+    if (serverHcaptchaSiteKey) {
       this.hcaptchaSiteKey = serverHcaptchaSiteKey;
     }
     const serverGithubClientId = localStorage.getItem('server_github_client_id');
-    if (serverGithubClientId !== null) {
+    if (serverGithubClientId) {
       this.githubClientId = serverGithubClientId;
     }
 
-    const baseGithubURL = `https://github.com/login/oauth/authorize?client_id=${
-      this.githubClientId
-    }&scope=${encodeURIComponent('read:user user:email')}`;
-
-    const loginState = UserService.generateOAuthState();
-    sessionStorage.setItem(UserService.GITHUB_LOGIN_STATE_KEY, loginState);
-    this.githubLoginURL = `${baseGithubURL}&state=${loginState}`;
-
-    const bindState = UserService.generateOAuthState();
-    sessionStorage.setItem(UserService.GITHUB_BIND_STATE_KEY, bindState);
-    this.githubBindURL = `${baseGithubURL}&redirect_uri=${encodeURIComponent(
-      // eslint-disable-next-line no-restricted-globals
-      `${location.protocol}//${location.host}/github/bind`,
-    )}&state=${bindState}`;
+    this.githubLoginURL = '';
+    this.githubBindURL = '';
+    this.refreshGithubURLs();
     this.tokenService.user$.subscribe((user) => {
       if (user !== null) {
         this.updateUser(
