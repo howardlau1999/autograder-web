@@ -9,8 +9,8 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { catchError, Subscription } from 'rxjs';
-import { FitAddon } from 'xterm-addon-fit';
-import type { Terminal } from 'xterm';
+import { FitAddon } from '@xterm/addon-fit';
+import type { Terminal } from '@xterm/xterm';
 import { SubmissionService } from '../../service/submission.service';
 import { retryExponentialBackoff } from '../operator/retryExponentialBackoff';
 
@@ -58,7 +58,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private submissionService: SubmissionService) {}
 
   ngOnInit(): void {
-    import('xterm').then(({ Terminal }) => {
+    import('@xterm/xterm').then(({ Terminal }) => {
       this.term = new Terminal({ rows: 40, convertEol: true, disableStdin: true });
       this.fitAddon = new FitAddon();
       this.term.loadAddon(this.fitAddon as any);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -13,9 +13,10 @@
       rel="stylesheet"
     />
     <link href="https://fonts.loli.net/icon?family=Material+Icons" rel="stylesheet" />
-    <link href="prism-ghcolors.css" rel="stylesheet" />
-    <link href="toastui-editor.css" rel="stylesheet" />
-    <link href="codemirror.css" rel="stylesheet" />
+    <!-- Copied in as assets, so the critical-CSS inliner must not look for them. -->
+    <link href="prism-ghcolors.css" rel="stylesheet" data-beasties-skip />
+    <link href="toastui-editor.css" rel="stylesheet" data-beasties-skip />
+    <link href="codemirror.css" rel="stylesheet" data-beasties-skip />
     <script>
       if ('{{.ServerProvided}}' === 'true') {
         window.localStorage.setItem('server_hcaptcha_site_key', '{{.HcaptchaSiteKey}}');
@@ -27,7 +28,6 @@
     </script>
     <script src="katex.min.js"></script>
     <script src="auto-render.js"></script>
-    <script src="marked.min.js"></script>
     <script src="prism.js"></script>
     <script src="prism-csharp.min.js"></script>
     <script src="prism-java.min.js"></script>

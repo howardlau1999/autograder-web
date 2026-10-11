@@ -203,13 +203,11 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.manifestId$.pipe(skipWhile((manifestId) => manifestId === 0));
   }
 
-  fromZip(zipReader: zipjs.ZipReader, manifestId: number) {
+  fromZip(zipReader: zipjs.ZipReader<Blob>, manifestId: number) {
     return from(zipReader.getEntries()).pipe(
       mergeMap((entries) => {
         zipReader.close().then();
-        const fileEntries = entries.filter(
-          (entry) => !entry.directory && entry.getData !== undefined,
-        );
+        const fileEntries = entries.filter((entry): entry is zipjs.FileEntry => !entry.directory);
         const uploadEntries = fileEntries.map(
           (entry) => new UploadEntry(entry.filename, entry.uncompressedSize),
         );
@@ -229,11 +227,9 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         return from(fileEntries);
       }),
       concatMap((entry) => {
-        return zip(
-          of(entry.filename),
-          of(manifestId),
-          from(entry.getData!(new BlobWriter()) as Promise<Blob>),
-        ).pipe(delay(50));
+        return zip(of(entry.filename), of(manifestId), from(entry.getData(new BlobWriter()))).pipe(
+          delay(50),
+        );
       }),
     );
   }

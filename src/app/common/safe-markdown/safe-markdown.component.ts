@@ -103,7 +103,7 @@ export class SafeMarkdownComponent implements OnChanges, AfterViewInit {
       element.innerHTML = '';
       return;
     }
-    const html = marked.parse(markdown);
+    const html = marked.parse(markdown, { async: false });
     element.innerHTML = SafeMarkdownComponent.sanitize(html, this.staffContent);
     if (this.katex && typeof renderMathInElement === 'function') {
       renderMathInElement(element, this.katexOptions);
