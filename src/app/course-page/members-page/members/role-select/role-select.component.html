@@ -1,20 +1,24 @@
-<mat-form-field *ngIf="formField" class="role-form-field">
-  <mat-label *ngIf="label">
+@if (formField) {
+<mat-form-field class="role-form-field">
+  @if (label) {
+  <mat-label>
     {{ label }}
   </mat-label>
+  }
   <mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" [value]="role">
-    <mat-option *ngFor="let role of roles" [value]="role">
+    @for (role of roles; track role) {
+    <mat-option [value]="role">
       {{ mapRoleToString(role) }}
     </mat-option>
+    }
   </mat-select>
 </mat-form-field>
-<mat-select
-  (selectionChange)="onRoleChange($event)"
-  [disabled]="disabled"
-  *ngIf="!formField"
-  [value]="role"
->
-  <mat-option *ngFor="let role of roles" [value]="role">
+} @if (!formField) {
+<mat-select (selectionChange)="onRoleChange($event)" [disabled]="disabled" [value]="role">
+  @for (role of roles; track role) {
+  <mat-option [value]="role">
     {{ mapRoleToString(role) }}
   </mat-option>
+  }
 </mat-select>
+}

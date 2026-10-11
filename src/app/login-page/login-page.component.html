@@ -13,7 +13,9 @@
             required
           />
           <mat-icon matSuffix>account_circle</mat-icon>
-          <mat-error *ngIf="loginForm.get('username')?.invalid"> 请输入用户名 </mat-error>
+          @if (loginForm.get('username')?.invalid) {
+          <mat-error> 请输入用户名 </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field class="login-form-control">
@@ -27,12 +29,15 @@
             type="password"
           />
           <mat-icon matSuffix>password</mat-icon>
-          <mat-error *ngIf="loginForm.get('password')?.invalid">
-            <span *ngIf="loginForm.get('password')?.hasError('password'); else passwordRequired"
-              >用户名或密码错误</span
-            >
-            <ng-template #passwordRequired><span>请输入密码</span></ng-template>
+          @if (loginForm.get('password')?.invalid) {
+          <mat-error>
+            @if (loginForm.get('password')?.hasError('password')) {
+            <span>用户名或密码错误</span>
+            } @else {
+            <span>请输入密码</span>
+            }
           </mat-error>
+          }
         </mat-form-field>
 
         <p class="login-button-container">
@@ -51,8 +56,11 @@
             mat-raised-button
             type="submit"
           >
-            <span *ngIf="!loggingIn" class="login-button" i18n="login">登录</span>
-            <span *ngIf="loggingIn" class="login-button" i18n="login">登录中</span>
+            @if (!loggingIn) {
+            <span class="login-button" i18n="login">登录</span>
+            } @if (loggingIn) {
+            <span class="login-button" i18n="login">登录中</span>
+            }
           </button>
         </p>
       </form>

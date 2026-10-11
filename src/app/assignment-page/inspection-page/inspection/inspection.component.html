@@ -14,14 +14,11 @@
       <mat-form-field>
         <mat-label>搜索</mat-label>
         <input [formControl]="searchValueFormControl" matInput />
-        <button
-          (click)="searchValueFormControl.setValue('')"
-          *ngIf="searchValueFormControl.value"
-          mat-icon-button
-          matSuffix
-        >
+        @if (searchValueFormControl.value) {
+        <button (click)="searchValueFormControl.setValue('')" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
+        }
       </mat-form-field>
       <mat-icon>search</mat-icon>
     </form>

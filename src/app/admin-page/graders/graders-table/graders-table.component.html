@@ -4,14 +4,11 @@
     <mat-form-field>
       <mat-label>搜索</mat-label>
       <input [formControl]="searchFormControl" matInput name="search" />
-      <button
-        (click)="searchFormControl.setValue('')"
-        *ngIf="searchFormControl.value"
-        mat-icon-button
-        matSuffix
-      >
+      @if (searchFormControl.value) {
+      <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
         <mat-icon>close</mat-icon>
       </button>
+      }
     </mat-form-field>
     <button mat-icon-button>
       <mat-icon>search</mat-icon>
@@ -43,7 +40,9 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>标签</th>
       <td mat-cell *matCellDef="let row">
         <mat-chip-set>
-          <mat-chip *ngFor="let tag of row.tags"> {{ tag }}</mat-chip>
+          @for (tag of row.tags; track tag) {
+          <mat-chip> {{ tag }}</mat-chip>
+          }
         </mat-chip-set>
       </td>
     </ng-container>

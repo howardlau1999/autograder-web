@@ -1,8 +1,11 @@
 <div class="submissions-container">
   <mat-card class="assignment-info-card">
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <div [class.hidden]="loading" *ngIf="assignment$ | async as assignment">
-      <div *ngIf="editMode">
+    @if (loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @if (assignment$ | async; as assignment) {
+    <div [class.hidden]="loading">
+      @if (editMode) {
+      <div>
         <app-assignment-edit-dialog
           (confirmed)="onAssignmentEditConfirmed()"
           (cancelled)="onAssignmentEditCancelled()"
@@ -11,8 +14,10 @@
         >
         </app-assignment-edit-dialog>
       </div>
-      <div *ngIf="!editMode">
-        <div *ngIf="canWriteCourse" class="assignment-edit-button">
+      } @if (!editMode) {
+      <div>
+        @if (canWriteCourse) {
+        <div class="assignment-edit-button">
           <mat-slide-toggle (change)="onAnonymousChanged($event)" [checked]="anonymous"
             >匿名排行
           </mat-slide-toggle>
@@ -20,24 +25,22 @@
             <mat-icon>edit</mat-icon>
           </button>
         </div>
+        }
         <mat-card-title>
           {{ assignment.getName() }}
         </mat-card-title>
         <mat-card-subtitle>
           <p>#{{ assignmentId }}</p>
           <p>截止时间：{{ assignment.getDueDate()?.toDate() | date: 'YYYY-MM-dd HH:mm:ss' }}</p>
-          <p *ngIf="assignment.getSubmissionLimit()?.getTotal()">
-            提交次数限制：{{ assignment.getSubmissionLimit()?.getTotal() }} 次
-          </p>
-          <p
-            *ngIf="
-              assignment.getSubmissionLimit()?.getFrequency() &&
-              assignment.getSubmissionLimit()?.getPeriod()
-            "
-          >
+          @if (assignment.getSubmissionLimit()?.getTotal()) {
+          <p>提交次数限制：{{ assignment.getSubmissionLimit()?.getTotal() }} 次</p>
+          } @if ( assignment.getSubmissionLimit()?.getFrequency() &&
+          assignment.getSubmissionLimit()?.getPeriod() ) {
+          <p>
             提交频率限制：每 {{ assignment.getSubmissionLimit()?.getPeriod() }} 分钟
             {{ assignment.getSubmissionLimit()?.getFrequency() }} 次
           </p>
+          }
         </mat-card-subtitle>
         <mat-card-content>
           <div class="description">
@@ -50,7 +53,9 @@
           </div>
         </mat-card-content>
       </div>
+      }
     </div>
+    }
   </mat-card>
   <h2>提交记录</h2>
   <mat-card>

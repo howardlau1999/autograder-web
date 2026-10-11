@@ -1,10 +1,9 @@
-<ng-template #progressBar>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-template>
 <div class="assignments-container">
   <mat-card class="course-info-card">
-    <div *ngIf="course$ | async as course; else progressBar">
-      <div *ngIf="editMode">
+    @if (course$ | async; as course) {
+    <div>
+      @if (editMode) {
+      <div>
         <app-course-edit-dialog
           [courseId]="courseId"
           [name]="course.getName()"
@@ -14,17 +13,19 @@
           (confirmed)="onEditCourseConfirmed()"
         ></app-course-edit-dialog>
       </div>
-      <div *ngIf="!editMode">
-        <div *ngIf="canWriteCourse" class="course-edit-button">
-          <span *ngIf="course.getAllowsJoin()">
-            加课码：
-            <span *ngIf="course.getJoinCode(); else generateButton">{{
-              course.getJoinCode()
-            }}</span>
-            <ng-template #generateButton>
-              <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>点击生成</button>
-            </ng-template>
+      } @if (!editMode) {
+      <div>
+        @if (canWriteCourse) {
+        <div class="course-edit-button">
+          @if (course.getAllowsJoin()) {
+          <span>
+            加课码： @if (course.getJoinCode()) {
+            <span>{{ course.getJoinCode() }}</span>
+            } @else {
+            <button (click)="onGenerateJoinCodeClicked()" mat-flat-button>点击生成</button>
+            }
           </span>
+          }
           <mat-slide-toggle
             [checked]="course.getAllowsJoin()"
             (change)="onAllowsJoinChanged($event)"
@@ -34,6 +35,7 @@
             <mat-icon>edit</mat-icon>
           </button>
         </div>
+        }
         <mat-card-title>
           {{ course.getName() }}
         </mat-card-title>
@@ -49,15 +51,21 @@
           </div>
         </mat-card-content>
       </div>
+      }
     </div>
+    } @else {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
   </mat-card>
   <h2>作业列表</h2>
   <mat-card class="assignment-table-card">
     <div class="assignment-operations">
-      <button *ngIf="canWriteCourse" (click)="onAddAssignmentClicked()" mat-raised-button>
+      @if (canWriteCourse) {
+      <button (click)="onAddAssignmentClicked()" mat-raised-button>
         <mat-icon>add</mat-icon>
         &nbsp;添加作业
       </button>
+      }
     </div>
     <app-assignments-table
       class="full-width-table"

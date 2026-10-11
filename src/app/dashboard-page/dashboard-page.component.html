@@ -2,14 +2,18 @@
   <mat-toolbar color="primary">课程列表</mat-toolbar>
   <div class="buttons">
     <button (click)="joinCourse()" color="primary" mat-raised-button>加入课程</button>
-    <button *ngIf="showCreateCourse" (click)="createCourse()" mat-flat-button>
+    @if (showCreateCourse) {
+    <button (click)="createCourse()" mat-flat-button>
       <mat-icon>add</mat-icon>
       创建课程
     </button>
+    }
   </div>
   <div class="card-tile">
-    <mat-spinner *ngIf="loading"></mat-spinner>
-    <mat-card *ngFor="let card of cards$ | async" class="dashboard-card">
+    @if (loading) {
+    <mat-spinner></mat-spinner>
+    } @for (card of cards$ | async; track card) {
+    <mat-card class="dashboard-card">
       <mat-card-title>
         {{ card.getName() }}
       </mat-card-title>
@@ -20,5 +24,6 @@
         <a [routerLink]="['/courses', card.getCourseId()]" mat-button>进入</a>
       </mat-card-actions>
     </mat-card>
+    }
   </div>
 </div>

@@ -1,6 +1,9 @@
 <div>
-  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  <h3 *ngIf="!loading && !dataSource?.assignments?.length">暂无作业</h3>
+  @if (loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @if (!loading && !dataSource?.assignments?.length) {
+  <h3>暂无作业</h3>
+  }
   <table
     [class.hidden]="loading || !dataSource?.assignments?.length"
     aria-label="Elements"
@@ -23,7 +26,9 @@
     <ng-container matColumnDef="submitted">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>已提交</th>
       <td *matCellDef="let row" mat-cell>
-        <mat-icon *ngIf="row.getSubmitted()">done</mat-icon>
+        @if (row.getSubmitted()) {
+        <mat-icon>done</mat-icon>
+        }
       </td>
     </ng-container>
 

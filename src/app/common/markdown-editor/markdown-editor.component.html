@@ -1,2 +1,4 @@
 <div #editor>编辑器加载中……</div>
-<mat-spinner *ngIf="loading"></mat-spinner>
+@if (loading) {
+<mat-spinner></mat-spinner>
+}

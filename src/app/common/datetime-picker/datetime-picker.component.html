@@ -11,16 +11,18 @@
     />
     <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #datePicker disabled="false"></mat-datepicker>
-    <mat-error *ngIf="error">
+    @if (error) {
+    <mat-error>
       {{ error }}
     </mat-error>
+    }
   </mat-form-field>
   &nbsp;
   <mat-form-field class="time-select">
     <mat-select (selectionChange)="onHourChange($event)" [value]="timestamp.hour" placeholder="时">
-      <mat-option *ngFor="let hour of hours" [value]="hour">{{
-        hour.toString().padStart(2, '0')
-      }}</mat-option>
+      @for (hour of hours; track hour) {
+      <mat-option [value]="hour">{{ hour.toString().padStart(2, '0') }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
   &nbsp;:&nbsp;
@@ -30,9 +32,9 @@
       [value]="timestamp.minute"
       placeholder="分"
     >
-      <mat-option *ngFor="let minute of minutes" [value]="minute">{{
-        minute.toString().padStart(2, '0')
-      }}</mat-option>
+      @for (minute of minutes; track minute) {
+      <mat-option [value]="minute">{{ minute.toString().padStart(2, '0') }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
   &nbsp;:&nbsp;
@@ -42,9 +44,9 @@
       [value]="timestamp.second"
       placeholder="秒"
     >
-      <mat-option *ngFor="let second of seconds" [value]="second">{{
-        second.toString().padStart(2, '0')
-      }}</mat-option>
+      @for (second of seconds; track second) {
+      <mat-option [value]="second">{{ second.toString().padStart(2, '0') }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 </form>

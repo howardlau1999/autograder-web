@@ -4,14 +4,11 @@
     <mat-form-field>
       <mat-label>加课码</mat-label>
       <input [formControl]="invitationCode" matInput type="text" />
-      <button
-        (click)="invitationCode.setValue('')"
-        *ngIf="invitationCode.value"
-        mat-icon-button
-        matSuffix
-      >
+      @if (invitationCode.value) {
+      <button (click)="invitationCode.setValue('')" mat-icon-button matSuffix>
         <mat-icon>close</mat-icon>
       </button>
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>

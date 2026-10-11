@@ -50,12 +50,14 @@
   <mat-form-field>
     <mat-label>运行标签</mat-label>
     <mat-chip-grid #tagsList>
-      <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)">
+      @for (tag of tags; track tag) {
+      <mat-chip-row (removed)="removeTag(tag)">
         {{ tag }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip-row>
+      }
     </mat-chip-grid>
     <input
       [matChipInputFor]="tagsList"

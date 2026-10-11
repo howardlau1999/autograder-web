@@ -3,8 +3,10 @@
   <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
     <mat-tab label="基本信息">
       <div class="tab-content">
-        <mat-spinner class="spinner" *ngIf="infoLoading"></mat-spinner>
-        <div *ngIf="!infoLoading">
+        @if (infoLoading) {
+        <mat-spinner class="spinner"></mat-spinner>
+        } @if (!infoLoading) {
+        <div>
           <form [formGroup]="basicInfoForm" class="basic-info-form">
             <mat-form-field>
               <mat-label>用户名</mat-label>
@@ -24,21 +26,23 @@
             </mat-form-field>
           </form>
           <div class="github-integration">
-            <a [href]="githubBindURL" *ngIf="!githubLogin" mat-raised-button class="full-width">
+            @if (!githubLogin) {
+            <a [href]="githubBindURL" mat-raised-button class="full-width">
               <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
               绑定 GitHub 账号
             </a>
+            } @if (githubLogin) {
             <button
               (click)="onUnbindClicked()"
               [disabled]="unbinding"
               matTooltip="点击解绑"
-              *ngIf="githubLogin"
               mat-raised-button
               class="full-width"
             >
               <img style="height: 1em" src="assets/github.svg" alt="GitHub Icon" />
               已绑定 GitHub 账号 {{ githubLogin }}
             </button>
+            }
           </div>
           <div class="buttons">
             <span class="spacer"> </span>
@@ -52,6 +56,7 @@
             </button>
           </div>
         </div>
+        }
       </div>
     </mat-tab>
     <mat-tab label="密码修改">

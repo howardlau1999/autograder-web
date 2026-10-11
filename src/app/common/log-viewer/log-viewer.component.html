@@ -1,4 +1,4 @@
 <div #terminal></div>
-<button *ngIf="streamEnded" type="button" class="log-reconnect" (click)="reconnect()">
-  重新连接
-</button>
+@if (streamEnded) {
+<button type="button" class="log-reconnect" (click)="reconnect()">重新连接</button>
+}

@@ -1,8 +1,8 @@
 <div style="display: flex; flex-direction: column; width: 100%">
   <nav mat-tab-nav-bar mat-align-tabs="center" style="width: 100%">
+    @for (link of links; track link) {
     <a
       mat-tab-link
-      *ngFor="let link of links"
       [routerLink]="link.link"
       routerLinkActive
       #rla="routerLinkActive"
@@ -10,6 +10,7 @@
     >
       {{ link.label }}
     </a>
+    }
   </nav>
   <router-outlet></router-outlet>
 </div>

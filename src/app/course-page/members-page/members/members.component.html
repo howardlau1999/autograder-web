@@ -4,9 +4,11 @@
     <button (click)="onAddMemberClicked()" mat-raised-button>
       <mat-icon>person_add</mat-icon>&nbsp;添加成员
     </button>
-    <button *ngIf="false" (click)="onBatchAddMemberClicked()" mat-flat-button>
+    @if (false) {
+    <button (click)="onBatchAddMemberClicked()" mat-flat-button>
       <mat-icon>group_add</mat-icon>&nbsp;批量添加
     </button>
+    }
     <button mat-flat-button (click)="onExportClicked()">
       <mat-icon>download</mat-icon>&nbsp;导出成员名单
     </button>
@@ -15,14 +17,11 @@
       <mat-form-field>
         <mat-label>搜索</mat-label>
         <input [formControl]="searchFormControl" matInput name="search" />
-        <button
-          (click)="searchFormControl.setValue('')"
-          *ngIf="searchFormControl.value"
-          mat-icon-button
-          matSuffix
-        >
+        @if (searchFormControl.value) {
+        <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
+        }
       </mat-form-field>
       <button mat-icon-button>
         <mat-icon>search</mat-icon>
@@ -89,13 +88,11 @@
       <ng-container matColumnDef="operations">
         <th *matHeaderCellDef mat-header-cell>操作</th>
         <td *matCellDef="let row" mat-cell>
-          <button
-            *ngIf="row.getUserId() !== userId"
-            (click)="onDeleteMemberClicked(row)"
-            mat-icon-button
-          >
+          @if (row.getUserId() !== userId) {
+          <button (click)="onDeleteMemberClicked(row)" mat-icon-button>
             <mat-icon>person_remove</mat-icon>
           </button>
+          }
         </td>
       </ng-container>
 

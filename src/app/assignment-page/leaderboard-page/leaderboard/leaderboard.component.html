@@ -1,7 +1,8 @@
 <div class="leaderboard-container">
   <h2>排行榜</h2>
   <div style="display: flex; align-items: center">
-    <div style="display: flex; align-items: center" *ngIf="exportEnabled">
+    @if (exportEnabled) {
+    <div style="display: flex; align-items: center">
       <button (click)="onExportClicked()" mat-raised-button>
         <mat-icon>download</mat-icon>
         导出排行榜
@@ -15,37 +16,39 @@
         <mat-icon>cloud_download</mat-icon>
         导出排行榜提交
       </button>
-      &nbsp;
-      <div *ngIf="exportingSubmissions" style="display: flex; flex-direction: column; width: 8em">
+      &nbsp; @if (exportingSubmissions) {
+      <div style="display: flex; flex-direction: column; width: 8em">
         导出中（{{ exportedSubmissions }} / {{ exportingSubmissions }}）
         <mat-progress-bar
           mode="determinate"
           [value]="(exportedSubmissions / exportingSubmissions) * 100"
         ></mat-progress-bar>
       </div>
-      <button *ngIf="exportingSubmissions" (click)="onCancelExportClicked()" mat-flat-button>
+      } @if (exportingSubmissions) {
+      <button (click)="onCancelExportClicked()" mat-flat-button>
         <mat-icon>cancel</mat-icon>
         取消导出
       </button>
+      }
     </div>
+    }
     <span style="flex: 1 1 auto"></span>
-    <form *ngIf="!searchDisabled">
+    @if (!searchDisabled) {
+    <form>
       <mat-form-field>
         <mat-label>搜索</mat-label>
         <input [formControl]="searchFormControl" matInput name="search" />
-        <button
-          (click)="searchFormControl.setValue('')"
-          *ngIf="searchFormControl.value"
-          mat-icon-button
-          matSuffix
-        >
+        @if (searchFormControl.value) {
+        <button (click)="searchFormControl.setValue('')" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
+        }
       </mat-form-field>
       <button mat-icon-button>
         <mat-icon>search</mat-icon>
       </button>
     </form>
+    }
   </div>
   <div class="leaderboard-tab-container mat-elevation-z1">
     <table aria-label="Elements" class="full-width-table" mat-table matSort>
@@ -60,18 +63,22 @@
         <td *matCellDef="let row" mat-cell>{{ row.nickname }}</td>
       </ng-container>
 
-      <ng-container *ngFor="let column of columns" [matColumnDef]="column">
+      @for (column of columns; track column) {
+      <ng-container [matColumnDef]="column">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ column }}</th>
         <td *matCellDef="let row" mat-cell>
-          <span *ngIf="row.items[column].value.hasNumberValue()">
+          @if (row.items[column].value.hasNumberValue()) {
+          <span>
             {{ row.items[column].value.getNumberValue() }}
           </span>
-          <span *ngIf="row.items[column].value.hasStringValue()">
+          } @if (row.items[column].value.hasStringValue()) {
+          <span>
             {{ row.items[column].value.getStringValue() }}
           </span>
-          &nbsp;{{ row.items[column].suffix }}
+          } &nbsp;{{ row.items[column].suffix }}
         </td>
       </ng-container>
+      }
 
       <ng-container matColumnDef="submittedAt">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>提交时间</th>

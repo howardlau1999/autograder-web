@@ -1,5 +1,7 @@
-<mat-progress-bar *ngIf="submissionsLoading" mode="indeterminate"></mat-progress-bar>
-<div *ngIf="showSubmit" class="submission-operations">
+@if (submissionsLoading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @if (showSubmit) {
+<div class="submission-operations">
   <span
     [matTooltip]="
       canSubmit
@@ -11,8 +13,8 @@
         : '不在可提交时间范围内'
     "
   >
+    @if (!submissionsLoading) {
     <button
-      *ngIf="!submissionsLoading"
       [disabled]="!canSubmit || limitReached || frequencyReached"
       (click)="onSubmitClicked()"
       color="primary"
@@ -21,9 +23,12 @@
       <mat-icon>add</mat-icon>
       上传提交
     </button>
+    }
   </span>
 </div>
-<h3 *ngIf="!submissionsLoading && !dataSource?.data?.length">暂无提交</h3>
+} @if (!submissionsLoading && !dataSource?.data?.length) {
+<h3>暂无提交</h3>
+}
 <table
   class="submission-history-table"
   [class.hidden]="submissionsLoading || !dataSource?.data?.length"
@@ -44,33 +49,35 @@
   <ng-container matColumnDef="score">
     <th *matHeaderCellDef i18n="score" mat-header-cell>得分</th>
     <td *matCellDef="let submission" mat-cell>
-      <div *ngIf="isSubmissionInternalError(submission.getStatus()); else normal">内部错误</div>
-      <ng-template #normal>
-        <span *ngIf="isSubmissionCancelling(submission.getStatus())">取消中</span>
-        <span *ngIf="isSubmissionCancelled(submission.getStatus())">已取消</span>
-        <span *ngIf="isSubmissionFinished(submission.getStatus())">
-          {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span
-        >
-        <span *ngIf="isSubmissionQueued(submission.getStatus())"
-          >排队中
-          <span *ngIf="submission.getPendingRank()">
-            ( {{ submission.getPendingRank().getRank() }} /
-            {{ submission.getPendingRank().getTotal() }} )
-          </span>
+      @if (isSubmissionInternalError(submission.getStatus())) {
+      <div>内部错误</div>
+      } @else { @if (isSubmissionCancelling(submission.getStatus())) {
+      <span>取消中</span>
+      } @if (isSubmissionCancelled(submission.getStatus())) {
+      <span>已取消</span>
+      } @if (isSubmissionFinished(submission.getStatus())) {
+      <span> {{ submission.getScore() }} / {{ submission.getMaxScore() }}</span>
+      } @if (isSubmissionQueued(submission.getStatus())) {
+      <span
+        >排队中 @if (submission.getPendingRank()) {
+        <span>
+          ( {{ submission.getPendingRank().getRank() }} /
+          {{ submission.getPendingRank().getTotal() }} )
         </span>
-        <span *ngIf="isSubmissionRunning(submission.getStatus())">运行中</span>
-        <mat-progress-bar
-          *ngIf="
-            isSubmissionQueued(submission.getStatus()) ||
-            isSubmissionRunning(submission.getStatus()) ||
-            isSubmissionFinished(submission.getStatus())
-          "
-          [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
-          [value]="(submission.getScore() / submission.getMaxScore()) * 100"
-          class="score-bar"
-        >
-        </mat-progress-bar>
-      </ng-template>
+        }
+      </span>
+      } @if (isSubmissionRunning(submission.getStatus())) {
+      <span>运行中</span>
+      } @if ( isSubmissionQueued(submission.getStatus()) ||
+      isSubmissionRunning(submission.getStatus()) || isSubmissionFinished(submission.getStatus()) )
+      {
+      <mat-progress-bar
+        [mode]="isSubmissionRunning(submission.getStatus()) ? 'buffer' : 'determinate'"
+        [value]="(submission.getScore() / submission.getMaxScore()) * 100"
+        class="score-bar"
+      >
+      </mat-progress-bar>
+      } }
     </td>
   </ng-container>
   <ng-container matColumnDef="status">
@@ -96,8 +103,8 @@
       >
         <mat-icon>download</mat-icon>
       </button>
+      @if (showRegrade) {
       <button
-        *ngIf="showRegrade"
         i18n="retry"
         matTooltip="重评提交"
         (click)="regradeSubmission($event, submission.getSubmissionId())"
@@ -106,10 +113,9 @@
       >
         <mat-icon>cached</mat-icon>
       </button>
+      } @if ( isSubmissionRunning(submission.getStatus()) ||
+      isSubmissionQueued(submission.getStatus()) ) {
       <button
-        *ngIf="
-          isSubmissionRunning(submission.getStatus()) || isSubmissionQueued(submission.getStatus())
-        "
         i18n="cancel"
         matTooltip="取消评测"
         (click)="cancelSubmission($event, submission.getSubmissionId())"
@@ -117,6 +123,7 @@
       >
         <mat-icon>cancel</mat-icon>
       </button>
+      }
     </td>
   </ng-container>
   <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
