@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { grpc } from '@improbable-eng/grpc-web';
 import { AutograderService } from './proto/api_pb_service';
+import { ErrorCode } from './error-codes';
 import {
   ActivateSubmissionRequest,
   AddCourseMembersRequest,
@@ -117,7 +118,7 @@ export class ApiService {
               // eslint-disable-next-line no-console
               console.log(code, message);
             }
-            if (code === grpc.Code.Unauthenticated && message === 'INVALID_TOKEN') {
+            if (code === grpc.Code.Unauthenticated && message === ErrorCode.InvalidToken) {
               this.tokenService.logout();
               this.errorService.handleInvalidToken();
               subscriber.complete();
@@ -155,7 +156,7 @@ export class ApiService {
             }
             if (
               output.status === grpc.Code.Unauthenticated &&
-              output.statusMessage === 'INVALID_TOKEN'
+              output.statusMessage === ErrorCode.InvalidToken
             ) {
               this.tokenService.logout();
               this.errorService.handleInvalidToken();

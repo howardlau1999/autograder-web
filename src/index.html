@@ -5,6 +5,15 @@
     <title>Autograder</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Values injected by the Go server template (ServerProvidedTokens),
+         carried as a JSON data island rather than an inline executable script
+         so the CSP needs no 'unsafe-inline'. In dev (ng serve) the template is
+         not applied, so the fields keep their literal "{{...}}" placeholder,
+         which UserService.readServerConfig treats as unset, falling back to the
+         build-time environment. -->
+    <script type="application/json" id="server-config">
+      { "hcaptchaSiteKey": "{{.HcaptchaSiteKey}}", "githubClientId": "{{.GithubClientId}}" }
+    </script>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.loli.net" />
@@ -16,15 +25,6 @@
     <!-- Copied in as assets, so the critical-CSS inliner must not look for them. -->
     <link href="prism-ghcolors.css" rel="stylesheet" data-beasties-skip />
     <link href="toastui-editor.css" rel="stylesheet" data-beasties-skip />
-    <script>
-      if ('{{.ServerProvided}}' === 'true') {
-        window.localStorage.setItem('server_hcaptcha_site_key', '{{.HcaptchaSiteKey}}');
-        window.localStorage.setItem('server_github_client_id', '{{.GithubClientId}}');
-      } else {
-        window.localStorage.removeItem('server_hcaptcha_site_key');
-        window.localStorage.removeItem('server_github_client_id');
-      }
-    </script>
     <script src="katex.min.js"></script>
     <script src="auto-render.js"></script>
     <script src="prism.js"></script>

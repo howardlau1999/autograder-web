@@ -24,6 +24,7 @@ import {
 import * as zipjs from '@zip.js/zip.js';
 import { BlobWriter } from '@zip.js/zip.js';
 import { ApiService } from '../../../api/api.service';
+import { ErrorCode } from '../../../api/error-codes';
 import { UserService } from '../../../service/user.service';
 import { UploadEntry } from './upload.entry';
 import { NotificationService } from '../../../service/notification.service';
@@ -158,13 +159,13 @@ export class UploadDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       error: ({ message }) => {
         this.loading = false;
         switch (message) {
-          case 'SUBMISSION_LIMIT':
+          case ErrorCode.SubmissionLimit:
             this.notificationService.showSnackBar(`已达到提交次数限制`);
             break;
-          case 'SUBMISSION_FREQUENCY':
+          case ErrorCode.SubmissionFrequency:
             this.notificationService.showSnackBar(`已达到提交频率限制`);
             break;
-          case 'MANIFEST_FILES':
+          case ErrorCode.ManifestFiles:
             this.notificationService.showSnackBar(`提交超时，请重新上传`);
             break;
           default:

@@ -36,6 +36,7 @@ import { NotificationService } from '../../../service/notification.service';
 import { ConfirmDialogComponent } from '../../../common/confirm-dialog/confirm-dialog.component';
 import { ConfirmDialogModel } from '../../../common/confirm-dialog/confirm-dialog-model';
 import { downloadURL } from '../../../common/downloader/url.downloader';
+import { ErrorCode } from '../../../api/error-codes';
 import { retryExponentialBackoff } from '../../../common/operator/retryExponentialBackoff';
 
 @Component({
@@ -133,10 +134,10 @@ export class ReportComponent implements OnInit, OnDestroy {
                 const { status, message } = error;
                 this.error = message;
                 return !(
-                  message !== 'RUNNING' &&
-                  message !== 'QUEUED' &&
-                  message !== 'CANCELLING' &&
-                  message !== 'CANCELLED' &&
+                  message !== ErrorCode.Running &&
+                  message !== ErrorCode.Queued &&
+                  message !== ErrorCode.Cancelling &&
+                  message !== ErrorCode.Cancelled &&
                   status !== grpc.Code.Unknown
                 );
               }),

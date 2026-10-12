@@ -56,7 +56,7 @@ export class ErrorService {
     );
   }
 
-  handleFormError(form: FormGroup): (err: FormError) => any {
+  handleFormError(form: FormGroup): (err: FormError) => void {
     return (err: FormError) => {
       const { field, error, message } = err;
       const control = form.get(field);

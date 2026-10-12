@@ -10,6 +10,7 @@ import {
   UpdateCourseResponse,
 } from '../api/proto/api_pb';
 import { CourseRoleMap } from '../api/proto/model_pb';
+import { ErrorCode } from '../api/error-codes';
 
 export enum JoinCourseError {
   InvalidJoinCode,
@@ -86,7 +87,7 @@ export class CourseService {
         return right(resp.getCourseId());
       }),
       catchError(({ message }) => {
-        if (message === 'INVALID_JOIN_CODE' || message === 'INVALID_COURSE_ID') {
+        if (message === ErrorCode.InvalidJoinCode || message === ErrorCode.InvalidCourseId) {
           return of(left(JoinCourseError.InvalidJoinCode));
         }
         return of(left(JoinCourseError.Unknown));

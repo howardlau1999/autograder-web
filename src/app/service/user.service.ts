@@ -11,6 +11,7 @@ import {
   SignUpResponse,
 } from '../api/proto/api_pb';
 import { ErrorService, FormError, RPCError } from './error.service';
+import { ErrorCode } from '../api/error-codes';
 import { environment } from '../../environments/environment';
 
 export interface User {
@@ -63,6 +64,27 @@ export class UserService {
 
   get nickname() {
     return this.user.nickname;
+  }
+
+  // Reads the server-injected config from the index.html JSON data island. In
+  // dev the Go template is not applied, so each field still holds the literal
+  // "{{...}}" placeholder; that and empty values are treated as unset.
+  private static readServerConfig(): { hcaptchaSiteKey?: string; githubClientId?: string } {
+    const el = document.getElementById('server-config');
+    if (!el?.textContent) {
+      return {};
+    }
+    let parsed: { hcaptchaSiteKey?: string; githubClientId?: string };
+    try {
+      parsed = JSON.parse(el.textContent);
+    } catch {
+      return {};
+    }
+    const clean = (v?: string) => (v && !v.startsWith('{{') ? v : undefined);
+    return {
+      hcaptchaSiteKey: clean(parsed.hcaptchaSiteKey),
+      githubClientId: clean(parsed.githubClientId),
+    };
   }
 
   private static generateOAuthState(): string {
@@ -120,15 +142,16 @@ export class UserService {
     this.hcaptchaSiteKey = environment.hcaptchaSiteKey;
     this.githubClientId = environment.githubClientId;
 
-    // The server injects these into index.html; an unconfigured server writes
-    // an empty string, which must not override the build-time fallback.
-    const serverHcaptchaSiteKey = localStorage.getItem('server_hcaptcha_site_key');
-    if (serverHcaptchaSiteKey) {
-      this.hcaptchaSiteKey = serverHcaptchaSiteKey;
+    // The server injects these into index.html as a JSON data island; an
+    // unconfigured server (or dev, where the Go template is not applied) leaves
+    // them empty or as the literal placeholder, which must not override the
+    // build-time fallback.
+    const serverConfig = UserService.readServerConfig();
+    if (serverConfig.hcaptchaSiteKey) {
+      this.hcaptchaSiteKey = serverConfig.hcaptchaSiteKey;
     }
-    const serverGithubClientId = localStorage.getItem('server_github_client_id');
-    if (serverGithubClientId) {
-      this.githubClientId = serverGithubClientId;
+    if (serverConfig.githubClientId) {
+      this.githubClientId = serverConfig.githubClientId;
     }
 
     this.githubLoginURL = '';
@@ -169,7 +192,7 @@ export class UserService {
     return this.apiService.login(username, password).pipe(
       map((resp) => right(resp)),
       catchError((err: RPCError) => {
-        return of(left({ password: err.message === 'WRONG_PASSWORD' }));
+        return of(left({ password: err.message === ErrorCode.WrongPassword }));
       }),
     );
   }
