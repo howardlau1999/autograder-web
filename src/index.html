@@ -8,7 +8,7 @@
     <!-- Values injected by the Go server template (ServerProvidedTokens),
          carried as a JSON data island rather than an inline executable script
          so the CSP needs no 'unsafe-inline'. In dev (ng serve) the template is
-         not applied, so the fields keep their literal "{{...}}" placeholder,
+         not applied, so the fields keep their literal Go-template placeholders,
          which UserService.readServerConfig treats as unset, falling back to the
          build-time environment. -->
     <script type="application/json" id="server-config">

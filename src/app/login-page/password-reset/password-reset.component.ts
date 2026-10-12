@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,6 +26,8 @@ export class PasswordResetComponent implements OnInit {
 
   counterSub: Subscription | undefined;
 
+  private codeRequestSub?: Subscription;
+
   siteKey = this.userService.hcaptchaSiteKey;
 
   resetForm = new FormGroup({
@@ -42,6 +45,7 @@ export class PasswordResetComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private errorService: ErrorService,
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {}
@@ -50,38 +54,48 @@ export class PasswordResetComponent implements OnInit {
     if (this.resetForm.invalid) return;
     const { email, code, password } = this.resetForm.getRawValue();
     this.resetting = true;
-    this.userService.resetPassword(email, code, password).subscribe((result) => {
-      this.resetting = false;
-      pipe(
-        result,
-        match(this.errorService.handleFormError(this.resetForm), () => {
-          this.snackBar.open('密码重置成功', '关闭', { duration: 3000 });
-          this.router.navigate(['/']).then();
-        }),
-      );
-    });
+    this.userService
+      .resetPassword(email, code, password)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.resetting = false;
+        pipe(
+          result,
+          match(this.errorService.handleFormError(this.resetForm), () => {
+            this.snackBar.open('密码重置成功', '关闭', { duration: 3000 });
+            this.router.navigate(['/']).then();
+          }),
+        );
+      });
   }
 
   onVerify(token: string) {
+    this.codeRequestSub?.unsubscribe();
     this.requestingCode = true;
     const { email } = this.resetForm.getRawValue();
-    this.userService.requestPasswordReset(email, token).subscribe((result) => {
-      this.requestingCode = false;
-      pipe(
-        result,
-        match(this.errorService.handleFormError(this.resetForm), () => {
-          this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
-          this.requestCodeCounter = 60;
-          this.counterSub = timer(1000, 1000).subscribe(() => {
-            this.requestCodeCounter -= 1;
-            if (this.requestCodeCounter === 0) {
-              this.counterSub?.unsubscribe();
-              this.counterSub = undefined;
-            }
-          });
-        }),
-      );
-    });
+    this.codeRequestSub = this.userService
+      .requestPasswordReset(email, token)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.requestingCode = false;
+        pipe(
+          result,
+          match(this.errorService.handleFormError(this.resetForm), () => {
+            this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
+            this.counterSub?.unsubscribe();
+            this.requestCodeCounter = 60;
+            this.counterSub = timer(1000, 1000)
+              .pipe(takeUntilDestroyed(this.destroyRef))
+              .subscribe(() => {
+                this.requestCodeCounter -= 1;
+                if (this.requestCodeCounter === 0) {
+                  this.counterSub?.unsubscribe();
+                  this.counterSub = undefined;
+                }
+              });
+          }),
+        );
+      });
   }
 
   onExpired(_response: any) {

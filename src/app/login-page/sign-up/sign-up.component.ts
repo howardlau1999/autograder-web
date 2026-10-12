@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,6 +25,8 @@ export class SignUpComponent implements OnInit {
   registering: boolean = false;
 
   counterSub: Subscription | undefined;
+
+  private codeRequestSub?: Subscription;
 
   siteKey = this.userService.hcaptchaSiteKey;
 
@@ -52,6 +55,7 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private errorService: ErrorService,
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {}
@@ -60,39 +64,49 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) return;
     const { username, email, code, password } = this.signUpForm.getRawValue();
     this.registering = true;
-    this.userService.signUp(username, email, code, password).subscribe((result) => {
-      this.registering = false;
-      pipe(
-        result,
-        match(this.errorService.handleFormError(this.signUpForm), () => {
-          this.snackBar.open('注册成功', '', { duration: 3000 });
-          this.router.navigate(['/']).then();
-        }),
-      );
-    });
+    this.userService
+      .signUp(username, email, code, password)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.registering = false;
+        pipe(
+          result,
+          match(this.errorService.handleFormError(this.signUpForm), () => {
+            this.snackBar.open('注册成功', '', { duration: 3000 });
+            this.router.navigate(['/']).then();
+          }),
+        );
+      });
   }
 
   onVerify(token: string) {
     if (this.signUpForm.controls.username.invalid || this.signUpForm.controls.email.invalid) return;
+    this.codeRequestSub?.unsubscribe();
     this.requestingCode = true;
     const { email, username } = this.signUpForm.getRawValue();
-    this.userService.requestSignUpToken(username, email, token).subscribe((result) => {
-      this.requestingCode = false;
-      pipe(
-        result,
-        match(this.errorService.handleFormError(this.signUpForm), () => {
-          this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
-          this.requestCodeCounter = 60;
-          this.counterSub = timer(1000, 1000).subscribe((_) => {
-            this.requestCodeCounter -= 1;
-            if (this.requestCodeCounter === 0) {
-              this.counterSub?.unsubscribe();
-              this.counterSub = undefined;
-            }
-          });
-        }),
-      );
-    });
+    this.codeRequestSub = this.userService
+      .requestSignUpToken(username, email, token)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.requestingCode = false;
+        pipe(
+          result,
+          match(this.errorService.handleFormError(this.signUpForm), () => {
+            this.snackBar.open('验证码已发送', '关闭', { duration: 3000 });
+            this.counterSub?.unsubscribe();
+            this.requestCodeCounter = 60;
+            this.counterSub = timer(1000, 1000)
+              .pipe(takeUntilDestroyed(this.destroyRef))
+              .subscribe(() => {
+                this.requestCodeCounter -= 1;
+                if (this.requestCodeCounter === 0) {
+                  this.counterSub?.unsubscribe();
+                  this.counterSub = undefined;
+                }
+              });
+          }),
+        );
+      });
   }
 
   onExpired(_response: any) {
